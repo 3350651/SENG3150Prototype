@@ -1,0 +1,45 @@
+html{
+  background-color:beige;
+}
+
+h1{text-align: center}
+
+button{
+  border-radius: 8px;
+}
+
+br{
+  line-height: 60px
+}
+
+h2{
+  text-align: center;
+}
+
+fieldset{
+  border-color: black;
+}
+
+#login{
+  padding-top: 100px;
+  text-align: center;
+  line-height: 60px;
+}
+
+.notification{
+  background-color: yellow;
+}
+
+table, th, td, tr{
+  border:1px solid;
+}
+table{
+  width: 70%;
+  border-collapse: collapse;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+#statsButton{
+  margin-top: 10px;
+}

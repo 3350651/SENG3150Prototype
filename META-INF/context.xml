@@ -1,0 +1,8 @@
+<Context>
+	<Resource name="jdbc/reportingservices"
+    type="javax.sql.DataSource"
+    username="SENG2050_Users"
+    password="seng2050"
+    driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+    url="jdbc:sqlserver://localhost\SQLEXPRESS;databaseName=SENG2050_finalProject"  />
+</Context>
