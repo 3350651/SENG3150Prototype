@@ -1,0 +1,9 @@
+<Context>
+	<Resource
+			name="jdbc/flightPub"
+			type="javax.sql.DataSource"
+			username="fb1"
+			password="mySecur3Passw0rd!"
+			driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+			url="jdbc:sqlserver://localhost\SQLEXPRESS; databaseName=flightPub; encrypt=true;trustServerCertificate=true;"  />
+</Context>
