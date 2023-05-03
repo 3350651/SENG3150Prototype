@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = { "/Homepage" })
+@WebServlet(urlPatterns = { "/AccountSettings" })
 public class AccountSettings extends HttpServlet {
 
 
