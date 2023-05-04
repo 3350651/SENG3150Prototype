@@ -19,6 +19,9 @@ public class UserBean implements Serializable {
 	private String fname;
 	private String lname;
 	private String email;
+	private String userPassword;
+	private String phoneNo;
+	private String role;
 	private String address;
 	private String defaultSearch;
 	private String defaultCurrency;
@@ -26,9 +29,7 @@ public class UserBean implements Serializable {
 	private String themePreference;
 	private Boolean questionnaireCompleted;
 	private LocalDate dateOfBirth;
-	private String userPassword;
-	private String phoneNo;
-	private String role;
+
 	//private LinkedList<Flights> bookmarkedFlights
 	//private LinkedList<Searches> savedSearches
 	//private LinkedList<Groups> groups
