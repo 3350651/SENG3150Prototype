@@ -26,6 +26,13 @@
 			<button type="submit" name ="button" value="submit" >Submit</button>
 		</form>
 		</div>
+
+		<div id="createAccount Container">
+		<form method= "POST" action="CreateAccount">
+            <button name="createAccount" value="createAccount">Create Account</button>
+        </form>
+
+        </div>
 	</main>
 </body>
 
