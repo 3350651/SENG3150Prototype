@@ -53,8 +53,8 @@
 
                     <label for="themePreference">Theme Preference: </label>
                     <select id="themePreference" name="themePreference">
-                        <option value="Light Mode">Light Mode</option>
-                        <option value="Dark Mode">Dark Mode</option>
+                        <option value="Light">Light Mode</option>
+                        <option value="Dark">Dark Mode</option>
                     </select><br>
 
                     <input type="hidden" name="questionnaireCompleted" value="No">

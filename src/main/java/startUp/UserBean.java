@@ -75,6 +75,9 @@ public class UserBean implements Serializable {
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
+		this.userPassword = userPassword;
+		this.phoneNo = phoneNo;
+		this.role = role;
 		this.address = address;
 		this.defaultSearch = defaultSearch;
 		this.defaultCurrency = defaultCurrency;
@@ -82,9 +85,6 @@ public class UserBean implements Serializable {
 		this.themePreference = themePreference;
 		this.questionnaireCompleted = questionnaireCompleted;
 		this.dateOfBirth = dateOfBirth;
-		this.userPassword = userPassword;
-		this.phoneNo = phoneNo;
-		this.role = role;
 	}
 
 	public Boolean isHasLogin() {
@@ -228,7 +228,7 @@ public class UserBean implements Serializable {
 	 */
 	public void addUserToTheSystem(String firstName, String lastName, String email, String password, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, Boolean questionnaireCompleted, LocalDate dateOfBirth) {
 		try {
-			String query = "INSERT INTO USERS VALUES (NEWID(), ?, ?, ?, ?, ?, ?)";
+			String query = "INSERT INTO USERS VALUES (NEWID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
 
