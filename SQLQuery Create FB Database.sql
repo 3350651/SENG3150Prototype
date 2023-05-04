@@ -10,11 +10,11 @@ FOR LOGIN fb1;
 GRANT SELECT, INSERT, UPDATE, DELETE 
 TO fb1;
 
-DROP TABLE person;
+DROP TABLE USERS;
 
-CREATE TABLE person
+CREATE TABLE USERS
 (
-	personID			  UNIQUEIDENTIFIER,
+	userID			  UNIQUEIDENTIFIER,
 	first_name				  varchar(20),
 	last_name				  varchar(20),
 	email				VARCHAR(30),
@@ -22,14 +22,14 @@ CREATE TABLE person
 	phoneNo    			VARCHAR(15),
 	roles         VARCHAR(20),
 
-	PRIMARY KEY (personID),
+	PRIMARY KEY (userID),
 )
 go
 
-INSERT INTO Person VALUES (NEWID(), 'Lachlan', 'ONeill', 'lachlan@gmail.com', 'lo', '04 123 456', 'user')
-INSERT INTO Person VALUES (NEWID(), 'Jordan', 'Eade', 'jordan@gmail.com', 'je', '04 454 678', 'user')
-INSERT INTO Person VALUES (NEWID(), 'Lucy', 'Knight', 'lucy@gmail.com', 'lk', '04 474 235', 'user')
-INSERT INTO Person VALUES (NEWID(), 'Blake', 'Baldin', 'blake@gmail.com', 'bb', '04 123 456', 'user')
+INSERT INTO USERS VALUES (NEWID(), 'Lachlan', 'ONeill', 'lachlan@gmail.com', 'lo', '04 123 456', 'user')
+INSERT INTO USERS VALUES (NEWID(), 'Jordan', 'Eade', 'jordan@gmail.com', 'je', '04 454 678', 'user')
+INSERT INTO USERS VALUES (NEWID(), 'Lucy', 'Knight', 'lucy@gmail.com', 'lk', '04 474 235', 'user')
+INSERT INTO USERS VALUES (NEWID(), 'Blake', 'Baldin', 'blake@gmail.com', 'bb', '04 123 456', 'user')
 
 
 go
