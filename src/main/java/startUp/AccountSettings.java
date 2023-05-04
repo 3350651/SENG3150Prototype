@@ -19,16 +19,15 @@ public class AccountSettings extends HttpServlet {
 		RequestDispatcher requestDispatcher = null;
 
 		// send the user to an unauthorised page if they try to access the homepage without being logged in.
-		if (session.getAttribute("personBean") == null){
+		if (session.getAttribute("userBean") == null){
 			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Unauthorised.jsp");
 			requestDispatcher.forward(request, response);
 		}
 
-		// gets the person object and their role from the session object.
-		String role = ((PersonBean)session.getAttribute("personBean")).getRoleInSystem();
-		PersonBean person = (PersonBean) session.getAttribute("personBean");
+		// gets the user object and their role from the session object.
+		UserBean user = (UserBean) session.getAttribute("userBean");
 
-		requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepage.jsp");
+		requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
 
 		requestDispatcher.forward(request, response);
 	}
@@ -39,37 +38,6 @@ public class AccountSettings extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// logout button
-		if (request.getParameter("logout") != null){
-			request.getSession().invalidate();
-			response.sendRedirect("login");
-		}
 
-		// home button
-		if(request.getParameter("home") != null){
-			response.sendRedirect("Homepage");
-		}
-
-		// admin - add user form
-		if (request.getParameter("addUser") != null){
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AdminHomepage.jsp");
-			String firstName = request.getParameter("firstName");
-			String lastName = request.getParameter("lastName");
-			String email = request.getParameter("email");
-			String password = request.getParameter("password");
-			String phoneNumber = request.getParameter("phoneNumber");
-			String role = request.getParameter("role");
-
-			PersonBean person = new PersonBean(firstName, lastName, email, password, phoneNumber, role);
-			person.addUserToTheSystem(firstName, lastName, email, password, phoneNumber, role);
-			requestDispatcher.forward(request, response);
-		}
-
-		// admin - remove user
-		if (request.getParameter("remove") != null){
-			PersonBean.removeUserFromSystem(request.getParameter("remove"));
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AdminHomepage.jsp");
-			requestDispatcher.forward(request, response);
-		}
 	}
-
 }

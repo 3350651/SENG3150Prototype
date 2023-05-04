@@ -1,10 +1,7 @@
 package startUp;
 
-import seng2050.IssuesBean;
-import startUp.PersonBean;
-
 import java.io.*;
-import java.util.List;
+import java.time.LocalDate;
 import javax.servlet.*;
 import javax.servlet.annotation.*;
 import javax.servlet.http.*;
@@ -29,14 +26,14 @@ public class Homepage extends HttpServlet {
 		RequestDispatcher requestDispatcher = null;
 
 		// send the user to an unauthorised page if they try to access the homepage without being logged in.
-		if (session.getAttribute("personBean") == null){
+		if (session.getAttribute("userBean") == null){
 			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Unauthorised.jsp");
 			requestDispatcher.forward(request, response);
 		}
 
 		// gets the person object and their role from the session object.
-		String role = ((PersonBean)session.getAttribute("personBean")).getRoleInSystem();
-		PersonBean person = (PersonBean) session.getAttribute("personBean");
+		String role = ((UserBean)session.getAttribute("userBean")).getRoleInSystem();
+		UserBean person = (UserBean) session.getAttribute("userBean");
 
 		// sends the user to the correct homepage depending on their role
 		if (role.equals("user")){
@@ -75,15 +72,24 @@ public class Homepage extends HttpServlet {
 			String password = request.getParameter("password");
 			String phoneNumber = request.getParameter("phoneNumber");
 			String role = request.getParameter("role");
+			String address = request.getParameter("address");
+			String defaultSearch = request.getParameter("defaultSearch");
+			String defaultCurrency = request.getParameter("defaultCurrency");
+			String defaultTimeZone = request.getParameter("defaultTimeZone");
+			String themePreference = request.getParameter("themePreference");
+			Boolean questionnaireCompleted = Boolean.parseBoolean(request.getParameter("questionnaireCompleted"));
+			LocalDate dateOfBirth = LocalDate.parse(request.getParameter("dateOfBirth"));
 
-			PersonBean person = new PersonBean(firstName, lastName, email, password, phoneNumber, role);
-			person.addUserToTheSystem(firstName, lastName, email, password, phoneNumber, role);
+			UserBean user = new UserBean(firstName, lastName, email, password, phoneNumber, role, address,
+					defaultSearch, defaultCurrency, defaultTimeZone, themePreference, questionnaireCompleted, dateOfBirth);
+
+			user.addUserToTheSystem(firstName, lastName, email, password, phoneNumber, role, address, defaultSearch, defaultCurrency, defaultTimeZone, themePreference, questionnaireCompleted, dateOfBirth);
 			requestDispatcher.forward(request, response);
 		}
 
 		// admin - remove user
 		if (request.getParameter("remove") != null){
-			PersonBean.removeUserFromSystem(request.getParameter("remove"));
+			UserBean.removeUserFromSystem(request.getParameter("remove"));
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AdminHomepage.jsp");
 			requestDispatcher.forward(request, response);
 		}

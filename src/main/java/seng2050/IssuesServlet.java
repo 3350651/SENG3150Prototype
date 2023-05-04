@@ -1,6 +1,6 @@
 package seng2050;
 
-import startUp.PersonBean;
+import startUp.UserBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,7 +35,7 @@ public class IssuesServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-        PersonBean person = (PersonBean) session.getAttribute("personBean");
+        UserBean person = (UserBean) session.getAttribute("personBean");
 
         if(person.getRoleInSystem().contains("staff")) {
 
@@ -97,7 +97,7 @@ public class IssuesServlet extends HttpServlet {
             else if(resolve && issueID != null && resolution != null){
 
                 IssuesBean issue = getIssue(issueID);
-                if(issue.getPersonId().contains(person.getPersonID())){
+                if(issue.getPersonId().contains(person.getUserID())){
                     issue.setIssueState("RESOLVED");
                     changeState(issue, "RESOLVED");
                     addResolution(issue, resolution);

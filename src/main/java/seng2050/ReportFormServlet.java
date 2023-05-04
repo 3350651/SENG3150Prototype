@@ -1,7 +1,7 @@
 package seng2050;
 
 import startUp.ConfigBean;
-import startUp.PersonBean;
+import startUp.UserBean;
 
 import java.io.IOException;
 import java.sql.*;
@@ -38,7 +38,7 @@ public class ReportFormServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        PersonBean person = (PersonBean)req.getSession().getAttribute("personBean");
+        UserBean person = (UserBean)req.getSession().getAttribute("personBean");
         RequestDispatcher requestDispatcher = null;
 
         //if coming from the home page
@@ -206,7 +206,7 @@ public class ReportFormServlet extends HttpServlet {
                 Connection connection = ConfigBean.getConnection();
                 PreparedStatement statement = connection.prepareStatement(query);
 
-                statement.setString(1, person.getPersonID());
+                statement.setString(1, person.getUserID());
                 statement.setString(2, "NEW");
                 statement.setString(3, issue.getCategory());
                 statement.setString(4, issue.getSubCategory());

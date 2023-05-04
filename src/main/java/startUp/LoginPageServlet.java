@@ -25,7 +25,7 @@ public class LoginPageServlet extends HttpServlet {
 
 	/**
 	 * Takes the username and password from the login form and cross checks those details with the database.
-	 * If successful, a person object will be added to their session, and they will be logged in.
+	 * If successful, a user object will be added to their session, and they will be logged in.
 	 * If unsuccessful, they will be sent back to the login page to try again.
 	 */
 	@Override
@@ -36,11 +36,11 @@ public class LoginPageServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 
-		PersonBean person = new PersonBean();
-		person.login(username, password);
+		UserBean user = new UserBean();
+		user.login(username, password);
 
-		if (person.getHasLogin()) {
-			session.setAttribute("personBean", person);
+		if (user.getHasLogin()) {
+			session.setAttribute("userBean", user);
 			response.sendRedirect(request.getContextPath() + "/Homepage");
 		}
 		else {

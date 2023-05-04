@@ -1,6 +1,6 @@
 package retired;
 
-import startUp.PersonBean;
+import startUp.UserBean;
 
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -44,7 +44,7 @@ public class LoginPageServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 
-		PersonBean person = new PersonBean();
+		UserBean person = new UserBean();
 		person.login(username, password);
 
 		if (person.getHasLogin()) {

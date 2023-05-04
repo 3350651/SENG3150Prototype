@@ -1,7 +1,7 @@
 package seng2050;
 
 import startUp.ConfigBean;
-import startUp.PersonBean;
+import startUp.UserBean;
 
 import java.io.Serializable;
 import java.sql.*;
@@ -132,7 +132,7 @@ public class CommentsBean implements Serializable {
   }
 
 
-  public static void addComment(IssuesBean issue, String description, PersonBean person){
+  public static void addComment(IssuesBean issue, String description, UserBean person){
 
     Time time = new Time(System.currentTimeMillis());
     String t = time.toString();
@@ -146,7 +146,7 @@ public class CommentsBean implements Serializable {
       Connection connection = ConfigBean.getConnection();
       PreparedStatement statement = connection.prepareStatement(query);
 
-      statement.setString(1, person.getPersonID());
+      statement.setString(1, person.getUserID());
       statement.setString(2, description);
       statement.setString(3, issue.getIssueId());
       statement.setString(4, d);

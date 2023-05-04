@@ -1,6 +1,6 @@
 package seng2050;
 
-import startUp.PersonBean;
+import startUp.UserBean;
 
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -34,7 +34,7 @@ public class EditUserServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter("edit") != null) {
             RequestDispatcher requestDispatcher = null;
-            PersonBean person = (PersonBean)request.getSession().getAttribute("personBean");
+            UserBean person = (UserBean)request.getSession().getAttribute("personBean");
 
             // if a user that isn't logged in tries to access this page redirect them to an unauthorised page
             if (person == null){
@@ -63,7 +63,7 @@ public class EditUserServlet extends HttpServlet {
             String phoneNumber = request.getParameter("phoneNumber");
             String role = request.getParameter("role");
 
-            PersonBean.editUser((String) request.getSession().getAttribute("editID"), firstName, lastName, email, password, phoneNumber, role);
+            UserBean.editUser((String) request.getSession().getAttribute("editID"), firstName, lastName, email, password, phoneNumber, role);
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/views/AdminHomepage.jsp");
             requestDispatcher.forward(request, response);

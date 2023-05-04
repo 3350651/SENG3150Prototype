@@ -1,4 +1,4 @@
-<%@ page import="startUp.PersonBean" %>
+<%@ page import="startUp.UserBean" %>
 <%@ page import="java.util.List" %>
 
 
@@ -20,7 +20,7 @@
             </div>
             <div class="modifyAccountSettings">
                 <form method="POST" action="AccountSettings">
-                    <button name="logout" value="logout">Logout</button>
+                    <button name="modifyAccountSettings" value="modifyAccountSettings">Modify Account Settings</button>
                 </form>
             </div>
             <div class="titleContainer">

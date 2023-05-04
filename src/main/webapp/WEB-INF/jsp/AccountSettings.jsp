@@ -1,3 +1,4 @@
+<%@ page import="startUp.UserBean" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,14 +28,6 @@
 
         <label for="phoneNumber">Phone Number:</label><br>
         <input type="text" id="phoneNumber" name="phoneNumber"><br>
-
-        <label for="role">Role:</label><br>
-            <select id="role" name="role">
-                <option value="">Please select...</option>
-                <option value="user">User</option>
-                <option value="staff">IT Staff</option>
-                <option value="admin">Admin</option>
-            </select><br>
 
         <button type="submit" name="submit" value="true">Submit</button>
     </form>

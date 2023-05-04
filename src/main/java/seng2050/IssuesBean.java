@@ -1,7 +1,7 @@
 package seng2050;
 
 import startUp.ConfigBean;
-import startUp.PersonBean;
+import startUp.UserBean;
 
 import java.io.Serializable;
 import java.sql.*;
@@ -211,7 +211,7 @@ public class IssuesBean implements Serializable {
 	 * @param person
 	 * @return LinkedList<webapp.IssuesBean>
 	 */
-	public static LinkedList<IssuesBean> getIssuesForUser(String query, PersonBean person){
+	public static LinkedList<IssuesBean> getIssuesForUser(String query, UserBean person){
 
 		LinkedList<IssuesBean> allIssues = (LinkedList<IssuesBean>) getIssuesForIT(query);
 		LinkedList<IssuesBean> issuesForUser = new LinkedList<>();
@@ -222,7 +222,7 @@ public class IssuesBean implements Serializable {
 
 			issue = allIssues.remove();
 
-			if(issue.getKBArticle() || issue.getPersonId().equalsIgnoreCase(person.getPersonID())){
+			if(issue.getKBArticle() || issue.getPersonId().equalsIgnoreCase(person.getUserID())){
 				issuesForUser.add(issue);
 			}
 		}

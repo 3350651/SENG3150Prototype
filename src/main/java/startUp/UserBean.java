@@ -1,28 +1,45 @@
 package startUp;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * The user Bean which contains all the details of the user.
+ * @author Jordan Eade c3350651
+ * @author Lucy Knight c3350691
+ * @author Ahmed Al-khazraji c3277545
+ * @author Jason Walls c3298757
+ */
 public class UserBean implements Serializable {
 
 	private boolean hasLogin;
-	private String personID;
+	private String userID;
 	private String fname;
 	private String lname;
 	private String email;
+	private String address;
+	private String defaultSearch;
+	private String defaultCurrency;
+	private String defaultTimeZone;
+	private String themePreference;
+	private Boolean questionnaireCompleted;
+	private LocalDate dateOfBirth;
 	private String userPassword;
 	private String phoneNo;
 	private String role;
+	//private LinkedList<Flights> bookmarkedFlights
+	//private LinkedList<Searches> savedSearches
+	//private LinkedList<Groups> groups
+	//private LinkedList<Tags> tags
+	//private LinkedList<Destinations> favouriteDestinations
 
 	public UserBean() {
 	}
 
 	/**
-	 * Constructor which will instantiate a new person with the argument details.
+	 * Constructor which will instantiate a new user with the argument details.
 	 */
 	public UserBean(String newFirstName, String newLastName, String newEmail, String newUserPassword, String newPhoneNo, String newRole) {
 		this.fname = newFirstName;
@@ -33,12 +50,120 @@ public class UserBean implements Serializable {
 		this.role = newRole;
 	}
 
-	public void setHasLogin(Boolean newData) {
-		this.hasLogin = newData;
+	public UserBean(boolean hasLogin, String userID, String fname, String lname, String email,String userPassword, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, Boolean questionnaireCompleted, LocalDate dateOfBirth) {
+		this.hasLogin = hasLogin;
+		this.userID = userID;
+		this.fname = fname;
+		this.lname = lname;
+		this.email = email;
+		this.dateOfBirth = dateOfBirth;
+		this.userPassword = userPassword;
+		this.phoneNo = phoneNo;
+		this.role = role;
+		this.address = address;
+		this.defaultSearch = defaultSearch;
+		this.defaultCurrency = defaultCurrency;
+		this.defaultTimeZone = defaultTimeZone;
+		this.themePreference = themePreference;
+		this.questionnaireCompleted = questionnaireCompleted;
 	}
 
-	public void setPersonId(String newData) {
-		this.personID = newData;
+	public UserBean(String fname, String lname, String email, String userPassword, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, Boolean questionnaireCompleted, LocalDate dateOfBirth) {
+		this.hasLogin = hasLogin;
+		this.userID = userID;
+		this.fname = fname;
+		this.lname = lname;
+		this.email = email;
+		this.address = address;
+		this.defaultSearch = defaultSearch;
+		this.defaultCurrency = defaultCurrency;
+		this.defaultTimeZone = defaultTimeZone;
+		this.themePreference = themePreference;
+		this.questionnaireCompleted = questionnaireCompleted;
+		this.dateOfBirth = dateOfBirth;
+		this.userPassword = userPassword;
+		this.phoneNo = phoneNo;
+		this.role = role;
+	}
+
+	public Boolean isHasLogin() {
+		return hasLogin;
+	}
+
+	public void setHasLogin(Boolean hasLogin) {
+		this.hasLogin = hasLogin;
+	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getDefaultSearch() {
+		return defaultSearch;
+	}
+
+	public void setDefaultSearch(String defaultSearch) {
+		this.defaultSearch = defaultSearch;
+	}
+
+	public String getDefaultCurrency() {
+		return defaultCurrency;
+	}
+
+	public void setDefaultCurrency(String defaultCurrency) {
+		this.defaultCurrency = defaultCurrency;
+	}
+
+	public String getDefaultTimeZone() {
+		return defaultTimeZone;
+	}
+
+	public void setDefaultTimeZone(String defaultTimeZone) {
+		this.defaultTimeZone = defaultTimeZone;
+	}
+
+	public String getThemePreference() {
+		return themePreference;
+	}
+
+	public void setThemePreference(String themePreference) {
+		this.themePreference = themePreference;
+	}
+
+	public Boolean isQuestionnaireCompleted() {
+		return questionnaireCompleted;
+	}
+
+	public void setQuestionnaireCompleted(Boolean questionnaireCompleted) {
+		this.questionnaireCompleted = questionnaireCompleted;
+	}
+
+	public LocalDate getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(LocalDate dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public void setUserId(String newData) {
+		this.userID = newData;
 	}
 
 	public void setFname(String newData) {
@@ -65,12 +190,12 @@ public class UserBean implements Serializable {
 		this.role = newData;
 	}
 
-	public boolean getHasLogin() {
+	public Boolean getHasLogin() {
 		return hasLogin;
 	}
 
-	public String getPersonID() {
-		return personID;
+	public String getUserID() {
+		return userID;
 	}
 
 	public String getFname() {
@@ -98,11 +223,11 @@ public class UserBean implements Serializable {
 	}
 
 	/**
-	 * Inserts a new Person Bean with the argumented details into the database.
+	 * Inserts a new user Bean with the argumented details into the database.
 	 */
-	public void addUserToTheSystem(String firstName, String lastName, String email, String password, String phoneNo, String role) {
+	public void addUserToTheSystem(String firstName, String lastName, String email, String password, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, Boolean questionnaireCompleted, LocalDate dateOfBirth) {
 		try {
-			String query = "INSERT INTO person VALUES (NEWID(), ?, ?, ?, ?, ?, ?)";
+			String query = "INSERT INTO USERS VALUES (NEWID(), ?, ?, ?, ?, ?, ?)";
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
 
@@ -112,6 +237,13 @@ public class UserBean implements Serializable {
 			statement.setString(4, password);
 			statement.setString(5, phoneNo);
 			statement.setString(6, role);
+			statement.setString(7, address);
+			statement.setString(8, defaultSearch);
+			statement.setString(9, defaultCurrency);
+			statement.setString(10, defaultTimeZone);
+			statement.setString(11, themePreference);
+			statement.setBoolean(12, questionnaireCompleted);
+			statement.setDate(13, java.sql.Date.valueOf(dateOfBirth));
 
 			statement.executeUpdate();
 			statement.close();
@@ -122,14 +254,16 @@ public class UserBean implements Serializable {
 		}
 	}
 
+
+
 	/**
 	 * Checks if the argument username and password are in the database.
-	 * If the username and password are in the database this method will assign the Person Bean
+	 * If the username and password are in the database this method will assign the user Bean
 	 * attributes with the ones found in the database.
 	 */
 	public void login(String userName, String password) {
 		try {
-			String query = "SELECT * FROM person Where [email]=? AND [userPassword]=? ";
+			String query = "SELECT * FROM USERS Where [email]=? AND [userPassword]=? ";
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, userName);
@@ -138,7 +272,7 @@ public class UserBean implements Serializable {
 
 			while (result.next()) {
 				hasLogin = true;
-				this.setPersonId(result.getString("personID"));
+				this.setUserId(result.getString("userID"));
 				this.setFname(result.getString("first_name"));
 				this.setLname(result.getString("last_name"));
 				this.setEmail(result.getString("email"));
@@ -163,7 +297,7 @@ public class UserBean implements Serializable {
 	public boolean isExist(String userName) {
 		boolean isExist = false;
 		try {
-			String query = "SELECT * FROM person Where [email]=? ";
+			String query = "SELECT * FROM USERS Where [email]=? ";
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, userName);
@@ -191,7 +325,7 @@ public class UserBean implements Serializable {
 	 * Removes an account from the database depending on the argumented id.
 	 */
 	public static void removeUserFromSystem(String id) {
-		String query = "DELETE FROM person WHERE [personID]=?";
+		String query = "DELETE FROM USERS WHERE [userID]=?";
 		try {
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -209,7 +343,7 @@ public class UserBean implements Serializable {
 	 * Generates and returns an arraylist of all non-admin users in the database.
 	 */
 	public static ArrayList<UserBean> getNonAdminUsers(){
-		String query = "SELECT * FROM person";
+		String query = "SELECT * FROM USERS";
 		ArrayList<UserBean> userList = new ArrayList<>();
 
 		try {
@@ -230,9 +364,9 @@ public class UserBean implements Serializable {
 					continue;
 				}
 				
-				UserBean person = new UserBean(firstName, lastName, email, password, phoneNumber, role);
-				person.setPersonId(id);
-				userList.add(person);
+				UserBean user = new UserBean(firstName, lastName, email, password, phoneNumber, role);
+				user.setUserId(id);
+				userList.add(user);
 			}
 			statement.close();
 			connection.close();
@@ -253,7 +387,7 @@ public class UserBean implements Serializable {
 			PreparedStatement statement = null;
 
 			if (!firstName.equals("")){
-				String query = "UPDATE person SET [first_name] = ? WHERE [personID] = ?";
+				String query = "UPDATE USERS SET [first_name] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
 				statement.setString(1, firstName);
@@ -262,7 +396,7 @@ public class UserBean implements Serializable {
 			}
 
 			if (!lastName.equals("")){
-				String query = "UPDATE person SET [last_name] = ? WHERE [personID] = ?";
+				String query = "UPDATE USERS SET [last_name] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
 				statement.setString(1, lastName);
@@ -271,7 +405,7 @@ public class UserBean implements Serializable {
 			}
 
 			if (!email.equals("")){
-				String query = "UPDATE person SET [email] = ? WHERE [personID] = ?";
+				String query = "UPDATE USERS SET [email] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
 				statement.setString(1, email);
@@ -280,7 +414,7 @@ public class UserBean implements Serializable {
 			}
 
 			if (!password.equals("")){
-				String query = "UPDATE person SET [userPassword] = ? WHERE [personID] = ?";
+				String query = "UPDATE USERS SET [userPassword] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
 				statement.setString(1, password);
@@ -289,7 +423,7 @@ public class UserBean implements Serializable {
 			}
 
 			if (!phoneNo.equals("")){
-				String query = "UPDATE person SET [phoneNo] = ? WHERE [personID] = ?";
+				String query = "UPDATE USERS SET [phoneNo] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
 				statement.setString(1, phoneNo);
@@ -298,7 +432,7 @@ public class UserBean implements Serializable {
 			}
 
 			if (!role.equals("")){
-				String query = "UPDATE person SET [roles] = ? WHERE [personID] = ?";
+				String query = "UPDATE USERS SET [roles] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
 				statement.setString(1, role);
