@@ -30,6 +30,8 @@ public class UserBean implements Serializable {
 	private Boolean questionnaireCompleted;
 	private LocalDate dateOfBirth;
 
+	private String userGroupID;
+
 	//private LinkedList<Flights> bookmarkedFlights
 	//private LinkedList<Searches> savedSearches
 	//private LinkedList<Groups> groups
@@ -49,6 +51,7 @@ public class UserBean implements Serializable {
 		this.userPassword = newUserPassword;
 		this.phoneNo = newPhoneNo;
 		this.role = newRole;
+		this.userGroupID = "";
 	}
 
 	public UserBean(boolean hasLogin, String userID, String fname, String lname, String email,String userPassword, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, Boolean questionnaireCompleted, LocalDate dateOfBirth) {
@@ -67,6 +70,7 @@ public class UserBean implements Serializable {
 		this.defaultTimeZone = defaultTimeZone;
 		this.themePreference = themePreference;
 		this.questionnaireCompleted = questionnaireCompleted;
+		this.userGroupID = "";
 	}
 
 	public UserBean(String fname, String lname, String email, String userPassword, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, Boolean questionnaireCompleted, LocalDate dateOfBirth) {
@@ -85,6 +89,7 @@ public class UserBean implements Serializable {
 		this.themePreference = themePreference;
 		this.questionnaireCompleted = questionnaireCompleted;
 		this.dateOfBirth = dateOfBirth;
+		this.userGroupID = "";
 	}
 
 	public Boolean isHasLogin() {
@@ -222,6 +227,8 @@ public class UserBean implements Serializable {
 	public String getRoleInSystem() {
 		return role;
 	}
+
+
 
 	/**
 	 * Inserts a new user Bean with the argumented details into the database.
@@ -448,4 +455,87 @@ public class UserBean implements Serializable {
 		}
 	}
 
+	public void createGroup(String userID, String groupName){
+		String query = "INSERT INTO GROUPS VALUES (NEWID(), ?)";
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+
+			statement.setString(1, groupName);
+
+			statement.executeUpdate();
+			statement.close();
+			connection.close();
+		}
+		catch(SQLException e) {
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+
+
+		query = "SELECT groupID FROM GROUPS WHERE groupName = ?";
+		String groupID = "";
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, groupName);
+			ResultSet result = statement.executeQuery();
+			groupID = result.getString(1);
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+
+
+		query = "INSERT INTO USERGROUPS(userGroupID, userID, gID, isAdmin) VALUES (NEWID(), CONVERT(uniqueidentifier, ?), CONVERT(uniqueidentifier, ?), ?)"
+		;
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+
+			statement.setString(1, userID);
+			statement.setString(2, groupID);
+			statement.setInt(3, 1);
+			ResultSet result = statement.executeQuery();
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+
+	}
+
+	public void createUserGroupsRowAdmin(String userID, String groupName){
+
+		String query = "SELECT groupID FROM GROUPS WHERE groupName = ?";
+		String groupID = "";
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, groupName);
+			ResultSet result = statement.executeQuery();
+			groupID = result.getString(1);
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+
+		query = "INSERT INTO USERGROUPS VALUES (NEWID(), ?, ?, ?)";
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+
+			statement.setString(1, userID);
+			statement.setString(2, groupID);
+			statement.setInt(3, 1);
+			ResultSet result = statement.executeQuery();
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+
+	}
 }

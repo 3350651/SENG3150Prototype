@@ -23,6 +23,11 @@
                     <button name="modifyAccountSettings" value="modifyAccountSettings">Modify Account Settings</button>
                 </form>
             </div>
+            <div class="createGroup">
+                <form method="GET" action="CreateGroup">
+                    <button name="createGroup" value="createGroup">Create Group</button>
+                </form>
+            </div>
             <div class="titleContainer">
                 <h1>User Homepage</h1>
             </div>
