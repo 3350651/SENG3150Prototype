@@ -1,5 +1,7 @@
 <%@ page import="startUp.UserBean" %>
 <!DOCTYPE html>
+<% UserBean user = (UserBean) session.getAttribute("userBean");%>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,26 +13,29 @@
     <form name="returnHome" action="Homepage" method="POST">
         <button type="submit" name="home" value="true">Return to Home</button>
     </form>
-<%--            Edit user form                 --%>
-    <h1>Edit user account</h1>
-    <form method="POST" action="EditUser" onsubmit="return addUserForm()">
-        <label for="firstName">First Name:</label><br>
-        <input type="text" id="firstName" name="firstName"><br>
-
-        <label for="lastName">Last Name:</label><br>
-        <input type="text" id="lastName" name="lastName"><br>
-
-        <label for="email">Email:</label><br>
-        <input type="text" id="email" name="email"><br>
-
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br>
-
-        <label for="phoneNumber">Phone Number:</label><br>
-        <input type="text" id="phoneNumber" name="phoneNumber"><br>
-
-        <button type="submit" name="submit" value="true">Submit</button>
+    <form name="goToUIPreferences" action="AccountSettings" method="POST">
+        <button type="submit" name="goToUIPreferences" value="goToUIPreferences">Modify UI Preferences</button>
     </form>
+    <form name="goToPersonalDetails" action="AccountSettings" method="POST">
+        <button type="submit" name="goToPersonalDetails" value="goToPersonalDetails">Modify Personal Details</button>
+    </form>
+    <form name="goToChangePassword" action="AccountSettings" method="POST">
+        <button type="submit" name="goToChangePassword" value="goToChangePassword">Change Password</button>
+    </form>
+
+    <h1>Personal Details</h1>
+    <h3>Name: <%= user.getFname() %> <%= user.getLname() %> </h3>
+    <h3>Email: <%= user.getEmail() %> </h3>
+    <h3>PhoneNo: <%= user.getPhoneNo() %> </h3>
+    <h3>Role: <%= user.getRole() %> </h3>
+    <h3>Address:<%= user.getAddress() %> </h3>
+    <h3>Default Search Mode: <%= user.getDefaultSearch() %> </h3>
+    <h3>Default Currency: <%= user.getDefaultCurrency() %> </h3>
+    <h3>Default Timezone: <%= user.getDefaultTimeZone() %> </h3>
+    <h3>Theme Preference: <%= user.getThemePreference() %> </h3>
+    <h3>Questionnaire Complete?: <%= user.isQuestionnaireCompleted() %> </h3>
+    <h3>Date Of Birth: <%= user.getDateOfBirth() %> </h3>
+
 </body>
 <script type="text/javascript" src="script.js"></script>
 </html>

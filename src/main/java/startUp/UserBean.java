@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * The user Bean which contains all the details of the user.
@@ -30,8 +32,6 @@ public class UserBean implements Serializable {
 	private Boolean questionnaireCompleted;
 	private LocalDate dateOfBirth;
 
-	private String userGroupID;
-
 	//private LinkedList<Flights> bookmarkedFlights
 	//private LinkedList<Searches> savedSearches
 	//private LinkedList<Groups> groups
@@ -45,13 +45,14 @@ public class UserBean implements Serializable {
 	 * Constructor which will instantiate a new user with the argument details.
 	 */
 	public UserBean(String newFirstName, String newLastName, String newEmail, String newUserPassword, String newPhoneNo, String newRole) {
+		Random random = new Random();
+		this.userID = String.format("%08d", random.nextInt(100000000));
 		this.fname = newFirstName;
 		this.lname = newLastName;
 		this.email = newEmail;
 		this.userPassword = newUserPassword;
 		this.phoneNo = newPhoneNo;
 		this.role = newRole;
-		this.userGroupID = "";
 	}
 
 	public UserBean(boolean hasLogin, String userID, String fname, String lname, String email,String userPassword, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, Boolean questionnaireCompleted, LocalDate dateOfBirth) {
@@ -70,7 +71,6 @@ public class UserBean implements Serializable {
 		this.defaultTimeZone = defaultTimeZone;
 		this.themePreference = themePreference;
 		this.questionnaireCompleted = questionnaireCompleted;
-		this.userGroupID = "";
 	}
 
 	public UserBean(String fname, String lname, String email, String userPassword, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, Boolean questionnaireCompleted, LocalDate dateOfBirth) {
@@ -89,7 +89,6 @@ public class UserBean implements Serializable {
 		this.themePreference = themePreference;
 		this.questionnaireCompleted = questionnaireCompleted;
 		this.dateOfBirth = dateOfBirth;
-		this.userGroupID = "";
 	}
 
 	public Boolean isHasLogin() {
@@ -228,30 +227,32 @@ public class UserBean implements Serializable {
 		return role;
 	}
 
-
-
 	/**
 	 * Inserts a new user Bean with the argumented details into the database.
 	 */
 	public void addUserToTheSystem(String firstName, String lastName, String email, String password, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, Boolean questionnaireCompleted, LocalDate dateOfBirth) {
 		try {
-			String query = "INSERT INTO USERS VALUES (NEWID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			Random random = new Random();
+			userID = String.format("%08d", random.nextInt(100000000));
+
+			String query = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
 
-			statement.setString(1, firstName);
-			statement.setString(2, lastName);
-			statement.setString(3, email);
-			statement.setString(4, password);
-			statement.setString(5, phoneNo);
-			statement.setString(6, role);
-			statement.setString(7, address);
-			statement.setString(8, defaultSearch);
-			statement.setString(9, defaultCurrency);
-			statement.setString(10, defaultTimeZone);
-			statement.setString(11, themePreference);
-			statement.setBoolean(12, questionnaireCompleted);
-			statement.setDate(13, java.sql.Date.valueOf(dateOfBirth));
+			statement.setString(1, userID);
+			statement.setString(2, firstName);
+			statement.setString(3, lastName);
+			statement.setString(4, email);
+			statement.setString(5, password);
+			statement.setString(6, phoneNo);
+			statement.setString(7, role);
+			statement.setString(8, address);
+			statement.setString(9, defaultSearch);
+			statement.setString(10, defaultCurrency);
+			statement.setString(11, defaultTimeZone);
+			statement.setString(12, themePreference);
+			statement.setBoolean(13, questionnaireCompleted);
+			statement.setDate(14, java.sql.Date.valueOf(dateOfBirth));
 
 			statement.executeUpdate();
 			statement.close();
@@ -269,12 +270,12 @@ public class UserBean implements Serializable {
 	 * If the username and password are in the database this method will assign the user Bean
 	 * attributes with the ones found in the database.
 	 */
-	public void login(String userName, String password) {
+	public void login(String email, String password) {
 		try {
 			String query = "SELECT * FROM USERS Where [email]=? AND [userPassword]=? ";
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, userName);
+			statement.setString(1, email);
 			statement.setString(2, password);
 			ResultSet result = statement.executeQuery();
 
@@ -287,6 +288,13 @@ public class UserBean implements Serializable {
 				this.setPhoneNo(result.getString("phoneNo"));
 				this.setUserPassword(result.getString("userPassword"));
 				this.setRoleInSystem(result.getString("roles"));
+				this.setAddress(result.getString("address"));
+				this.setDefaultSearch(result.getString("defaultSearch"));
+				this.setDefaultCurrency(result.getString("defaultCurrency"));
+				this.setDefaultTimeZone(result.getString("defaultTimeZone"));
+				this.setThemePreference(result.getString("themePreference"));
+				//this.setQuestionnaireCompleted(Boolean.valueOf(result.getString("questionnaireCompleted")));
+				this.setDateOfBirth(LocalDate.parse(result.getString("dateOfBirth")));
 			}
 			
 			result.close();
@@ -455,87 +463,135 @@ public class UserBean implements Serializable {
 		}
 	}
 
-	public void createGroup(String userID, String groupName){
-		String query = "INSERT INTO GROUPS VALUES (NEWID(), ?)";
+	public static void updateUserPassword(String id, String password){
 		try {
 			Connection connection = ConfigBean.getConnection();
-			PreparedStatement statement = connection.prepareStatement(query);
+			PreparedStatement statement = null;
 
-			statement.setString(1, groupName);
+			if (!password.equals("")){
+				String query = "UPDATE USERS SET [userPassword] = ? WHERE [userID] = ?";
+				statement = connection.prepareStatement(query);
+				statement.setString(1, password);
+				statement.setString(2, id);
+				statement.executeUpdate();
+			}
 
-			statement.executeUpdate();
 			statement.close();
 			connection.close();
+		} catch (Exception e){
+			e.printStackTrace();
 		}
-		catch(SQLException e) {
-			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
-		}
-
-
-		query = "SELECT groupID FROM GROUPS WHERE groupName = ?";
-		String groupID = "";
-		try {
-			Connection connection = ConfigBean.getConnection();
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, groupName);
-			ResultSet result = statement.executeQuery();
-			groupID = result.getString(1);
-		}
-		catch(SQLException e){
-			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
-		}
-
-
-		query = "INSERT INTO USERGROUPS(userGroupID, userID, gID, isAdmin) VALUES (NEWID(), CONVERT(uniqueidentifier, ?), CONVERT(uniqueidentifier, ?), ?)"
-		;
-		try {
-			Connection connection = ConfigBean.getConnection();
-			PreparedStatement statement = connection.prepareStatement(query);
-
-			statement.setString(1, userID);
-			statement.setString(2, groupID);
-			statement.setInt(3, 1);
-			ResultSet result = statement.executeQuery();
-		}
-		catch(SQLException e){
-			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
-		}
-
 	}
 
-	public void createUserGroupsRowAdmin(String userID, String groupName){
-
-		String query = "SELECT groupID FROM GROUPS WHERE groupName = ?";
-		String groupID = "";
+	public static void updatePersonalDetails(String id, String firstName, String lastName, String email, String address, String phoneNo, String defaultCurrency, String defaultTimezone, LocalDate dateOfBirth){
 		try {
 			Connection connection = ConfigBean.getConnection();
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, groupName);
-			ResultSet result = statement.executeQuery();
-			groupID = result.getString(1);
-		}
-		catch(SQLException e){
-			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
-		}
+			PreparedStatement statement = null;
+			if (!firstName.equals("")){
+				String query = "UPDATE USERS SET [first_name] = ? WHERE [userID] = ?";
+				statement = connection.prepareStatement(query);
 
-		query = "INSERT INTO USERGROUPS VALUES (NEWID(), ?, ?, ?)";
-		try {
-			Connection connection = ConfigBean.getConnection();
-			PreparedStatement statement = connection.prepareStatement(query);
+				statement.setString(1, firstName);
+				statement.setString(2, id);
+				statement.executeUpdate();
+			}
 
-			statement.setString(1, userID);
-			statement.setString(2, groupID);
-			statement.setInt(3, 1);
-			ResultSet result = statement.executeQuery();
-		}
-		catch(SQLException e){
-			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
-		}
+			if (!lastName.equals("")){
+				String query = "UPDATE USERS SET [last_name] = ? WHERE [userID] = ?";
+				statement = connection.prepareStatement(query);
 
+				statement.setString(1, lastName);
+				statement.setString(2, id);
+				statement.executeUpdate();
+			}
+
+			if (!email.equals("")){
+				String query = "UPDATE USERS SET [email] = ? WHERE [userID] = ?";
+				statement = connection.prepareStatement(query);
+
+				statement.setString(1, email);
+				statement.setString(2, id);
+				statement.executeUpdate();
+			}
+
+			if (!address.equals("")){
+				String query = "UPDATE USERS SET [address] = ? WHERE [userID] = ?";
+				statement = connection.prepareStatement(query);
+
+				statement.setString(1, address);
+				statement.setString(2, id);
+				statement.executeUpdate();
+			}
+
+			if (!phoneNo.equals("")){
+				String query = "UPDATE USERS SET [phoneNo] = ? WHERE [userID] = ?";
+				statement = connection.prepareStatement(query);
+
+				statement.setString(1, phoneNo);
+				statement.setString(2, id);
+				statement.executeUpdate();
+			}
+
+			if (!defaultCurrency.equals("")){
+				String query = "UPDATE USERS SET [defaultCurrency] = ? WHERE [userID] = ?";
+				statement = connection.prepareStatement(query);
+
+				statement.setString(1, defaultCurrency);
+				statement.setString(2, id);
+				statement.executeUpdate();
+			}
+
+			if (!defaultTimezone.equals("")){
+				String query = "UPDATE USERS SET [defaultTimezone] = ? WHERE [userID] = ?";
+				statement = connection.prepareStatement(query);
+
+				statement.setString(1, defaultTimezone);
+				statement.setString(2, id);
+				statement.executeUpdate();
+			}
+
+			if (!dateOfBirth.equals("")){
+				String query = "UPDATE USERS SET [dateOfBirth] = ? WHERE [userID] = ?";
+				statement = connection.prepareStatement(query);
+
+				statement.setDate(1, java.sql.Date.valueOf(dateOfBirth));
+				statement.setString(2, id);
+				statement.executeUpdate();
+			}
+
+			statement.close();
+			connection.close();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 	}
+
+	public static void updateUIPreferences(String id, String defaultSearch, String themePreference){
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = null;
+
+			if (!defaultSearch.equals("")){
+				String query = "UPDATE USERS SET [defaultSearch] = ? WHERE [userID] = ?";
+				statement = connection.prepareStatement(query);
+				statement.setString(1, defaultSearch);
+				statement.setString(2, id);
+				statement.executeUpdate();
+			}
+
+			if (!themePreference.equals("")){
+				String query = "UPDATE USERS SET [themePreference] = ? WHERE [userID] = ?";
+				statement = connection.prepareStatement(query);
+				statement.setString(1, themePreference);
+				statement.setString(2, id);
+				statement.executeUpdate();
+			}
+
+			statement.close();
+			connection.close();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+
 }
