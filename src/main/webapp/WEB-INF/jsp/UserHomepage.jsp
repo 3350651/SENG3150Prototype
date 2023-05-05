@@ -18,9 +18,9 @@
                     <button name="logout" value="logout">Logout</button>
                 </form>
             </div>
-            <div class="modifyAccountSettings">
+            <div class="viewAccountSettings">
                 <form method="POST" action="AccountSettings">
-                    <button name="modifyAccountSettings" value="modifyAccountSettings">Modify Account Settings</button>
+                    <button name="viewAccountSettings" value="viewAccountSettings">View Profile</button>
                 </form>
             </div>
             <div class="titleContainer">

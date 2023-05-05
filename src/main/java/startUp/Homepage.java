@@ -33,7 +33,7 @@ public class Homepage extends HttpServlet {
 
 		// gets the person object and their role from the session object.
 		String role = ((UserBean)session.getAttribute("userBean")).getRoleInSystem();
-		UserBean person = (UserBean) session.getAttribute("userBean");
+		UserBean user = (UserBean) session.getAttribute("userBean");
 
 		// sends the user to the correct homepage depending on their role
 		if (role.equals("user")){
@@ -65,7 +65,7 @@ public class Homepage extends HttpServlet {
 
 		// admin - add user form
 		if (request.getParameter("addUser") != null){
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AdminHomepage.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/CreateAccount.jsp");
 			String firstName = request.getParameter("firstName");
 			String lastName = request.getParameter("lastName");
 			String email = request.getParameter("email");
@@ -93,6 +93,8 @@ public class Homepage extends HttpServlet {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AdminHomepage.jsp");
 			requestDispatcher.forward(request, response);
 		}
+
+
 	}
 
 }
