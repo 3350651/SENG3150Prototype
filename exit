@@ -1,0 +1,123 @@
+[33mcommit 71aab03d4f7b0c1e57466fc37a82947f9c0f0bdd[m[33m ([m[1;36mHEAD -> [m[1;32mlucy[m[33m, [m[1;31morigin/lucy[m[33m)[m
+Merge: d690004 6756fb2
+Author: lyknight2 <104610404+lyknight2@users.noreply.github.com>
+Date:   Fri May 5 19:18:00 2023 +1000
+
+    Merge branch 'main' into lucy
+
+[33mcommit d690004b97eeadba387dc294ce260f5a69dce483[m
+Author: lyknight2 <104610404+lyknight2@users.noreply.github.com>
+Date:   Fri May 5 19:15:46 2023 +1000
+
+    another
+
+[33mcommit 6756fb2a9f4ae0673f80c3b5481b1b71af4cf661[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Merge: 2a99466 1679019
+Author: LachlanONeill <131523216+LachlanONeill@users.noreply.github.com>
+Date:   Fri May 5 19:15:39 2023 +1000
+
+    Merge pull request #2 from 3350651/Lachlan
+    
+    Lachlan
+
+[33mcommit 2a99466ac09c03ef465ef547fafac6e43856dfbb[m
+Author: LachlanONeill <131523216+LachlanONeill@users.noreply.github.com>
+Date:   Fri May 5 19:12:09 2023 +1000
+
+    Allow Modification of all Account Settings, new jsp etc.
+
+[33mcommit 52bfe1538637f55c796527b2da7d245ff7d9ac9d[m
+Author: lyknight2 <104610404+lyknight2@users.noreply.github.com>
+Date:   Fri May 5 18:55:24 2023 +1000
+
+    initial creation of group
+
+[33mcommit b81f855742886cb0413c0ae8ea8a30df249d48ee[m
+Merge: 48b15cd 9a23c3c
+Author: lyknight2 <104610404+lyknight2@users.noreply.github.com>
+Date:   Fri May 5 14:57:01 2023 +1000
+
+    Merge branch 'main' into lucy
+
+[33mcommit 16790192f56b08d9d7db376cd35b466a46370b9d[m
+Author: LachlanONeill <131523216+LachlanONeill@users.noreply.github.com>
+Date:   Fri May 5 12:20:01 2023 +1000
+
+    Allow Modification of all Account Settings, new jsp etc.
+
+[33mcommit 12898ec3149ba038c3017db4c0407e5f311d2916[m
+Author: LachlanONeill <131523216+LachlanONeill@users.noreply.github.com>
+Date:   Fri May 5 12:19:41 2023 +1000
+
+    Allow Modification of all Account Settings, new jsp etc.
+
+[33mcommit 48b15cd00ef6a95332aac7ea48667ae03b7dc9c1[m
+Author: lyknight2 <104610404+lyknight2@users.noreply.github.com>
+Date:   Thu May 4 20:20:57 2023 +1000
+
+    using sql express now
+
+[33mcommit 9a23c3c5983704f7ee422eae11b0ff440e9fcdda[m
+Merge: 4815ed7 d7acc09
+Author: lyknight2 <104610404+lyknight2@users.noreply.github.com>
+Date:   Thu May 4 19:31:37 2023 +1000
+
+    Merge pull request #1 from 3350651/Lachlan
+    
+    UserBean Updates
+
+[33mcommit 7ac897204e79ad8a87c304941e7dfc337c0d2a54[m
+Author: lyknight2 <104610404+lyknight2@users.noreply.github.com>
+Date:   Thu May 4 19:29:08 2023 +1000
+
+    initial commit
+
+[33mcommit d7acc099d24daf7081a82b6a70ea767ee7946f3a[m[33m ([m[1;32mlachlan[m[33m)[m
+Author: LachlanONeill <131523216+LachlanONeill@users.noreply.github.com>
+Date:   Thu May 4 17:06:50 2023 +1000
+
+    database changes
+
+[33mcommit c078139996def16618ccc59b21fe369ec0782457[m
+Author: LachlanONeill <131523216+LachlanONeill@users.noreply.github.com>
+Date:   Thu May 4 17:05:10 2023 +1000
+
+    Create Profile Implementation
+
+[33mcommit d2d7a7cda0c92957d761a62c144785af0cd78151[m
+Author: LachlanONeill <131523216+LachlanONeill@users.noreply.github.com>
+Date:   Thu May 4 15:50:44 2023 +1000
+
+    UserBean Updates
+    
+    UserBean Updates
+
+[33mcommit 4815ed7019b006821e79508b38c94d41a9f3620e[m
+Author: LachlanONeill <131523216+LachlanONeill@users.noreply.github.com>
+Date:   Thu May 4 11:18:08 2023 +1000
+
+    Minor Updates
+
+[33mcommit 8c8fcbb164aa7910a0b7fed4e857e39cdd176138[m
+Author: LachlanONeill <131523216+LachlanONeill@users.noreply.github.com>
+Date:   Thu May 4 11:01:53 2023 +1000
+
+    Modifications to UserBean, creation of account etc
+
+[33mcommit 493ea7e524f219b58641ea17affd5b0c286cd9fb[m
+Author: LachlanONeill <131523216+LachlanONeill@users.noreply.github.com>
+Date:   Wed May 3 19:37:16 2023 +1000
+
+    error update
+
+[33mcommit 9b69881308075400edb7fc6e3a99b3ee3a85a3a1[m
+Author: LachlanONeill <131523216+LachlanONeill@users.noreply.github.com>
+Date:   Wed May 3 14:35:22 2023 +1000
+
+    Lachlan's Preliminary Set Up
+
+[33mcommit 0a4115438dfab3143cebc2a71a10b4dcb60ed7b8[m[33m ([m[1;31morigin/blakeSetup[m[33m)[m
+Author: Jordan14E <92713486+Jordan14E@users.noreply.github.com>
+Date:   Tue May 2 15:13:05 2023 +1000
+
+    Initial commit

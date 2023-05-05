@@ -48,7 +48,9 @@ public class CreateGroupServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepage.jsp");
             String groupName = request.getParameter("groupName");
 
-            user.createGroup(userID, groupName);
+            GroupBean group = new GroupBean(groupName);
+            String groupID = group.getGroupID();
+            UserGroupsBean userGroupsBean = new UserGroupsBean(userID, groupID, true);
             requestDispatcher.forward(request, response);
         } else {
             session = request.getSession();
