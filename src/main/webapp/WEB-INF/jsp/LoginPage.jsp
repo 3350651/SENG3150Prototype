@@ -14,7 +14,7 @@
 		<h3>Login</h3>
 		<form method = "POST" action="login">
 			<label>Email </label>
-			<input type="text" name ="username" required></input>
+			<input type="text" name ="email" required></input>
 
 			<br>
 

@@ -33,11 +33,11 @@ public class LoginPageServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		RequestDispatcher requestDispatcher = null;
 
-		String username = request.getParameter("username");
+		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 
 		UserBean user = new UserBean();
-		user.login(username, password);
+		user.login(email, password);
 
 		if (user.getHasLogin()) {
 			session.setAttribute("userBean", user);
