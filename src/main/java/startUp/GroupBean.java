@@ -120,4 +120,5 @@ public class GroupBean implements Serializable {
         }
         return new GroupBean(id, groupName);
     }
+
 }

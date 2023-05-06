@@ -617,9 +617,31 @@ public class UserBean implements Serializable {
 			System.err.println(e.getStackTrace());
 		}
 
-
-
 		return groupIDs;
+	}
+	
+	public static String userExists(String email){
+		String userID = null;
+
+		String query = "SELECT userID FROM USERS WHERE [email] = ?";
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+
+			statement.setString(1, email);
+			ResultSet result = statement.executeQuery();
+
+			if(result.next()) {
+				userID = result.getString(1);
+			}
+			statement.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+
+		return userID;
 	}
 
 }

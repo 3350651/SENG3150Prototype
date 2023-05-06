@@ -43,6 +43,10 @@ public class Homepage extends HttpServlet {
 		// sends the user to the correct homepage depending on their role
 		if (role.equals("user")){
 
+			if(request.getParameter("groupHomepage") != null){
+				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
+			}
+
 			//stuff to set and display groups for user.
 			LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
 			if(!groupIDs.isEmpty()) {
