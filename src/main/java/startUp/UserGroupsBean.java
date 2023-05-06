@@ -50,6 +50,31 @@ public class UserGroupsBean implements Serializable {
     }
 
 
+    public static boolean isAdmin(String userID, String groupID){
+        boolean isAdmin = false;
+        int res;
 
+        String query = "SELECT isAdmin FROM USERGROUPS WHERE [userID] = ? AND [groupID] = ?";
+        try{
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, userID);
+            statement.setString(2, groupID);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                res = result.getInt(1);
+                if (res == 1) {
+                    isAdmin = true;
+                }
+            }
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+
+        return isAdmin;
+    }
 
 }

@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 
 import static startUp.GroupBean.getGroup;
 import static startUp.GroupBean.getGroups;
+import static startUp.UserGroupsBean.isAdmin;
 
 /**
  * The homepage servlet which handles requests made to the homepage.
@@ -44,20 +45,28 @@ public class Homepage extends HttpServlet {
 
 			//stuff to set and display groups for user.
 			LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
-			LinkedList<GroupBean> groups = getGroups(groupIDs);
-			if(!groups.isEmpty()){
+			if(!groupIDs.isEmpty()) {
+				LinkedList<GroupBean> groups = getGroups(groupIDs);
 				session.setAttribute("groups", groups);
+
+
+				if (request.getParameter("goGroup") != null) {
+					String groupName = request.getParameter("groupName");
+					GroupBean group = getGroup(groupName);
+					session.setAttribute("group", group);
+					Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
+					session.setAttribute("isAdmin", isAdmin);
+
+					requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
+					requestDispatcher.forward(request, response);
+
+				}
+				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepageWithGroups.jsp");
+			}
+			else{
+				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepage.jsp");
 			}
 
-			if(request.getParameter("goGroup") != null){
-				String groupName = request.getParameter("groupName");
-				GroupBean group = getGroup(groupName);
-				session.setAttribute("group", group);
-				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
-				requestDispatcher.forward(request, response);
-			}
-
-			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepage.jsp");
 		} else if (role.equals("admin")){
 			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/StaffHomepage.jsp");
 		} else {

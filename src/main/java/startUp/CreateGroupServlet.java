@@ -56,7 +56,7 @@ public class CreateGroupServlet extends HttpServlet {
         LinkedList<GroupBean> groups = getGroups(groupIDs);
 
         session.setAttribute("groups", groups);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepage.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepageWithGroups.jsp");
         requestDispatcher.forward(request, response);
 
     }

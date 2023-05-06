@@ -9,6 +9,7 @@
 <%
 UserBean user = (UserBean) session.getAttribute("userBean");
 GroupBean group = (GroupBean) session.getAttribute("group");
+Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
 %>
 
 <head>
@@ -31,6 +32,10 @@ GroupBean group = (GroupBean) session.getAttribute("group");
             <div class="groupName">
                 <h2><%= group.getGroupName() %></h2>
             </div>
+            <%
+            if(isAdmin){ %>
+            <h3>Yeehaw</h3>
+            <%}%>
         </header>
 
 
