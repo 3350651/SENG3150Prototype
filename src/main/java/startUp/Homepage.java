@@ -2,9 +2,13 @@ package startUp;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import javax.servlet.*;
 import javax.servlet.annotation.*;
 import javax.servlet.http.*;
+
+import static startUp.GroupBean.getGroup;
+import static startUp.GroupBean.getGroups;
 
 /**
  * The homepage servlet which handles requests made to the homepage.
@@ -37,6 +41,22 @@ public class Homepage extends HttpServlet {
 
 		// sends the user to the correct homepage depending on their role
 		if (role.equals("user")){
+
+			//stuff to set and display groups for user.
+			LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
+			LinkedList<GroupBean> groups = getGroups(groupIDs);
+			if(!groups.isEmpty()){
+				session.setAttribute("groups", groups);
+			}
+
+			if(request.getParameter("goGroup") != null){
+				String groupName = request.getParameter("groupName");
+				GroupBean group = getGroup(groupName);
+				session.setAttribute("group", group);
+				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
+				requestDispatcher.forward(request, response);
+			}
+
 			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepage.jsp");
 		} else if (role.equals("admin")){
 			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/StaffHomepage.jsp");

@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.LinkedList;
+
+import static startUp.GroupBean.getGroups;
 
 @WebServlet(urlPatterns = { "/CreateGroup" })
 public class CreateGroupServlet extends HttpServlet {
@@ -43,21 +46,19 @@ public class CreateGroupServlet extends HttpServlet {
         UserBean user = (UserBean) session.getAttribute("userBean");
         String userID = user.getUserID();
 
-        // add user form
-        if (request.getParameter("createGroup") != null) {
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepage.jsp");
-            String groupName = request.getParameter("groupName");
+        // create group
+        String groupName = request.getParameter("groupName");
 
-            GroupBean group = new GroupBean(groupName);
-            String groupID = group.getGroupID();
-            UserGroupsBean userGroupsBean = new UserGroupsBean(userID, groupID, true);
-            requestDispatcher.forward(request, response);
-        } else {
-            session = request.getSession();
-            RequestDispatcher requestDispatcher = null;
-            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/CreateAccount.jsp");
-            requestDispatcher.forward(request, response);
-        }
+        GroupBean group = new GroupBean(groupName);
+        String groupID = group.getGroupID();
+        UserGroupsBean userGroupsBean = new UserGroupsBean(userID, groupID, true);
+        LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
+        LinkedList<GroupBean> groups = getGroups(groupIDs);
+
+        session.setAttribute("groups", groups);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepage.jsp");
+        requestDispatcher.forward(request, response);
+
     }
 
 }

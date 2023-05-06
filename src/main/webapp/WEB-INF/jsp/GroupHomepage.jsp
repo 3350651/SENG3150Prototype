@@ -1,14 +1,16 @@
 <%@ page import="startUp.UserBean" %>
 <%@ page import="startUp.GroupBean" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.LinkedList" %>
-<%
-LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("groups");
-%>
 
 
 <!DOCTYPE html>
 <html lang="en">
+
+<%
+UserBean user = (UserBean) session.getAttribute("userBean");
+GroupBean group = (GroupBean) session.getAttribute("group");
+%>
+
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
@@ -16,46 +18,18 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
 </head>
 <body>
     <main>
-        
-        <header>
-            <div class="logoutContainer">
-                <form method="POST" action="Homepage">
-                    <button name="logout" value="logout">Logout</button>
-                </form>
-            </div>
-            <div class="viewAccountSettings">
-                <form method="POST" action="AccountSettings">
-                    <button name="viewAccountSettings" value="viewAccountSettings">View Profile</button>
-                </form>
-            </div>
-            <div class="createGroup">
-                <form method="GET" action="CreateGroup">
-                    <button name="createGroup" value="createGroup">Create Group</button>
-                </form>
-            </div>
 
-            <%
-            if(!groups.isEmpty()){
-                int size = groups.size();
-                String name = "";
-                for(int i = 0; i < size; i++){
-                    GroupBean group = groups.pop();
-                    name = group.getGroupName(); %>
-                    <div class="goGroup">
-                        <form method="GET" action="Homepage">
-                            <button name="goGroup" value="goGroup">
-                                <%= name %>
-                            </button>
-                            <input type="hidden" id="groupName" name="groupName" value="<%= name %>">
-                        </form>
-                    </div>
-                    <%
-                    groups.addLast(group);
-                }
-            }
-            %>
+        <header>
+
+           <form name="returnHome" action="Homepage" method="POST">
+                   <button type="submit" name="home" value="true">Return to Home</button>
+           </form>
+
             <div class="titleContainer">
-                <h1>User Homepage</h1>
+                <h1>Group Homepage</h1>
+            </div>
+            <div class="groupName">
+                <h2><%= group.getGroupName() %></h2>
             </div>
         </header>
 
