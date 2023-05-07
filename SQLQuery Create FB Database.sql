@@ -40,3 +40,26 @@ INSERT INTO USERS VALUES ('12345678', 'Blake', 'Baldin', 'blake@gmail.com', 'bb'
 
 
 go
+
+-- Create groups
+
+CREATE TABLE GROUPS
+(
+	groupID 	CHAR(8) PRIMARY KEY,
+	groupName		VARCHAR(20),
+	-- poolID
+	-- chatID
+	-- faveListID
+
+)
+go
+
+
+
+CREATE TABLE USERGROUPS
+(
+	userGroupsID		CHAR(8),
+	userID	CHAR(8) FOREIGN KEY REFERENCES USERS(userID),
+	groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID),
+	isAdmin		BIT DEFAULT(0),
+)
