@@ -20,8 +20,8 @@ GroupBean group = (GroupBean) session.getAttribute("group");
     <main>
         <header>
 
-           <form name="backToGroup" action="Homepage" method="GET">
-                   <button type="submit" name="groupHomepage" value="true">Return to Home</button>
+           <form name="backToGroup" action="GroupHomepage" method="GET">
+                   <button type="submit" name="groupHomepage" value="true">Return to Group Home</button>
            </form>
 
             <div class="titleContainer">

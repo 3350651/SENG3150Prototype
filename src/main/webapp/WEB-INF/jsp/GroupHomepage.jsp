@@ -100,6 +100,12 @@ Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
                 </fieldset>
             </div>
 
+            <div class="chatContainer">
+                <form name="chat" id="chat" method="POST" action="GroupHomepage">
+                 <button type="submit" name="getChat" value="getChat">Go to Group Chat</button>
+                </form>
+            </div>
+
     </main>
 </body>
 <script type="text/javascript" src="script.js"></script>

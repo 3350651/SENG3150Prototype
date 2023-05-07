@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
+import static startUp.ChatBean.getChatMessages;
+
 public class GroupBean implements Serializable {
 
     private String groupID;
     private String groupName;
+    private String chatID;
 
     /*
     private String poolID;
@@ -25,6 +28,8 @@ public class GroupBean implements Serializable {
         Random random = new Random();
         this.groupID = String.format("%08d", random.nextInt(100000000));
         this.groupName = groupName;
+        ChatBean chat = new ChatBean();
+        this.chatID = chat.getChatID();
 
         addGroupToDB();
     }
@@ -36,13 +41,14 @@ public class GroupBean implements Serializable {
     }
 
     public void addGroupToDB(){
-        String query = "INSERT INTO GROUPS VALUES (?, ?)";
+        String query = "INSERT INTO GROUPS VALUES (?, ?, ?)";
         try {
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setString(1, this.groupID);
             statement.setString(2, this.groupName);
+            statement.setString(3, this.chatID);
 
             statement.executeUpdate();
             statement.close();
@@ -138,6 +144,33 @@ public class GroupBean implements Serializable {
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
         }
+    }
+
+    public LinkedList<MessageBean> getChat(String groupID){
+
+        LinkedList<MessageBean> messages;
+        String chatID = "";
+
+        String query = "SELECT chatID FROM GROUPS WHERE [groupID] = ?";
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, groupID);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                chatID = result.getString(1);
+            }
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+
+        messages = getChatMessages(chatID);
+        return messages;
     }
 
 }
