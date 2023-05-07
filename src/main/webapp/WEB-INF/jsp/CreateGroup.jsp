@@ -16,7 +16,7 @@
 
 <div id="createGroupFormContainer">
                 <form method="POST" action="CreateGroup" onsubmit="return createGroupForm()">
-                    <label for="firstName">Group Name: </label>
+                    <label for="groupName">Group Name: </label>
                     <input type="text" id="groupName" name="groupName"><br>
 
                     <button type="submit" name="createGroup" value="createGroup">Create Group</button>

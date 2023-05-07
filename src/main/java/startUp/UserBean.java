@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.UUID;
 
@@ -592,6 +593,79 @@ public class UserBean implements Serializable {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
+	}
+
+	public LinkedList<String> getGroupIDs(String userID){
+		LinkedList<String> groupIDs = new LinkedList<>();
+
+		String query = "SELECT groupID FROM USERGROUPS WHERE [userID] = ?";
+		try{
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, userID);
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()){
+				String id = result.getString(1);
+				groupIDs.add(id);
+			}
+			statement.close();
+			connection.close();
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+
+		return groupIDs;
+	}
+	
+	public static String userExists(String email){
+		String userID = null;
+
+		String query = "SELECT userID FROM USERS WHERE [email] = ?";
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+
+			statement.setString(1, email);
+			ResultSet result = statement.executeQuery();
+
+			while(result.next()) {
+				userID = result.getString(1);
+			}
+			statement.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+
+		return userID;
+	}
+
+	public static String getUsersName(String userID){
+		String usersName = "";
+		String query = "SELECT first_name, last_name FROM USERS WHERE [userID] = ?";
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+
+			statement.setString(1, userID);
+			ResultSet result = statement.executeQuery();
+
+			while(result.next()) {
+				String fName = result.getString(1);
+				String lName = result.getString(2);
+				usersName = fName + " " + lName;
+			}
+			statement.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+		return usersName;
 	}
 
 }
