@@ -37,6 +37,17 @@ GroupBean group = (GroupBean) session.getAttribute("group");
                   <button type="submit" name="addMember" value="addMember">Add Member</button>
            </form>
         </div>
+        <div>
+           <form name="removeMember" action="ManageGroup" method="POST">
+                 <button type="submit" name="removeMember" value="removeMember">Remove Member</button>
+           </form>
+        </div>
+        <div>
+           <form name="deleteGroup" action="ManageGroup" method="POST">
+                 <button type="submit" name="deleteGroup" value="deleteGroup">Delete Group</button>
+           </form>
+        </div>
+
 
     </main>
 </body>

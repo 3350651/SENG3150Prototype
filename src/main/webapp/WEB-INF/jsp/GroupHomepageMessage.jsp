@@ -3,6 +3,8 @@
 <%@ page import="java.util.List" %>
 <%
 GroupBean group = (GroupBean) session.getAttribute("group");
+String message = (String) session.getAttribute("message");
+boolean goHome = (boolean) session.getAttribute("goHome");
 %>
 
 <!DOCTYPE html>
@@ -15,28 +17,28 @@ GroupBean group = (GroupBean) session.getAttribute("group");
 <body>
     <main>
 
-        <header>
-
-
  <header>
            <form name="backToManageGroup" action="ManageGroup" method="GET">
                    <button type="submit" name="manageGroup" value="true">Return to Manage Group</button>
            </form>
 
             <div class="titleContainer">
-                <h1>Add Group Member</h1>
+                <h1>Group Update Message</h1>
             </div>
             <div class="groupName">
                 <h2><%= group.getGroupName() %></h2>
             </div>
         </header>
+        <div>
+            <%= message %>
+        </div>
+        <div id="continueFormContainer">
+            <form method="POST" action="ManageGroup">
+                <button type="submit" name="continue" value="continue">Continue</button>
 
-        <div id="addMemberFormContainer">
-            <form method="POST" action="ManageGroup" onsubmit="return addMemberForm()">
-                <label for="userEmail">User email: </label>
-                <input type="text" id="userEmail" name="userEmail"><br>
-
-                <button type="submit" name="addMember" value="addMember">Add Member</button>
+                <%if(goHome){%>
+                <input type="hidden" id="goHome" name="goHome" value="<%= goHome %>">
+                <%}%>
             </form>
         </div>
         </main>

@@ -631,7 +631,7 @@ public class UserBean implements Serializable {
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
 
-			if(result.next()) {
+			while(result.next()) {
 				userID = result.getString(1);
 			}
 			statement.close();
@@ -642,6 +642,30 @@ public class UserBean implements Serializable {
 		}
 
 		return userID;
+	}
+
+	public static String getUsersName(String userID){
+		String usersName = "";
+		String query = "SELECT first_name, last_name FROM USERS WHERE [userID] = ?";
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+
+			statement.setString(1, userID);
+			ResultSet result = statement.executeQuery();
+
+			while(result.next()) {
+				String fName = result.getString(1);
+				String lName = result.getString(2);
+				usersName = fName + " " + lName;
+			}
+			statement.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+		return usersName;
 	}
 
 }

@@ -121,4 +121,23 @@ public class GroupBean implements Serializable {
         return new GroupBean(id, groupName);
     }
 
+    public static void deleteGroup(String id){
+
+        String query = "DELETE FROM GROUPS WHERE [groupID] = ?";
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, id);
+
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+    }
+
 }

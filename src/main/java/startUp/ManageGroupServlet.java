@@ -11,8 +11,10 @@ import java.io.IOException;
 import java.util.LinkedList;
 import javax.servlet.http.HttpServlet;
 
+import static startUp.GroupBean.deleteGroup;
 import static startUp.GroupBean.getGroups;
 import static startUp.UserBean.userExists;
+import static startUp.UserGroupsBean.*;
 
 @WebServlet(urlPatterns = { "/ManageGroup" })
 public class ManageGroupServlet extends HttpServlet {
@@ -46,15 +48,85 @@ public class ManageGroupServlet extends HttpServlet {
         GroupBean group = (GroupBean) session.getAttribute("group");
         String groupID = group.getGroupID();
 
-        //Admin has inputted email.
+        //Admin has inputted email to add member.
         if((request.getParameter("addMember") != null) && (request.getParameter("userEmail") != null)){
             String email = request.getParameter("userEmail");
             String addUserID = userExists(email);
+            session.setAttribute("group", group);
+            session.setAttribute("goHome", false);
 
-            if(addUserID != null){
+            //check that user does not already exist in the group.
+            boolean inGroup = userAlreadyInGroup(addUserID, groupID);
+            if(inGroup){
+                //redirect with this message.
+                session.setAttribute("message", "An error occurred. Looks like that user is already a member of the group!");
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepageMessage.jsp");
+                requestDispatcher.forward(request, response);
+            }
+            if(addUserID != null && !inGroup){
                 //add to the group in the db.
-                UserGroupsBean userGroupsBean = new UserGroupsBean(userID, groupID, false);
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
+                UserGroupsBean userGroupsBean = new UserGroupsBean(addUserID, groupID, false);
+                //success message -> redirect to message page and then to managegroup from there.
+                session.setAttribute("message", "Success! User was successfully added to the group!");
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepageMessage.jsp");
+                requestDispatcher.forward(request, response);
+
+            }
+            else{
+                //the user was not found
+                session.setAttribute("message", "An error occurred. User was not found in the system.");
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepageMessage.jsp");
+                requestDispatcher.forward(request, response);
+            }
+        }
+
+        //Add member
+        if(request.getParameter("addMember") != null){
+            session.setAttribute("group", group);
+            session.setAttribute("goHome", false);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddMember.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        //Remove member
+        if(request.getParameter("removeMember") != null && request.getParameter("memberID") != null){
+            String id = request.getParameter("memberID");
+            removeGroupMember(id);
+            session.setAttribute("group", group);
+            session.setAttribute("goHome", false);
+            session.setAttribute("message", "Success! Member was removed from the group.");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepageMessage.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        //Get remove member page.
+        if(request.getParameter("removeMember") != null){
+            LinkedList<String> groupMemberIDs = getGroupMembersIDs(groupID);
+            LinkedList<String> groupMemberNames = getGroupMemberNames(groupMemberIDs);
+            int size = groupMemberIDs.size();
+            session.setAttribute("memberIDs", groupMemberIDs);
+            session.setAttribute("memberNames", groupMemberNames);
+            session.setAttribute("size", size);
+            session.setAttribute("goHome", false);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/RemoveMember.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        if(request.getParameter("deleteGroup") != null){
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/DeleteGroup.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        if(request.getParameter("confirmDeleteGroup") != null){
+            boolean delete = Boolean.parseBoolean(request.getParameter("confirmDeleteGroup"));
+
+            if(delete){
+                deleteUserGroups(groupID);
+                deleteGroup(groupID);
+                session.setAttribute("message", "Success! The group was deleted.");
+                session.setAttribute("goHome", true);
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepageMessage.jsp");
+                requestDispatcher.forward(request, response);
             }
             else{
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
@@ -62,8 +134,14 @@ public class ManageGroupServlet extends HttpServlet {
             }
         }
 
-        if(request.getParameter("addMember") != null){
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddMember.jsp");
+        //Go to the homepage after they have deleted a group.
+        if(request.getParameter("continue") != null && request.getParameter("goHome") != null){
+            response.sendRedirect("Homepage");
+        }
+
+        //goes to homepage in cases where user is not added to group
+        else if(request.getParameter("continue") != null){
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
             requestDispatcher.forward(request, response);
         }
 
