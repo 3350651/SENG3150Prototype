@@ -1,5 +1,6 @@
 package startUp;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -9,7 +10,7 @@ import java.util.Random;
 
 import static startUp.UserBean.getUsersName;
 
-public class MessageBean {
+public class MessageBean implements Serializable {
 
     private String messageID;
     private String chatID;

@@ -2,13 +2,10 @@
 <%@ page import="startUp.GroupBean" %>
 <%@ page import="startUp.PoolBean" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.LinkedList" %>
 <%
-UserBean user = (UserBean) session.getAttribute("userBean");
 GroupBean group = (GroupBean) session.getAttribute("group");
 PoolBean pool = (PoolBean) session.getAttribute("pool");
 %>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,30 +16,34 @@ PoolBean pool = (PoolBean) session.getAttribute("pool");
 </head>
 <body>
     <main>
-        <header>
-           <form name="backtoGroupHomepage" action="GroupHomepage" method="GET">
-                   <button type="submit" name="groupHomepage" value="true">Return to Group Homepage</button>
-           </form>
 
+        <header>
+
+
+ <header>
             <div class="titleContainer">
-                <h1>Money Pool</h1>
+                <h1>Add To Money Pool</h1>
             </div>
             <div class="groupName">
                 <h2><%= group.getGroupName() %></h2>
             </div>
         </header>
-
         <div>
-            Total Amount of Pool: <%= pool.getTotalAmount()  %><br>
             Required Pool Amount Remaining: <%= pool.getAmountRemaining() %>
         </div>
+        <div id="addMoneyToPoolFormContainer">
+            <form method="POST" action="GroupHomepage" onsubmit="return addMoneyToPool()">
+                <label for="addMoney">Amount to Deposit: </label>
+                <input type="text" id="addMoney" name="addMoney"><br>
 
-        <div>
-            <form name="addToPool" action="GroupHomepage" method="POST">
-                   <button type="submit" name="addToPool" value="addToPool">Add To Pool</button>
+                <button type="submit" name="addMoney" value="addMoney">Add to Pool</button>
+            </form>
+            <form method="POST" action="GroupHomepage">
+               <button type="submit" name="cancel" value="true">Cancel</button>
+               <input type="hidden" id="toPool" name="toPool" value="toPool">
             </form>
         </div>
-    </main>
-</body>
+        </main>
+    </body>
 <script type="text/javascript" src="script.js"></script>
 </html>

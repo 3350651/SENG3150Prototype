@@ -85,6 +85,16 @@ public class GroupHomepageServlet extends HttpServlet {
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Chat.jsp");
         }
 
+        if(request.getParameter("cancel") != null && request.getParameter("toPool") != null){
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Pool.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        if(request.getParameter("cancel") != null){
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
         //add code that checks if a flight is locked in - get the score from the top of the list.
         //and figure out if it was chosen - aka. number of group members and the score. math.
         //just hard coded to allow for pool to be seen at the moment.
@@ -96,13 +106,9 @@ public class GroupHomepageServlet extends HttpServlet {
                 session.setAttribute("pool", pool);
                 requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Pool.jsp");
             }
-            //make a deposit into the pool.
-            else if(request.getParameter("depositToPool") != null){
-                //try and make the deposit. call the group method to make deposit. (java script to later check value is
-                //not less than 0.
-
-                    //make a PoolDeposit bean if it is successful
-                    //redirect to the pool page - remaining will update.
+            //go to the page to add to the pool.
+            else if(request.getParameter("addToPool") != null){
+                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToPool.jsp");
             }
             //withdraw from the pool.
             else if(request.getParameter("withdrawFromPool") != null){
@@ -110,17 +116,41 @@ public class GroupHomepageServlet extends HttpServlet {
                 //aka, the option only appears then.
                 //determine the total amount of their deposits.
             }
+            //request send to add money to pool. make a deposit to the pool.
+            else if(request.getParameter("addMoney") != null){
+                //try and make the deposit. call the group method to make deposit. (java script to later check value is
+                //not less than 0.
+                PoolBean pool = (PoolBean) session.getAttribute("pool");
+                double addMoney = Double.parseDouble(request.getParameter("addMoney"));
+                boolean deposited = group.depositToPool(addMoney);
 
-            //TO DETERMINE IF THE POOL IS SETTLED, PUT INT ON DB AND CONVERT TO INTEGER.
-            //WHEN THE POOL IS SETTLED, THE VALUE CHANGES AND THE USERS ARE NO LONGER ABLE
+                if(deposited){
+                    //set message to tell user that it was successful.
+                    session.setAttribute("group", group);
+                    pool = group.getPool();
+                    session.setAttribute("pool", pool);
+                    PoolDepositBean newDeposit = new PoolDepositBean(pool.getPoolID(), user.getUserID(), addMoney);
+                    requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Pool.jsp");
+                }
+                else{
+                    //set message to tell user that it was unsuccessful.
+                    requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Pool.jsp");
+                }
+
+                requestDispatcher.forward(request, response);
+            }
+
+            //TO DETERMINE IF THE POOL IS SETTLED, PUT INT ON DB POOL TABLE AND CONVERT TO INTEGER.
+            //WHEN THE POOL IS SETTLED, THE BIT CHANGES AND THE USERS ARE NO LONGER ABLE
             //TO MAKE A DEPOSIT INTO THE POOL - SIMPLY SHOW THAT THE POOL IS COMPLETE AND
             //PROMPT THEM THAT IT IS TIME TO MAKE A BOOKING.
 
             //also need a 'Pool Message Page.' After all of the above is implemented.
+            requestDispatcher.forward(request, response);
         }
 
 
-        requestDispatcher.forward(request, response);
+
 
     }
 

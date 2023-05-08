@@ -1,11 +1,12 @@
 package startUp;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Random;
 
-public class PoolDepositBean {
+public class PoolDepositBean implements Serializable {
     private String poolDepositID;
     private String poolID;
     private String userID;

@@ -36,10 +36,11 @@ public class GroupBean implements Serializable {
         this.chatID = chat.getChatID();
         PoolBean pool = new PoolBean();
         //TEMPORARY POOL AMOUNT BEFORE ENTIRE FUNCTIONALITY.
-        pool.setTotalAmount(250);
         this.poolID = pool.getPoolID();
+        pool.setTotalAmount(250);
+        pool.setAmountRemaining(250);
         this.setPoolTotalAmount(250);
-
+        this.setAmountRemaining(250);
 
         addGroupToDB();
     }
@@ -191,6 +192,26 @@ public class GroupBean implements Serializable {
         }
     }
 
+    public void setAmountRemaining(double remaining){
+        String query = "UPDATE POOL SET [amountRemaining] = ? WHERE [poolID] = ?";
+
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setDouble(1, remaining);
+            statement.setString(2, this.poolID);
+
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+    }
+
     public boolean depositToPool(double amount){
         //Update the remaining amount to the new value.
         double amountRemaining = getAmountRemaining(this.poolID);
@@ -246,6 +267,12 @@ public class GroupBean implements Serializable {
         }
         return new PoolBean(poolID, total, remaining);
 
+    }
+
+    public void withDrawFromPool(){
+        //remove PoolDeposit rows from db.
+        //get the total amount of money from the db that the user deposited
+        //update the remaining pool to add this value.
     }
 
 }

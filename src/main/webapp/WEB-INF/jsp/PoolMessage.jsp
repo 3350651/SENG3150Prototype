@@ -2,13 +2,11 @@
 <%@ page import="startUp.GroupBean" %>
 <%@ page import="startUp.PoolBean" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.LinkedList" %>
 <%
-UserBean user = (UserBean) session.getAttribute("userBean");
 GroupBean group = (GroupBean) session.getAttribute("group");
+String message = (String) session.getAttribute("message");
 PoolBean pool = (PoolBean) session.getAttribute("pool");
 %>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,30 +17,24 @@ PoolBean pool = (PoolBean) session.getAttribute("pool");
 </head>
 <body>
     <main>
-        <header>
-           <form name="backtoGroupHomepage" action="GroupHomepage" method="GET">
-                   <button type="submit" name="groupHomepage" value="true">Return to Group Homepage</button>
-           </form>
 
+ <header>
             <div class="titleContainer">
-                <h1>Money Pool</h1>
+                <h1>Pool Update Message</h1>
             </div>
             <div class="groupName">
                 <h2><%= group.getGroupName() %></h2>
             </div>
         </header>
-
         <div>
-            Total Amount of Pool: <%= pool.getTotalAmount()  %><br>
-            Required Pool Amount Remaining: <%= pool.getAmountRemaining() %>
+            <%= message %>
         </div>
-
-        <div>
-            <form name="addToPool" action="GroupHomepage" method="POST">
-                   <button type="submit" name="addToPool" value="addToPool">Add To Pool</button>
+        <div id="continueFormContainer">
+            <form method="POST" action="GroupHomepage">
+                <button type="submit" name="continue" value="continue">Continue</button>
             </form>
         </div>
-    </main>
-</body>
+        </main>
+    </body>
 <script type="text/javascript" src="script.js"></script>
 </html>

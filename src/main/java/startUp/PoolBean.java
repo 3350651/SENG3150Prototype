@@ -1,21 +1,22 @@
 package startUp;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Random;
 
-public class PoolBean {
+public class PoolBean implements Serializable {
     private String poolID;
     private double totalAmount;
-    private double remainingAmount;
+    private double amountRemaining;
 
     public PoolBean(){
         Random random = new Random();
         this.poolID = String.format("%08d", random.nextInt(100000000));
         this.totalAmount = 0;
-        this.remainingAmount = 0;
+        this.amountRemaining = 0;
 
         addPoolToDB();
     }
@@ -28,7 +29,7 @@ public class PoolBean {
 
             statement.setString(1, this.poolID);
             statement.setDouble(2, this.totalAmount);
-            statement.setDouble(3, this.remainingAmount);
+            statement.setDouble(3, this.amountRemaining);
 
             statement.executeUpdate();
             statement.close();
@@ -43,7 +44,7 @@ public class PoolBean {
     public PoolBean(String poolID, double totalAmount, double remainingAmount){
         this.poolID = poolID;
         this.totalAmount = totalAmount;
-        this.remainingAmount = remainingAmount;
+        this.amountRemaining = remainingAmount;
     }
 
     public static double getTotalAmount(String poolID){
@@ -90,6 +91,10 @@ public class PoolBean {
         return remaining;
     }
 
+    public void addToRemainingPool(double amount){
+        getAmountRemaining();
+    }
+
     public String getPoolID(){
         return this.poolID;
     }
@@ -99,11 +104,15 @@ public class PoolBean {
   }
 
   public double getAmountRemaining(){
-        return this.remainingAmount;
+        return this.amountRemaining;
   }
 
   //KILL THIS WHEN IMPLEMENTATION IS DONE -- adds temporary total amount for all group pools.
   public void setTotalAmount(double total){
         this.totalAmount = total;
+  }
+
+  public void setAmountRemaining(double remaining){
+        this.amountRemaining = remaining;
   }
 }

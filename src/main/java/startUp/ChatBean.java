@@ -1,5 +1,6 @@
 package startUp;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,7 +8,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class ChatBean {
+public class ChatBean implements Serializable {
     private String chatID;
 
     public ChatBean(){
