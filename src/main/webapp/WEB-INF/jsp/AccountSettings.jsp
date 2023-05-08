@@ -6,22 +6,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit user account</title>
-    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
-<body>
+<body class="AccountSettingsHomePage">
+<div class="containerForLogoAndLinks">
+<img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" style="width:150px;height:150px; >
 <%--        Home page button         --%>
     <form name="returnHome" action="Homepage" method="POST">
-        <button type="submit" name="home" value="true">Return to Home</button>
+        <button type="submit" class="button" name="home" value="true">Return to Home</button>
     </form>
+<%--        UI Preferences button         --%>
     <form name="goToUIPreferences" action="AccountSettings" method="POST">
-        <button type="submit" name="goToUIPreferences" value="goToUIPreferences">Modify UI Preferences</button>
+        <button type="submit" class="button" name="goToUIPreferences" value="goToUIPreferences">Modify UI Preferences</button>
     </form>
+<%--        Personal Details button         --%>
     <form name="goToPersonalDetails" action="AccountSettings" method="POST">
-        <button type="submit" name="goToPersonalDetails" value="goToPersonalDetails">Modify Personal Details</button>
+        <button type="submit" class="button" name="goToPersonalDetails" value="goToPersonalDetails">Modify Personal Details</button>
     </form>
+<%--        Change Password button         --%>
     <form name="goToChangePassword" action="AccountSettings" method="POST">
-        <button type="submit" name="goToChangePassword" value="goToChangePassword">Change Password</button>
+        <button type="submit" class="button" name="goToChangePassword" value="goToChangePassword">Change Password</button>
     </form>
+</div>
 
     <h1>Personal Details</h1>
     <h3>Name: <%= user.getFname() %> <%= user.getLname() %> </h3>
@@ -37,5 +43,6 @@
     <h3>Date Of Birth: <%= user.getDateOfBirth() %> </h3>
 
 </body>
-<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/script.js"></script>
+
 </html>

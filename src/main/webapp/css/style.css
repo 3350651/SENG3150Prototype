@@ -1,0 +1,77 @@
+  h1{text-align: center}
+
+  br{
+    line-height: 60px
+  }
+
+  h2{
+    text-align: center;
+  }
+
+  fieldset{
+    border-color: black;
+  }
+
+  #login{
+    padding-top: 100px;
+    text-align: center;
+    line-height: 60px;
+  }
+
+  .notification{
+    background-color: yellow;
+  }
+
+  table, th, td, tr{
+    border:1px solid;
+  }
+  table{
+    width: 70%;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #statsButton{
+    margin-top: 10px;
+  }
+
+  .AccountSettingsHomePage{
+    background-color: black;
+    color: white;
+  }
+
+ .button {
+   background-color: #156283;
+   color: white;
+   border-radius: 8px;
+   font-size: 20px;
+   margin-top: 10px;
+   padding: 10px 20px;
+   border: none;
+   border-radius: 5px;
+   display: inline-block;
+   transition-duration: 0.25s;
+   width: fit-content;
+ }
+
+ .button:hover {
+   background-color: white;
+   color: #156283;
+ }
+
+.containerForLogoAndLinks {
+  display: flex;
+  flex-direction: column;
+align-items: flex-start;
+justify-content: center;
+text-align: center;
+position: absolute;
+top: 0;
+left: 0;
+margin: 20px;
+}
+
+
+
+
