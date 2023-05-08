@@ -1,10 +1,17 @@
- <%@ page import="startUp.UserBean" %>
+<%@ page import="startUp.UserBean" %>
+<%@ page import="startUp.GroupBean" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.LinkedList" %>
 
 
 <!DOCTYPE html>
 <html lang="en">
+
+<%
+UserBean user = (UserBean) session.getAttribute("userBean");
+GroupBean group = (GroupBean) session.getAttribute("group");
+Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
+%>
+
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
@@ -12,26 +19,25 @@
 </head>
 <body>
     <main>
-        
+
         <header>
-            <div class="logoutContainer">
-                <form method="POST" action="Homepage">
-                    <button name="logout" value="logout">Logout</button>
-                </form>
-            </div>
-            <div class="viewAccountSettings">
-                <form method="POST" action="AccountSettings">
-                    <button name="viewAccountSettings" value="viewAccountSettings">View Profile</button>
-                </form>
-            </div>
-            <div class="createGroup">
-                <form method="GET" action="CreateGroup">
-                    <button name="createGroup" value="createGroup">Create Group</button>
-                </form>
-            </div>
+
+           <form name="returnHome" action="Homepage" method="POST">
+                   <button type="submit" name="home" value="true">Return to Home</button>
+           </form>
+
             <div class="titleContainer">
-                <h1>User Homepage</h1>
+                <h1>Group Homepage</h1>
             </div>
+            <div class="groupName">
+                <h2><%= group.getGroupName() %></h2>
+            </div>
+            <%
+            if(isAdmin){ %>
+            <form name="manageGroup" action="ManageGroup" method="GET">
+               <button type="submit" name="manageGroup" value="manageGroup">Manage Group</button>
+            </form>
+            <%}%>
         </header>
 
 

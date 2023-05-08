@@ -2,9 +2,14 @@ package startUp;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import javax.servlet.*;
 import javax.servlet.annotation.*;
 import javax.servlet.http.*;
+
+import static startUp.GroupBean.getGroup;
+import static startUp.GroupBean.getGroups;
+import static startUp.UserGroupsBean.isAdmin;
 
 /**
  * The homepage servlet which handles requests made to the homepage.
@@ -33,11 +38,39 @@ public class Homepage extends HttpServlet {
 
 		// gets the person object and their role from the session object.
 		String role = ((UserBean)session.getAttribute("userBean")).getRoleInSystem();
-		UserBean person = (UserBean) session.getAttribute("userBean");
+		UserBean user = (UserBean) session.getAttribute("userBean");
 
 		// sends the user to the correct homepage depending on their role
 		if (role.equals("user")){
-			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepage.jsp");
+
+			if(request.getParameter("groupHomepage") != null){
+				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
+			}
+
+			//stuff to set and display groups for user.
+			LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
+			if(!groupIDs.isEmpty()) {
+				LinkedList<GroupBean> groups = getGroups(groupIDs);
+				session.setAttribute("groups", groups);
+
+
+				if (request.getParameter("goGroup") != null) {
+					String groupName = request.getParameter("groupName");
+					GroupBean group = getGroup(groupName);
+					session.setAttribute("group", group);
+					Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
+					session.setAttribute("isAdmin", isAdmin);
+
+					requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
+					requestDispatcher.forward(request, response);
+
+				}
+				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepageWithGroups.jsp");
+			}
+			else{
+				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepage.jsp");
+			}
+
 		} else if (role.equals("admin")){
 			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/StaffHomepage.jsp");
 		} else {
@@ -65,7 +98,7 @@ public class Homepage extends HttpServlet {
 
 		// admin - add user form
 		if (request.getParameter("addUser") != null){
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AdminHomepage.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/CreateAccount.jsp");
 			String firstName = request.getParameter("firstName");
 			String lastName = request.getParameter("lastName");
 			String email = request.getParameter("email");
@@ -93,6 +126,8 @@ public class Homepage extends HttpServlet {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AdminHomepage.jsp");
 			requestDispatcher.forward(request, response);
 		}
+
+
 	}
 
 }
