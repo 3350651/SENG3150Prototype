@@ -1,5 +1,7 @@
 package startUp;
 
+import com.sun.jndi.ldap.pool.Pool;
+
 import java.io.Serializable;
 import java.sql.*;
 import java.time.LocalDate;
@@ -8,12 +10,14 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import static startUp.ChatBean.getChatMessages;
+import static startUp.PoolBean.*;
 
 public class GroupBean implements Serializable {
 
     private String groupID;
     private String groupName;
     private String chatID;
+    private String poolID;
 
     /*
     private String poolID;
@@ -30,19 +34,26 @@ public class GroupBean implements Serializable {
         this.groupName = groupName;
         ChatBean chat = new ChatBean();
         this.chatID = chat.getChatID();
+        PoolBean pool = new PoolBean();
+        //TEMPORARY POOL AMOUNT BEFORE ENTIRE FUNCTIONALITY.
+        pool.setTotalAmount(250);
+        this.poolID = pool.getPoolID();
+        this.setPoolTotalAmount(250);
+
 
         addGroupToDB();
     }
 
     //Already existing GroupBean
-    public GroupBean(String id, String name, String chatID){
+    public GroupBean(String id, String name, String chatID, String poolID){
         this.groupID = id;
         this.groupName = name;
         this.chatID = chatID;
+        this.poolID = poolID;
     }
 
     public void addGroupToDB(){
-        String query = "INSERT INTO GROUPS VALUES (?, ?, ?)";
+        String query = "INSERT INTO GROUPS VALUES (?, ?, ?, ?)";
         try {
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
@@ -50,6 +61,7 @@ public class GroupBean implements Serializable {
             statement.setString(1, this.groupID);
             statement.setString(2, this.groupName);
             statement.setString(3, this.chatID);
+            statement.setString(4, this.poolID);
 
             statement.executeUpdate();
             statement.close();
@@ -85,8 +97,9 @@ public class GroupBean implements Serializable {
                     String id = result.getString(1);
                     String groupName = result.getString(2);
                     String chatID = result.getString(3);
+                    String poolID = result.getString(4);
 
-                    GroupBean group = new GroupBean(id, groupName, chatID);
+                    GroupBean group = new GroupBean(id, groupName, chatID, poolID);
                     groups.add(group);
                 }
                 groupIDs.addLast(tempID);
@@ -108,7 +121,7 @@ public class GroupBean implements Serializable {
 
     public static GroupBean getGroup(String name) {
         String query = "SELECT * FROM GROUPS WHERE [groupName] = ?";
-        String id = "", groupName = "", chatID = "";
+        String id = "", groupName = "", chatID = "", poolID = "";
         try {
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
@@ -120,6 +133,7 @@ public class GroupBean implements Serializable {
                 id = result.getString(1);
                 groupName = result.getString(2);
                 chatID = result.getString(3);
+                poolID = result.getString(4);
             }
             statement.close();
             connection.close();
@@ -127,7 +141,7 @@ public class GroupBean implements Serializable {
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
         }
-        return new GroupBean(id, groupName, chatID);
+        return new GroupBean(id, groupName, chatID, poolID);
     }
 
     public static void deleteGroup(String id){
@@ -155,6 +169,83 @@ public class GroupBean implements Serializable {
 
     public String getChatID(){
         return this.chatID;
+    }
+
+    public void setPoolTotalAmount(double total){
+        String query = "UPDATE POOL SET [totalAmount] = ? WHERE [poolID] = ?";
+
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setDouble(1, total);
+            statement.setString(2, this.poolID);
+
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+    }
+
+    public boolean depositToPool(double amount){
+        //Update the remaining amount to the new value.
+        double amountRemaining = getAmountRemaining(this.poolID);
+        double newAmountRemaining = amountRemaining - amount;
+
+        //If the value is less than 0, then the amount is excessive.
+        if(newAmountRemaining < 0){
+           return false;
+        }
+
+        String query = "UPDATE POOL SET [amountRemaining] = ? WHERE [poolID] = ?";
+
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setDouble(1, newAmountRemaining);
+            statement.setString(2, this.poolID);
+
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+
+        return true;
+    }
+
+    public PoolBean getPool(){
+        String query = "SELECT * FROM POOL WHERE [poolID] = ?";
+        String poolID ="";
+        double total = 0, remaining = 0;
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, this.poolID);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                poolID = result.getString(1);
+                total = result.getDouble(2);
+                remaining = result.getDouble(3);
+            }
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+        return new PoolBean(poolID, total, remaining);
+
     }
 
 }

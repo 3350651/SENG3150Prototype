@@ -85,6 +85,41 @@ public class GroupHomepageServlet extends HttpServlet {
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Chat.jsp");
         }
 
+        //add code that checks if a flight is locked in - get the score from the top of the list.
+        //and figure out if it was chosen - aka. number of group members and the score. math.
+        //just hard coded to allow for pool to be seen at the moment.
+        boolean flightLockedIn = true;
+        if(flightLockedIn){
+            //get the pool page.
+            if(request.getParameter("getPool") != null){
+                PoolBean pool = group.getPool();
+                session.setAttribute("pool", pool);
+                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Pool.jsp");
+            }
+            //make a deposit into the pool.
+            else if(request.getParameter("depositToPool") != null){
+                //try and make the deposit. call the group method to make deposit. (java script to later check value is
+                //not less than 0.
+
+                    //make a PoolDeposit bean if it is successful
+                    //redirect to the pool page - remaining will update.
+            }
+            //withdraw from the pool.
+            else if(request.getParameter("withdrawFromPool") != null){
+                //this value only appears if the user has made a deposit into the pool.
+                //aka, the option only appears then.
+                //determine the total amount of their deposits.
+            }
+
+            //TO DETERMINE IF THE POOL IS SETTLED, PUT INT ON DB AND CONVERT TO INTEGER.
+            //WHEN THE POOL IS SETTLED, THE VALUE CHANGES AND THE USERS ARE NO LONGER ABLE
+            //TO MAKE A DEPOSIT INTO THE POOL - SIMPLY SHOW THAT THE POOL IS COMPLETE AND
+            //PROMPT THEM THAT IT IS TIME TO MAKE A BOOKING.
+
+            //also need a 'Pool Message Page.' After all of the above is implemented.
+        }
+
+
         requestDispatcher.forward(request, response);
 
     }

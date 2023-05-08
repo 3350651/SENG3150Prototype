@@ -106,6 +106,13 @@ Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
                 </form>
             </div>
 
+            <!--Need to add button only when available, instead it should have window that says pool not available yet.-->
+            <div class="poolContainer">
+                <form name="pool" id="pool" method="POST" action="GroupHomepage">
+                 <button type="submit" name="getPool" value="getPool">Go to Money Pool</button>
+                </form>
+            </div>
+
     </main>
 </body>
 <script type="text/javascript" src="script.js"></script>
