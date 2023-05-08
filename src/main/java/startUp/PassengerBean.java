@@ -70,4 +70,11 @@ public class PassengerBean implements Serializable {
     public void setBookingId(String bookingId) {
         this.bookingId = bookingId;
     }
+
+    //create passenger
+
+    //remove passenger
+
+    //update passenger
+
 }

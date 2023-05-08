@@ -72,4 +72,11 @@ public class TicketBean implements Serializable {
     public void setTicketType(String ticketType) {
         this.ticketType = ticketType;
     }
+
+    //create ticket
+
+    //remove ticket
+
+    //update ticket
+
 }

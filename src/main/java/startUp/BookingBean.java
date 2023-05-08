@@ -88,4 +88,14 @@ public class BookingBean implements Serializable {
     public void setTotalAmount(float totalAmount) {
         this.totalAmount = totalAmount;
     }
+
+    //create booking
+
+    //get booking
+
+    //update booking
+
+    //remove booking
+
+
 }

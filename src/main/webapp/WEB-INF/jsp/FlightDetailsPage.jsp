@@ -1,17 +1,23 @@
-<%@ page import="startUp.PersonBean" %>
-
+<%@ page import="startUp.FlightBean" %>
     <!DOCTYPE html>
     <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <title>startUp.Homepage</title>
-        <link rel="stylesheet" href="Style.css">
-    </head>
+    <%FlightBean flight=(FlightBean) session.getAttribute("Flight");%>
 
-    <body>
-        <main>
-        </main>
-    </body>
+        <head>
+            <meta charset="UTF-8">
+            <title>startUp.FlightDetailsPage</title>
+            <link rel="stylesheet" href="Style.css">
+        </head>
+
+        <body>
+            <main>
+                <header>
+                    <h1>
+                        <%= flight.getDestination().getDestinationName()%>
+                    </h1>
+                </header>
+            </main>
+        </body>
 
     </html>

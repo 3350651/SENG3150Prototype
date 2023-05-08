@@ -1,5 +1,13 @@
+DROP DATABASE flightPub
+go
+
 CREATE DATABASE flightPub;
+go
+
 USE flightPub; 
+
+DROP LOGIN fb1;
+DROP USER fb1;
 
 CREATE LOGIN fb1
 WITH PASSWORD = 'mySecur3Passw0rd!';
@@ -10,7 +18,17 @@ FOR LOGIN fb1;
 GRANT SELECT, INSERT, UPDATE, DELETE 
 TO fb1;
 
-DROP TABLE USERS;
+DROP TABLE IF EXISTS Flights;
+DROP TABLE IF EXISTS Price;
+DROP TABLE IF EXISTS Distances;
+DROP TABLE IF EXISTS Availability;
+DROP TABLE IF EXISTS TicketType;
+DROP TABLE IF EXISTS TicketClass;
+DROP TABLE IF EXISTS Destinations;
+DROP TABLE IF EXISTS PlaneType;
+DROP TABLE IF EXISTS Airlines;
+DROP TABLE IF EXISTS Country;
+DROP TABLE IF EXISTS USERS;
 
 CREATE TABLE USERS
 (
@@ -55,10 +73,10 @@ CREATE TABLE Airlines (
 CREATE TABLE PlaneType (
   PlaneCode VARCHAR(20) NOT NULL,
   Details VARCHAR(50) NOT NULL,
-  NumFirstClass INT(11) NOT NULL,
-  NumBusiness INT(11) NOT NULL,
-  NumPremiumEconomy INT(11) NOT NULL,
-  Economy INT(11) NOT NULL,
+  NumFirstClass INT NOT NULL,
+  NumBusiness INT NOT NULL,
+  NumPremiumEconomy INT NOT NULL,
+  Economy INT NOT NULL,
   PRIMARY KEY (PlaneCode)
 )
 
@@ -79,10 +97,10 @@ CREATE TABLE TicketClass (
 CREATE TABLE TicketType (
   TicketCode CHAR(1) NOT NULL,
   Name VARCHAR(50) NOT NULL,
-  Transferrable BIT(1) NOT NULL,
-  Refundable BIT(1) NOT NULL,
-  Exchangeable BIT(1) NOT NULL,
-  FrequentFlyerPoINTs BIT(1) NOT NULL,
+  Transferrable BIT NOT NULL,
+  Refundable BIT NOT NULL,
+  Exchangeable BIT NOT NULL,
+  FrequentFlyerPoINTs BIT NOT NULL,
   PRIMARY KEY (TicketCode)
 )
 
@@ -92,8 +110,8 @@ CREATE TABLE Availability (
   DepartureTime DATETIME NOT NULL,
   ClassCode CHAR(3) NOT NULL,
   TicketCode CHAR(1) NOT NULL,
-  NumberAvailableSeatsLeg1 INT(11) NOT NULL,
-  NumberAvailableSeatsLeg2 INT(11) DEFAULT NULL,
+  NumberAvailableSeatsLeg1 INT NOT NULL,
+  NumberAvailableSeatsLeg2 INT DEFAULT NULL,
   PRIMARY KEY (AirlineCode,FlightNumber,DepartureTime,ClassCode,TicketCode),
   CONSTRAINT AvailabilityTicketCode_FK FOREIGN KEY (TicketCode) REFERENCES TicketType (TicketCode),
   CONSTRAINT AvailabilityAirlineCode_FK FOREIGN KEY (AirlineCode) REFERENCES Airlines (AirlineCode),
@@ -103,7 +121,7 @@ CREATE TABLE Availability (
 CREATE TABLE Distances (
   DestinationCode1 CHAR(3) NOT NULL,
   DestinationCode2 CHAR(3) NOT NULL,
-  DistancesInKms INT(11) NOT NULL,
+  DistancesInKms INT NOT NULL,
   PRIMARY KEY (DestinationCode1,DestinationCode2),
   CONSTRAINT DestinationCode2_FK FOREIGN KEY (DestinationCode2) REFERENCES Destinations (DestinationCode),
   CONSTRAINT DestinationCode1_FK FOREIGN KEY (DestinationCode1) REFERENCES Destinations (DestinationCode)
@@ -136,8 +154,8 @@ CREATE TABLE Flights (
   DepartureTimeStopOver DATETIME DEFAULT NULL,
   ArrivalTime DATETIME NOT NULL,
   PlaneCode VARCHAR(20) NOT NULL,
-  Duration INT(11) NOT NULL,
-  DurationSecondLeg INT(11) DEFAULT NULL,
+  Duration INT NOT NULL,
+  DurationSecondLeg INT DEFAULT NULL,
   PRIMARY KEY (AirlineCode,FlightNumber,DepartureTime),
   CONSTRAINT FlightsPlaneCode_FK FOREIGN KEY (PlaneCode) REFERENCES PlaneType (PlaneCode),
   CONSTRAINT FlightsAirlineCode_FK FOREIGN KEY (AirlineCode) REFERENCES Airlines (AirlineCode),
@@ -155,6 +173,37 @@ INSERT INTO USERS VALUES (NEWID(), 'Lucy', 'Knight', 'lucy@gmail.com', 'lk', '04
 INSERT INTO USERS VALUES (NEWID(), 'Blake', 'Baldin', 'blake@gmail.com', 'bb', '04 123 456', 'user', '39 High St, Melbourne, VIC, Australia', 'Recommend', 'AUD', '+10', 'Dark', 0, '2002-10-06')
 
 
-go
+INSERT INTO Country (countryCode2, countryCode3, countryName, alternateName1, alternateName2, motherCountryCode3, motherCountryComment)
+VALUES
+	('BR','BRA','Brazil','Federative Republic of Brazil','','',''),
+	('US','USA','United States','United States of America','U.S.A.','','');
 
-SELECT * FROM USERS;
+INSERT INTO Destinations (DestinationCode, Airport, CountryCode3)
+VALUES
+	('ATL','Atlanta','USA'),
+	('GIG','Rio De Janeiro','BRA'),
+	('MIA','Miami','USA');
+
+INSERT INTO Airlines (AirlineCode, AirlineName, CountryCode3)
+VALUES
+	('AA','American Airlines','USA');
+
+INSERT INTO PlaneType (PlaneCode, Details, NumFirstClass, NumBusiness, NumPremiumEconomy, Economy)
+VALUES
+	('747-100','Boeing 747-100',55,58,100,210),
+	('757-200','Boeing 757-200',44,26,106,197),
+	('757-300','Boeing 757-300',44,28,106,197),
+	('767-200','Boeing 767-200',40,48,115,189),
+	('767-300','Boeing 767-300',42,33,132,211),
+	('767-400','Boeing 767-400',42,50,121,220),
+	('A330-200','Airbus A330-200',42,40,120,177),
+	('A330-300','Airbus A330-300',44,46,91,210),
+	('A340-200','Airbus A340-200',42,50,124,208),
+	('A340-300','Airbus A340-300',41,36,112,196),
+	('A340-500','Airbus A340-500',39,62,131,187),
+	('A340-600','Airbus A340-600',35,55,98,200),
+	('A380','Airbus A380',46,47,111,203);
+
+INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
+VALUES
+	('AA','AA1735','ATL','MIA','GIG','2014-09-23 09:50:00','2014-09-23 11:50:00','2014-09-23 23:20:00','2014-09-24 09:00:00','A380',120,520)
