@@ -91,6 +91,7 @@ public class PoolBean implements Serializable {
         return remaining;
     }
 
+    //up to allowing for withdrawal of pool
     public void addToRemainingPool(double amount){
         getAmountRemaining();
     }
