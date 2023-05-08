@@ -63,9 +63,18 @@ public class GroupHomepageServlet extends HttpServlet {
         HttpSession session = request.getSession();
         RequestDispatcher requestDispatcher = null;
         GroupBean group = (GroupBean) session.getAttribute("group");
+        UserBean user = (UserBean) session.getAttribute("userBean");
 
-        if(request.getParameter("getChat") != null){
-            LinkedList<MessageBean> chatMessages = group.getChat(group.getGroupID());
+        if(request.getParameter("getChat") != null || request.getParameter("newMessage") != null){
+            String chatID = group.getChatID();
+
+            if(request.getParameter("newMessage") != null){
+                String newMessage = request.getParameter("newMessage");
+                MessageBean message = new MessageBean(chatID, newMessage, user.getUserID());
+            }
+
+            LinkedList<MessageBean> chatMessages = group.getChat(chatID);
+
             if(!chatMessages.isEmpty()) {
                 session.setAttribute("chatMessages", chatMessages);
                 session.setAttribute("messagesExist", true);

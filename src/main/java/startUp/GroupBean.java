@@ -35,9 +35,10 @@ public class GroupBean implements Serializable {
     }
 
     //Already existing GroupBean
-    public GroupBean(String id, String name){
+    public GroupBean(String id, String name, String chatID){
         this.groupID = id;
         this.groupName = name;
+        this.chatID = chatID;
     }
 
     public void addGroupToDB(){
@@ -83,8 +84,9 @@ public class GroupBean implements Serializable {
                 while (result.next()){
                     String id = result.getString(1);
                     String groupName = result.getString(2);
+                    String chatID = result.getString(3);
 
-                    GroupBean group = new GroupBean(id, groupName);
+                    GroupBean group = new GroupBean(id, groupName, chatID);
                     groups.add(group);
                 }
                 groupIDs.addLast(tempID);
@@ -106,7 +108,7 @@ public class GroupBean implements Serializable {
 
     public static GroupBean getGroup(String name) {
         String query = "SELECT * FROM GROUPS WHERE [groupName] = ?";
-        String id = "", groupName = "";
+        String id = "", groupName = "", chatID = "";
         try {
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
@@ -117,6 +119,7 @@ public class GroupBean implements Serializable {
             while (result.next()) {
                 id = result.getString(1);
                 groupName = result.getString(2);
+                chatID = result.getString(3);
             }
             statement.close();
             connection.close();
@@ -124,7 +127,7 @@ public class GroupBean implements Serializable {
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
         }
-        return new GroupBean(id, groupName);
+        return new GroupBean(id, groupName, chatID);
     }
 
     public static void deleteGroup(String id){
@@ -146,31 +149,12 @@ public class GroupBean implements Serializable {
         }
     }
 
-    public LinkedList<MessageBean> getChat(String groupID){
+    public LinkedList<MessageBean> getChat(String chatID){
+        return getChatMessages(chatID);
+    }
 
-        LinkedList<MessageBean> messages;
-        String chatID = "";
-
-        String query = "SELECT chatID FROM GROUPS WHERE [groupID] = ?";
-        try {
-            Connection connection = ConfigBean.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
-
-            statement.setString(1, groupID);
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                chatID = result.getString(1);
-            }
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            System.err.println(e.getStackTrace());
-        }
-
-        messages = getChatMessages(chatID);
-        return messages;
+    public String getChatID(){
+        return this.chatID;
     }
 
 }

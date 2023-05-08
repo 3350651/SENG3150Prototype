@@ -4,6 +4,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.LinkedList" %>
 <%
+UserBean user = (UserBean) session.getAttribute("userBean");
 GroupBean group = (GroupBean) session.getAttribute("group");
 LinkedList<MessageBean> chatMessages = (LinkedList<MessageBean>) session.getAttribute("chatMessages");
 boolean exist = (boolean) session.getAttribute("messagesExist");
@@ -40,16 +41,26 @@ if(exist){
             <%
             if(size > 0){
                 for(int i = 0; i < size; i++){
-                    MessageBean message = chatMessages.pop();
+                    MessageBean message = chatMessages.removeFirst();
                 %>
-                    <p>Member Name: <%= message.getMessageTime() %></p>
-                    <p>Member ID: <%= message.getMessage() %></p>
+                    <%= message.getUserName() %>:<br>
+                    <%= message.getMessageTime() %><br>
+                    <%= message.getMessage() %><br><br>
                 <% chatMessages.addLast(message);
                 }
             } else { %>
                 <p>There are currently no messages in the group chat!</p>
             <%}
             %>
+        </div>
+
+        <div>
+            <form method="POST" action="GroupHomepage" onsubmit="return sendMessageForm()">
+                <label for="newMessage">Send Message to Chat: </label>
+                <input type="text" id="newMessage" name="newMessage"><br>
+
+                <button type="submit" name="newMessage" value="newMessage">Send Message</button>
+            </form>
         </div>
 
     </main>

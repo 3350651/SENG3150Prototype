@@ -44,7 +44,7 @@ public class ChatBean {
 
         LinkedList<MessageBean> messages = new LinkedList<>();
 
-        String query = "SELECT * FROM MESSAGE WHERE [chatID] = ?";
+        String query = "SELECT * FROM MESSAGE WHERE [chatID] = ? ORDER BY messageTime";
         try {
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
@@ -58,8 +58,9 @@ public class ChatBean {
                String chatId = (result.getString(2));
                String message = (result.getString(3));
                String messageTime = (result.getString(4));
+               String userID = (result.getString(5));
 
-               MessageBean aMessage = new MessageBean(messageID, chatId, message, messageTime);
+               MessageBean aMessage = new MessageBean(messageID, chatId, message, messageTime, userID);
                messages.add(aMessage);
             }
             statement.close();

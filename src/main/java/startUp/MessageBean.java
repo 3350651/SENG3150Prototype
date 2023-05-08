@@ -3,7 +3,11 @@ package startUp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
+
+import static startUp.UserBean.getUsersName;
 
 public class MessageBean {
 
@@ -11,30 +15,36 @@ public class MessageBean {
     private String chatID;
     private String message;
     private String messageTime;
+    private String userID;
 
     public MessageBean(){
     }
 
-    public MessageBean(String id, String chatID, String message, String time){
+    public MessageBean(String id, String chatID, String message, String time, String userID){
         this.messageID = id;
         this.chatID = chatID;
         this.message = message;
         this.messageTime = time;
+        this.userID = userID;
     }
 
-    public MessageBean(String chatID, String message){
+    public MessageBean(String chatID, String message, String userID){
         Random random = new Random();
         this.messageID = String.format("%08d", random.nextInt(100000000));
         this.chatID = chatID;
         this.message = message;
-        this.messageTime = String.valueOf(System.currentTimeMillis());
+        //get current time
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        this.messageTime = formatter.format(date);
+        this.userID = userID;
 
         addMessageToDB();
     }
 
     //Add the message to the DB.
     public void addMessageToDB(){
-        String query = "INSERT INTO MESSAGE VALUES (?, ?, ?)";
+        String query = "INSERT INTO MESSAGE VALUES (?, ?, ?, ?, ?)";
         try {
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
@@ -42,6 +52,8 @@ public class MessageBean {
             statement.setString(1, this.messageID);
             statement.setString(2, this.chatID);
             statement.setString(3, this.message);
+            statement.setString(4, this.messageTime);
+            statement.setString(5, this.userID);
 
             statement.executeUpdate();
             statement.close();
@@ -59,6 +71,10 @@ public class MessageBean {
 
     public String getMessageTime(){
         return this.messageTime;
+    }
+
+    public String getUserName(){
+        return getUsersName(this.userID);
     }
 
 }
