@@ -33,6 +33,8 @@ public class UserBean implements Serializable {
 	private Boolean questionnaireCompleted;
 	private LocalDate dateOfBirth;
 
+	private LinkedList<String> tagSet;
+
 	//private LinkedList<Flights> bookmarkedFlights
 	//private LinkedList<Searches> savedSearches
 	//private LinkedList<Groups> groups
@@ -226,6 +228,26 @@ public class UserBean implements Serializable {
 
 	public String getRoleInSystem() {
 		return role;
+	}
+
+	public Boolean getQuestionnaireCompleted() {
+		return questionnaireCompleted;
+	}
+
+	public LinkedList<String> getTagSet() {
+		return tagSet;
+	}
+
+	public void setTagSet(LinkedList<String> tagSet) {
+		this.tagSet = tagSet;
+	}
+
+	public void addTag(String tag){
+		getTagSet().add(tag);
+	}
+
+	public void removeTag(String tag){
+		getTagSet().remove(tag);
 	}
 
 	/**
@@ -668,4 +690,28 @@ public class UserBean implements Serializable {
 		return usersName;
 	}
 
+	public LinkedList<String> getTags(String userID){
+		LinkedList<String> groupIDs = new LinkedList<>();
+
+		String query = "SELECT * FROM USERTAGS WHERE [userID] = ?";
+		try{
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, userID);
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()){
+				String id = result.getString(1);
+				groupIDs.add(id);
+			}
+			statement.close();
+			connection.close();
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+
+		return groupIDs;
+	}
 }
