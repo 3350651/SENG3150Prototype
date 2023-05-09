@@ -41,25 +41,54 @@ INSERT INTO USERS VALUES ('12345678', 'Blake', 'Baldin', 'blake@gmail.com', 'bb'
 
 go
 
--- Create groups
+
+-- Create groups and associated tables
+CREATE TABLE CHAT
+(
+	chatID		CHAR(8) PRIMARY KEY,
+)
+
+
+CREATE TABLE MESSAGE
+(
+	messageID CHAR(8) PRIMARY KEY,
+	chatID CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID),
+	message VARCHAR(MAX),
+	messageTime VARCHAR(20),
+	userID CHAR(8) FOREIGN KEY REFERENCES USERS(userID),
+)
+
+CREATE TABLE POOL
+(
+	poolID CHAR(8) PRIMARY KEY,
+	totalAmount	FLOAT,
+	amountRemaining FLOAT,
+)
+
+CREATE TABLE POOLDEPOSIT
+(
+	poolDepositID CHAR(8) PRIMARY KEY,
+	poolID CHAR(8) FOREIGN KEY REFERENCES POOL(poolID),
+	userID CHAR(8) FOREIGN KEY REFERENCES USERS(userID),
+	amount FLOAT,
+)
 
 CREATE TABLE GROUPS
 (
 	groupID 	CHAR(8) PRIMARY KEY,
 	groupName		VARCHAR(20),
-	-- poolID
-	-- chatID
+	chatID	CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID),
+	poolID 	CHAR(8) FOREIGN KEY REFERENCES POOL(poolID),
 	-- faveListID
 
 )
 go
 
-
-
 CREATE TABLE USERGROUPS
 (
-	userGroupsID		CHAR(8),
+	userGroupsID		CHAR(8) PRIMARY KEY,
 	userID	CHAR(8) FOREIGN KEY REFERENCES USERS(userID),
 	groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID),
-	isAdmin		BIT DEFAULT(0),
+	isAdmin		INT DEFAULT(0),
 )
+
