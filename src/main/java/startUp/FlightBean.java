@@ -6,6 +6,7 @@ import java.sql.*;
 public class FlightBean implements Serializable {
 
     private String airline;
+    private String airlineName;
     private Timestamp flightTime;
     private String flightName;
     private String planeType;
@@ -16,10 +17,11 @@ public class FlightBean implements Serializable {
 
     // constructor
 
-    public FlightBean(String newAirline, Timestamp newFlightTime, String newflightName, String newPlaneType,
+    public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightTime, String newflightName, String newPlaneType,
             /* float newMinCost, */ DestinationBean newDeparture, DestinationBean newStopOver,
             DestinationBean newDestination) {
         airline = newAirline;
+        airlineName = newAirlineName;
         flightTime = newFlightTime;
         flightName = newflightName;
         planeType = newPlaneType;
@@ -36,6 +38,14 @@ public class FlightBean implements Serializable {
 
     public void setAirline(String airline) {
         this.airline = airline;
+    }
+
+    public String getAirlineName() {
+        return airlineName;
+    }
+
+    public void setAirlineName(String airlineName) {
+        this.airlineName = airlineName;
     }
 
     public Timestamp getFlightTime() {
@@ -103,9 +113,11 @@ public class FlightBean implements Serializable {
         FlightBean flight = null;
 
         try {
-            String query = "SELECT *" +
-                    " FROM dbo.Flights  " +
-                    " WHERE [AirlineCode] = ? AND [FlightNumber] = ? AND [DepartureTime] = ?";
+            String query = "SELECT f.*," +
+                    "a.AirlineName" +
+                    " FROM dbo.Flights f " +
+                    "LEFT JOIN Dbo.Airlines a ON a.AirlineCode = f.AirlineCode" +
+                    " WHERE f.[AirlineCode] = ? AND f.[FlightNumber] = ? AND f.[DepartureTime] = ?";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
 
@@ -126,12 +138,13 @@ public class FlightBean implements Serializable {
                 String departureCode = result.getString(3);
                 String stopOverCode = result.getString(4);
                 String destinationCode = result.getString(5);
+                String airlineName = result.getString(13);
 
                 DestinationBean rDeparture = new DestinationBean(departureCode);
                 DestinationBean rStopOver = new DestinationBean(stopOverCode);
                 DestinationBean rDestination = new DestinationBean(destinationCode);
 
-                flight = new FlightBean(aCode, departTime, flightCode, plane, /* mCost, */ rDeparture, rStopOver,
+                flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture, rStopOver,
                         rDestination);
             }
 
