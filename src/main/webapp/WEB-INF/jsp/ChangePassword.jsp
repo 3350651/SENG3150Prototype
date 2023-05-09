@@ -1,6 +1,7 @@
 <%@ page import="startUp.UserBean" %>
 <!DOCTYPE html>
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/script.js"></script>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -26,30 +27,28 @@
     <form name="goToPersonalDetails" action="AccountSettings" method="POST">
         <button type="submit" class="button" name="goToPersonalDetails" value="goToPersonalDetails">Modify Personal Details</button>
     </form>
-    <%--        Change Password button         --%>
-    <form name="goToChangePassword" action="AccountSettings" method="POST">
-        <button type="submit" class="button" name="goToChangePassword" value="goToChangePassword">Change Password</button>
-    </form>
 </div>
 
 <%--            Edit user form                 --%>
 <div class="main-content">
-<h1>Change Password</h1>
-    <form method="POST" action="AccountSettings" onsubmit="return changePassword()">
-           <label for="currentPassword">Current Password:</label>
-           <input type="password" id="currentPassword" name="currentPassword"><br>
 
-           <label for="newPassword">New Password:</label>
-           <input type="password" id="newPassword" name="newPassword"><br>
+<h1>Change Password for <%=user.getFname()%>, current password is <%=user.getUserPassword()%></h1>
+    <form method="POST" action="AccountSettings" onsubmit="return modifyPassword()">
+        <label for="currentPassword">Current Password:</label>
+        <input type="password" id="currentPassword" name="currentPassword" required><br>
 
-           <label for="confirmPassword">Confirm New Password:</label>
-           <input type="password" id="confirmPassword" name="confirmPassword"><br>
+        <label for="newPassword">New Password:</label>
+        <input type="password" id="newPassword" name="newPassword" required><br>
 
-           <input type="hidden" name="userID" value="<%=user.getUserID()%>">
+        <label for="confirmPassword">Confirm New Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required><br>
+
+        <input type="hidden" name="userID" value="<%=user.getUserID()%>">
+        <input type="hidden" name="password" value="<%=user.getUserPassword()%>">
 
         <button type="submit" name="changePassword" value="changePassword">Change Password</button>
     </form>
 </div>
 </body>
-<script type="text/javascript" src="webapp/javascript/script.js"></script>
+
 </html>
