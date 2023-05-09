@@ -7,13 +7,25 @@ public class BookingBean implements Serializable {
 
     private String bookingId;
     private String bookingUserId;
-    private String departureFlightId;
-    private String departureAirlineId;
-    private Date departureFlightTime;
-    private String returnFlightId;
-    private String returnAirlineId;
-    private Date returnFlightTime;
+    private FlightBean departureFlight;
+    private FlightBean returnFlight;
     private float totalAmount;
+
+    //constructors
+    public BookingBean(String newBookingUserId, FlightBean newDepartureFlight, float newTotalAmount){
+        bookingId = null;
+        bookingUserId = newBookingUserId;
+        departureFlight = newDepartureFlight;
+        totalAmount = newTotalAmount;
+        returnFlight = null;
+    }
+    public BookingBean(String newBookingUserId, FlightBean newDepartureFlight, FlightBean newReturnFlight, float newTotalAmount){
+        bookingId = null;
+        bookingUserId = newBookingUserId;
+        departureFlight = newDepartureFlight;
+        totalAmount = newTotalAmount;
+        returnFlight = newReturnFlight;
+    }
 
     //getters and setters
 
@@ -33,52 +45,20 @@ public class BookingBean implements Serializable {
         this.bookingUserId = bookingUserId;
     }
 
-    public String getDepartureFlightId() {
-        return departureFlightId;
+    public FlightBean getDepartureFlight() {
+        return departureFlight;
     }
 
-    public void setDepartureFlightId(String departureFlightId) {
-        this.departureFlightId = departureFlightId;
+    public void setDepartureFlight(FlightBean departureFlight) {
+        this.departureFlight = departureFlight;
     }
 
-    public String getDepartureAirlineId() {
-        return departureAirlineId;
+    public FlightBean getReturnFlight() {
+        return returnFlight;
     }
 
-    public void setDepartureAirlineId(String departureAirlineId) {
-        this.departureAirlineId = departureAirlineId;
-    }
-
-    public Date getDepartureFlightTime() {
-        return departureFlightTime;
-    }
-
-    public void setDepartureFlightTime(Date departureFlightTime) {
-        this.departureFlightTime = departureFlightTime;
-    }
-
-    public String getReturnFlightId() {
-        return returnFlightId;
-    }
-
-    public void setReturnFlightId(String returnFlightId) {
-        this.returnFlightId = returnFlightId;
-    }
-
-    public String getReturnAirlineId() {
-        return returnAirlineId;
-    }
-
-    public void setReturnAirlineId(String returnAirlineId) {
-        this.returnAirlineId = returnAirlineId;
-    }
-
-    public Date getReturnFlightTime() {
-        return returnFlightTime;
-    }
-
-    public void setReturnFlightTime(Date returnFlightTime) {
-        this.returnFlightTime = returnFlightTime;
+    public void setReturnFlight(FlightBean returnFlight) {
+        this.returnFlight = returnFlight;
     }
 
     public float getTotalAmount() {
@@ -89,7 +69,10 @@ public class BookingBean implements Serializable {
         this.totalAmount = totalAmount;
     }
 
+
     //create booking
+
+    //save Booking Progress
 
     //get booking
 
