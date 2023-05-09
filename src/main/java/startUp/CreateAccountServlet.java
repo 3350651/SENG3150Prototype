@@ -58,7 +58,7 @@ public class CreateAccountServlet extends HttpServlet {
 			String defaultCurrency = request.getParameter("defaultCurrency");
 			String defaultTimeZone = request.getParameter("defaultTimeZone");
 			String themePreference = request.getParameter("themePreference");
-			Boolean questionnaireCompleted = Boolean.parseBoolean(request.getParameter("questionnaireCompleted"));
+			String questionnaireCompleted = request.getParameter("questionnaireCompleted");
 			LocalDate dateOfBirth = LocalDate.parse(request.getParameter("dateOfBirth"));
 
 			UserBean user = new UserBean(firstName, lastName, email, password, phoneNumber, role, address,

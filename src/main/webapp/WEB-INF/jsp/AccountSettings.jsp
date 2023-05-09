@@ -30,6 +30,10 @@
     <form name="goToChangePassword" action="AccountSettings" method="POST">
         <button type="submit" class="button" name="goToChangePassword" value="goToChangePassword">Change Password</button>
     </form>
+    <%--        Modify Tag Set button         --%>
+    <form name="goToModifyTags" action="AccountSettings" method="POST">
+        <button type="submit" class="button" name="goToModifyTags" value="goToModifyTags">Modify Tags</button>
+    </form>
 </div>
 <div class="main-content">
     <h1>User Profile Details & Settings</h1>
@@ -62,7 +66,7 @@
     <h2>Tagset</h2>
     <div class="settingsCategory">
     <ul>
-        <li><p class="valueOfSetting">TagExample</p> </li>
+        <li><p class="valueOfSetting"><%= user.getTagSet() %></p> </li>
     </ul>
     </div>
     <h2>Bookmarked Flights</h2>

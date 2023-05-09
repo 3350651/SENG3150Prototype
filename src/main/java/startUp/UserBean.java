@@ -30,9 +30,8 @@ public class UserBean implements Serializable {
 	private String defaultCurrency;
 	private String defaultTimeZone;
 	private String themePreference;
-	private Boolean questionnaireCompleted;
+	private String questionnaireCompleted;
 	private LocalDate dateOfBirth;
-
 	private LinkedList<String> tagSet;
 
 	//private LinkedList<Flights> bookmarkedFlights
@@ -58,7 +57,7 @@ public class UserBean implements Serializable {
 		this.role = newRole;
 	}
 
-	public UserBean(boolean hasLogin, String userID, String fname, String lname, String email,String userPassword, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, Boolean questionnaireCompleted, LocalDate dateOfBirth) {
+	public UserBean(boolean hasLogin, String userID, String fname, String lname, String email,String userPassword, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, String questionnaireCompleted, LocalDate dateOfBirth) {
 		this.hasLogin = hasLogin;
 		this.userID = userID;
 		this.fname = fname;
@@ -74,9 +73,10 @@ public class UserBean implements Serializable {
 		this.defaultTimeZone = defaultTimeZone;
 		this.themePreference = themePreference;
 		this.questionnaireCompleted = questionnaireCompleted;
+		this.tagSet = new LinkedList<String>();
 	}
 
-	public UserBean(String fname, String lname, String email, String userPassword, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, Boolean questionnaireCompleted, LocalDate dateOfBirth) {
+	public UserBean(String fname, String lname, String email, String userPassword, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, String questionnaireCompleted, LocalDate dateOfBirth) {
 		this.hasLogin = hasLogin;
 		this.userID = userID;
 		this.fname = fname;
@@ -92,6 +92,7 @@ public class UserBean implements Serializable {
 		this.themePreference = themePreference;
 		this.questionnaireCompleted = questionnaireCompleted;
 		this.dateOfBirth = dateOfBirth;
+		this.tagSet = new LinkedList<String>();
 	}
 
 	public Boolean isHasLogin() {
@@ -146,11 +147,11 @@ public class UserBean implements Serializable {
 		this.themePreference = themePreference;
 	}
 
-	public Boolean isQuestionnaireCompleted() {
+	public String isQuestionnaireCompleted() {
 		return questionnaireCompleted;
 	}
 
-	public void setQuestionnaireCompleted(Boolean questionnaireCompleted) {
+	public void setQuestionnaireCompleted(String questionnaireCompleted) {
 		this.questionnaireCompleted = questionnaireCompleted;
 	}
 
@@ -230,7 +231,7 @@ public class UserBean implements Serializable {
 		return role;
 	}
 
-	public Boolean getQuestionnaireCompleted() {
+	public String getQuestionnaireCompleted() {
 		return questionnaireCompleted;
 	}
 
@@ -253,7 +254,7 @@ public class UserBean implements Serializable {
 	/**
 	 * Inserts a new user Bean with the argumented details into the database.
 	 */
-	public void addUserToTheSystem(String firstName, String lastName, String email, String password, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, Boolean questionnaireCompleted, LocalDate dateOfBirth) {
+	public void addUserToTheSystem(String firstName, String lastName, String email, String password, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, String questionnaireCompleted, LocalDate dateOfBirth) {
 		try {
 			Random random = new Random();
 			userID = String.format("%08d", random.nextInt(100000000));
@@ -274,7 +275,7 @@ public class UserBean implements Serializable {
 			statement.setString(10, defaultCurrency);
 			statement.setString(11, defaultTimeZone);
 			statement.setString(12, themePreference);
-			statement.setBoolean(13, questionnaireCompleted);
+			statement.setString(13, questionnaireCompleted);
 			statement.setDate(14, java.sql.Date.valueOf(dateOfBirth));
 
 			statement.executeUpdate();
@@ -316,8 +317,10 @@ public class UserBean implements Serializable {
 				this.setDefaultCurrency(result.getString("defaultCurrency"));
 				this.setDefaultTimeZone(result.getString("defaultTimeZone"));
 				this.setThemePreference(result.getString("themePreference"));
-				//this.setQuestionnaireCompleted(Boolean.valueOf(result.getString("questionnaireCompleted")));
+				this.setQuestionnaireCompleted(result.getString("questionnaireCompleted"));
 				this.setDateOfBirth(LocalDate.parse(result.getString("dateOfBirth")));
+				this.setTagSet(new LinkedList<String>());
+				loadTags(result.getString("userID"));
 			}
 			
 			result.close();
@@ -329,6 +332,29 @@ public class UserBean implements Serializable {
 			System.err.println(e.getStackTrace());
 		}
 	}
+
+	public void loadTags(String userID) {
+		try {
+			String query = "SELECT * FROM USERTAGS WHERE [userID]=?";
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, userID);
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				this.addTag(result.getString("tagName"));
+			}
+
+			result.close();
+			statement.close();
+			connection.close();
+		}
+		catch (SQLException e) {
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+	}
+
 
 	/**
 	 * Checks if the argument username exists in the database.
@@ -589,6 +615,25 @@ public class UserBean implements Serializable {
 		}
 	}
 
+	public static void addToTagSet(String userID, String tagID) {
+		String query = "INSERT INTO USERTAGS VALUES (?, ?, ?)";
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			Random random = new Random();
+			String userTagsID = String.format("%08d", random.nextInt(100000000));
+			statement.setString(1, userTagsID);
+			statement.setString(2, tagID);
+			statement.setString(3, userID);
+
+			statement.executeUpdate();
+			statement.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+	}
 	public static void updateUIPreferences(String id, String defaultSearch, String themePreference){
 		try {
 			Connection connection = ConfigBean.getConnection();
@@ -691,7 +736,7 @@ public class UserBean implements Serializable {
 	}
 
 	public LinkedList<String> getTags(String userID){
-		LinkedList<String> groupIDs = new LinkedList<>();
+		LinkedList<String> tagSet = new LinkedList<>();
 
 		String query = "SELECT * FROM USERTAGS WHERE [userID] = ?";
 		try{
@@ -702,7 +747,7 @@ public class UserBean implements Serializable {
 
 			while (result.next()){
 				String id = result.getString(1);
-				groupIDs.add(id);
+				tagSet.add(id);
 			}
 			statement.close();
 			connection.close();
@@ -712,6 +757,6 @@ public class UserBean implements Serializable {
 			System.err.println(e.getStackTrace());
 		}
 
-		return groupIDs;
+		return tagSet;
 	}
 }
