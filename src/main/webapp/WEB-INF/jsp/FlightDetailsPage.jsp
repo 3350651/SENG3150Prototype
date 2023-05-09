@@ -37,13 +37,9 @@
                     </h2>
                 </fieldset>
                 <!--Add reputation score and destination description here-->
-                <form name="addToGroupList" method="POST" action="">
-                    <button type="submit" name="addToGroupFavList" value=<%=flight.getAirline() + "," +
-                        flight.getFlightName() + "," + flight.getFlightTime()%>>Add To Group Favourite List</button>
-                </form>
-                <form name="returnFlightOrContinue" method="POST" action="createBooking">
-                    <button type="submit" method="POST" value=<%=flight.getAirline() + "," + flight.getFlightName()
-                        + "," + flight.getFlightTime()%>>Continue</button>
+                <form name="addToGroupList" method="post" action="">
+                    <button type="submit" name="addToGroupFavList" value=<%=flight.getAirline() + "," + flight.getFlightName()
+                        + "," + flight.getFlightTime()%>>Add To Group Favourite List</button>
                 </form>
             </main>
         </body>
