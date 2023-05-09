@@ -6,11 +6,14 @@
     <predefined_log_file id="Tomcat Manager Log" />
     <predefined_log_file id="Tomcat Host Manager Log" />
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <predefined_log_file enabled="true" id="Tomcat Localhost Log" />
     <predefined_log_file enabled="true" id="Tomcat Access Log" />
     <predefined_log_file id="Tomcat Catalina Log" />
     <predefined_log_file id="Tomcat Manager Log" />
     <predefined_log_file id="Tomcat Host Manager Log" />
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     <option name="adminPort" value="8005" />
@@ -27,11 +30,14 @@
     <predefined_log_file id="Tomcat Manager Log" />
     <predefined_log_file id="Tomcat Host Manager Log" />
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <predefined_log_file enabled="true" id="Tomcat Localhost Log" />
     <predefined_log_file enabled="true" id="Tomcat Access Log" />
     <predefined_log_file id="Tomcat Catalina Log" />
     <predefined_log_file id="Tomcat Manager Log" />
     <predefined_log_file id="Tomcat Host Manager Log" />
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     <option name="tomcatInfo">
