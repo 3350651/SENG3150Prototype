@@ -78,4 +78,21 @@ public class MessageBean implements Serializable {
         return getUsersName(this.userID);
     }
 
+    public static void deleteMessages(String chatID){
+        String query = "DELETE FROM MESSAGE WHERE [chatID] = ?";
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, chatID);
+
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+    }
 }

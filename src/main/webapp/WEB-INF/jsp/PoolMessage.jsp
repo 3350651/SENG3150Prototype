@@ -31,7 +31,8 @@ PoolBean pool = (PoolBean) session.getAttribute("pool");
         </div>
         <div id="continueFormContainer">
             <form method="POST" action="GroupHomepage">
-                <button type="submit" name="continue" value="continue">Continue</button>
+                <button type="submit" name="poolContinue" value="poolContinue">Continue</button>
+
             </form>
         </div>
         </main>

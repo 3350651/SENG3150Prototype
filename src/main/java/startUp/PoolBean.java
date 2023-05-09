@@ -92,8 +92,46 @@ public class PoolBean implements Serializable {
     }
 
     //up to allowing for withdrawal of pool
-    public void addToRemainingPool(double amount){
-        getAmountRemaining();
+    public static void addToRemainingPool(String poolID, double amount){
+        double currentRemaining = getAmountRemaining(poolID);
+        double newRemaining = currentRemaining + amount;
+
+        String query = "UPDATE POOL SET [amountRemaining] = ? WHERE [poolID] = ?";
+
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setDouble(1, newRemaining);
+            statement.setString(2, poolID);
+
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+
+    }
+
+    public static void deletePool(String poolID){
+        String query = "DELETE FROM POOL WHERE [poolID] = ?";
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, poolID);
+
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
     }
 
     public String getPoolID(){

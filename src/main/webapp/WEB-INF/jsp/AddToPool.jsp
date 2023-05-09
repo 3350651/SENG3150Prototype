@@ -34,7 +34,7 @@ PoolBean pool = (PoolBean) session.getAttribute("pool");
         <div id="addMoneyToPoolFormContainer">
             <form method="POST" action="GroupHomepage" onsubmit="return addMoneyToPool()">
                 <label for="addMoney">Amount to Deposit: </label>
-                <input type="text" id="addMoney" name="addMoney"><br>
+                <input type="number" id="addMoney" name="addMoney"><br>
 
                 <button type="submit" name="addMoney" value="addMoney">Add to Pool</button>
             </form>

@@ -74,4 +74,22 @@ public class ChatBean implements Serializable {
         return messages;
     }
 
+    public static void deleteChat(String chatID){
+        String query = "DELETE FROM CHAT WHERE [chatID] = ?";
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, chatID);
+
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+    }
+
 }

@@ -7,6 +7,7 @@
 UserBean user = (UserBean) session.getAttribute("userBean");
 GroupBean group = (GroupBean) session.getAttribute("group");
 PoolBean pool = (PoolBean) session.getAttribute("pool");
+boolean hasDeposited = (boolean) session.getAttribute("hasDeposited");
 %>
 
 
@@ -42,6 +43,13 @@ PoolBean pool = (PoolBean) session.getAttribute("pool");
                    <button type="submit" name="addToPool" value="addToPool">Add To Pool</button>
             </form>
         </div>
+        <%if(hasDeposited) {%>
+             <div>
+                <form name="withdrawFromPool" action="GroupHomepage" method="POST">
+                       <button type="submit" name="withdrawFromPool" value="withdrawFromPool">Withdraw From Pool</button>
+                </form>
+             </div>
+         <%}%>
     </main>
 </body>
 <script type="text/javascript" src="script.js"></script>

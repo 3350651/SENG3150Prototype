@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
+import static startUp.ChatBean.deleteChat;
 import static startUp.ChatBean.getChatMessages;
 import static startUp.PoolBean.*;
+import static startUp.PoolDepositBean.getUsersPoolDeposits;
+import static startUp.PoolDepositBean.withdrawDeposits;
 
 public class GroupBean implements Serializable {
 
@@ -269,10 +272,29 @@ public class GroupBean implements Serializable {
 
     }
 
-    public void withDrawFromPool(){
+    public double withDrawFromPool(String userID){
+        //get total amount user deposited in the pool.
+        double amount = getUsersPoolDeposits(this.poolID, userID);
+
+        //Update the remaining pool amount.
+        addToRemainingPool(this.poolID, amount);
+
         //remove PoolDeposit rows from db.
-        //get the total amount of money from the db that the user deposited
-        //update the remaining pool to add this value.
+        withdrawDeposits(this.poolID, userID);
+
+        return amount;
     }
 
+    public String getPoolID() {
+        return poolID;
+    }
+
+    public boolean isPoolComplete(String poolID){
+        double amountRemaining = getAmountRemaining(poolID);
+        if(amountRemaining == 0){
+            return true;
+        }
+        return false;
+
+    }
 }
