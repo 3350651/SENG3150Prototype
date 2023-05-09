@@ -329,16 +329,15 @@
 //     }
 // }
 
-function modifyPassword(){
-    var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
-    console.log("modifypasswordcalled");
-    if(document.getElementById("password").value === document.getElementById("currentPassword").value){
-        console.log("password matches account");
-        if (document.getElementById("newPassword") === document.getElementById("confirmPassword")){
-            console.log("new and confirm match");
-            if(regex.test(document.getElementById("newPassword"))){
-                console.log("new password has the right requirements");
-                // return true;
+function modifyPassword(usersActualPassword){
+    let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+    let passwordAttempt = document.getElementById("currentPassword").value;
+    let passwordToChangeTo = document.getElementById("newPassword").value;
+    let confirmPasswordToChangeTo = document.getElementById("confirmPassword").value;
+    if(usersActualPassword == passwordAttempt){
+        if (passwordToChangeTo == confirmPasswordToChangeTo){
+            if(regex.test(passwordToChangeTo)){
+                return true;
             }
             else{
                 alert("Invalid input:\n The new password entered does not contain the required components:\n - At least 8 characters. \n - At least one UPPER case character.\n - At least one lower case character.\n - At least one number. ");

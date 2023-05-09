@@ -31,9 +31,9 @@
 
 <%--            Edit user form                 --%>
 <div class="main-content">
-
-<h1>Change Password for <%=user.getFname()%>, current password is <%=user.getUserPassword()%></h1>
-    <form method="POST" action="AccountSettings" onsubmit="return modifyPassword()">
+    <p class="top-right"><%=user.getFname()%> <%=user.getLname()%></p>
+<h1>Change Password</h1>
+    <form method="POST" action="AccountSettings" onsubmit="return modifyPassword(<%=user.getUserPassword()%>)">
         <label for="currentPassword">Current Password:</label>
         <input type="password" id="currentPassword" name="currentPassword" required><br>
 
@@ -44,7 +44,6 @@
         <input type="password" id="confirmPassword" name="confirmPassword" required><br>
 
         <input type="hidden" name="userID" value="<%=user.getUserID()%>">
-        <input type="hidden" name="password" value="<%=user.getUserPassword()%>">
 
         <button type="submit" name="changePassword" value="changePassword">Change Password</button>
     </form>
