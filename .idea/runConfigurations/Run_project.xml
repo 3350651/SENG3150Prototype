@@ -5,11 +5,14 @@
     <predefined_log_file id="Tomcat Catalina Log" />
     <predefined_log_file id="Tomcat Manager Log" />
     <predefined_log_file id="Tomcat Host Manager Log" />
+<<<<<<< Updated upstream
     <predefined_log_file enabled="true" id="Tomcat Localhost Log" />
     <predefined_log_file enabled="true" id="Tomcat Access Log" />
     <predefined_log_file id="Tomcat Catalina Log" />
     <predefined_log_file id="Tomcat Manager Log" />
     <predefined_log_file id="Tomcat Host Manager Log" />
+=======
+>>>>>>> Stashed changes
     <option name="adminPort" value="8005" />
     <option name="contextPath" value="/FlightPub.main" />
     <option name="docBase" value="C:\Users\lachl\OneDrive\Documents\GitHub\SENG3150Prototype\src\main\webapp" />
@@ -23,11 +26,14 @@
     <predefined_log_file id="Tomcat Catalina Log" />
     <predefined_log_file id="Tomcat Manager Log" />
     <predefined_log_file id="Tomcat Host Manager Log" />
+<<<<<<< Updated upstream
     <predefined_log_file enabled="true" id="Tomcat Localhost Log" />
     <predefined_log_file enabled="true" id="Tomcat Access Log" />
     <predefined_log_file id="Tomcat Catalina Log" />
     <predefined_log_file id="Tomcat Manager Log" />
     <predefined_log_file id="Tomcat Host Manager Log" />
+=======
+>>>>>>> Stashed changes
     <option name="tomcatInfo">
       <TomcatInfo>
         <option name="name" value="Apache Tomcat/9.0.59" />
