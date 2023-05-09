@@ -1,7 +1,12 @@
 package startUp;
 
 import java.io.Serializable;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.Random;
 
 public class BookingBean implements Serializable {
 
@@ -9,22 +14,40 @@ public class BookingBean implements Serializable {
     private String bookingUserId;
     private FlightBean departureFlight;
     private FlightBean returnFlight;
+    private LinkedList<TicketBean> tickets;
+    private LinkedList<PassengerBean> passengers;
     private float totalAmount;
 
     //constructors
     public BookingBean(String newBookingUserId, FlightBean newDepartureFlight, float newTotalAmount){
-        bookingId = null;
+        Random random = new Random();
+        bookingId = String.format("%08d", random.nextInt(100000000));
         bookingUserId = newBookingUserId;
         departureFlight = newDepartureFlight;
         totalAmount = newTotalAmount;
         returnFlight = null;
+        tickets = null;
+        passengers = null;
     }
     public BookingBean(String newBookingUserId, FlightBean newDepartureFlight, FlightBean newReturnFlight, float newTotalAmount){
-        bookingId = null;
+        Random random = new Random();
+        bookingId = String.format("%08d", random.nextInt(100000000));
         bookingUserId = newBookingUserId;
         departureFlight = newDepartureFlight;
         totalAmount = newTotalAmount;
         returnFlight = newReturnFlight;
+        tickets = null;
+        passengers = null;
+    }
+
+    public BookingBean(String newBookingUserId,  FlightBean newDepartureFlight, FlightBean newReturnFlight){
+        Random random = new Random();
+        bookingId = String.format("%08d", random.nextInt(100000000));
+        bookingUserId = newBookingUserId;
+        departureFlight = newDepartureFlight;
+        returnFlight = newReturnFlight;
+        tickets = null;
+        passengers = null;
     }
 
     //getters and setters
@@ -61,6 +84,22 @@ public class BookingBean implements Serializable {
         this.returnFlight = returnFlight;
     }
 
+    public LinkedList<TicketBean> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(LinkedList<TicketBean> tickets) {
+        this.tickets = tickets;
+    }
+
+    public LinkedList<PassengerBean> getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(LinkedList<PassengerBean> passengers) {
+        this.passengers = passengers;
+    }
+
     public float getTotalAmount() {
         return totalAmount;
     }
@@ -70,7 +109,28 @@ public class BookingBean implements Serializable {
     }
 
 
-    //create booking
+    //add booking to database
+    //TODO: Add ability to add with return flight if not null.
+    public void addBooking(){
+        try{
+            String query = "INSERT INTO dbo.BOOKINGS (BookingId, BookingUserId, DepartureAirlineCode, DepartureFlightNumber, DepartureTime, Progress)\n" +
+                            "VALUES(?,?,?,?,?,?);";
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, this.bookingId);
+            statement.setString(2, this.bookingUserId);
+            statement.setString(3, this.departureFlight.getAirline());
+            statement.setString(4, this.departureFlight.getFlightName());
+            statement.setString(5, this.departureFlight.getFlightTime().toString());
+            statement.setBoolean(6, true);
+            statement.execute();
+
+        }catch(SQLException e){
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+    }
+
 
     //save Booking Progress
 

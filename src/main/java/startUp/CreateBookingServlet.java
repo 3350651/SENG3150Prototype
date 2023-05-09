@@ -1,5 +1,6 @@
 package startUp;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,11 +22,15 @@ public class CreateBookingServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession();
+        UserBean user = (UserBean) session.getAttribute("userBean");
 
-        FlightBean test = (FlightBean) session.getAttribute("Flight");
+        FlightBean flight = (FlightBean) session.getAttribute("Flight");
         //TODO: Get return flight information here
         //TODO: Get some booking information e.g. Number of guests
-
-
+        BookingBean booking = new BookingBean(user.getUserID(), flight, null);
+        session.setAttribute("booking", booking);
+        booking.addBooking();
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightOptionsPage.jsp");
+        requestDispatcher.forward(req,resp);
     }
 }
