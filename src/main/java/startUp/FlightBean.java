@@ -2,6 +2,7 @@ package startUp;
 
 import java.io.Serializable;
 import java.sql.*;
+import java.util.LinkedList;
 
 public class FlightBean implements Serializable {
 
@@ -14,10 +15,12 @@ public class FlightBean implements Serializable {
     private DestinationBean departure;
     private DestinationBean stopOver;
     private DestinationBean destination;
+    private LinkedList<AvailabilityBean> availabilityBeans;
 
     // constructor
 
-    public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightTime, String newflightName, String newPlaneType,
+    public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightTime, String newflightName,
+            String newPlaneType,
             /* float newMinCost, */ DestinationBean newDeparture, DestinationBean newStopOver,
             DestinationBean newDestination) {
         airline = newAirline;
@@ -29,6 +32,7 @@ public class FlightBean implements Serializable {
         departure = newDeparture;
         stopOver = newStopOver;
         destination = newDestination;
+        availabilityBeans = null;
     }
 
     // getters and setters
@@ -144,7 +148,8 @@ public class FlightBean implements Serializable {
                 DestinationBean rStopOver = new DestinationBean(stopOverCode);
                 DestinationBean rDestination = new DestinationBean(destinationCode);
 
-                flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture, rStopOver,
+                flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
+                        rStopOver,
                         rDestination);
             }
 
@@ -158,5 +163,7 @@ public class FlightBean implements Serializable {
     }
 
     // TODO: get min cost
+
+    // TODO: get Availabilities
 
 }

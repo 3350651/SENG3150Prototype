@@ -3,7 +3,8 @@
         <!DOCTYPE html>
         <html lang="en">
 
-        <%FlightBean flight=(FlightBean) session.getAttribute("Flight");%>
+        <% BookingBean booking=(BookingBean) session.getAttribute("booking"); FlightBean
+            departureFlight=booking.getDepartureFlight();%>
 
             <head>
                 <meta charset="UTF-8">
@@ -12,8 +13,21 @@
             </head>
 
             <body>
+                <header>
+                    <h1>Select Flight Options</h1>
+                </header>
                 <main>
-                    <h1>HEY!</h1>
+                    <form name="flightOptions" method="POST" action="createBooking">
+                        <fieldset>
+                            <legend>Departure Flight</legend>
+                            <h2>Select Ticket Class</h2>
+                            <input type="radio" id="departureClass" name="departureClass" value=<%=departureFlight.get%>
+                        </fieldset>
+                        <!-- <fieldset>
+                            <legend>Return Flight</legend>
+                        </fieldset> -->
+                    </form>
+
                 </main>
             </body>
 
