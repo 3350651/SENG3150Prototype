@@ -5,14 +5,24 @@
     <predefined_log_file id="Tomcat Catalina Log" />
     <predefined_log_file id="Tomcat Manager Log" />
     <predefined_log_file id="Tomcat Host Manager Log" />
+    <predefined_log_file enabled="true" id="Tomcat Localhost Log" />
+    <predefined_log_file enabled="true" id="Tomcat Access Log" />
+    <predefined_log_file id="Tomcat Catalina Log" />
+    <predefined_log_file id="Tomcat Manager Log" />
+    <predefined_log_file id="Tomcat Host Manager Log" />
     <option name="adminPort" value="8005" />
     <option name="contextPath" value="/FlightPub.main" />
-    <option name="docBase" value="$PROJECT_DIR$/src/main/webapp" />
+    <option name="docBase" value="C:\Users\lachl\OneDrive\Documents\GitHub\SENG3150Prototype\src\main\webapp" />
     <option name="envOptions">
       <map />
     </option>
     <option name="passParentEnvironmentVariables" value="true" />
     <option name="port" value="8080" />
+    <predefined_log_file enabled="true" id="Tomcat Localhost Log" />
+    <predefined_log_file enabled="true" id="Tomcat Access Log" />
+    <predefined_log_file id="Tomcat Catalina Log" />
+    <predefined_log_file id="Tomcat Manager Log" />
+    <predefined_log_file id="Tomcat Host Manager Log" />
     <predefined_log_file enabled="true" id="Tomcat Localhost Log" />
     <predefined_log_file enabled="true" id="Tomcat Access Log" />
     <predefined_log_file id="Tomcat Catalina Log" />
