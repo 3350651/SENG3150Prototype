@@ -15,7 +15,7 @@ public class FlightBean implements Serializable {
     private DestinationBean departure;
     private DestinationBean stopOver;
     private DestinationBean destination;
-    private LinkedList<AvailabilityBean> availabilityBeans;
+    private LinkedList<AvailabilityBean> seatAvailability;
 
     // constructor
 
@@ -32,7 +32,7 @@ public class FlightBean implements Serializable {
         departure = newDeparture;
         stopOver = newStopOver;
         destination = newDestination;
-        availabilityBeans = null;
+        seatAvailability = new LinkedList<>();
     }
 
     // getters and setters
@@ -94,20 +94,36 @@ public class FlightBean implements Serializable {
         this.departure = departure;
     }
 
-    public DestinationBean getStopover() {
-        return stopOver;
-    }
-
-    public void setStopover(DestinationBean stopover) {
-        this.stopOver = stopover;
-    }
-
     public DestinationBean getDestination() {
         return destination;
     }
 
     public void setDestination(DestinationBean destination) {
         this.destination = destination;
+    }
+
+    public float getMinCost() {
+        return minCost;
+    }
+
+    public void setMinCost(float minCost) {
+        this.minCost = minCost;
+    }
+
+    public DestinationBean getStopOver() {
+        return stopOver;
+    }
+
+    public void setStopOver(DestinationBean stopOver) {
+        this.stopOver = stopOver;
+    }
+
+    public LinkedList<AvailabilityBean> getSeatAvailability() {
+        return seatAvailability;
+    }
+
+    public void setSeatAvailability(LinkedList<AvailabilityBean> seatAvailability) {
+        this.seatAvailability = seatAvailability;
     }
 
     // get flight
@@ -131,7 +147,6 @@ public class FlightBean implements Serializable {
 
             ResultSet result = statement.executeQuery();
 
-            // TODO:Possibly won't work?
             // TODO:Retrieve min cost of flight...
 
             while (result.next()) {
@@ -164,6 +179,9 @@ public class FlightBean implements Serializable {
 
     // TODO: get min cost
 
-    // TODO: get Availabilities
+    public void getAvailabilities(){
+        seatAvailability = AvailabilityBean.getAvailability(this.airline, this.flightName, this.flightTime);
+    }
+
 
 }

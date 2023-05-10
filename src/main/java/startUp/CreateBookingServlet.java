@@ -25,6 +25,8 @@ public class CreateBookingServlet extends HttpServlet {
         UserBean user = (UserBean) session.getAttribute("userBean");
 
         FlightBean flight = (FlightBean) session.getAttribute("Flight");
+        flight.getAvailabilities();
+        session.setAttribute("Flight", flight);
         //TODO: Get return flight information here
         //TODO: Get some booking information e.g. Number of guests
         BookingBean booking = new BookingBean(user.getUserID(), flight, null);

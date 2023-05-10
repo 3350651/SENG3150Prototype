@@ -266,3 +266,31 @@ VALUES
 INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
 VALUES
 	('AA','AA1735','ATL','MIA','GIG','2014-09-23 09:50:00','2014-09-23 11:50:00','2014-09-23 23:20:00','2014-09-24 09:00:00','A380',120,520)
+
+  INSERT INTO TicketClass (ClassCode, Details)
+VALUES
+	('BUS','Business Class'),
+	('ECO','Economy'),
+	('FIR','First Class'),
+	('PME','Premium Economy');
+
+INSERT INTO TicketType (TicketCode, Name, Transferrable, Refundable, Exchangeable, FrequentFlyerPoints)
+VALUES
+	('A','Standby','0','0','0','0'),
+	('B','Premium Discounted','0','0','0','0'),
+	('C','Discounted','0','0','0','1'),
+	('D','Standard','0','0','0','1'),
+	('E','Premium','1','0','1','1'),
+	('F','ld','1','1','1','1'),
+	('G','Platinum','1','1','1','1');
+
+  INSERT INTO Availability (AirlineCode, FlightNumber, DepartureTime, ClassCode, TicketCode, NumberAvailableSeatsLeg1, NumberAvailableSeatsLeg2)
+VALUES
+	('AA','AA1735','2014-09-23 09:50:00','BUS','B',17,18),
+	('AA','AA1735','2014-09-23 09:50:00','BUS','D',18,0),
+	('AA','AA1735','2014-09-23 09:50:00','ECO','A',8,0),
+	('AA','AA1735','2014-09-23 09:50:00','ECO','F',2,0),
+	('AA','AA1735','2014-09-23 09:50:00','FIR','B',6,0),
+	('AA','AA1735','2014-09-23 09:50:00','FIR','G',10,10),
+	('AA','AA1735','2014-09-23 09:50:00','PME','B',0,18),
+	('AA','AA1735','2014-09-23 09:50:00','PME','E',16,6)
