@@ -22,6 +22,9 @@ public class CreateBookingServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession();
+
+        if(req.getParameter("details") != null){
+
         UserBean user = (UserBean) session.getAttribute("userBean");
 
         FlightBean flight = (FlightBean) session.getAttribute("Flight");
@@ -34,5 +37,11 @@ public class CreateBookingServlet extends HttpServlet {
         booking.addBooking();
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightOptionsPage.jsp");
         requestDispatcher.forward(req,resp);
+        }
+        else if(req.getParameter("options") != null){
+            //TODO: needs to be a class selection for each passenger in each flight
+            String departureClass = req.getParameter("departureClass");
+
+        }
     }
 }

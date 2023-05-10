@@ -22,17 +22,17 @@
 
                 <fieldset>
                     <legend>Flight Details:</legend>
-                    </br>
+                    <br/>
                     <h2>
                         Airline: <%=flight.getAirlineName()%>
                     </h2>
-                    </br>
+                    <br/>
                     <h2>Departure Time: <%=flight.getFlightTime().toString()%>
                     </h2>
-                    </br>
+                    <br/>
                     <h2>Flight Name: <%=flight.getFlightName()%>
                     </h2>
-                    </br>
+                    <br/>
                     <h2>Plane Model: <%=flight.getPlaneType()%>
                     </h2>
                 </fieldset>
@@ -44,6 +44,7 @@
                 <form name="returnFlightOrContinue" method="POST" action="createBooking">
                     <!--Add return flight search function here. Maybe add return flight to the session as "returnFlight" to retrieve object in servlet-->
                     <button type="submit" name="continue">Continue</button>
+                <input type="hidden" name="details" value="true"/>
                 </form>
             </main>
         </body>

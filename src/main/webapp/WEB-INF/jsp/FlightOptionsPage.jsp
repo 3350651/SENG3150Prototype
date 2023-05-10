@@ -20,6 +20,7 @@
                         </header>
                         <main>
                             <form name="flightOptions" method="POST" action="createBooking">
+                                <!--Needs to be a class selection for each passenger-->
                                 <fieldset>
                                     <legend>Departure Flight</legend>
                                     <h2>Select Ticket Class</h2>
@@ -42,6 +43,8 @@
                                 <!-- <fieldset>
                             <legend>Return Flight</legend>
                         </fieldset> -->
+                                <button type="submit" name="submit">Submit</button>
+                                </input type="hidden" name="options" value="true">
                             </form>
 
                         </main>

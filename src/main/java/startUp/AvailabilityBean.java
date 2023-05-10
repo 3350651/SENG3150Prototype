@@ -14,10 +14,15 @@ public class AvailabilityBean {
     private String ticketTypeName;
     private int leg1SeatsAvailable;
     private int leg2SeatsAvailable;
+    private float fullPrice;
+    private float leg1Price;
+    private float leg2Price;
 
     //constructors
 
-    public AvailabilityBean(String newClassCode, String newTicketCode, String newAirlineCode, String newFlightName, Timestamp newFlightDepartureTime, int newLeg1SeatsAvailable, int newLeg2SeatsAvailable, String newClassName, String newTicketTypeName){
+    public AvailabilityBean(String newClassCode, String newTicketCode, String newAirlineCode, String newFlightName,
+                            Timestamp newFlightDepartureTime, int newLeg1SeatsAvailable, int newLeg2SeatsAvailable,
+                            String newClassName, String newTicketTypeName, float newseatPrice, float newLeg1Price, float newLeg2Price){
         classCode = newClassCode;
         ticketCode = newTicketCode;
         airlineCode = newAirlineCode;
@@ -27,6 +32,9 @@ public class AvailabilityBean {
         leg2SeatsAvailable = newLeg2SeatsAvailable;
         className = newClassName;
         ticketTypeName = newTicketTypeName;
+        fullPrice = newseatPrice;
+        leg1Price = newLeg1Price;
+        leg2Price =- newLeg2Price;
     }
 
 
@@ -104,6 +112,30 @@ public class AvailabilityBean {
         this.ticketTypeName = ticketTypeName;
     }
 
+    public float getFullPrice() {
+        return fullPrice;
+    }
+
+    public void setFullPrice(float fullPrice) {
+        this.fullPrice = fullPrice;
+    }
+
+    public float getLeg1Price() {
+        return leg1Price;
+    }
+
+    public void setLeg1Price(float leg1Price) {
+        this.leg1Price = leg1Price;
+    }
+
+    public float getLeg2Price() {
+        return leg2Price;
+    }
+
+    public void setLeg2Price(float leg2Price) {
+        this.leg2Price = leg2Price;
+    }
+
     //get availability
     public static LinkedList<AvailabilityBean> getAvailability(String airlineCode, String flightName, Timestamp flightDepartureTime){
 
@@ -113,6 +145,7 @@ public class AvailabilityBean {
         String ticketType = "";
         String className = "";
         String ticketTypeName = "";
+        float fullPrice = 0, leg1Price = 0, leg2Price = 0;
         LinkedList<AvailabilityBean> list = new LinkedList<>();
 
         try {
@@ -124,10 +157,16 @@ public class AvailabilityBean {
                     "[a].[NumberAvailableSeatsLeg1]," +
                     "[a].[NumberAvailableSeatsLeg2]," +
                     "[c].[Details]," +
-                    "[t].[Name] FROM Availability a " +
+                    "[t].[Name]," +
+                    "[p].Price," +
+                    "[p].[PriceLeg1]," +
+                    "[p].[PriceLeg2] FROM Availability a " +
                     "LEFT JOIN TicketClass c ON c.ClassCode = a.ClassCode " +
                     "LEFT JOIN TicketType t ON t.TicketCode = a.TicketCode " +
-                    "WHERE AirlineCode = ? AND FlightNumber = ? AND DepartureTime = ? ";
+                    "LEFT JOIN Price p ON p.AirlineCode = a.AirlineCode AND p.ClassCode = a.ClassCode " +
+                    "AND p.FlightNumber = a.FlightNumber AND p.TicketCode = a.TicketCode AND " +
+                    "(a.DepartureTime >= p.StartDate AND a.DepartureTime <= p.EndDate) " +
+                    "WHERE a.AirlineCode = ? AND a.FlightNumber = ? AND a.DepartureTime = ?";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
 
@@ -144,7 +183,10 @@ public class AvailabilityBean {
                     available2 = result.getInt(7);
                     className = result.getString(8);
                     ticketTypeName = result.getString(9);
-                    list.add(new AvailabilityBean(classCode, ticketType, airlineCode, flightName, flightDepartureTime, available1, available2, className, ticketTypeName));
+                    fullPrice = result.getFloat(10);
+                    leg1Price = result.getFloat(11);
+                    leg2Price = result.getFloat(12);
+                    list.add(new AvailabilityBean(classCode, ticketType, airlineCode, flightName, flightDepartureTime, available1, available2, className, ticketTypeName, fullPrice, leg1Price, leg2Price));
             }
 
             statement.close();
