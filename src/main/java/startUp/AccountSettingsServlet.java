@@ -91,12 +91,23 @@ public class AccountSettingsServlet extends HttpServlet {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
 			requestDispatcher.forward(request, response);
 		}
-		if(request.getParameter("modifyTags") != null){
+		if(request.getParameter("addTags") != null){
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
 			String[] tagValues = request.getParameterValues("tags[]");
 			for (int i=0; i< tagValues.length; i++) {
 				UserBean.addToTagSet(id, tagValues[i]);
 				user.addTag(tagValues[i]);
+			}
+			session.setAttribute("userBean", user);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("removeTags") != null){
+			String id = request.getParameter("userID"); // do this for all others as hidden form input
+			String[] tagValues = request.getParameterValues("tags[]");
+			for (int i=0; i< tagValues.length; i++) {
+				UserBean.removeFromTagSet(id, tagValues[i]);
+				user.removeTag(tagValues[i]);
 			}
 			session.setAttribute("userBean", user);
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");

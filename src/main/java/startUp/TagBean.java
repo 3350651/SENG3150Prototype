@@ -87,6 +87,32 @@ public class TagBean implements Serializable{
         return tags;
     }
 
+    public static LinkedList<String> getAllTags(){
+        LinkedList<String> tags = new LinkedList<>();
+
+        String query = "SELECT tagName FROM TAGS";
+
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()){
+                String tagName = result.getString(1);
+
+                String tag = new String(tagName);
+                tags.add(tag);
+            }
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+        return tags;
+    }
+
     public String getTagName(){
         return this.tagName;
     }

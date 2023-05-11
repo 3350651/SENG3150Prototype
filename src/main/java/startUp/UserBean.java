@@ -243,11 +243,26 @@ public class UserBean implements Serializable {
 		this.tagSet = tagSet;
 	}
 
-	public void addTag(String tag){
-		getTagSet().add(tag);
+	public void addTag(String tag) {
+		boolean tagExists = false;
+		for (String s : getTagSet()) {
+			if (s.equals(tag)) {
+				tagExists = true;
+				break;
+			}
+		}
+		if (!tagExists) {
+			getTagSet().add(tag);
+		}
 	}
 
 	public void removeTag(String tag){
+		for (int i =0; i<getTagSet().size(); i++){
+			if (getTagSet().get(i).equals(tag)){
+				getTagSet().remove(i);
+			}
+		}
+
 		getTagSet().remove(tag);
 	}
 
@@ -335,7 +350,10 @@ public class UserBean implements Serializable {
 
 	public void loadTags(String userID) {
 		try {
-			String query = "SELECT * FROM USERTAGS WHERE [userID]=?";
+			String query = "SELECT tagName\n" +
+					"FROM TAGS\n" +
+					"INNER JOIN USERTAGS ON TAGS.tagID = USERTAGS.tagID\n" +
+					"WHERE USERTAGS.userID = ?;";
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, userID);
@@ -615,25 +633,86 @@ public class UserBean implements Serializable {
 		}
 	}
 
-	public static void addToTagSet(String userID, String tagID) {
+	public static void addToTagSet(String userID, String tagName) {
 		String query = "INSERT INTO USERTAGS VALUES (?, ?, ?)";
+		String tagID = "-1"; // initialize tagID to an invalid value
+
 		try {
 			Connection connection = ConfigBean.getConnection();
-			PreparedStatement statement = connection.prepareStatement(query);
-			Random random = new Random();
-			String userTagsID = String.format("%08d", random.nextInt(100000000));
-			statement.setString(1, userTagsID);
-			statement.setString(2, tagID);
-			statement.setString(3, userID);
+			PreparedStatement statement = connection.prepareStatement("SELECT tagID FROM TAGS WHERE tagName = ?");
+			statement.setString(1, tagName);
+			ResultSet result = statement.executeQuery();
 
-			statement.executeUpdate();
-			statement.close();
+			if (result.next()) {
+				tagID = result.getString("tagID");
+			}
+
+			result.close();
 			connection.close();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
+			e.printStackTrace();
+		}
+
+		if (!tagID.equals("-1")) {
+			try {
+				Connection connection = ConfigBean.getConnection();
+				PreparedStatement checkTag = connection.prepareStatement("SELECT * FROM USERTAGS WHERE userID = ? AND tagID = ?");
+				checkTag.setString(1, userID);
+				checkTag.setString(2, tagID);
+				ResultSet resultSet2 = checkTag.executeQuery();
+				checkTag.close();
+				connection.close();
+				if (resultSet2.next()) {
+					resultSet2.close();
+				} else {
+					try {
+						connection = ConfigBean.getConnection();
+						PreparedStatement statement = connection.prepareStatement(query);
+						Random random = new Random();
+						String userTagsID = String.format("%08d", random.nextInt(100000000));
+						statement.setString(1, userTagsID);
+						statement.setString(2, tagID);
+						statement.setString(3, userID);
+						statement.executeUpdate();
+						statement.close();
+						connection.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			} catch (Exception e) {
+
+			}
+
 		}
 	}
+
+	public static void removeFromTagSet(String userID, String tagName) {
+		String query = "DELETE FROM USERTAGS WHERE userID = ? AND tagID = ?";
+
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement("SELECT tagID FROM TAGS WHERE tagName = ?");
+			statement.setString(1, tagName);
+			ResultSet result = statement.executeQuery();
+
+			if (result.next()) {
+				String tagID = result.getString("tagID");
+
+				statement = connection.prepareStatement(query);
+				statement.setString(1, userID);
+				statement.setString(2, tagID);
+				statement.executeUpdate();
+				statement.close();
+			}
+
+			result.close();
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void updateUIPreferences(String id, String defaultSearch, String themePreference){
 		try {
 			Connection connection = ConfigBean.getConnection();

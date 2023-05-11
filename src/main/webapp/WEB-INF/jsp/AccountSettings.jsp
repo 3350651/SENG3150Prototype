@@ -1,6 +1,8 @@
 <%@ page import="startUp.UserBean" %>
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
 <%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.util.LinkedList" %>
+<%@ page import="java.util.Iterator" %>
 <% DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
   String dateOfBirthFormatted = user.getDateOfBirth().format(formatter); %>
 <!DOCTYPE html>
@@ -66,7 +68,15 @@
     <h2>Tagset</h2>
     <div class="settingsCategory">
     <ul>
-        <li><p class="valueOfSetting"><%= user.getTagSet() %></p> </li>
+        <%
+        LinkedList<String> tags = user.getTagSet();
+            for (Iterator<String> iter = tags.iterator(); iter.hasNext();) {
+                String tag = iter.next();
+            %>
+              <li><p class="valueOfSetting"><%= tag %></p></li>
+            <%
+            }
+        %>
     </ul>
     </div>
     <h2>Bookmarked Flights</h2>
