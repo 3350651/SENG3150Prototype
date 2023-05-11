@@ -46,13 +46,13 @@ CREATE TABLE USERS
 	defaultCurrency		VARCHAR(5),
 	defaultTimeZone		VARCHAR(5),
 	themePreference		VARCHAR(10),
-	quesCompl			BIT,
+	questionnaireCompleted	VARCHAR(8),
 	dateOfBirth			DATE,
 
 	PRIMARY KEY (userID),
 )
 
-CREATE TABLE Country 
+CREATE TABLE Country
 (
   countryCode2 CHAR(2) NOT NULL,
   countryCode3 CHAR(3) NOT NULL,
@@ -168,29 +168,82 @@ CREATE TABLE Flights (
 
 -- Create groups
 
+CREATE TABLE CHAT
+(
+	chatID		CHAR(8) PRIMARY KEY,
+)
+
+
+CREATE TABLE MESSAGE
+(
+	messageID CHAR(8) PRIMARY KEY,
+	chatID CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID),
+	message VARCHAR(MAX),
+	messageTime VARCHAR(20),
+	userID CHAR(8) FOREIGN KEY REFERENCES USERS(userID),
+)
+
+CREATE TABLE POOL
+(
+	poolID CHAR(8) PRIMARY KEY,
+	totalAmount	FLOAT,
+	amountRemaining FLOAT,
+)
+
+CREATE TABLE POOLDEPOSIT
+(
+	poolDepositID CHAR(8) PRIMARY KEY,
+	poolID CHAR(8) FOREIGN KEY REFERENCES POOL(poolID),
+	userID CHAR(8) FOREIGN KEY REFERENCES USERS(userID),
+	amount FLOAT,
+)
+
+DROP TABLE IF EXISTS GROUPS;
+
 CREATE TABLE GROUPS
 (
 	groupID 	CHAR(8) PRIMARY KEY,
 	groupName		VARCHAR(20),
-	-- poolID
-	-- chatID
+	chatID	CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID),
+	poolID 	CHAR(8) FOREIGN KEY REFERENCES POOL(poolID),
 	-- faveListID
 
 )
+go
+
+DROP TABLE IF EXISTS USERGROUPS;
+
 CREATE TABLE USERGROUPS
 (
-	userGroupsID		CHAR(8),
+	userGroupsID		CHAR(8) PRIMARY KEY,
 	userID	CHAR(8) FOREIGN KEY REFERENCES USERS(userID),
 	groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID),
-	isAdmin		BIT DEFAULT(0),
+	isAdmin		INT DEFAULT(0),
 )
 
 go
 
-INSERT INTO USERS VALUES ('01010101', 'Lachlan', 'ONeill', 'lachlan@gmail.com', 'lo', '04 123 456', 'user', '12 Main St, Carrington, NSW, Australia', 'Simple', 'AUD', '+10', 'Light', 0, '1997-08-29')
-INSERT INTO USERS VALUES ('11112222', 'Jordan', 'Eade', 'jordan@gmail.com', 'je', '04 454 678', 'user', '45 Smith St, Brisbane, QLD, Australia', 'Simple', 'AUD', '+10', 'Light', 1, '2003-07-14');
-INSERT INTO USERS VALUES ('98765432', 'Lucy', 'Knight', 'lucy@gmail.com', 'lk', '04 474 235', 'user', '87 George St, Adelaide, SA, Australia', 'Stripe', 'AUD', '+10', 'Dark', 0, '2004-03-21');
-INSERT INTO USERS VALUES ('12345678', 'Blake', 'Baldin', 'blake@gmail.com', 'bb', '04 123 456', 'user', '39 High St, Melbourne, VIC, Australia', 'Recommend', 'AUD', '+10', 'Dark', 0, '2002-10-06')
+CREATE TABLE TAGS
+(
+	tagID		CHAR(8) PRIMARY KEY,
+	tagName		VARCHAR(20),
+	DESCRIPTION	VARCHAR(100)
+)
+
+CREATE TABLE USERTAGS
+(
+	userTagsID	CHAR(8) PRIMARY KEY,
+	tagID 		CHAR(8) FOREIGN KEY REFERENCES TAGS(tagID),
+	userID		CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
+)
+
+INSERT INTO TAGS VALUES('12341234', 'Tropical', 'Sunny, tropical locations with coastal resorts.')
+SELECT * FROM USERTAGS;
+
+INSERT INTO USERS VALUES ('01010101', 'Lachlan', 'ONeill', 'lachlan@gmail.com', 'lo', '04 123 456', 'user', '12 Main St, Carrington, NSW, Australia', 'Simple', 'AUD', '+10', 'Light', 'No', '1997-08-29')
+INSERT INTO USERS VALUES ('11112222', 'Jordan', 'Eade', 'jordan@gmail.com', 'je', '04 454 678', 'user', '45 Smith St, Brisbane, QLD, Australia', 'Simple', 'AUD', '+10', 'Light', 'No', '2003-07-14');
+INSERT INTO USERS VALUES ('98765432', 'Lucy', 'Knight', 'lucy@gmail.com', 'lk', '04 474 235', 'user', '87 George St, Adelaide, SA, Australia', 'Stripe', 'AUD', '+10', 'Dark', 'No', '2004-03-21');
+INSERT INTO USERS VALUES ('12345678', 'Blake', 'Baldin', 'blake@gmail.com', 'bb', '04 123 456', 'user', '39 High St, Melbourne, VIC, Australia', 'Recommend', 'AUD', '+10', 'Dark', 'Yes', '2002-10-06')
 
 
 INSERT INTO Country (countryCode2, countryCode3, countryName, alternateName1, alternateName2, motherCountryCode3, motherCountryComment)
@@ -226,4 +279,6 @@ VALUES
 
 INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
 VALUES
-	('AA','AA1735','ATL','MIA','GIG','2014-09-23 09:50:00','2014-09-23 11:50:00','2014-09-23 23:20:00','2014-09-24 09:00:00','A380',120,520)
+	('AA','AA1735','ATL','MIA','GIG','2014-09-23 09:50:00','2014-09-23 11:50:00','2014-09-23 23:20:00','2014-09-24 09:00:00','A380',120,520);
+
+SELECT * FROM USERS;
