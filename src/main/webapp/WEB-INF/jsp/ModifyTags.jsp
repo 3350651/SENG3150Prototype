@@ -1,4 +1,7 @@
 <%@ page import="startUp.UserBean" %>
+<%@ page import="startUp.TagBean" %>
+<%@ page import="java.util.LinkedList" %>
+<%@ page import="java.util.Iterator" %>
 <!DOCTYPE html>
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
 <html lang="en">
@@ -22,6 +25,10 @@
     <form name="goToPersonalDetails" action="AccountSettings" method="POST">
         <button type="submit" class="button" name="goToPersonalDetails" value="goToPersonalDetails">Modify Personal Details</button>
     </form>
+    <%--        UI Preferences button         --%>
+    <form name="goToUIPreferences" action="AccountSettings" method="POST">
+        <button type="submit" class="button" name="goToUIPreferences" value="goToUIPreferences">Modify UI Preferences</button>
+    </form>
     <%--        Change Password button         --%>
     <form name="goToChangePassword" action="AccountSettings" method="POST">
         <button type="submit" class="button" name="goToChangePassword" value="goToChangePassword">Change Password</button>
@@ -29,23 +36,34 @@
 </div>
 
 <div class="main-content">
-<%--            Edit user form                 --%>
-    <h1>Modify User Interface Preferences</h1>
-    <form method="POST" action="AccountSettings" onsubmit="return modifyUIPreferences()">
-        <label for="themePreference">Theme Preference: </label>
-            <select id="themePreference" name="themePreference">
-                <option value="Light">Light Mode</option>
-                <option value="Dark">Dark Mode</option>
-            </select><br>
+<%--            Edit user tagset form                 --%>
+    <h1>Modify Tag Set</h1>
+    <h2> Add New Tags </h2>
+    <form method="POST" action="AccountSettings" onsubmit="return modifyTags()">
+        <% LinkedList<String> allTags = TagBean.getAllTags();
+           LinkedList<String> tagSet = user.getTagSet();
+           for (String tag : allTags) {
+               if (!tagSet.contains(tag)) { %>
+                   <input type="checkbox" name="tags[]" value="<%= tag %>"> <%= tag %><br>
+               <% }
+           } %>
 
-       <label for="defaultSearch">Default Search Mode: </label>
-           <select id="defaultSearch" name="defaultSearch">
-               <option value="Simple">Simple</option>
-               <option value="Recommend">Recommend</option>
-           </select><br>
         <input type="hidden" name="userID" value="<%=user.getUserID()%>">
-        <button type="submit" name="updateUIPreferences" value="updateUIPreferences">Update UI Preferences</button>
+        <button type="submit" name="addTags" value="addTags">Add Tags</button>
     </form>
+<br>
+    <h2> Remove Tags </h2>
+        <form method="POST" action="AccountSettings" onsubmit="return modifyTags()">
+    <%
+        for (String tag : tagSet) {
+        %>
+            <input type="checkbox" name="tags[]" value="<%= tag %>"> <%= tag %><br>
+        <%
+        }
+    %>
+            <input type="hidden" name="userID" value="<%=user.getUserID()%>">
+            <button type="submit" name="removeTags" value="removeTags">Remove Tags</button>
+        </form>
 </div>
 </body>
 <script type="text/javascript" src="script.js"></script>

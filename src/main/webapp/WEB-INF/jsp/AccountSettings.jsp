@@ -1,41 +1,104 @@
 <%@ page import="startUp.UserBean" %>
-<!DOCTYPE html>
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.util.LinkedList" %>
+<%@ page import="java.util.Iterator" %>
+<% DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+  String dateOfBirthFormatted = user.getDateOfBirth().format(formatter); %>
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Edit user account</title>
-    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
-<body>
+<body class="AccountSettingsHomePage">
+<div class="sidebar">
+<img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="logo" >
 <%--        Home page button         --%>
     <form name="returnHome" action="Homepage" method="POST">
-        <button type="submit" name="home" value="true">Return to Home</button>
+        <button type="submit" class="button" name="home" value="true">Return to Home</button>
     </form>
+<%--        UI Preferences button         --%>
     <form name="goToUIPreferences" action="AccountSettings" method="POST">
-        <button type="submit" name="goToUIPreferences" value="goToUIPreferences">Modify UI Preferences</button>
+        <button type="submit" class="button" name="goToUIPreferences" value="goToUIPreferences">Modify UI Preferences</button>
     </form>
+<%--        Personal Details button         --%>
     <form name="goToPersonalDetails" action="AccountSettings" method="POST">
-        <button type="submit" name="goToPersonalDetails" value="goToPersonalDetails">Modify Personal Details</button>
+        <button type="submit" class="button" name="goToPersonalDetails" value="goToPersonalDetails">Modify Personal Details</button>
     </form>
+<%--        Change Password button         --%>
     <form name="goToChangePassword" action="AccountSettings" method="POST">
-        <button type="submit" name="goToChangePassword" value="goToChangePassword">Change Password</button>
+        <button type="submit" class="button" name="goToChangePassword" value="goToChangePassword">Change Password</button>
     </form>
+    <%--        Modify Tag Set button         --%>
+    <form name="goToModifyTags" action="AccountSettings" method="POST">
+        <button type="submit" class="button" name="goToModifyTags" value="goToModifyTags">Modify Tags</button>
+    </form>
+</div>
+<div class="main-content">
+    <h1>User Profile Details & Settings</h1>
 
-    <h1>Personal Details</h1>
-    <h3>Name: <%= user.getFname() %> <%= user.getLname() %> </h3>
-    <h3>Email: <%= user.getEmail() %> </h3>
-    <h3>PhoneNo: <%= user.getPhoneNo() %> </h3>
-    <h3>Role: <%= user.getRole() %> </h3>
-    <h3>Address:<%= user.getAddress() %> </h3>
-    <h3>Default Search Mode: <%= user.getDefaultSearch() %> </h3>
-    <h3>Default Currency: <%= user.getDefaultCurrency() %> </h3>
-    <h3>Default Timezone: <%= user.getDefaultTimeZone() %> </h3>
-    <h3>Theme Preference: <%= user.getThemePreference() %> </h3>
-    <h3>Questionnaire Complete?: <%= user.isQuestionnaireCompleted() %> </h3>
-    <h3>Date Of Birth: <%= user.getDateOfBirth() %> </h3>
-
+    <h2>Personal Details</h2>
+    <div class="settingsCategory">
+    <ul>
+        <li><p class="labelOfSetting">Name </p> <p class="valueOfSetting"> <%= user.getFname() %> <%= user.getLname() %> </p> </li>
+        <li><p class="labelOfSetting">Email </p> <p class="valueOfSetting"> <%= user.getEmail() %> </p> </li>
+        <li><p class="labelOfSetting">Date of Birth </p> <p class="valueOfSetting"> <%= dateOfBirthFormatted %> </p> </li>
+    </ul>
+    </div>
+    <h2>Contact Information</h2>
+    <div class="settingsCategory">
+    <ul>
+        <li><p class="labelOfSetting">Phone No </p><p class="valueOfSetting"> <%= user.getPhoneNo() %> </p> </li>
+        <li><p class="labelOfSetting">Address </p><p class="valueOfSetting"> <%= user.getAddress() %> </p> </li>
+    </ul>
+    </div>
+    <h2>Preferences</h2>
+    <div class="settingsCategory">
+    <ul>
+        <li><p class="labelOfSetting">Default Search Mode </p><p class="valueOfSetting"> <%= user.getDefaultSearch() %> </p> </li>
+        <li><p class="labelOfSetting">Default Currency </p><p class="valueOfSetting"> <%= user.getDefaultCurrency() %> </p> </li>
+        <li><p class="labelOfSetting">Default Timezone </p><p class="valueOfSetting"> <%= user.getDefaultTimeZone() %> </p> </li>
+        <li><p class="labelOfSetting">Theme Preference </p><p class="valueOfSetting"> <%= user.getThemePreference() %> </p> </li>
+        <li><p class="labelOfSetting">Questionnaire Completed? </p><p class="valueOfSetting"> <%= user.isQuestionnaireCompleted() %> </p> </li>
+    </ul>
+    </div>
+    <h2>Tagset</h2>
+    <div class="settingsCategory">
+    <ul>
+        <%
+        LinkedList<String> tags = user.getTagSet();
+            for (Iterator<String> iter = tags.iterator(); iter.hasNext();) {
+                String tag = iter.next();
+            %>
+              <li><p class="valueOfSetting"><%= tag %></p></li>
+            <%
+            }
+        %>
+    </ul>
+    </div>
+    <h2>Bookmarked Flights</h2>
+    <div class="settingsCategory">
+    <ul>
+        <li><p class="valueOfSetting">FlightExample</p> </li>
+    </ul>
+    </div>
+    <h2>Favourite Destinations</h2>
+    <div class="settingsCategory">
+    <ul>
+        <li><p class="valueOfSetting">DestinationExample</p> </li>
+    </ul>
+    </div>
+    <h2>Saved Searches</h2>
+    <div class="settingsCategory">
+    <ul>
+        <li><p class="valueOfSetting">SearchExample</p> </li>
+    </ul>
+    </div>
+</div>
 </body>
-<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/script.js"></script>
+
 </html>
