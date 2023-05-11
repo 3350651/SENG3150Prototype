@@ -11,8 +11,12 @@ import java.io.IOException;
 import java.util.LinkedList;
 import javax.servlet.http.HttpServlet;
 
-import static startUp.GroupBean.deleteGroup;
-import static startUp.GroupBean.getGroups;
+import static startUp.ChatBean.deleteChat;
+import static startUp.GroupBean.*;
+import static startUp.MessageBean.deleteMessages;
+import static startUp.PoolBean.deletePool;
+import static startUp.PoolDepositBean.hasMadeDeposit;
+import static startUp.PoolDepositBean.poolDeposits;
 import static startUp.UserBean.userExists;
 import static startUp.UserGroupsBean.*;
 
@@ -23,12 +27,15 @@ public class ManageGroupServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         RequestDispatcher requestDispatcher = null;
+        GroupBean group = (GroupBean) session.getAttribute("group");
+        boolean depositMade = poolDeposits(group.getPoolID());
+        session.setAttribute("depositMade", depositMade);
 
         // send the user to an unauthorised page if they try to access the homepage without being logged in.
-        if (session.getAttribute("userBean") != null){
-            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
-            requestDispatcher.forward(request, response);
-        }
+
+        requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
+        requestDispatcher.forward(request, response);
+
 
         requestDispatcher.forward(request, response);
     }
@@ -47,6 +54,8 @@ public class ManageGroupServlet extends HttpServlet {
         String userID = user.getUserID();
         GroupBean group = (GroupBean) session.getAttribute("group");
         String groupID = group.getGroupID();
+        boolean depositMade = poolDeposits(group.getPoolID());
+        session.setAttribute("depositMade", depositMade);
 
         //Admin has inputted email to add member.
         if((request.getParameter("addMember") != null) && (request.getParameter("userEmail") != null)){
@@ -66,6 +75,8 @@ public class ManageGroupServlet extends HttpServlet {
             if(addUserID != null && !inGroup){
                 //add to the group in the db.
                 UserGroupsBean userGroupsBean = new UserGroupsBean(addUserID, groupID, false);
+                GroupBean newGroup = getGroup(group.getGroupName());
+                session.setAttribute("group", newGroup);
                 //success message -> redirect to message page and then to managegroup from there.
                 session.setAttribute("message", "Success! User was successfully added to the group!");
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepageMessage.jsp");
@@ -104,9 +115,18 @@ public class ManageGroupServlet extends HttpServlet {
             LinkedList<String> groupMemberIDs = getGroupMembersIDs(groupID);
             LinkedList<String> groupMemberNames = getGroupMemberNames(groupMemberIDs);
             int size = groupMemberIDs.size();
+            LinkedList<Boolean> hasDeposited = new LinkedList<>();
+
+            for(int i = 0; i < size; i++){
+                String id = groupMemberIDs.pop();
+                hasDeposited.addLast(hasMadeDeposit(group.getPool().getPoolID(), id));
+                groupMemberIDs.addLast(id);
+            }
+
             session.setAttribute("memberIDs", groupMemberIDs);
             session.setAttribute("memberNames", groupMemberNames);
             session.setAttribute("size", size);
+            session.setAttribute("hasDeposited", hasDeposited);
             session.setAttribute("goHome", false);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/RemoveMember.jsp");
             requestDispatcher.forward(request, response);
@@ -121,8 +141,13 @@ public class ManageGroupServlet extends HttpServlet {
             boolean delete = Boolean.parseBoolean(request.getParameter("confirmDeleteGroup"));
 
             if(delete){
+                //could make this nicer by putting all deletes in the deleteGroup call.
                 deleteUserGroups(groupID);
                 deleteGroup(groupID);
+                //delete messages.
+                deleteMessages(group.getChatID());
+                deleteChat(group.getChatID());
+                deletePool(group.getPoolID());
                 session.setAttribute("message", "Success! The group was deleted.");
                 session.setAttribute("goHome", true);
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepageMessage.jsp");

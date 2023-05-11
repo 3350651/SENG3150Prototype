@@ -3,8 +3,6 @@
 <%@ page import="java.util.List" %>
 <%
 GroupBean group = (GroupBean) session.getAttribute("group");
-String message = (String) session.getAttribute("message");
-boolean goHome = (boolean) session.getAttribute("goHome");
 %>
 
 <!DOCTYPE html>
@@ -17,26 +15,24 @@ boolean goHome = (boolean) session.getAttribute("goHome");
 <body>
     <main>
 
- <header>
+        <header>
             <div class="titleContainer">
-                <h1>Group Update Message</h1>
+                <h1>Withdraw From Pool</h1>
             </div>
             <div class="groupName">
                 <h2><%= group.getGroupName() %></h2>
             </div>
         </header>
-        <div>
-            <%= message %>
-        </div>
-        <div id="continueFormContainer">
-            <form method="POST" action="ManageGroup">
-                <button type="submit" name="continue" value="continue">Continue</button>
 
-                <%if(goHome){%>
-                <input type="hidden" id="goHome" name="goHome" value="<%= goHome %>">
-                <%}%>
-            </form>
-        </div>
+<div id="deleteGroupFormContainer">
+        <div><b>ARE YOU SURE YOU WANT TO WITHDRAW FROM THE MONEY POOL?</b></div>
+                <form method="POST" action="GroupHomepage">
+                   <button type="submit" name="confirmWithdraw" value="true">YES WITHDRAW FROM POOL</button>
+                </form>
+                <form method="POST" action="GroupHomepage">
+                   <button type="submit" name="poolContinue" value="true">CANCEL</button>
+                </form>
+            </div>
         </main>
     </body>
 <script type="text/javascript" src="script.js"></script>

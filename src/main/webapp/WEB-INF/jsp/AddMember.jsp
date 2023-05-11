@@ -19,10 +19,6 @@ GroupBean group = (GroupBean) session.getAttribute("group");
 
 
  <header>
-           <form name="backToManageGroup" action="ManageGroup" method="GET">
-                   <button type="submit" name="manageGroup" value="true">Return to Manage Group</button>
-           </form>
-
             <div class="titleContainer">
                 <h1>Add Group Member</h1>
             </div>
@@ -37,6 +33,9 @@ GroupBean group = (GroupBean) session.getAttribute("group");
                 <input type="text" id="userEmail" name="userEmail"><br>
 
                 <button type="submit" name="addMember" value="addMember">Add Member</button>
+            </form>
+            <form method="POST" action="ManageGroup">
+               <button type="submit" name="continue" value="true">Cancel</button>
             </form>
         </div>
         </main>

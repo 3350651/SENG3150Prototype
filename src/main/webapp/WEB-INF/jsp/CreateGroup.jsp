@@ -13,6 +13,9 @@
     <main>
 
         <header>
+         <div class="titleContainer">
+            <h1>Create a Group</h1>
+         </div>
 
 <div id="createGroupFormContainer">
                 <form method="POST" action="CreateGroup" onsubmit="return createGroupForm()">
@@ -21,6 +24,9 @@
 
                     <button type="submit" name="createGroup" value="createGroup">Create Group</button>
                 </form>
+                 <form name="returnHome" action="Homepage" method="POST">
+                       <button type="submit" name="home" value="true">Cancel</button>
+                 </form>
             </div>
         </main>
     </body>

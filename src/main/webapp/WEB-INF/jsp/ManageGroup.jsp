@@ -9,6 +9,10 @@
 <%
 UserBean user = (UserBean) session.getAttribute("userBean");
 GroupBean group = (GroupBean) session.getAttribute("group");
+boolean depositMade = (boolean) session.getAttribute("depositMade");
+if(!depositMade){
+    depositMade = false;
+}
 %>
 
 <head>
@@ -20,8 +24,8 @@ GroupBean group = (GroupBean) session.getAttribute("group");
     <main>
         <header>
 
-           <form name="backToGroup" action="Homepage" method="GET">
-                   <button type="submit" name="groupHomepage" value="true">Return to Home</button>
+           <form name="backToGroup" action="GroupHomepage" method="GET">
+                   <button type="submit" name="groupHomepage" value="true">Return to Group Home</button>
            </form>
 
             <div class="titleContainer">
@@ -42,11 +46,13 @@ GroupBean group = (GroupBean) session.getAttribute("group");
                  <button type="submit" name="removeMember" value="removeMember">Remove Member</button>
            </form>
         </div>
-        <div>
-           <form name="deleteGroup" action="ManageGroup" method="POST">
-                 <button type="submit" name="deleteGroup" value="deleteGroup">Delete Group</button>
-           </form>
-        </div>
+        <%if(!depositMade) {%>
+            <div>
+               <form name="deleteGroup" action="ManageGroup" method="POST">
+                     <button type="submit" name="deleteGroup" value="deleteGroup">Delete Group</button>
+               </form>
+            </div>
+        <%}%>
 
 
     </main>
