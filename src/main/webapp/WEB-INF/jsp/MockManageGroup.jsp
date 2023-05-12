@@ -1,7 +1,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mockGroupStyle.css">
 </head>
 <body>
     <main>
@@ -33,7 +33,17 @@
         </div>
         <div>
            <form name="deleteGroup" action="MockupGroup" method="POST">
-                 <button type="submit" name="deleteGroup" value="deleteGroup" class="groupButton">Delete Group</button>
+                 <button type="submit" name="other" value="other" class="groupButton">Delete Group</button>
+           </form>
+        </div>
+        <div>
+           <form name="other" action="MockupGroup" method="POST">
+                 <button type="submit" name="other" value="other" class="groupButton">Complete Questionnaire</button>
+           </form>
+        </div>
+        <div>
+           <form name="other" action="MockupGroup" method="POST">
+                 <button type="submit" name="other" value="other" class="groupButton">Modify Tags</button>
            </form>
         </div>
         </div>

@@ -17,17 +17,17 @@
                 <div class="groupName">
                     <h1>Group One</h2>
                 </div>
-                <h2>Add Group Member</h1><br>
+                <h2>Add To Money Pool</h1><br>
             </div>
 
         </header>
 
         <div id="addMemberFormContainer">
-            <form method="POST" action="MockupGroup" onsubmit="return addMemberForm()">
-                <input type="text" size="50" id="userEmail" name="userEmail" placeholder="Enter User Email"><br>
+            <form method="POST" action="MockupGroup">
+                <input type="number" size="50" id="amount" name="amount" placeholder="Enter valid amount"><br>
 
-                <button type="submit" name="memberAdded" value="memberAdded" style="align: left;">Cancel</button>
-                <button type="submit" name="memberAdded" value="memberAdded" style="align: right;">Add Member</button>
+                <button type="submit" name="moneyAdded" value="moneyAdded" style="align: left;">Cancel</button>
+                <button type="submit" name="moneyAdded" value="moneyAdded" style="align: right;">Add Money</button>
 
             </form>
         </div>

@@ -69,7 +69,15 @@ public class MockupGroup extends HttpServlet {
             requestDispatcher.forward(request, response);
         }
 
+        if(request.getParameter("other") != null){
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/MockManageGroup.jsp");
+            requestDispatcher.forward(request, response);
+        }
 
+        if(request.getParameter("withdraw") != null){
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/MockPool.jsp");
+            requestDispatcher.forward(request, response);
+        }
 
 
         requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/MockGroup.jsp");

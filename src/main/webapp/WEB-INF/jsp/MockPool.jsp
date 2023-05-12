@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mockGroupStyle.css">
 </head>
 <body>
     <main>
@@ -31,7 +31,7 @@
 
         <div>
             <form name="addPool" method="POST" action="MockupGroup">
-                   <button class="groupButton">Withdraw From Pool</button>
+                   <button type="submit" name="withdraw" value="withdraw" class="groupButton">Withdraw From Pool</button>
                    <button type="submit" name="addPool" value="addPool" class="groupButton">Add To Pool</button>
             </form>
         </div>
