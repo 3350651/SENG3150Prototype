@@ -89,6 +89,18 @@
   left: 0;
 }
 
+.sidebar form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+form.groups{
+    bottom: 0;
+    position: fixed;
+}
+
 .main-content {
     display: flex;
     flex-direction: row;
@@ -151,8 +163,90 @@ ul{
       right: 3em;
   }
 
+.viewAccountSettings{
+    display: flex;
+      align-items: center;
+      /*border-style: solid;*/
+      /*border-color: white;*/
+      height: 100px;
+      width: 100px;
+      position: fixed;
+      top: 0;
+      right: 0;
+}
 
+.accountButton {
+    background-color: #156283;
+    color: white;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    transition-duration: 0.25s;
+    height: 50px;
+ }
 
+.accountButton:hover {
+    background-color: dodgerblue;
+ }
 
+form.simpleSearchForm{
+  display: grid;
+  grid-template-columns: 125px 1fr 1fr;
+  grid-gap: 10px;
+}
+
+div.simpleSearch{
+    border-style: solid;
+    border-color: black;
+    padding: 15px;
+     border-radius: 10px;
+}
+
+.saveParam {
+    background-color: #156283;
+    color: white;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    transition-duration: 0.25s;
+    height: 50px;
+    width: 150px;
+ }
+
+.saveParam:hover {
+    background-color: dodgerblue;
+ }
+
+ .flexibleDateCheckBox {
+   vertical-align: middle;
+ }
+
+ .search {
+     background-color: #156283;
+     color: white;
+     border-radius: 8px;
+     font-size: 15px;
+     margin-top: 10px;
+     border: none;
+     border-radius: 5px;
+     display: inline-block;
+     transition-duration: 0.25s;
+     height: 50px;
+    width: 150px;
+  }
+
+ .search:hover {
+     background-color: dodgerblue;
+  }
+
+  h2.homepageHeader{
+    text-align: center
+  }
 
 
