@@ -162,6 +162,7 @@
                 </div>
 
             </fieldset>
+            <button class="button" type="submit">Submit</button>
         </form>
     </main>
 </body>
