@@ -87,6 +87,7 @@
   position: fixed;
   top: 0;
   left: 0;
+  font-family: Arial;
 }
 
 .sidebar form {
@@ -94,6 +95,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-family: Arial;
 }
 
 form.groups{
@@ -192,20 +194,141 @@ ul{
     background-color: dodgerblue;
  }
 
-form.simpleSearchForm{
+/*form.simpleSearchForm{
   display: grid;
-  grid-template-columns: 125px 1fr 1fr;
+  grid-template-columns: 1fr 1fr 125px;
   grid-gap: 10px;
+  margin: 0 auto;
 }
+
+form.simpleSearchForm {
+  display: grid;
+  margin: 0 auto;
+  grid-template-columns: repeat(2, 200px) 60px;
+  grid-template-rows: repeat(4, 60px);
+  grid-gap: 10px;
+  grid-template-areas:
+    "departureLocation arrivalLocation departureDate"
+    "numberOfAdults numberOfChildren flexibleDate"
+    "saveParam blank search"
+}
+
+.departureLocation {
+  grid-area: departureLocation;
+  width: 200px;
+}
+
+.arrivalLocation {
+  grid-area: arrivalLocation;
+  width: 200px;
+}
+
+.departureDate {
+  grid-area: departureDate;
+  width: 100px;
+}
+
+.numberOfAdults {
+  grid-area: numberOfAdults;
+  width: 50px;
+}
+
+.numberOfChildren {
+  grid-area: numberOfChildren;
+  width: 50px;
+}
+
+.flexibleDate {
+  grid-area: flexibleDate;
+  width: 100px;
+}
+
+.saveParameters {
+  width: 150px;
+}
+
+.searchForFlight {
+  width: 150px
+}*/
+
+
 
 div.simpleSearch{
     border-style: solid;
     border-color: black;
-    padding: 15px;
-     border-radius: 10px;
+    padding: 30px;
+    border-radius: 10px;
 }
 
-.saveParam {
+input[type="number"] {
+  width: 45px; /* adjust the width as desired */
+       height: 30px;
+}
+
+input[type="text"] {
+  width: 200px;
+  height: 30px; /* adjust the width as desired */
+}
+
+input[type="date"] {
+  height: 30px; /* adjust the width as desired */
+}
+
+input[type="checkbox"] {
+  margin: 0 15;
+  display: block;
+  width: 30px;
+  height: 30px;
+}
+
+div.departureLocation{
+    float: left;
+    width: 300px;
+    font-size: 25;
+}
+
+div.arrivalLocation{
+    float: left;
+    width: 300px;
+    font-size: 25;
+}
+
+div.departureDate{
+    float: left;
+    width: 150px;
+    padding-right: 35px
+}
+
+div.numberOfAdults{
+    float: left;
+    width: 75px;
+}
+
+div.numberOfChildren{
+    float: left;
+    width: 75px;
+}
+
+div.flexibleDate{
+    float: left;
+    width: 100px;
+    padding-right: 75px;
+}
+
+div.flexibleDaysGroup{
+    float: left;
+    width: 100px;
+}
+
+div.saveParam{
+    float: left;
+    padding-right: 200px;
+}
+
+div.search{
+}
+
+button.saveParam {
     background-color: #156283;
     color: white;
     border-radius: 8px;
@@ -219,15 +342,11 @@ div.simpleSearch{
     width: 150px;
  }
 
-.saveParam:hover {
+button.saveParam:hover {
     background-color: dodgerblue;
  }
 
- .flexibleDateCheckBox {
-   vertical-align: middle;
- }
-
- .search {
+ button.search {
      background-color: #156283;
      color: white;
      border-radius: 8px;
@@ -241,12 +360,56 @@ div.simpleSearch{
     width: 150px;
   }
 
- .search:hover {
+ button.search:hover {
      background-color: dodgerblue;
   }
 
   h2.homepageHeader{
-    text-align: center
+    text-align: center;
+    font-family: Arial;
   }
 
+h1.homepageHeader{
+    text-align: center;
+    font-family: Arial;
+  }
 
+   .savedParameter {
+       background-color: dodgerblue;
+       color: white;
+       border-color: #156283;
+       border-radius: 8px;
+       font-size: 14px;
+       margin-top: 10px;
+       border: none;
+       border-radius: 5px;
+       display: inline-block;
+       transition-duration: 0.25s;
+       height: 40px;
+      width: 270px;
+    }
+
+   .savedParameter:hover {
+       background-color: #156283;
+    }
+
+div.savedSearches{
+    padding-top: 20px;
+}
+
+h2.savedSearchesHeading{
+    font-size: 20;
+}
+
+div.FlightSearchResult{
+    border: 2px solid black;
+    padding: 10px;
+}
+
+div.DepartureLocation{
+    font-size: 30;
+}
+
+div.DestinationLocation{
+    font-size: 30;
+}
