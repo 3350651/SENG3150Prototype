@@ -143,6 +143,7 @@ ul{
       width:150px;
       height:150px;
       padding-top: 10px;
+      text-align:center;
   }
 
   .top-right {
@@ -151,8 +152,169 @@ ul{
       right: 3em;
   }
 
+  .search {
+    text-align:center;
+    margin: auto;
+      width: 50%;
+      border: 3px solid green;
+      padding: 10px;
+  }
+
+   img.groupLogo{
+        width:150px;
+        height:150px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+   }
+
+    .chat {
+        text-align:center;
+        /* top | right | bottom | left */
+        margin: auto;
+        width: 30%;
+        border: 3px solid green;
+        padding: 5px;
+        font-family: monospace;
+
+        display: inline-block;
+    }
+
+    .message {
+        border: solid thin;
+        padding: 5px;
+        text-align: left;
+        background-color: #E8E8E8;
+    }
+
+    .faveList {
+        text-align:center;
+        /* top | right | bottom | left */
+        margin: auto;
+        width: 60%;
+        border: 3px solid green;
+        padding: 5px;
+        display: inline-block;
+    }
 
 
+
+    .groupContents {
+     text-align:center;
+        /* top | right | bottom | left */
+        margin: 5px auto;
+        width: 55%;
+        border: 3px;
+        padding: 5px;
+    }
+
+    .faveFlight {
+        border: solid thin;
+        padding: 5px;
+        text-align: left;
+        background-color: darkseagreen;
+        margin: 3px;
+    }
+
+    .faveInfo {
+        text-align: absolute;
+        font-family: serif;
+        font-size: 20px;
+    }
+
+    .pool {
+       margin: 5px auto;
+       width: 55%;
+       border: 3px solid green;
+       padding: 5px;
+    }
+
+    .manageGroup{
+      margin: auto;
+      width: 50%;
+      border: 3px;
+      padding: 10px;
+      text-align: right;
+    }
+
+    .backButton {
+      margin: auto;
+      width: 50%;
+      border: 3px;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .groupButton {
+        background-color: #156283;
+        color: white;
+        border-radius: 8px;
+        font-size: 15px;
+        margin-top: 10px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        display: inline-block;
+        transition-duration: 0.25s;
+        width: 215px;
+    }
+
+    .groupButton:hover{
+        background-color: #E8E8E8;
+        color: #156283;
+    }
+
+    .manageGroupContent {
+       text-align:center;
+       /* top | right | bottom | left */
+       margin: 5px auto;
+       width: 40%;
+       border: 3px;
+       padding: 5px;
+       background-color: darkseagreen;
+    }
+
+    #addMemberFormContainer {
+        text-align:center;
+       /* top | right | bottom | left */
+       margin: 5px auto;
+       width: 40%;
+       border: 3px;
+       padding: 5px;
+       background-color: darkseagreen;
+    }
+
+    .removeMember{
+       text-align:center;
+       /* top | right | bottom | left */
+       margin: 5px auto;
+       width: 40%;
+       border: 3px;
+       padding: 5px;
+       background-color: darkseagreen;
+    }
+
+    .member {
+       text-align:left;
+       /* top | right | bottom | left */
+       margin: 5px auto;
+       width: 50%;
+       border: 3px solid;
+       border-width: thin;
+       padding: 10px;
+
+    }
+
+    .moneyPool{
+       text-align:center;
+       /* top | right | bottom | left */
+       margin: 5px auto;
+       width: 40%;
+       border: 3px;
+       padding: 10px;
+       background-color: darkseagreen;
+    }
+}
 
 
 
