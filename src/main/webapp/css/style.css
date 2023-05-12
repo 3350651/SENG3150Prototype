@@ -82,6 +82,26 @@
     color: #156283;
   }
 
+  .selectFlight {
+    background-color: #156283;
+    color: white;
+    border-radius: 8px;
+    font-size: 20px;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    transition-duration: 0.25s;
+    width: 215px;
+    float: right;
+  }
+
+  .selectFlight:hover {
+    background-color: white;
+    color: #156283;
+  }
+
   .sidebar {
     display: flex;
     flex-direction: column;
@@ -206,6 +226,30 @@
     line-height: 1.8em;
   }
 
-  .review{
+  .review {
     background-color: darkseagreen;
   }
+
+  .selectReturn {
+    background-color: darkseagreen;
+    text-align: center;
+  }
+
+  .destinationImage {
+    float: left;
+    width: 250px;
+  }
+
+  .destinationTags {
+    float: left;
+    width: 221px;
+  }
+
+.innerProgress{
+  background-color: lightseagreen;
+  color: white;
+  text-align: center;
+}
+.outerProgress{
+  background-color: lightgray;
+}

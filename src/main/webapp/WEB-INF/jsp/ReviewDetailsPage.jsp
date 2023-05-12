@@ -14,6 +14,13 @@
             <h1>
                 Review Booking Details
             </h1>
+            <br />
+                    <label for="progress">
+                        <h2>Progress</h2>
+                    </label>
+                    <div class="outerProgress">
+                        <div class="innerProgress" id="progress" style="width:99%">99%</div>
+                    </div>
         </header>
 
         <fieldset class="review">

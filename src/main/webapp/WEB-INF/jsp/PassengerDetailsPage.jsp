@@ -11,6 +11,13 @@
     <main>
         <header>
             <h1>Passenger Details</h1>
+            <br />
+                    <label for="progress">
+                        <h2>Progress</h2>
+                    </label>
+                    <div class="outerProgress">
+                        <div class="innerProgress" id="progress" style="width:66%">66%</div>
+                    </div>
         </header>
         <form name="test">
             <fieldset class="passengerDetails">
