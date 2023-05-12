@@ -243,13 +243,19 @@
   .destinationTags {
     float: left;
     width: 221px;
+    background-color: darkseagreen;
   }
 
-.innerProgress{
-  background-color: lightseagreen;
-  color: white;
-  text-align: center;
-}
-.outerProgress{
-  background-color: lightgray;
-}
+  .innerProgress {
+    background-color: lightseagreen;
+    color: white;
+    text-align: center;
+  }
+
+  .outerProgress {
+    background-color: lightgray;
+  }
+
+  .backButton {
+    float: left;
+  }
