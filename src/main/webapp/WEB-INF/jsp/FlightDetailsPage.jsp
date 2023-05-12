@@ -7,7 +7,7 @@
         <head>
             <meta charset="UTF-8">
             <title>startUp.FlightDetailsPage</title>
-            <link rel="stylesheet" href="Style.css">
+            <link rel="stylesheet" href="/css/Style.css">
         </head>
 
         <body>
@@ -38,8 +38,8 @@
                 </fieldset>
                 <!--Add reputation score and destination description here-->
                 <form name="addToGroupList" method="post" action="">
-                    <button type="submit" name="addToGroupFavList" value=<%=flight.getAirline() + "," + flight.getFlightName()
-                        + "," + flight.getFlightTime()%>>Add To Group Favourite List</button>
+                    <button type="submit" name="addToGroupFavList" value=<%=flight.getAirline() + "," +
+                        flight.getFlightName() + "," + flight.getFlightTime()%>>Add To Group Favourite List</button>
                 </form>
             </main>
         </body>
