@@ -10,7 +10,7 @@
 <div class="sidebar">
 <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="logo" >
 <%--        Home page button         --%>
-    <form name="BackToHome" action="Search" method="POST">
+    <form name="BackToHome" action="login" method="GET">
         <%-- <button type="submit" class="button" name="home" value="simpleSearch">Simple Search</button> --%>
         <button type="submit" class="button" name="home" value="backToHome">Home</button>
     </form>
@@ -22,9 +22,9 @@
         <button type="submit" class="button" name="goToBookmarkedFlight3" value="goToBookmarkedFlight2">Brisbane, $662, 26/12/2023</button>
     </form>
 <%--        Groups You're In         --%>
-    <form name="goToGroup" action="GroupHomepage" class="groups" method="POST">
+    <form name="goToGroup" action="MockupGroup" class="groups" method="POST">
         <h2>Group Membership</h2>
-        <button type="submit" class="button" name="goToGroup1" value="goToGroup1">FriendGroup</button>
+        <button type="submit" class="button" name="goToGroup1" value="goToGroup1">Group</button>
         <button type="submit" class="button" name="createGroup" value="createGroup">Create New Group</button>
     </form>
 </div>
