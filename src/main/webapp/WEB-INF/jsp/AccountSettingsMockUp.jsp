@@ -62,7 +62,7 @@
     <div class="settingsCategory">
     <ul>
         <li><p>Mild</p></li>
-        <li><p>North America</p></li>
+        <li><p>Australia</p></li>
         <li><p>Sightseeing</p></li>
         <li><p>Festival</p></li>
         <li><p>Family</p></li>
@@ -71,19 +71,20 @@
     <h2>Bookmarked Flights</h2>
     <div class="settingsCategory">
     <ul>
-        <li><p class="valueOfSetting">FlightExample</p> </li>
+        <li><p class="valueOfSetting">Morocco, $1,290, 15/12/2023</p> </li>
+        <li><p class="valueOfSetting">Thailand, $679, 6/10/2023</p></li>
     </ul>
     </div>
     <h2>Favourite Destinations</h2>
     <div class="settingsCategory">
     <ul>
-        <li><p class="valueOfSetting">DestinationExample</p> </li>
+        <li><p class="valueOfSetting">Queensland</p> </li>
     </ul>
     </div>
     <h2>Saved Searches</h2>
     <div class="settingsCategory">
     <ul>
-        <li><p class="valueOfSetting">SearchExample</p> </li>
+        <li><p class="valueOfSetting">NTL > BNE, 2 adults, 28/12/23 (+5d)</p> </li>
     </ul>
     </div>
 </div>

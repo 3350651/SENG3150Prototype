@@ -60,6 +60,12 @@ public class SearchServlet extends HttpServlet {
 			requestDispatcher.forward(request, response);
 		}
 
+		if (request.getParameter("recSearch") != null)
+		{
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Mock-Rec-SearchResults.jsp");
+			requestDispatcher.forward(request, response);
+		}
+
 	}
 
 }

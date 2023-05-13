@@ -29,7 +29,7 @@
 </div>
 <div class="main-content">
     <div class="viewAccountSettings">
-        <form method="POST" action="AccountSettings">
+        <form method="POST" action="MockUpAccountSettings">
             <button name="viewAccountSettings" class="accountButton" value="viewAccountSettings">View Profile</button>
         </form>
     </div>

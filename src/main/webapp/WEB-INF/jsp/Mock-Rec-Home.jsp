@@ -36,7 +36,7 @@
     </div>
     <br><br>
     <div class="simpleSearch">
-        <form method="POST" action="Search" class="simpleSearchForm">
+        <form method="POST" action="recSearch" class="recSearch">
 
             <div class="departureLocation"><label for="departureLocation">Leaving From</label><br>
                 <input type="text" id="departureLocation" name="departureLocation"></div>
@@ -60,8 +60,8 @@
             <div class="saveParam">
                 <button name="saveParam" type="submit" value="saveParam" class="saveParam">Save Search Parameters</button>
             </div>
-            <div class="search">
-                <button name="searchLogged" type="submit" value="searchLogged" class="search">Search For Flights</button>
+            <div class="recsearch">
+                <button name="searchResults" type="submit" value="searchResults" class="recSearch">Search For Recommended Flights</button>
             </div>
         </form>
     </div>
@@ -71,13 +71,16 @@
         <form method="POST" action="Search">
             <input type="hidden" value="savedParameter1">
             <button name="savedParameter" type="submit" value="savedParameter1" class="savedParameter">NTL -> BNE, 2 adults, 28/12/23 (+5d)</button><br>
+
         </form>
     </div>
+</div>
 
-    <h1>Recommended Flights for You</h1>
-<div class="box">
+<%--- Recommended FLIGHTS ---%>
+   <div class="centeringtext"> <h1>Recommended Flights for You</h1> </div>
+<div class="gridParent">
     <div class="recResults">
-        <div class="FlightSearchResult">
+        <div class="FlightSearchResult1">
             <div class="flightInfo">
                 <div class="searchResultRow1">
                     <div class="DepartureLocationResult">Newcastle</div>
@@ -93,7 +96,9 @@
                 <div class="tagsParent">
                     <div class="tag1">Mild</div>
                     <div class="tag2">Family</div>
+                    <div class="tag2">Reputation Score: 1283</div>
                 </div>
+                <span class="brmedium"></span>
 
                 <div class="searchResultButtons">
                     <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
@@ -117,8 +122,9 @@
                 <img src="${pageContext.request.contextPath}/images/brisbaneCity.jpg" alt="Brisbane Logo" class="smallBrisbaneLogo" >
             </div>
         </div>
-
-        <div class="FlightSearchResult">
+    </div>
+    <div>
+        <div class="FlightSearchResult2">
             <div class="flightInfo">
                 <div class="searchResultRow1">
                     <div class="DepartureLocationResult">Newcastle</div>
@@ -132,9 +138,11 @@
                 </div>
 
                 <div class="tagsParent">
-                    <div class="tag1">Mild</div>
-                    <div class="tag2">Festival</div>
+                    <div class="tag1">Family</div>
+                    <div class="tag2">Sightseeing</div>
+                    <div class="tag2">Reputation Score: 972</div>
                 </div>
+                <span class="brmedium"></span>
 
                 <div class="searchResultButtons">
                     <form name="flightActions" class="flightSearchResultButtons" action="Flight" method="POST">
@@ -157,8 +165,10 @@
                 <img src="${pageContext.request.contextPath}/images/brisbaneCity.jpg" alt="Brisbane Logo" class="smallBrisbaneLogo" >
             </div>
         </div>
+    </div>
 
-        <div class="FlightSearchResult">
+    <div>
+        <div class="FlightSearchResult3">
             <div class="flightInfo">
                 <div class="searchResultRow1">
                     <div class="DepartureLocationResult">Newcastle</div>
@@ -172,10 +182,149 @@
                 </div>
 
                 <div class="tagsParent">
-                    <div class="tag1">Sightseeing</div>
+                    <div class="tag1">Festival</div>
                     <div class="tag2">Family</div>
+                    <div class="tag2">Reputation Score: 1000</div>
                 </div>
 
+                <span class="brmedium"></span>
+                <div class="searchResultButtons">
+                    <form name="flightActions" class="flightSearchResultButtons" action="Flight" method="POST">
+                        <div class="bookmarkFlight">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="action" value="bookmark">
+                        </div>
+                        <div class="favouriteDestination">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/favouriteStar.png" alt="Favourite Destination Logo" name="action" value="favourite">
+                        </div>
+                        <div class="addToGroupFavouriteList">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="action" value="add-to-list">
+                        </div>
+                        <div class="viewFlightDetailsButton">
+                            <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="destinationImage">
+                <img src="${pageContext.request.contextPath}/images/goldCoast.jpg" alt="Brisbane Logo" class="smallBrisbaneLogo" >
+            </div>
+        </div>
+    </div>
+</div>
+<%--- Recommend END --%>
+
+<%-- MOST POPULAR FLIGHTS --%>
+<div class="centeringtext"> <h1>Most Popular Flights</h1> </div>
+<div class="gridParent">
+    <div class="recResults">
+        <div class="FlightSearchResult1">
+            <div class="flightInfo">
+                <div class="searchResultRow1">
+                    <div class="DepartureLocationResult">Newcastle</div>
+                    <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
+                    <div class="DestinationLocationResult">Brisbane</div>
+                </div>
+                <div class="searchResultRow2">
+                    <div class="priceResult">$802</div>
+                    <div class="dateResult">31/12/23</div>
+                    <div class="numPassengersResult">2 adults</div>
+                </div>
+
+                <div class="tagsParent">
+                    <div class="tag1">Festival</div>
+                    <div class="tag2">Mild</div>
+                    <div class="tag2">Reputation Score: 12345</div>
+                </div>
+                <span class="brmedium"></span>
+
+                <div class="searchResultButtons">
+                    <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
+                        <div class="bookmarkFlight">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value="bookmark">
+                        </div>
+                        <div class="favouriteDestination">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/favouriteStar.png" alt="Favourite Destination Logo" name="favourite" value="favourite">
+                        </div>
+                        <div class="addToGroupFavouriteList">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="add-to-list" value="add-to-list">
+                        </div>
+                        <div class="viewFlightDetailsButton">
+                            <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="destinationImage">
+                <img src="${pageContext.request.contextPath}/images/brisbaneCity.jpg" alt="Brisbane Logo" class="smallBrisbaneLogo" >
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="FlightSearchResult2">
+            <div class="flightInfo">
+                <div class="searchResultRow1">
+                    <div class="DepartureLocationResult">Newcastle</div>
+                    <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
+                    <div class="DestinationLocationResult">Brisbane</div>
+                </div>
+                <div class="searchResultRow2">
+                    <div class="priceResult">$1224</div>
+                    <div class="dateResult">31/3/24</div>
+                    <div class="numPassengersResult">3 adults</div>
+                </div>
+
+                <div class="tagsParent">
+                    <div class="tag1">Family</div>
+                    <div class="tag2">Festival</div>
+                    <div class="tag2">Reputation Score: 1739</div>
+                </div>
+                <span class="brmedium"></span>
+
+                <div class="searchResultButtons">
+                    <form name="flightActions" class="flightSearchResultButtons" action="Flight" method="POST">
+                        <div class="bookmarkFlight">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="action" value="bookmark">
+                        </div>
+                        <div class="favouriteDestination">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/favouriteStar.png" alt="Favourite Destination Logo" name="action" value="favourite">
+                        </div>
+                        <div class="addToGroupFavouriteList">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="action" value="add-to-list">
+                        </div>
+                        <div class="viewFlightDetailsButton">
+                            <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="destinationImage">
+                <img src="${pageContext.request.contextPath}/images/brisbaneCity.jpg" alt="Brisbane Logo" class="smallBrisbaneLogo" >
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="FlightSearchResult3">
+            <div class="flightInfo">
+                <div class="searchResultRow1">
+                    <div class="DepartureLocationResult">Newcastle</div>
+                    <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
+                    <div class="DestinationLocationResult">Gold Coast</div>
+                </div>
+                <div class="searchResultRow2">
+                    <div class="priceResult">$755</div>
+                    <div class="dateResult">7/4/24</div>
+                    <div class="numPassengersResult">2 adults</div>
+                </div>
+
+                <div class="tagsParent">
+                    <div class="tag1">Sightseeing</div>
+                    <div class="tag2">Family</div>
+                    <div class="tag2">Reputation Score: 2938</div>
+                </div>
+
+                <span class="brmedium"></span>
                 <div class="searchResultButtons">
                     <form name="flightActions" class="flightSearchResultButtons" action="Flight" method="POST">
                         <div class="bookmarkFlight">
@@ -200,6 +349,147 @@
     </div>
 </div>
 
+<%--- Most Popular END --%>
+
+
+<%--- BUDGET FLIGHTS --%>
+<div class="centeringtext"> <h1>Budget Flights</h1> </div>
+
+<div class="gridParent">
+    <div class="recResults">
+        <div class="FlightSearchResult1">
+            <div class="flightInfo">
+                <div class="searchResultRow1">
+                    <div class="DepartureLocationResult">Newcastle</div>
+                    <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
+                    <div class="DestinationLocationResult">Brisbane</div>
+                </div>
+                <div class="searchResultRow2">
+                    <div class="priceResult">$305</div>
+                    <div class="dateResult">02/11/23</div>
+                    <div class="numPassengersResult">2 adults</div>
+                </div>
+
+                <div class="tagsParent">
+                    <div class="tag1">Mild</div>
+                    <div class="tag2">Family</div>
+                    <div class="tag2">Reputation Score: 324</div>
+                </div>
+                <span class="brmedium"></span>
+
+                <div class="searchResultButtons">
+                    <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
+                        <div class="bookmarkFlight">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value="bookmark">
+                        </div>
+                        <div class="favouriteDestination">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/favouriteStar.png" alt="Favourite Destination Logo" name="favourite" value="favourite">
+                        </div>
+                        <div class="addToGroupFavouriteList">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="add-to-list" value="add-to-list">
+                        </div>
+                        <div class="viewFlightDetailsButton">
+                            <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="destinationImage">
+                <img src="${pageContext.request.contextPath}/images/brisbaneCity.jpg" alt="Brisbane Logo" class="smallBrisbaneLogo" >
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="FlightSearchResult2">
+            <div class="flightInfo">
+                <div class="searchResultRow1">
+                    <div class="DepartureLocationResult">Newcastle</div>
+                    <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
+                    <div class="DestinationLocationResult">Brisbane</div>
+                </div>
+                <div class="searchResultRow2">
+                    <div class="priceResult">$237</div>
+                    <div class="dateResult">17/1/24</div>
+                    <div class="numPassengersResult">2 adults</div>
+                </div>
+
+                <div class="tagsParent">
+                    <div class="tag1">Family</div>
+                    <div class="tag2">Sightseeing</div>
+                    <div class="tag2">Reputation Score: 468</div>
+                </div>
+                <span class="brmedium"></span>
+
+                <div class="searchResultButtons">
+                    <form name="flightActions" class="flightSearchResultButtons" action="Flight" method="POST">
+                        <div class="bookmarkFlight">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="action" value="bookmark">
+                        </div>
+                        <div class="favouriteDestination">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/favouriteStar.png" alt="Favourite Destination Logo" name="action" value="favourite">
+                        </div>
+                        <div class="addToGroupFavouriteList">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="action" value="add-to-list">
+                        </div>
+                        <div class="viewFlightDetailsButton">
+                            <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="destinationImage">
+                <img src="${pageContext.request.contextPath}/images/brisbaneCity.jpg" alt="Brisbane Logo" class="smallBrisbaneLogo" >
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="FlightSearchResult3">
+            <div class="flightInfo">
+                <div class="searchResultRow1">
+                    <div class="DepartureLocationResult">Newcastle</div>
+                    <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
+                    <div class="DestinationLocationResult">Gold Coast</div>
+                </div>
+                <div class="searchResultRow2">
+                    <div class="priceResult">$179</div>
+                    <div class="dateResult">23/2/24</div>
+                    <div class="numPassengersResult">2 adults</div>
+                </div>
+
+                <div class="tagsParent">
+                    <div class="tag1">Festival</div>
+                    <div class="tag2">Family</div>
+                    <div class="tag2">Reputation Score: 463</div>
+                </div>
+
+                <span class="brmedium"></span>
+                <div class="searchResultButtons">
+                    <form name="flightActions" class="flightSearchResultButtons" action="Flight" method="POST">
+                        <div class="bookmarkFlight">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="action" value="bookmark">
+                        </div>
+                        <div class="favouriteDestination">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/favouriteStar.png" alt="Favourite Destination Logo" name="action" value="favourite">
+                        </div>
+                        <div class="addToGroupFavouriteList">
+                            <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="action" value="add-to-list">
+                        </div>
+                        <div class="viewFlightDetailsButton">
+                            <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="destinationImage">
+                <img src="${pageContext.request.contextPath}/images/goldCoast.jpg" alt="Brisbane Logo" class="smallBrisbaneLogo" >
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--- BUDGET END --%>
 
 </body>
 <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/script.js"></script>
