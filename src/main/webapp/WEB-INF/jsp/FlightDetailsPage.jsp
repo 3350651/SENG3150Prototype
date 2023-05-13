@@ -16,6 +16,7 @@
                     <form class="backButton">
                         <button>Back</button>
                     </form>
+                    <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="centreLogo" >
                     <h1>
                         Sydney To San Francisco
                     </h1>
@@ -28,7 +29,7 @@
                     </div>
                 </header>
 
-                <img src="${pageContext.request.contextPath}/images/sanfrancisoImage.jpg" class="destinationImage" />
+                <img src="${pageContext.request.contextPath}/images/sanFranciso.png" alt="Destination Image" class="destinationImage" />
                 <fieldset class="review">
                     <h3>Flight Details:</h3>
                     <p class="flightDetails">

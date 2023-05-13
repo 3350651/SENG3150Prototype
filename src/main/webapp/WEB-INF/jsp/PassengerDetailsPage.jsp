@@ -13,6 +13,7 @@
             <form class="backButton">
                 <button>Back</button>
             </form>
+            <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="centreLogo" >
             <h1>Passenger Details</h1>
             <br />
             <label for="progress">

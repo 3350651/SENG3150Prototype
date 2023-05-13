@@ -173,6 +173,15 @@
     padding-top: 10px;
   }
 
+  img.centreLogo {
+    width: 150px;
+    height: 150px;
+    padding-top: 10px;
+    display: block;
+  margin-left: auto;
+  margin-right: auto; 
+  }
+
   .top-right {
     position: absolute;
     top: 1em;
