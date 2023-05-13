@@ -25,6 +25,29 @@
     border-color: black;
   }
 
+  fieldset.filled {
+    border-color: black;
+    width: 70%;
+    margin: auto;
+    background-color: cornflowerblue;
+  }
+
+  fieldset.foreground {
+    border-color: black;
+    color: black;
+    background-color: cornflowerblue;
+    text-align: left;
+  }
+
+  fieldset.background {
+    text-align: center;
+    color: white;
+    border-color: black;
+    width: 70%;
+    margin: auto;
+    background-color: rgb(77, 114, 183);
+  }
+
   #login {
     padding-top: 100px;
     text-align: center;
@@ -178,8 +201,8 @@
     height: 150px;
     padding-top: 10px;
     display: block;
-  margin-left: auto;
-  margin-right: auto; 
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .top-right {
@@ -267,4 +290,17 @@
 
   .backButton {
     float: left;
+  }
+
+  .filledSection {
+    background-color: cornflowerblue;
+    text-align: left;
+  }
+
+  #addToGroupFavList {
+    margin-left: 225px;
+  }
+
+  #submit {
+    margin-left: 225px;
   }

@@ -27,7 +27,7 @@
             </div>
         </header>
 
-        <fieldset class="review">
+        <fieldset class="filled">
             <h3>Flight Details:</h3>
 
             <p class="reviewDetails">
@@ -46,18 +46,18 @@
 
         <br />
 
-        <fieldset class="review">
+        <fieldset class="background">
             <h3>Passenger Details:</h3>
-            <fieldset>
-                <legend>Passenger 1</legend>
+            <fieldset class="foreground">
+                <h3>Passenger 1</h3>
                 <p class="reviewDetails">
                     <strong>Name: </strong>Mr John Barry Smith<br />
                     <strong>Email: </strong>johnSmith@gmail.com<br />
                     <strong>Mobile Number: </strong>0412 123 123
                 </p>
             </fieldset>
-            <fieldset>
-                <legend>Passenger 2</legend>
+            <fieldset class="foreground">
+                <h3>Passenger 2</h3>
                 <p class="reviewDetails">
                     <strong>Name: </strong>Mr John Barry Smith<br />
                     <strong>Email: </strong>johnSmith@gmail.com<br />
@@ -67,7 +67,7 @@
 
         </fieldset>
         <br />
-        <fieldset class="review">
+        <fieldset class="filled">
             <h3>Payment Details:</h3>
             <form>
                 <label for="cardNumber">Card Number:</label>

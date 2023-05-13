@@ -24,7 +24,7 @@
             </div>
         </header>
         <form name="test">
-            <fieldset class="passengerDetails">
+            <fieldset class="filled">
                 <h3>Passenger 1</h3>
                 <h3>Personal Details</h3>
                 <label for="title">Title: </label>
@@ -77,7 +77,7 @@
                             Economy Class:<br />$500</label>
                     </div>
                 </div>
-                <h4>Select Ticket Type:</h4>
+                <h4>Select Package:</h4>
 
                 <div class="radioButton">
                     <label for="standard">
@@ -99,7 +99,7 @@
 
             </fieldset>
             <br />
-            <fieldset class="passengerDetails">
+            <fieldset class="filled">
                 <h3>Passenger 2</h3>
                 <h3>Personal Details</h3>
                 <label for="title2">Title: </label>
@@ -152,7 +152,7 @@
                             Economy Class:<br />$500</label>
                     </div>
                 </div>
-                <h4>Select Ticket Type:</h4>
+                <h4>Select Package:</h4>
 
                 <div class="radioButton">
                     <label for="standard2">
@@ -173,7 +173,7 @@
                 </div>
 
             </fieldset>
-            <button class="button" type="submit">Submit</button>
+            <button class="button" id="submit">Submit</button>
         </form>
     </main>
 </body>
