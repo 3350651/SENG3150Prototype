@@ -64,9 +64,10 @@
                     </tr>
                 </table>
 
-                <button class="button" name="addToGroupFavList" id="addToGroupFavList">Add To Group Favourite List</button>
+                <button class="button" name="addToGroupFavList" id="addToGroupFavList">Add To Group Favourite
+                    List</button>
                 <br />
-                <form>
+                <form action="FlightToPassengers" method="POST">
                     <fieldset class="background">
 
                         <label for="returnDate">Return Date:</label>
@@ -79,7 +80,7 @@
                         <button class="button">Continue One Way</button>
                         <br />
                         <fieldset class="foreground">
-                            <button class="selectFlight">Select</button>
+                            <button class="selectFlight" type="submit">Select</button>
                             <p class="flightDetails">
                                 <strong>Airline: </strong>American Airlines
                                 <br />
@@ -94,7 +95,7 @@
 
                         </fieldset>
                         <fieldset class="foreground">
-                            <button class="selectFlight">Select</button>
+                            <button class="selectFlight" type="submit">Select</button>
                             <p class="flightDetails">
                                 <strong>Airline: </strong>American Airlines
                                 <br />
@@ -108,7 +109,7 @@
                             </p>
                         </fieldset>
                         <fieldset class="foreground">
-                            <button class="selectFlight">Select</button>
+                            <button class="selectFlight" type="submit">Select</button>
                             <p class="flightDetails">
                                 <strong>Airline: </strong>American Airlines
                                 <br />

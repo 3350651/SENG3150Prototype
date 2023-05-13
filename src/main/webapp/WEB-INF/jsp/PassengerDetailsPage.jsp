@@ -13,7 +13,8 @@
             <form class="backButton">
                 <button>Back</button>
             </form>
-            <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="centreLogo" >
+            <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo"
+                class="centreLogo">
             <h1>Passenger Details</h1>
             <br />
             <label for="progress">
@@ -23,7 +24,7 @@
                 <div class="innerProgress" id="progress" style="width:66%">66%</div>
             </div>
         </header>
-        <form name="test">
+        <form name="test" action="PassengersToReview" method="POST">
             <fieldset class="filled">
                 <h3>Passenger 1</h3>
                 <h3>Personal Details</h3>
@@ -173,7 +174,7 @@
                 </div>
 
             </fieldset>
-            <button class="button" id="submit">Submit</button>
+            <button class="button" id="submit" type="submit">Submit</button>
         </form>
     </main>
 </body>
