@@ -40,7 +40,6 @@
 
 </div>
 <div class="centeringtext"> <h1>Recommended Flights based on your Search Terms</h1> </div>
-<div class="centeringtext"> <h1>Recommended Flights for You</h1> </div>
 <div class="gridParent">
   <div class="recResults">
     <div class="FlightSearchResult1">
