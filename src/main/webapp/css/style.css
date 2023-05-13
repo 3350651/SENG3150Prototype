@@ -229,7 +229,6 @@ form.groups{
     background-color: #156283;
     color: white;
     border-radius: 8px;
-    font-size: 20px;
     margin-top: 10px;
     padding: 10px 20px;
     border: none;
@@ -273,6 +272,20 @@ form.groups{
 .accountButton:hover {
     background-color: dodgerblue;
  }
+
+ .radioButton input[type="radio"] {
+  opacity: 0.011;
+  z-index: 100;
+}
+.radioButton input[type="radio"]:checked {
+  background: #20b8be;
+  border-radius: 4px;
+}
+.radioButton label {
+  cursor: pointer;
+  z-index: 90;
+  line-height: 1.8em;
+}
 
 /*form.simpleSearchForm{
   display: grid;
@@ -322,29 +335,19 @@ form.simpleSearchForm {
   width: 50px;
 }
 
-  .radioButton input[type="radio"] {
-    opacity: 0.011;
-    z-index: 100;
-  }
+  
 .numberOfChildren {
   grid-area: numberOfChildren;
   width: 50px;
 }
 
-  .radioButton input[type="radio"]:checked {
-    background: #20b8be;
-    border-radius: 4px;
-  }
+ 
 .flexibleDate {
   grid-area: flexibleDate;
   width: 100px;
 }
 
-  .radioButton label {
-    cursor: pointer;
-    z-index: 90;
-    line-height: 1.8em;
-  }
+  
 .saveParameters {
   width: 150px;
 }
