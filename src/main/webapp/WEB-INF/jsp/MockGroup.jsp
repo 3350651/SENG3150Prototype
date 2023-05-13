@@ -81,13 +81,21 @@
           </div>
     </div>
 
-    <div class="pool">
-        <p style="font-size: 20px;">Remaining Pool Amount </p> <p style="font-size: 25px;"><b>$240</b></p>
-        <form name="pool" method="POST" action="MockupGroup">
-            <button type="submit" name="getPool" value="getPool" class="groupButton">Go to Money Pool</button>
-        </form>
-    </div>
+    <div class="groupContents2">
+        <div class="pool" style="display:inline-block; float: left;">
+            <p style="font-size: 20px;">Remaining Pool Amount </p> <p style="font-size: 25px;"><b>$240</b></p>
+            <form name="pool" method="POST" action="MockupGroup">
+                <button type="submit" name="getPool" value="getPool" class="groupButton">Go to Money Pool</button>
+            </form>
+        </div>
 
+        <div class="date" style="display:inline-block; float: right;">
+            <form>
+                <label style="font-size: 20px;">Trip Availability</label><br>
+                <input type="date">
+            </form>
+        </div>
+    </div>
 </div>
 
 </body>

@@ -24,29 +24,29 @@
 
         <div class="removeMember">
             <div class="member">
-                Member name: <b>Jordan Eade</b><br style="line-height: 0px;">
-                Member id: <b>16738923</b>
+                Member: <b>Jordan Eade</b><br style="line-height: 0px;">
+                id: <b>16738923</b>
                 <form>
                     <button>Remove Member</button>
                 </form>
             </div>
             <div class="member">
-                Member name: <b>Blake Baldin</b><br style="line-height: 0px;">
-                Member id: <b>15297834</b>
+                Member: <b>Blake Baldin</b><br style="line-height: 0px;">
+                id: <b>15297834</b>
                 <form>
                     <button>Remove Member</button>
                 </form>
             </div>
             <div class="member">
-                Member name: <b>Lachlan O&#39Neill</b><br style="line-height: 0px;">
-                Member id: <b>14368795</b>
+                Member: <b>Lachlan O&#39Neill</b><br style="line-height: 0px;">
+                id: <b>14368795</b>
                 <form>
                     <button>Remove Member</button>
                 </form>
             </div>
             <div class="member">
-                Member name: <b>Lucy Knight</b><br style="line-height: 0px;">
-                Member id: <b>11258975</b>
+                Member: <b>Lucy Knight</b><br style="line-height: 0px;">
+                id: <b>11258975</b>
                 <form>
                     <button>Remove Member</button>
                 </form>

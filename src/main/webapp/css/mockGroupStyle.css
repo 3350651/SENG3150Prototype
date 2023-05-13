@@ -156,7 +156,7 @@ ul{
     text-align:center;
     margin: auto;
       width: 50%;
-      border: 3px solid green;
+      border: 3px solid;
       padding: 10px;
   }
 
@@ -173,11 +173,13 @@ ul{
         /* top | right | bottom | left */
         margin: auto;
         width: 30%;
-        border: 3px solid green;
+        border: 3px solid;
         padding: 5px;
         font-family: monospace;
-        background: darkseagreen;
+        background: #7CB9E8;
         display: inline-block;
+        border-width: thin;
+        border-radius: 8px;
     }
 
     .message {
@@ -185,6 +187,7 @@ ul{
         padding: 5px;
         text-align: left;
         background-color: #E8E8E8;
+        border-radius: 8px;
     }
 
     .faveList {
@@ -192,9 +195,11 @@ ul{
         /* top | right | bottom | left */
         margin: auto;
         width: 60%;
-        border: 3px solid green;
+        border: 3px solid;
         padding: 5px;
         display: inline-block;
+        border-width: thin;
+        border-radius: 8px;
     }
 
     .groupContents {
@@ -204,14 +209,25 @@ ul{
         width: 55%;
         border: 3px;
         padding: 5px;
+        border-radius: 8px;
     }
 
+     .groupContents2 {
+        text-align:center;
+        /* top | right | bottom | left */
+        margin: 5px auto;
+        width: 80%;
+        border: 3px;
+        padding: 5px;
+        border-radius: 8px;
+     }
+
     .faveFlight {
-        border: solid thin;
         padding: 5px;
         text-align: left;
-        background-color: darkseagreen;
+        background-color: #7CB9E8;
         margin: 3px;
+        border-radius: 8px;
     }
 
     .faveInfo {
@@ -223,9 +239,11 @@ ul{
     .pool {
        margin: 5px auto;
        width: 55%;
-       border: 3px solid green;
+       border: 3px solid;
        padding: 5px;
-       background-color: darkseagreen;
+       background-color: #7CB9E8;
+       border-width: thin;
+       border-radius: 8px;
     }
 
     .manageGroup{
@@ -234,6 +252,7 @@ ul{
       border: 3px;
       padding: 10px;
       text-align: right;
+      border-radius: 8px;
     }
 
     .backButton {
@@ -242,6 +261,7 @@ ul{
       border: 3px;
       padding: 10px;
       text-align: left;
+      border-radius: 8px;
     }
 
     .groupButton {
@@ -270,7 +290,8 @@ ul{
        width: 40%;
        border: 3px;
        padding: 5px;
-       background-color: darkseagreen;
+       background-color: #7CB9E8;
+       border-radius: 8px;
     }
 
     #addMemberFormContainer {
@@ -280,7 +301,8 @@ ul{
        width: 40%;
        border: 3px;
        padding: 5px;
-       background-color: darkseagreen;
+       background-color: #7CB9E8;
+       border-radius: 8px;
     }
 
     .removeMember{
@@ -290,7 +312,8 @@ ul{
        width: 40%;
        border: 3px;
        padding: 5px;
-       background-color: darkseagreen;
+       background-color: #7CB9E8;
+       border-radius: 8px;
     }
 
     .member {
@@ -301,6 +324,7 @@ ul{
        border: 3px solid;
        border-width: thin;
        padding: 10px;
+       border-radius: 8px;
 
     }
 
@@ -311,11 +335,22 @@ ul{
        width: 40%;
        border: 3px;
        padding: 10px;
-       background-color: darkseagreen;
+       background-color: #7CB9E8;
+       border-width: thin;
+       border-radius: 8px;
     }
 
-    body{
-        background-color: #FFFFF2;
+    .date{
+       text-align:center;
+       /* top | right | bottom | left */
+       margin: 5px auto;
+       width: 40%;
+       border: 3px;
+       padding: 10px;
+       background-color: #7CB9E8;
+       border: 3px solid;
+       border-width: thin;
+       border-radius: 8px;
     }
 
 }
