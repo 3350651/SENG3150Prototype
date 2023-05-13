@@ -194,65 +194,6 @@ ul{
     background-color: dodgerblue;
  }
 
-/*form.simpleSearchForm{
-  display: grid;
-  grid-template-columns: 1fr 1fr 125px;
-  grid-gap: 10px;
-  margin: 0 auto;
-}
-
-form.simpleSearchForm {
-  display: grid;
-  margin: 0 auto;
-  grid-template-columns: repeat(2, 200px) 60px;
-  grid-template-rows: repeat(4, 60px);
-  grid-gap: 10px;
-  grid-template-areas:
-    "departureLocation arrivalLocation departureDate"
-    "numberOfAdults numberOfChildren flexibleDate"
-    "saveParam blank search"
-}
-
-.departureLocation {
-  grid-area: departureLocation;
-  width: 200px;
-}
-
-.arrivalLocation {
-  grid-area: arrivalLocation;
-  width: 200px;
-}
-
-.departureDate {
-  grid-area: departureDate;
-  width: 100px;
-}
-
-.numberOfAdults {
-  grid-area: numberOfAdults;
-  width: 50px;
-}
-
-.numberOfChildren {
-  grid-area: numberOfChildren;
-  width: 50px;
-}
-
-.flexibleDate {
-  grid-area: flexibleDate;
-  width: 100px;
-}
-
-.saveParameters {
-  width: 150px;
-}
-
-.searchForFlight {
-  width: 150px
-}*/
-
-
-
 div.simpleSearch{
     border-style: solid;
     border-color: black;

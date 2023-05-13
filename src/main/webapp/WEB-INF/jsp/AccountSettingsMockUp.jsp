@@ -1,10 +1,3 @@
-<%@ page import="startUp.UserBean" %>
-<% UserBean user = (UserBean) session.getAttribute("userBean");%>
-<%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="java.util.LinkedList" %>
-<%@ page import="java.util.Iterator" %>
-<% DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-  String dateOfBirthFormatted = user.getDateOfBirth().format(formatter); %>
 <!DOCTYPE html>
 
 <html lang="en">

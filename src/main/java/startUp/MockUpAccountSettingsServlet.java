@@ -28,7 +28,7 @@ public class MockUpAccountSettingsServlet extends HttpServlet {
         // gets the user object and their role from the session object.
         UserBean user = (UserBean) session.getAttribute("userBean");
 
-        requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+        requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettingsMockUp.jsp");
 
         requestDispatcher.forward(request, response);
     }
@@ -41,27 +41,27 @@ public class MockUpAccountSettingsServlet extends HttpServlet {
         HttpSession session = request.getSession();
         UserBean user = (UserBean) session.getAttribute("userBean");
         if (request.getParameter("submitQuestionnaire") != null) {
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettingsMockUp.jsp");
             requestDispatcher.forward(request, response);
         }
         if(request.getParameter("changePassword") != null){
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettingsMockUp.jsp");
             requestDispatcher.forward(request, response);
         }
         if(request.getParameter("editPersonalDetails") != null){
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettingsMockUp.jsp");
             requestDispatcher.forward(request, response);
         }
         if(request.getParameter("updateUIPreferences") != null){
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettingsMockUp.jsp");
             requestDispatcher.forward(request, response);
         }
         if(request.getParameter("addTags") != null){
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettingsMockUp.jsp");
             requestDispatcher.forward(request, response);
         }
         if(request.getParameter("removeTags") != null){
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettingsMockUp.jsp");
             requestDispatcher.forward(request, response);
         }
         if(request.getParameter("goToUIPreferences") != null){
@@ -78,7 +78,7 @@ public class MockUpAccountSettingsServlet extends HttpServlet {
             requestDispatcher.forward(request, response);
         }
         if(request.getParameter("viewAccountSettings") != null){
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettingsMockUp.jsp");
             requestDispatcher.forward(request, response);
         }
         if(request.getParameter("goToModifyTags") != null){

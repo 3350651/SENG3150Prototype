@@ -152,13 +152,6 @@ ul{
       right: 3em;
   }
 
-  .search {
-    text-align:center;
-    margin: auto;
-      width: 50%;
-      border: 3px solid;
-      padding: 10px;
-  }
 
    img.groupLogo{
         width:150px;
@@ -234,6 +227,9 @@ ul{
         text-align: absolute;
         font-family: serif;
         font-size: 20px;
+        margin-block-start: 2px;
+        margin-block-end:2px;
+        display: inline-block;
     }
 
     .pool {
@@ -246,13 +242,22 @@ ul{
        border-radius: 8px;
     }
 
-    .manageGroup{
+    /*.manageGroup{
       margin: auto;
       width: 50%;
       border: 3px;
       padding: 10px;
       text-align: right;
       border-radius: 8px;
+    }*/
+    div.manageGroup{
+        display: flex;
+        align-items: center;
+        height: 100px;
+        width: 100px;
+        position: fixed;
+        top: 5cm;
+        right: 5cm;
     }
 
     .backButton {
@@ -353,6 +358,128 @@ ul{
        border-radius: 8px;
     }
 
+    div.simpleSearch{
+        border-style: solid;
+        border-color: black;
+        padding: 20px;
+        border-radius: 10px;
+        width:600px;
+        margin-left:450px;
+    }
+
+    div.faveFlight img{
+        width: auto;
+        height: 80px;
+        padding:0;
+        float: right;
+    }
+
+    input[type="number"] {
+      width: 25px; /* adjust the width as desired */
+           height: 25px;
+    }
+
+    input[type="text"] {
+      width: 150px;
+      height: 25px; /* adjust the width as desired */
+    }
+
+    input[type="date"] {
+      height: 25px; /* adjust the width as desired */
+      width: 80px;
+    }
+
+    input[type="checkbox"] {
+      margin: 0 15;
+      display: block;
+      width: 30px;
+      height: 25px;
+    }
+
+    div.departureLocation{
+        float: left;
+        width: 150px;
+        font-size: 25;
+        padding-right:15px;
+    }
+
+    div.arrivalLocation{
+        float: left;
+        width: 150px;
+        font-size: 25;
+        padding-right: 15px;
+    }
+
+    div.departureDate{
+        float: left;
+        width: 80px;
+        padding-right: 15px;
+    }
+
+    div.numberOfAdults{
+        float: left;
+        width: 80px;
+    }
+
+    div.numberOfChildren{
+        float: left;
+        width: 75px;
+    }
+
+    div.flexibleDate{
+        float: left;
+        width:50px;
+        padding-right: 15px;
+    }
+
+    div.flexibleDaysGroup{
+        float: left;
+        width: 100px;
+    }
+
+    div.saveParam{
+        float: left;
+        padding-right: 200px;
+    }
+
+    div.search{
+    }
+
+    button.saveParam {
+        background-color: #156283;
+        color: white;
+        border-radius: 8px;
+        font-size: 13px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 5px;
+        display: inline-block;
+        transition-duration: 0.25s;
+        height: 40px;
+        width: 150px;
+     }
+
+    button.saveParam:hover {
+        background-color: dodgerblue;
+     }
+
+     button.search {
+         background-color: #156283;
+         color: white;
+         border-radius: 8px;
+         font-size: 13px;
+         margin-top: 10px;
+         border: none;
+         border-radius: 5px;
+         display: inline-block;
+         transition-duration: 0.25s;
+        height: 40px;
+        width: 150px;
+      }
+
+     button.search:hover {
+         background-color: dodgerblue;
+      }
 }
 
 

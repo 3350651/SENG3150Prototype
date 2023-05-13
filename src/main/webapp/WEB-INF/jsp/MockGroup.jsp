@@ -17,17 +17,35 @@
     <br style="line-height: 5px;">
     <h1>Group One</h1>
 </div>
-<br>
-
 <div class="manageGroup">
     <form name="manageGroup" method="POST" action="MockupGroup">
         <button type="submit" name="manageGroup" value="manageGroup" class="groupButton">Manage Group</button>
     </form>
-
 </div>
 
-<div class="search">
-    Search Bar to go here.
+<div class="simpleSearch">
+    <form method="POST" action="Search" class="simpleSearchForm">
+        <div class="departureLocation"><label for="departureLocation">Leaving From</label><br>
+        <input type="text" id="departureLocation" name="departureLocation"></div>
+        <div class="arrivalLocation"><label for="arrivalLocation">Going To</label><br>
+        <input type="text" id="arrivalLocation" name="arrivalLocation"></div>
+        <div class="departureDate"><label for="departureDate">Date</label><br>
+        <input type="date" id="departureDate" name="departureDate"></div>
+        <div class="flexibleDate"><label for="flexibleDate">Flexible?</label> <br>
+        <input type="checkbox" id="flexibleDate" name="flexibleDate">
+        <div class="flexibleDaysGroup" id="flexibleDaysGroup" style="display:none;">
+        <label for="flexibleDays">Days flexible?</label><br>
+        <input type="number" min="0" max="30" step="1" id="flexibleDays" name="flexibleDays">
+        </div></div>
+        <div class="numberOfAdults"><label for="numberOfAdults">Passengers</label><br>
+        <input type="number" id="numberOfAdults" size="2" name="numberOfAdults"></div>
+        <div class="saveParam">
+        <button name="saveParam" type="submit" value="saveParam" class="saveParam">Save Search Parameters</button>
+        </div>
+        <div class="search">
+        <button name="searchLogged" type="submit" value="searchLogged" class="search">Search For Flights</button>
+        </div>
+    </form>
 </div>
 
 <div class="groupContents">
@@ -47,7 +65,10 @@
     <div class="faveList">
         <p style="font-size: 25px; display:inline-block;">Group Favourites</p><p class="material-symbols-outlined">favorite</p>
         <div class="faveFlight">
-          <p class="faveInfo">To <b>Bali</b> @ $200</p>
+          <p class="faveInfo">To <b>Bali</b> @ $200
+          <img src="${pageContext.request.contextPath}/images/bali.png" alt="Bali" class="baliSmallLogo" >
+          </p>
+
           <form style="text-align: right;">
             <button class="material-symbols-outlined">arrow_upward</button>
             <button class="material-symbols-outlined">arrow_downward</button>
@@ -58,7 +79,9 @@
 
         </div>
          <div class="faveFlight">
-              <p class="faveInfo">To <b>Thailand</b> @ $215</p>
+              <p class="faveInfo">To <b>Thailand</b> @ $215
+              <img src="${pageContext.request.contextPath}/images/thailand.png" alt="Thailand" class="thailandSmallLogo" >
+              </p>
               <form style="text-align: right;">
                 <button class="material-symbols-outlined">arrow_upward</button>
                 <button class="material-symbols-outlined">arrow_downward</button>
@@ -69,7 +92,9 @@
 
          </div>
          <div class="faveFlight">
-               <p class="faveInfo">To <b>Fiji</b> @ $150</p>
+               <p class="faveInfo">To <b>Fiji</b> @ $150
+               <img src="${pageContext.request.contextPath}/images/fiji.png" alt="Fiji" class="fijiSmallLogo" >
+               </p>
                <form style="text-align: right;">
                  <button class="material-symbols-outlined">arrow_upward</button>
                  <button class="material-symbols-outlined">arrow_downward</button>

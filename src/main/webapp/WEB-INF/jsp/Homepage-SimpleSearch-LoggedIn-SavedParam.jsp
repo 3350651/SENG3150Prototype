@@ -24,7 +24,7 @@
 <%--        Groups You're In         --%>
     <form name="goToGroup" action="MockupGroup" class="groups" method="POST">
         <h2>Group Membership</h2>
-        <button type="submit" class="button" name="goToGroup1" value="goToGroup1">Group1</button>
+        <button type="submit" class="button" name="goToGroup1" value="goToGroup1">Group 1</button>
         <button type="submit" class="button" name="createGroup" value="createGroup">Create New Group</button>
     </form>
 </div>
