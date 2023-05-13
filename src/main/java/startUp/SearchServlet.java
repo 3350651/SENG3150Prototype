@@ -39,14 +39,27 @@ public class SearchServlet extends HttpServlet {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/SearchResults-LoggedIn.jsp");
 			requestDispatcher.forward(request, response);
 		}
-		if (request.getParameter("savedParameter1") != null) {
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Issue.jsp");
+		if (request.getParameter("savedParameter") != null) {
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/SearchResults-LoggedIn.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if (request.getParameter("backToHome") != null) {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch-LoggedIn.jsp");
 			requestDispatcher.forward(request, response);
 		}
+		if (request.getParameter("bookmark.x") != null) {
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/SearchResults-LoggedIn-ExtraBookmark.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if (request.getParameter("favourite") != null) {
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch-LoggedIn.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if (request.getParameter("add-to-list") != null) {
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch-LoggedIn.jsp");
+			requestDispatcher.forward(request, response);
+		}
+
 	}
 
 }

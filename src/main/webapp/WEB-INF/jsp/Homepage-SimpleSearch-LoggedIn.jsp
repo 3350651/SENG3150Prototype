@@ -30,7 +30,7 @@
 </div>
 <div class="main-content">
     <div class="viewAccountSettings">
-        <form method="POST" action="AccountSettings">
+        <form method="POST" action="AccountSettingsMockUp">
             <button name="viewAccountSettings" class="accountButton" value="viewAccountSettings">View Profile</button>
         </form>
     </div>
@@ -58,16 +58,19 @@
             <div style="clear:both;">&nbsp;</div>
             <div style="clear:both;">&nbsp;</div>
             <div class="saveParam">
-            <button name="saveParam" value="saveParam" class="saveParam">Save Search Parameters</button>
+            <button name="saveParam" type="submit" value="saveParam" class="saveParam">Save Search Parameters</button>
             </div>
             <div class="search">
-            <button name="search" value="searchLogged" class="search">Search For Flights</button>
+            <button name="searchLogged" type="submit" value="searchLogged" class="search">Search For Flights</button>
             </div>
         </form>
     </div>
     <div class="savedSearches">
     <h2 class="savedSearchesHeading">Saved Searches</h2>
-        <button name="savedParameter" value="savedParameter1" class="savedParameter">NTL -> BNE, 2 adults, 28/12/23 (+5d)</button><br>
+        <form method="POST" action="Search">
+        <input type="hidden" value="savedParameter1">
+        <button name="savedParameter" type="submit" value="savedParameter1" class="savedParameter">NTL -> BNE, 2 adults, 28/12/23 (+5d)</button><br>
+        </form>
     </div>
 
 </body>

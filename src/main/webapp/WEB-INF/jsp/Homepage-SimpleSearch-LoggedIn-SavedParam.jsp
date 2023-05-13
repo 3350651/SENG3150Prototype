@@ -22,9 +22,9 @@
         <button type="submit" class="button" name="goToBookmarkedFlight2" value="goToBookmarkedFlight2">Thailand, $679, 6/10/2023</button>
     </form>
 <%--        Groups You're In         --%>
-    <form name="goToGroup" action="GroupHomepage" class="groups" method="POST">
+    <form name="goToGroup" action="MockupGroup" class="groups" method="POST">
         <h2>Group Membership</h2>
-        <button type="submit" class="button" name="goToGroup1" value="goToGroup1">FriendGroup</button>
+        <button type="submit" class="button" name="goToGroup1" value="goToGroup1">Group1</button>
         <button type="submit" class="button" name="createGroup" value="createGroup">Create New Group</button>
     </form>
 </div>
@@ -65,12 +65,15 @@
             </div>
         </form>
     </div>
+
     <div class="savedSearches">
     <h2 class="savedSearchesHeading">Saved Searches</h2>
-        <button name="savedParameter" value="savedParameter1" class="savedParameter">NTL -> BNE, 2 adults, 28/12/23 (+5d)</button><br>
-        <button name="savedParameter" value="savedParameter2" class="savedParameter">NTL -> MLB, 4 adults, 2 children, 02/01/24</button>
+        <form method="POST" action="Search">
+        <input type="hidden" value="savedParameter1">
+        <button name="savedParameter" type="submit" value="savedParameter1" class="savedParameter">NTL > BNE, 2 adults, 28/12/23 (+5d)</button><br>
+        <button name="savedParameter" type="submit" value="savedParameter2" class="savedParameter">NTL > MLB, 4 adults, 2 children, 02/01/24</button>
+        </form>
     </div>
-
 </body>
 <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/script.js"></script>
 
