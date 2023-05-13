@@ -360,3 +360,14 @@ function modifyPassword(usersActualPassword){
     console.log("reached end of function");
     return false;
 }
+
+var checkbox = document.getElementById("flexibleDate");
+var daysInput = document.getElementById("flexibleDaysGroup");
+
+checkbox.addEventListener('change', function() {
+  if (this.checked) {
+    daysInput.style.display = "block";
+  } else {
+    daysInput.style.display = "none";
+  }
+});

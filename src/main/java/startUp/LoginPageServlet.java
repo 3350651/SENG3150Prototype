@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+
 @WebServlet(urlPatterns = { "/login" })
 public class LoginPageServlet extends HttpServlet {
 
@@ -18,15 +19,13 @@ public class LoginPageServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/PassengerDetailsPage.jsp");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch-LoggedIn.jsp");
 		requestDispatcher.forward(request, response);
 	}
 
 	/**
-	 * Takes the username and password from the login form and cross checks those
-	 * details with the database.
-	 * If successful, a user object will be added to their session, and they will be
-	 * logged in.
+	 * Takes the username and password from the login form and cross checks those details with the database.
+	 * If successful, a user object will be added to their session, and they will be logged in.
 	 * If unsuccessful, they will be sent back to the login page to try again.
 	 */
 	@Override
@@ -43,7 +42,8 @@ public class LoginPageServlet extends HttpServlet {
 		if (user.getHasLogin()) {
 			session.setAttribute("userBean", user);
 			response.sendRedirect(request.getContextPath() + "/Homepage");
-		} else {
+		}
+		else {
 			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/LoginPage-input.jsp");
 			requestDispatcher.forward(request, response);
 		}

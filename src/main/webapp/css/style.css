@@ -125,20 +125,34 @@
     color: #156283;
   }
 
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    /*border-style: solid;*/
-    /*border-color: white;*/
-    background-color: dodgerblue;
-    height: 100vh;
-    width: 250px;
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  /*border-style: solid;*/
+  /*border-color: white;*/
+  background-color: dodgerblue;
+  height: 100vh;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-family: Arial;
+}
+
+.sidebar form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial;
+}
+
+form.groups{
+    bottom: 0;
     position: fixed;
-    top: 0;
-    left: 0;
-  }
+}
 
   .main-content {
     display: flex;
@@ -231,6 +245,68 @@
   .radioButton:hover {
     background-color: seagreen;
   }
+.viewAccountSettings{
+    display: flex;
+      align-items: center;
+      /*border-style: solid;*/
+      /*border-color: white;*/
+      height: 100px;
+      width: 100px;
+      position: fixed;
+      top: 0;
+      right: 0;
+}
+
+.accountButton {
+    background-color: #156283;
+    color: white;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    transition-duration: 0.25s;
+    height: 50px;
+ }
+
+.accountButton:hover {
+    background-color: dodgerblue;
+ }
+
+/*form.simpleSearchForm{
+  display: grid;
+  grid-template-columns: 1fr 1fr 125px;
+  grid-gap: 10px;
+  margin: 0 auto;
+}
+
+form.simpleSearchForm {
+  display: grid;
+  margin: 0 auto;
+  grid-template-columns: repeat(2, 200px) 60px;
+  grid-template-rows: repeat(4, 60px);
+  grid-gap: 10px;
+  grid-template-areas:
+    "departureLocation arrivalLocation departureDate"
+    "numberOfAdults numberOfChildren flexibleDate"
+    "saveParam blank search"
+}
+
+.departureLocation {
+  grid-area: departureLocation;
+  width: 200px;
+}
+
+.arrivalLocation {
+  grid-area: arrivalLocation;
+  width: 200px;
+}
+
+.departureDate {
+  grid-area: departureDate;
+  width: 100px;
+}
 
   .radioButton label,
   .radioButton input {
@@ -241,26 +317,44 @@
     right: 0;
     bottom: 0;
   }
+.numberOfAdults {
+  grid-area: numberOfAdults;
+  width: 50px;
+}
 
   .radioButton input[type="radio"] {
     opacity: 0.011;
     z-index: 100;
   }
+.numberOfChildren {
+  grid-area: numberOfChildren;
+  width: 50px;
+}
 
   .radioButton input[type="radio"]:checked {
     background: #20b8be;
     border-radius: 4px;
   }
+.flexibleDate {
+  grid-area: flexibleDate;
+  width: 100px;
+}
 
   .radioButton label {
     cursor: pointer;
     z-index: 90;
     line-height: 1.8em;
   }
+.saveParameters {
+  width: 150px;
+}
 
   .review {
     background-color: darkseagreen;
   }
+.searchForFlight {
+  width: 150px
+}*/
 
   .selectReturn {
     background-color: darkseagreen;
@@ -304,3 +398,288 @@
   #submit {
     margin-left: 225px;
   }
+
+
+div.simpleSearch{
+    border-style: solid;
+    border-color: black;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+input[type="number"] {
+  width: 45px; /* adjust the width as desired */
+       height: 30px;
+}
+
+input[type="text"] {
+  width: 200px;
+  height: 30px; /* adjust the width as desired */
+}
+
+input[type="date"] {
+  height: 30px; /* adjust the width as desired */
+}
+
+input[type="checkbox"] {
+  margin: 0 15;
+  display: block;
+  width: 30px;
+  height: 30px;
+}
+
+div.departureLocation{
+    float: left;
+    width: 300px;
+    font-size: 25;
+}
+
+div.arrivalLocation{
+    float: left;
+    width: 300px;
+    font-size: 25;
+}
+
+div.departureDate{
+    float: left;
+    width: 150px;
+    padding-right: 35px
+}
+
+div.numberOfAdults{
+    float: left;
+    width: 75px;
+}
+
+div.numberOfChildren{
+    float: left;
+    width: 75px;
+}
+
+div.flexibleDate{
+    float: left;
+    width: 100px;
+    padding-right: 75px;
+}
+
+div.flexibleDaysGroup{
+    float: left;
+    width: 100px;
+}
+
+div.saveParam{
+    float: left;
+    padding-right: 200px;
+}
+
+div.search{
+}
+
+button.saveParam {
+    background-color: #156283;
+    color: white;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    transition-duration: 0.25s;
+    height: 50px;
+    width: 150px;
+ }
+
+button.saveParam:hover {
+    background-color: dodgerblue;
+ }
+
+ button.search {
+     background-color: #156283;
+     color: white;
+     border-radius: 8px;
+     font-size: 15px;
+     margin-top: 10px;
+     border: none;
+     border-radius: 5px;
+     display: inline-block;
+     transition-duration: 0.25s;
+     height: 50px;
+    width: 150px;
+  }
+
+ button.search:hover {
+     background-color: dodgerblue;
+  }
+
+  h2.homepageHeader{
+    text-align: center;
+    font-family: Arial;
+  }
+
+h1.homepageHeader{
+    text-align: center;
+    font-family: Arial;
+  }
+
+   .savedParameter {
+       background-color: dodgerblue;
+       color: white;
+       border-color: #156283;
+       border-radius: 8px;
+       font-size: 14px;
+       margin-top: 10px;
+       border: none;
+       border-radius: 5px;
+       display: inline-block;
+       transition-duration: 0.25s;
+       height: 40px;
+      width: 270px;
+    }
+
+   .savedParameter:hover {
+       background-color: #156283;
+    }
+
+div.savedSearches{
+    padding-top: 20px;
+}
+
+h2.savedSearchesHeading{
+    font-size: 20;
+}
+
+div.FlightSearchResult{
+    border: 2px solid black;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.FlightSearchResult:not(:first-child) {
+  margin-top: 10px;
+}
+
+.destinationImage {
+  margin-left: 10px;
+}
+
+.destinationImage img {
+  width: 200px;
+  height: auto;
+}
+
+.flight-info {
+  display: flex;
+  align-items: center;
+}
+
+div.DepartureLocationResult{
+    font-size: 25;
+}
+
+
+div.DestinationLocationResult{
+    font-size: 25;
+}
+
+  img.smallPlaneLogo{
+      width:40px;
+      height:30px;
+  }
+
+.DepartureLocationResult, .DestinationLocationResult, .smallPlaneLogo {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.priceResult, .dateResult, .numPassengersResult {
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+button.viewFlightDetailsButton {
+    background-color: #156283;
+    color: white;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-top: 10px;
+    padding: 5px 5px;
+    border: none;
+    border-radius: 2px;
+    display: inline-block;
+    transition-duration: 0.25s;
+    width: 300px;
+    height: 25px;
+ }
+
+ button.viewFlightDetailsButton:hover {
+    background-color: white;
+    color: #156283;
+    border: 2px solid black;
+ }
+
+input[type="image"]{
+    width:25px;
+    height:auto;
+}
+
+.btn-image:hover {
+  opacity: 0.8;
+  border: 1px solid black;
+}
+
+div.searchResultButtons img{
+    width: 25px;
+    height: 25px;
+}
+
+div.searchResultButtons{
+    padding-top:5px;
+}
+
+form.flightSearchResultButtons{
+    margin-block-end: 0em;
+}
+
+.searchResultRow1{
+    padding-left: 10px;
+}
+
+.searchResultRow2{
+    padding-left: 10px;
+    padding-top: 5px;
+}
+
+.bookmarkFlight, .favouriteDestination, .addToGroupFavouriteList {
+  display: inline-block;
+  vertical-align: middle;
+   text-align: center;
+   padding-top: 10px;
+   padding-right: 40px;
+   padding-left: 30px;
+}
+
+div.searchResults{
+   margin-left: 100px;
+   margin-top: 50px;
+}
+
+div.searchParametersSent{
+    margin-left:150px;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+h2.headingForSearchParameters{
+    padding-top:0;
+    padding-bottom:0;
+}
+
+p.summaryOfSearch{
+    margin-block-start: 5px;
+        margin-block-end: 5px;
+}
