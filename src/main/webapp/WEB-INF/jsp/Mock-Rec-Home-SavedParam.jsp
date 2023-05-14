@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>FlightPub</title>
-  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style2.css">
 </head>
 <body class="hompage-simplesearch-loggedin">
 <div class="sidebar">
