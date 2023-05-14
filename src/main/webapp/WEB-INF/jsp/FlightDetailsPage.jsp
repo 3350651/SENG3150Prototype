@@ -19,7 +19,7 @@
                     <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo"
                         class="centreLogo">
                     <h1>
-                        Sydney To San Francisco
+                        Newcastle To Brisbane
                     </h1>
                     <br />
                     <label for="progress">
@@ -32,15 +32,18 @@
 
                 <table>
                     <tr>
-                        <td class="filledSection"><img src="${pageContext.request.contextPath}/images/sanFrancisco.png"
-                                alt="Destination Image" class="destinationImage"></td>
+
+                        <td class="filledSection"><img src="${pageContext.request.contextPath}/images/brisbaneCity.jpg"
+                                alt="Destination Image" width="250px" height="auto" class="destinationImage"></td>
                         <td class="filledSection">
+                        <div class="mainFlightDetailCell">
                             <h3>Flight Details:</h3>
                             <p class="flightDetails">
-                                <strong>Airline: </strong>American Airlines
+
+                                <strong>Airline: </strong>Qantas
 
                                 <br />
-                                <strong>Departure Time:</strong> 11:50 am 11/05/2014
+                                <strong>Departure Time:</strong> 11:50 am 26/12/2023
 
                                 <br />
                                 <strong>Flight Name:</strong> F1375
@@ -48,8 +51,9 @@
                                 <br />
                                 <strong>Plane Model:</strong> A380
                                 <br />
-                            <h3>Minimum price: $500</h3>
+                            <h3>Minimum price: $662</h3>
                             </p>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -57,24 +61,40 @@
                             <p><strong>Tags:</strong> Landmark, America, Food</p>
                         </td>
                         <td class="filledSection">
-                            <p>San Francisco is a city in the USA that is quite popular and famous<br />
+                            <p>Brisbane is the capaital city of Queensland, Australia. It is know for the brilliant weather and scenery. <br>
                                 <strong>Reputation Score: </strong>90
                             </p>
                         </td>
                     </tr>
+                    <tr>
+                    <td class="filledSection" colspan="2" style="text-align: center;">
+                    <div class="floatGroupFavButton">
+                        <button class="button" class="addToGroupFav" name="addToGroupFavList" id="addToGroupFavList">Add To Group Favourite List</button>
+                    </div>
+                    </td>
+                    </tr>
                 </table>
-
-                <button class="button" name="addToGroupFavList" id="addToGroupFavList">Add To Group Favourite
-                    List</button>
-                <br />
                 <form action="FlightToPassengers" method="POST">
                     <fieldset class="background">
 
                         <label for="returnDate">Return Date:</label>
                         <input type="date" id="returnDate" name="returnDate" value="2014-05-18">
                         <br />
+                        <div class="recurringBookingInput">
                         <label for="check">Recurring Booking: </label>
-                        <input id="check" type="checkbox">
+                        <input id="recurCheck" name="recurCheck" type="checkbox">
+                        <div class="recurringWeeklyOrBiWeekly" name="recurringWeeklyOrBiWeekly" id="recurringWeeklyOrBiWeekly" style="display:none;">
+                        <label>
+                          <input type="radio" name="frequency" value="weekly">
+                          Weekly
+                        </label>
+                        <label>
+                          <input type="radio" name="frequency" value="biweekly">
+                          Biweekly
+                        </label>
+
+                        </div>
+                        </div>
                         <br />
                         <button class="button">Search</button>
                         <button class="button">Continue One Way</button>
@@ -127,5 +147,6 @@
 
             </main>
         </body>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/script.js"></script>
 
     </html>

@@ -24,7 +24,7 @@
 <%--        Groups You're In         --%>
     <form name="goToGroup" action="MockupGroup" class="groups" method="POST">
         <h2>Group Membership</h2>
-        <button type="submit" class="button" name="goToGroup1" value="goToGroup1">Group 1</button>
+        <button type="submit" class="button" name="goToGroup1" value="goToGroup1">Group One</button>
         <button type="submit" class="button" name="createGroup" value="createGroup">Create New Group</button>
     </form>
 </div>
@@ -45,7 +45,7 @@
             <div style="clear:both;">&nbsp;</div>
             <div class="departureDate"><label for="departureDate">Date</label><br>
             <input type="date" id="departureDate" name="departureDate"></div>
-            <div class="flexibleDate"><label for="flexibleDate">Flexible?</label> <br>
+            <div class="flexibleDateDiv" id="flexibleDateDiv"><label for="flexibleDate">Flexible?</label> <br>
             <input type="checkbox" id="flexibleDate" name="flexibleDate">
             <div class="flexibleDaysGroup" id="flexibleDaysGroup" style="display:none;">
             <label for="flexibleDays">Days flexible?</label><br>
@@ -81,31 +81,33 @@
         <div class="travelHistoryRecommendation">
             <div class="flightInfoTravelHistoryRecommendation">
                 <div class="searchResultRow1TravelHistory">
-                    <div class="DepartureLocationResultTravelHistory">Newcastle</div>
+                    <div class="DepartureLocationResultTravelHistory">Newcastle  </div>
                     <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogoTravelHistory" >
-                    <div class="DestinationLocationResultTravelHistory">Brisbane</div>
+                    <div class="DestinationLocationResultTravelHistory">  Brisbane</div>
                 </div>
                 <div class="searchResultRow2TravelHistory">
                     <div class="priceResultTravelHistory">$662</div>
                     <div class="dateResultTravelHistory">26/12/23</div>
                     <div class="numPassengersResultTravelHistory">2 adults</div>
                 </div>
-                <div class="searchResultButtonsTravelHistory">
+
                 <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
-                    <div class="bookmarkFlight">
-                        <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value="bookmark">
+                    <div class="searchResultButtonsTravelHistory">
+                    <div class="bookmarkFlightTravelHistory">
+                        <input type="image" class="btn-image1" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value="bookmark">
                     </div>
-                    <div class="favouriteDestination">
-                        <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/favouriteStar.png" alt="Favourite Destination Logo" name="favourite" value="favourite">
+                    <div class="favouriteDestinationTravelHistory">
+                        <input type="image" class="btn-image1" src="${pageContext.request.contextPath}/images/favouriteStar.png" alt="Favourite Destination Logo" name="favourite" value="favourite">
                     </div>
-                    <div class="addToGroupFavouriteList">
-                        <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="add-to-list" value="add-to-list">
+                    <div class="addToGroupFavouriteListTravelHistory">
+                        <input type="image" class="btn-image1" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="add-to-list" value="add-to-list">
                     </div>
-                    <div class="viewFlightDetailsButton">
-                        <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+                    </div>
+                    <div class="viewFlightDetailsButtonTravelHistory">
+                        <button type="submit" class="viewFlightDetailsButtonTravelHistory" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
                     </div>
                 </form>
-                </div>
+
             </div>
             <div class="destinationImageTravelHistory">
                 <img src="${pageContext.request.contextPath}/images/brisbaneCity.jpg" alt="Brisbane Logo" class="smallBrisbaneLogo" >
