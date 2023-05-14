@@ -58,7 +58,7 @@
         <div class="tagsParent">
           <div class="tag1">Mild</div>
           <div class="tag2">Family</div>
-          <div class="tag2">Reputation Score: 1283</div>
+          <div class="tag2"> Reputation: <input type="range" min="1" max="100" value="95" class="slider">95%</div>
         </div>
         <span class="brmedium"></span>
 
@@ -102,7 +102,7 @@
         <div class="tagsParent">
           <div class="tag1">Family</div>
           <div class="tag2">Sightseeing</div>
-          <div class="tag2">Reputation Score: 972</div>
+          <div class="tag2"> Reputation: <input type="range" min="1" max="100" value="92" class="slider">92%</div>
         </div>
         <span class="brmedium"></span>
 
@@ -146,7 +146,7 @@
         <div class="tagsParent">
           <div class="tag1">Festival</div>
           <div class="tag2">Family</div>
-          <div class="tag2">Reputation Score: 1000</div>
+          <div class="tag2"> Reputation: <input type="range" min="1" max="100" value="94" class="slider">94%</div>
         </div>
 
         <span class="brmedium"></span>
@@ -193,7 +193,7 @@
         <div class="tagsParent">
           <div class="tag1">Festival</div>
           <div class="tag2">Mild</div>
-          <div class="tag2">Reputation Score: 12345</div>
+          <div class="tag2"> Reputation: <input type="range" min="1" max="100" value="98" class="slider">98%</div>
         </div>
         <span class="brmedium"></span>
 
@@ -237,7 +237,7 @@
         <div class="tagsParent">
           <div class="tag1">Family</div>
           <div class="tag2">Festival</div>
-          <div class="tag2">Reputation Score: 1739</div>
+          <div class="tag2"> Reputation: <input type="range" min="1" max="100" value="96" class="slider">96%</div>
         </div>
         <span class="brmedium"></span>
 
@@ -281,7 +281,7 @@
         <div class="tagsParent">
           <div class="tag1">Sightseeing</div>
           <div class="tag2">Family</div>
-          <div class="tag2">Reputation Score: 2938</div>
+          <div class="tag2"> Reputation: <input type="range" min="1" max="100" value="97" class="slider">97%</div>
         </div>
 
         <span class="brmedium"></span>
@@ -329,7 +329,7 @@
         <div class="tagsParent">
           <div class="tag1">Mild</div>
           <div class="tag2">Family</div>
-          <div class="tag2">Reputation Score: 324</div>
+          <div class="tag2"> Reputation: <input type="range" min="1" max="100" value="74" class="slider">74%</div>
         </div>
         <span class="brmedium"></span>
 
@@ -373,7 +373,7 @@
         <div class="tagsParent">
           <div class="tag1">Family</div>
           <div class="tag2">Sightseeing</div>
-          <div class="tag2">Reputation Score: 468</div>
+          <div class="tag2"> Reputation: <input type="range" min="1" max="100" value="82" class="slider">82%</div>
         </div>
         <span class="brmedium"></span>
 
@@ -417,7 +417,7 @@
         <div class="tagsParent">
           <div class="tag1">Festival</div>
           <div class="tag2">Family</div>
-          <div class="tag2">Reputation Score: 463</div>
+          <div class="tag2"> Reputation: <input type="range" min="1" max="100" value="80" class="slider">80%</div>
         </div>
 
         <span class="brmedium"></span>

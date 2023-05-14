@@ -581,3 +581,8 @@ div.recResults{
       justify-content: flex-start;
       font-family: Arial;
   }
+
+  div.textcolorgreen
+  {
+      color: green;
+  }
