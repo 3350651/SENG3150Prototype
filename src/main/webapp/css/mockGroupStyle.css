@@ -364,7 +364,7 @@ ul{
         padding: 20px;
         border-radius: 10px;
         width:600px;
-        margin-left:450px;
+        margin: 5px auto;
     }
 
     div.faveFlight img{
