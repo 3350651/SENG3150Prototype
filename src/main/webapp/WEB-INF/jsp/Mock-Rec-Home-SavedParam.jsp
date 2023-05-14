@@ -16,7 +16,7 @@
     <button type="submit" class="button" name="home" value="backToHome">Simple Search</button>
   </form>
   <%--        Favourited Flights         --%>
-  <form name="goToBookmarkedFlight" action="ViewFlight" method="POST">
+  <form name="goToBookmarkedFlight" action="flightSearch" method="POST">
     <h2>Bookmarked Flights</h2>
     <button type="submit" class="button" name="goToBookmarkedFlight1" value="goToBookmarkedFlight1">Morrocco, $1,290, 15/12/2023</button>
     <button type="submit" class="button" name="goToBookmarkedFlight2" value="goToBookmarkedFlight2">Thailand, $679, 6/10/2023</button>
@@ -101,7 +101,7 @@
         <span class="brmedium"></span>
 
         <div class="searchResultButtons">
-          <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
+          <form name="flightActions" class="flightSearchResultButtons" action="flightSearch" method="POST">
             <div class="bookmarkFlight">
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value="bookmark">
             </div>
@@ -112,7 +112,7 @@
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="add-to-list" value="add-to-list">
             </div>
             <div class="viewFlightDetailsButton">
-              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="flightSearch">View Details</button>
             </div>
           </form>
         </div>
@@ -145,7 +145,7 @@
         <span class="brmedium"></span>
 
         <div class="searchResultButtons">
-          <form name="flightActions" class="flightSearchResultButtons" action="Flight" method="POST">
+          <form name="flightActions" class="flightSearchResultButtons" action="flightSearch" method="POST">
             <div class="bookmarkFlight">
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="action" value="bookmark">
             </div>
@@ -156,7 +156,7 @@
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="action" value="add-to-list">
             </div>
             <div class="viewFlightDetailsButton">
-              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="flightSearch">View Details</button>
             </div>
           </form>
         </div>
@@ -189,7 +189,7 @@
 
         <span class="brmedium"></span>
         <div class="searchResultButtons">
-          <form name="flightActions" class="flightSearchResultButtons" action="Flight" method="POST">
+          <form name="flightActions" class="flightSearchResultButtons" action="flightSearch" method="POST">
             <div class="bookmarkFlight">
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="action" value="bookmark">
             </div>
@@ -200,7 +200,7 @@
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="action" value="add-to-list">
             </div>
             <div class="viewFlightDetailsButton">
-              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="flightSearch">View Details</button>
             </div>
           </form>
         </div>
@@ -238,7 +238,7 @@
         <span class="brmedium"></span>
 
         <div class="searchResultButtons">
-          <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
+          <form name="flightActions" class="flightSearchResultButtons" action="flightSearch" method="POST">
             <div class="bookmarkFlight">
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value="bookmark">
             </div>
@@ -249,7 +249,7 @@
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="add-to-list" value="add-to-list">
             </div>
             <div class="viewFlightDetailsButton">
-              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="flightSearch">View Details</button>
             </div>
           </form>
         </div>
@@ -282,7 +282,7 @@
         <span class="brmedium"></span>
 
         <div class="searchResultButtons">
-          <form name="flightActions" class="flightSearchResultButtons" action="Flight" method="POST">
+          <form name="flightActions" class="flightSearchResultButtons" action="flightSearch" method="POST">
             <div class="bookmarkFlight">
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="action" value="bookmark">
             </div>
@@ -293,7 +293,7 @@
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="action" value="add-to-list">
             </div>
             <div class="viewFlightDetailsButton">
-              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="flightSearch">View Details</button>
             </div>
           </form>
         </div>
@@ -326,7 +326,7 @@
 
         <span class="brmedium"></span>
         <div class="searchResultButtons">
-          <form name="flightActions" class="flightSearchResultButtons" action="Flight" method="POST">
+          <form name="flightActions" class="flightSearchResultButtons" action="flightSearch" method="POST">
             <div class="bookmarkFlight">
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="action" value="bookmark">
             </div>
@@ -337,7 +337,7 @@
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="action" value="add-to-list">
             </div>
             <div class="viewFlightDetailsButton">
-              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="flightSearch">View Details</button>
             </div>
           </form>
         </div>
@@ -378,7 +378,7 @@
         <span class="brmedium"></span>
 
         <div class="searchResultButtons">
-          <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
+          <form name="flightActions" class="flightSearchResultButtons" action="flightSearch" method="POST">
             <div class="bookmarkFlight">
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value="bookmark">
             </div>
@@ -389,7 +389,7 @@
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="add-to-list" value="add-to-list">
             </div>
             <div class="viewFlightDetailsButton">
-              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="flightSearch">View Details</button>
             </div>
           </form>
         </div>
@@ -422,7 +422,7 @@
         <span class="brmedium"></span>
 
         <div class="searchResultButtons">
-          <form name="flightActions" class="flightSearchResultButtons" action="Flight" method="POST">
+          <form name="flightActions" class="flightSearchResultButtons" action="flightSearch" method="POST">
             <div class="bookmarkFlight">
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="action" value="bookmark">
             </div>
@@ -433,7 +433,7 @@
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="action" value="add-to-list">
             </div>
             <div class="viewFlightDetailsButton">
-              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="flightSearch">View Details</button>
             </div>
           </form>
         </div>
@@ -466,7 +466,7 @@
 
         <span class="brmedium"></span>
         <div class="searchResultButtons">
-          <form name="flightActions" class="flightSearchResultButtons" action="Flight" method="POST">
+          <form name="flightActions" class="flightSearchResultButtons" action="flightSearch" method="POST">
             <div class="bookmarkFlight">
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="action" value="bookmark">
             </div>
@@ -477,7 +477,7 @@
               <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="action" value="add-to-list">
             </div>
             <div class="viewFlightDetailsButton">
-              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
+              <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="flightSearch">View Details</button>
             </div>
           </form>
         </div>
