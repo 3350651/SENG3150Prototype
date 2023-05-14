@@ -8,15 +8,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 </head>
+ <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="logo" >
+    <br style="line-height: 5px;">
 <body class="MockGroupHomepage">
 <form name="backButton" action="login" method="GET">
     <button type="submit" class="button" name="home" value="backToHome">Back to Homepage</button>
 </form>
-<div class="groupHeading">
-    <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="groupLogo" >
-    <br style="line-height: 5px;">
-    <h1>Group One</h1>
-</div>
+<h1 style="text-align: center;">Group One</h1>
 <div class="manageGroup">
     <form name="manageGroup" method="POST" action="MockupGroup">
         <button type="submit" name="manageGroup" value="manageGroup" class="groupButton">Manage Group</button>
