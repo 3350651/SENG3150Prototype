@@ -63,10 +63,12 @@
                     <div class="addToGroupFavouriteList">
                         <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="add-to-list" value="add-to-list">
                     </div>
+                    </form>
+                    <form name="viewFlightDetails" class="flightSearchResultButtons" action="createBooking" method="POST">
                     <div class="viewFlightDetailsButton">
                         <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="viewFlightDetails">View Details</button>
                     </div>
-                </form>
+                    </form>
                 </div>
             </div>
             <div class="destinationImage">
