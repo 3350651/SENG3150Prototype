@@ -81,12 +81,20 @@
   justify-content: flex-start;
   /*border-style: solid;*/
   /*border-color: white;*/
-  background-color: dodgerblue;
   height: 100vh;
   width: 250px;
   position: fixed;
   top: 0;
   left: 0;
+}
+
+div.chatAndFaveList{
+    display: flex;
+    justify-content: center;
+}
+
+div.chat{
+    margin: 0;
 }
 
 .main-content {
@@ -186,7 +194,7 @@ ul{
     .faveList {
         text-align:center;
         /* top | right | bottom | left */
-        margin: auto;
+        margin: 5px;
         width: 60%;
         border: 3px solid;
         padding: 5px;
@@ -214,6 +222,11 @@ ul{
         padding: 5px;
         border-radius: 8px;
      }
+
+    .poolAndAvailability{
+        display: flex;
+        justify-content: center;
+    }
 
     .faveFlight {
         padding: 5px;

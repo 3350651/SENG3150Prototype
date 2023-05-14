@@ -78,7 +78,7 @@
                     <fieldset class="background">
 
                         <label for="returnDate">Return Date:</label>
-                        <input type="date" id="returnDate" name="returnDate" value="2014-05-18">
+                        <input type="date" id="returnDate" name="returnDate" value="2024-01-03">
                         <br />
                         <div class="recurringBookingInput">
                         <label for="check">Recurring Booking: </label>
@@ -104,7 +104,7 @@
                             <p class="flightDetails">
                                 <strong>Airline: </strong>American Airlines
                                 <br />
-                                <strong>Departure Time:</strong> 11:50 am 18/05/2014
+                                <strong>Departure Time:</strong> 11:50 am 3/1/2024
                                 <br />
                                 <strong>Flight Name:</strong> F1375
                                 <br />
@@ -119,7 +119,7 @@
                             <p class="flightDetails">
                                 <strong>Airline: </strong>American Airlines
                                 <br />
-                                <strong>Departure Time:</strong> 10:50 am 18/05/2014
+                                <strong>Departure Time:</strong> 10:50 am 3/1/2024
                                 <br />
                                 <strong>Flight Name:</strong> F1375
                                 <br />
@@ -133,7 +133,7 @@
                             <p class="flightDetails">
                                 <strong>Airline: </strong>American Airlines
                                 <br />
-                                <strong>Departure Time:</strong> 09:50 am 18/05/2014
+                                <strong>Departure Time:</strong> 09:50 am 3/1/2024
                                 <br />
                                 <strong>Flight Name:</strong> F1375
                                 <br />
