@@ -39,7 +39,7 @@
         <form method="POST" action="Search" class="simpleSearchForm">
 
             <div class="departureLocation"><label for="departureLocation">Leaving From</label><br>
-            <input type="text" id="departureLocation" name="departureLocation"></div>
+            <input type="text" id="departureLocation" value="Newcastle" name="departureLocation"></div>
             <div class="arrivalLocation"><label for="arrivalLocation">Going To</label><br>
             <input type="text" id="arrivalLocation" name="arrivalLocation"></div>
             <div style="clear:both;">&nbsp;</div>

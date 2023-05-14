@@ -39,7 +39,7 @@
         <form method="POST" action="Search" class="simpleSearchForm">
 
             <div class="departureLocation"><label for="departureLocation">Leaving From</label><br>
-            <input type="text" id="departureLocation" name="departureLocation"></div>
+            <input type="text" value="Newcastle" id="departureLocation" name="departureLocation"></div>
             <div class="arrivalLocation"><label for="arrivalLocation">Going To</label><br>
             <input type="text" id="arrivalLocation" name="arrivalLocation"></div>
             <div style="clear:both;">&nbsp;</div>
@@ -71,7 +71,7 @@
         <form method="POST" action="Search">
         <input type="hidden" value="savedParameter1">
         <button name="savedParameter" type="submit" value="savedParameter1" class="savedParameter">NTL > BNE, 2 adults, 28/12/23 (+5d)</button><br>
-        <button name="savedParameter" type="submit" value="savedParameter2" class="savedParameter">NTL > MLB, 4 adults, 2 children, 02/01/24</button>
+        <button name="savedParameter" type="submit" value="savedParameter2" class="savedParameter">NTL > MLB, 1 adult, 28/05/23</button>
         </form>
     </div>
 </body>
