@@ -740,3 +740,112 @@ p.summaryOfSearch{
     margin-block-start: 5px;
         margin-block-end: 5px;
 }
+
+  div.recResults{
+
+  }
+
+  .tag1
+  {
+      float: left;
+      border-style: solid;
+      border-color: black;
+      padding: 5px;
+      border-width: 2px;
+  }
+
+  .tag2
+  {
+      float: left;
+      border-style: solid;
+      border-color: black;
+      padding: 5px;
+      border-width: 2px;
+  }
+
+  .brmedium {
+      display: block;
+      margin-bottom: 2em;
+  }
+
+  button.recsearch
+  {
+      background-color: #156283;
+      color: white;
+      border-radius: 8px;
+      font-size: 15px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      display: inline-block;
+      transition-duration: 0.25s;
+      height: 60px;
+      width: 150px;
+  }
+
+  button.recsearch:hover {
+      background-color: dodgerblue;
+  }
+  .gridParent
+  {
+      display: grid;
+      column-gap: 50px;
+      display: flex;
+      margin-left: 250px;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial;
+  }
+
+  div.FlightSearchResult1{
+      border: 2px solid black;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      grid-column-start: 1;
+      grid-column-end: 1;
+      grid-row-start: 1;
+      grid-row-end: 1;
+  }
+
+  div.FlightSearchResult2{
+      border: 2px solid black;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      grid-column-start: 2;
+      grid-column-end: 2;
+      grid-row-start: 2;
+      grid-row-end: 2;
+  }
+
+  div.FlightSearchResult3{
+      border: 2px solid black;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      grid-column-start: 3;
+      grid-column-end: 3;
+      grid-row-start: 3;
+      grid-row-end: 3;
+
+  }
+
+  .centeringtext
+  {
+      display: flex;
+      flex-direction: row;
+      margin-left: 250px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      font-family: Arial;
+  }
+
+  div.textcolorgreen
+  {
+      color: green;
+  }

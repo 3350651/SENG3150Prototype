@@ -10,7 +10,7 @@
 <div class="sidebar">
 <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="logo" >
 <%--        Home page button         --%>
-    <form name="SearchSelect" action="Homepage" method="POST">
+    <form name="SearchSelect" action="recSearch" method="GET">
     <h2>Toggle Search Mode</h2>
         <%-- <button type="submit" class="button" name="home" value="simpleSearch">Simple Search</button> --%>
         <button type="submit" class="button" name="home" value="recommendSearch">Recommend Search</button>

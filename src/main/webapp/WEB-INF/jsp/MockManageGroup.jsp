@@ -13,11 +13,12 @@
 
             <div class="titleContainer">
                 <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="groupLogo" >
-                <h1>Manage Group</h1>
+                <div class="groupName">
+                    <h1>Group One</h1>
+                </div>
+                <h2>Manage Group</h2><br>
             </div>
-            <div class="groupName">
-                <h2>Group One</h2><br>
-            </div>
+
         </header>
 
         <div class="manageGroupContent">

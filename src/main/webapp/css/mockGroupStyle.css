@@ -283,6 +283,8 @@ ul{
         width: 215px;
     }
 
+
+
     .groupButton:hover{
         background-color: #E8E8E8;
         color: #156283;
@@ -370,8 +372,8 @@ ul{
     div.faveFlight img{
         width: auto;
         height: 80px;
-        padding:0;
-        float: right;
+        padding: 5px;
+        float: left;
     }
 
     input[type="number"] {
