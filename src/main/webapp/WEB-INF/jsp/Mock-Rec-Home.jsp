@@ -24,7 +24,7 @@
     <%--        Groups You're In         --%>
     <form name="goToGroup" action="MockupGroup" class="groups" method="POST">
         <h2>Group Membership</h2>
-        <button type="submit" class="button" name="goToGroup1" value="goToGroup1">FriendGroup</button>
+        <button type="submit" class="button" name="goToGroup1" value="goToGroup1">Group One</button>
         <button type="submit" class="button" name="createGroup" value="createGroup">Create New Group</button>
     </form>
 </div>
@@ -34,47 +34,30 @@
             <button name="viewAccountSettings" class="accountButton" value="viewAccountSettings">View Profile</button>
         </form>
     </div>
-    <br><br>
     <div class="simpleSearch">
         <form method="POST" action="recSearch" class="recSearch">
-
             <div class="departureLocation"><label for="departureLocation">Leaving From</label><br>
-                <input type="text" id="departureLocation" name="departureLocation"></div>
+            <input type="text" id="departureLocation" name="departureLocation"></div>
             <div class="arrivalLocation"><label for="arrivalLocation">Going To</label><br>
-                <input type="text" id="arrivalLocation" name="arrivalLocation"></div>
-            <div style="clear:both;">&nbsp;</div>
+            <input type="text" id="arrivalLocation" name="arrivalLocation"></div>
             <div class="departureDate"><label for="departureDate">Date</label><br>
-                <input type="date" id="departureDate" name="departureDate"></div>
+            <input type="date" id="departureDate" name="departureDate"></div>
             <div class="flexibleDate"><label for="flexibleDate">Flexible?</label> <br>
-                <input type="checkbox" id="flexibleDate" name="flexibleDate">
-                <div class="flexibleDaysGroup" id="flexibleDaysGroup" style="display:none;">
-                    <label for="flexibleDays">Days flexible?</label><br>
-                    <input type="number" min="0" max="30" step="1" id="flexibleDays" name="flexibleDays">
-                </div></div>
-            <div class="numberOfAdults"><label for="numberOfAdults"># Adults</label><br>
-                <input type="number" id="numberOfAdults" size="2" name="numberOfAdults"></div>
-            <div class="numberOfChildren"><label for="numberOfChildren"># Children</label><br>
-                <input type="number" id="numberOfChildren" size="2" name="numberOfChildren"></div>
-            <div style="clear:both;">&nbsp;</div>
-            <div style="clear:both;">&nbsp;</div>
+            <input type="checkbox" id="flexibleDate" name="flexibleDate">
+            <div class="flexibleDaysGroup" id="flexibleDaysGroup" style="display:none;">
+            <label for="flexibleDays">Days flexible?</label><br>
+            <input type="number" min="0" max="30" step="1" id="flexibleDays" name="flexibleDays">
+            </div></div>
+            <div class="numberOfAdults"><label for="numberOfAdults">Passengers</label><br>
+            <input type="number" id="numberOfAdults" size="2" name="numberOfAdults"></div>
             <div class="saveParam">
-                <button name="saveParam" type="submit" value="saveParam" class="saveParam">Save Search Parameters</button>
+            <button name="saveParam" type="submit" value="saveParam" class="saveParam">Save Search Parameters</button>
             </div>
             <div class="recsearch">
                 <button name="searchResults" type="submit" value="searchResults" class="recSearch">Search For Recommended Flights</button>
             </div>
         </form>
     </div>
-
-    <div class="savedSearches">
-        <h2 class="savedSearchesHeading">Saved Searches</h2>
-        <form method="POST" action="Search">
-            <input type="hidden" value="savedParameter1">
-            <button name="savedParameter" type="submit" value="savedParameter1" class="savedParameter">NTL -> BNE, 2 adults, 28/12/23 (+5d)</button><br>
-
-        </form>
-    </div>
-</div>
 
 <%--- Recommended FLIGHTS ---%>
    <div class="centeringtext"> <h1>Recommended Flights for You</h1> </div>
@@ -488,7 +471,7 @@
         </div>
     </div>
 </div>
-
+</div>
 <%--- BUDGET END --%>
 
 </body>

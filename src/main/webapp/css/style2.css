@@ -106,7 +106,7 @@ form.groups{
 .main-content {
     display: flex;
     flex-direction: row;
-    margin-left: 250px;
+    margin-left: 100px;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
@@ -213,11 +213,6 @@ img.logo{
     text-align: center;
 }
 
-.destinationImage {
-    float: left;
-    width: 250px;
-}
-
 .destinationTags {
     float: left;
     width: 221px;
@@ -253,12 +248,12 @@ img.logo{
 
 div.simpleSearch{
     border-style: solid;
+    margin-left: 150px;
     border-color: black;
-    padding: 30px;
+    padding: 20px;
     border-radius: 10px;
-    margin-left: 200px;
-    margin-top: 100px;
-}
+    width:600px;
+    }
 
 div.savedSearches div.travelHistoryRecWithHeading{
     display: inline-block;
@@ -266,108 +261,111 @@ div.savedSearches div.travelHistoryRecWithHeading{
 
 
 input[type="number"] {
-    width: 45px; /* adjust the width as desired */
-    height: 30px;
-}
+      width: 25px; /* adjust the width as desired */
+           height: 25px;
+    }
 
-input[type="text"] {
-    width: 200px;
-    height: 30px; /* adjust the width as desired */
-}
+    input[type="text"] {
+      width: 150px;
+      height: 25px; /* adjust the width as desired */
+    }
 
-input[type="date"] {
-    height: 30px; /* adjust the width as desired */
-}
+    input[type="date"] {
+      height: 25px; /* adjust the width as desired */
+      width: 80px;
+    }
 
-input[type="checkbox"] {
-    margin: 0 15;
-    display: block;
-    width: 30px;
-    height: 30px;
-}
+    input[type="checkbox"] {
+      margin: 0 15;
+      display: block;
+      width: 30px;
+      height: 25px;
+    }
 
-div.departureLocation{
-    float: left;
-    width: 300px;
-    font-size: 25;
-}
+    div.departureLocation{
+        float: left;
+        width: 150px;
+        font-size: 15;
+        padding-right:15px;
+    }
 
-div.arrivalLocation{
-    float: left;
-    width: 300px;
-    font-size: 25;
-}
+    div.arrivalLocation{
+        float: left;
+        width: 150px;
+        font-size: 15;
+        padding-right: 15px;
+    }
 
-div.departureDate{
-    float: left;
-    width: 150px;
-    padding-right: 35px
-}
+    div.departureDate{
+        float: left;
+        width: 80px;
+        padding-right: 15px;
+    }
 
-div.numberOfAdults{
-    float: left;
-    width: 75px;
-}
+    div.numberOfAdults{
+        float: left;
+        width: 80px;
+    }
 
-div.numberOfChildren{
-    float: left;
-    width: 75px;
-}
+    div.numberOfChildren{
+        float: left;
+        width: 75px;
+    }
 
-div.flexibleDate{
-    float: left;
-    width: 100px;
-    padding-right: 75px;
-}
+    div.flexibleDate{
+        float: left;
+        width:50px;
+        padding-right: 25px;
+    }
 
-div.flexibleDaysGroup{
-    float: left;
-    width: 100px;
-}
+    div.flexibleDaysGroup{
+        float: left;
+        width: 100px;
+    }
 
-div.saveParam{
-    float: left;
-    padding-right: 200px;
-}
+    div.saveParam{
+        float: left;
+        padding-right: 300px;
+    }
 
-div.search{
-}
+    div.search{
+    }
 
-button.saveParam {
-    background-color: #156283;
-    color: white;
-    border-radius: 8px;
-    font-size: 15px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 5px;
-    display: inline-block;
-    transition-duration: 0.25s;
-    height: 50px;
-    width: 150px;
-}
+    button.saveParam {
+        background-color: #156283;
+        color: white;
+        border-radius: 8px;
+        font-size: 15px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 5px;
+        display: inline-block;
+        transition-duration: 0.25s;
+        height: 60px;
+        width: 150px;
+     }
 
-button.saveParam:hover {
-    background-color: dodgerblue;
-}
+    button.saveParam:hover {
+        background-color: dodgerblue;
+     }
 
-button.search {
-    background-color: #156283;
-    color: white;
-    border-radius: 8px;
-    font-size: 15px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 5px;
-    display: inline-block;
-    transition-duration: 0.25s;
-    height: 50px;
-    width: 150px;
-}
+     button.search {
+         background-color: #156283;
+         color: white;
+         border-radius: 8px;
+         font-size: 13px;
+         margin-top: 10px;
+         border: none;
+         border-radius: 5px;
+         display: inline-block;
+         transition-duration: 0.25s;
+        height: 40px;
+        width: 150px;
+      }
 
-button.search:hover {
-    background-color: dodgerblue;
-}
+     button.search:hover {
+         background-color: dodgerblue;
+      }
 
 h2.homepageHeader{
     text-align: center;
@@ -490,12 +488,7 @@ img.smallPlaneLogo{
 }
 
 .destinationImage img {
-    width: 150px;
-    height: auto;
-}
-
-.destinationImage img {
-    width: 150px;
+    width: 200px;
     height: auto;
 }
 
@@ -666,9 +659,9 @@ button.recsearch:hover {
 .gridParent
 {
     display: grid;
-    column-gap: 50px;
+    column-gap: 20px;
     display: flex;
-    margin-left: 250px;
+    margin-left: 150px;
     align-items: center;
     justify-content: center;
     font-family: Arial;
@@ -715,7 +708,7 @@ div.FlightSearchResult3{
 {
     display: flex;
     flex-direction: row;
-    margin-left: 250px;
+    margin-left: 150px;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
