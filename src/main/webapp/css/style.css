@@ -254,20 +254,24 @@ form.groups{
       width: 100px;
       position: fixed;
       top: 0;
-      right: 0;
+      right: 20em;
 }
 
+div.logInToAccount{
+    padding-left: 5px;
+}
 .accountButton {
     background-color: #156283;
     color: white;
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 20px;
     margin-top: 10px;
     border: none;
     border-radius: 5px;
     display: inline-block;
     transition-duration: 0.25s;
     height: 50px;
+    width:200px;
  }
 
 .accountButton:hover {

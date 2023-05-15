@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -6,7 +6,7 @@
     <title>FlightPub</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style2.css">
 </head>
-<body class="hompage-simplesearch-loggedin">
+<body class="homepage-simplesearch-loggedin">
 <div class="sidebar">
     <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="logo" >
     <%--        Home page button         --%>
