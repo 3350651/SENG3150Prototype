@@ -45,8 +45,8 @@
             <div style="clear:both;">&nbsp;</div>
             <div class="departureDate"><label for="departureDate">Date</label><br>
             <input type="date" id="departureDate" name="departureDate"></div>
-            <div class="flexibleDateDiv" id="flexibleDateDiv"><label for="flexibleDate">Flexible?</label> <br>
-            <input type="checkbox" id="flexibleDate" name="flexibleDate">
+        <div class="flexibleDateDiv" id="flexibleDateDiv"><div class="dateAndCheckBox"><label for="flexibleDate">Flexible?</label> <br>
+            <input type="checkbox" id="flexibleDate" name="flexibleDate"></div>
             <div class="flexibleDaysGroup" id="flexibleDaysGroup" style="display:none;">
             <label for="flexibleDays">Days flexible?</label><br>
             <input type="number" min="0" max="30" step="1" id="flexibleDays" name="flexibleDays">
@@ -81,12 +81,12 @@
                     <div class="searchResultRow1TravelHistory">
                         <div class="DepartureLocationResultTravelHistory">Newcastle  </div>
                         <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogoTravelHistory" >
-                        <div class="DestinationLocationResultTravelHistory">  Brisbane</div>
+                        <div class="DestinationLocationResultTravelHistory">Adelaide</div>
                     </div>
                     <div class="searchResultRow2TravelHistory">
-                        <div class="priceResultTravelHistory">$662</div>
-                        <div class="dateResultTravelHistory">26/12/23</div>
-                        <div class="numPassengersResultTravelHistory">2 adults</div>
+                        <div class="priceResultTravelHistory">$422</div>
+                        <div class="dateResultTravelHistory">21/06/23</div>
+                        <div class="numPassengersResultTravelHistory">1 adult</div>
                     </div>
 
                     <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
@@ -108,7 +108,7 @@
 
                 </div>
                 <div class="destinationImageTravelHistory">
-                    <img src="${pageContext.request.contextPath}/images/brisbaneCity.jpg" alt="Brisbane Logo" class="smallBrisbaneLogo" >
+                    <img src="${pageContext.request.contextPath}/images/Adelaide.jpg" alt="Adelaide Logo" class="smallBrisbaneLogo" >
                 </div>
             </div>
         </div>

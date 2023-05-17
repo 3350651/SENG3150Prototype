@@ -31,6 +31,12 @@ public class FlightBean implements Serializable {
         destination = newDestination;
     }
 
+    public FlightBean(String airline, String flightName, Timestamp flightTime){
+        this.airline = airline;
+        this.flightName = flightName;
+        this.flightTime = flightTime;
+    }
+
     // getters and setters
     public String getAirline() {
         return airline;

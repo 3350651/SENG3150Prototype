@@ -33,8 +33,7 @@ public class UserBean implements Serializable {
 	private String questionnaireCompleted;
 	private LocalDate dateOfBirth;
 	private LinkedList<String> tagSet;
-
-	//private LinkedList<Flights> bookmarkedFlights
+	private LinkedList<FlightBean> bookmarkedFlights;
 	//private LinkedList<Searches> savedSearches
 	//private LinkedList<Groups> groups
 	//private LinkedList<Tags> tags
@@ -74,6 +73,7 @@ public class UserBean implements Serializable {
 		this.themePreference = themePreference;
 		this.questionnaireCompleted = questionnaireCompleted;
 		this.tagSet = new LinkedList<String>();
+		this.bookmarkedFlights = new LinkedList<FlightBean>();
 	}
 
 	public UserBean(String fname, String lname, String email, String userPassword, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, String questionnaireCompleted, LocalDate dateOfBirth) {
@@ -93,6 +93,7 @@ public class UserBean implements Serializable {
 		this.questionnaireCompleted = questionnaireCompleted;
 		this.dateOfBirth = dateOfBirth;
 		this.tagSet = new LinkedList<String>();
+		this.bookmarkedFlights = new LinkedList<FlightBean>();
 	}
 
 	public Boolean isHasLogin() {
@@ -243,6 +244,39 @@ public class UserBean implements Serializable {
 		this.tagSet = tagSet;
 	}
 
+	public void setHasLogin(boolean hasLogin) {
+		this.hasLogin = hasLogin;
+	}
+
+	public LinkedList<FlightBean> getBookmarkedFlights() {
+		return bookmarkedFlights;
+	}
+
+	public void setBookmarkedFlights(LinkedList<FlightBean> bookmarkedFlights) {
+		this.bookmarkedFlights = bookmarkedFlights;
+	}
+
+	public void addBookmarkedFlight(FlightBean flight) {
+		boolean tagExists = false;
+		for (FlightBean f : getBookmarkedFlights()) {
+			if (f.equals(flight)) {
+				tagExists = true;
+				break;
+			}
+		}
+		if (!tagExists) {
+			getBookmarkedFlights().add(flight);
+		}
+	}
+
+	public void removeBookmarkedFlight(FlightBean flight){
+		for (int i =0; i<getTagSet().size(); i++){
+			if (getBookmarkedFlights().get(i).equals(flight)){
+				getBookmarkedFlights().remove(i);
+			}
+		}
+	}
+
 	public void addTag(String tag) {
 		boolean tagExists = false;
 		for (String s : getTagSet()) {
@@ -262,8 +296,6 @@ public class UserBean implements Serializable {
 				getTagSet().remove(i);
 			}
 		}
-
-		getTagSet().remove(tag);
 	}
 
 	/**

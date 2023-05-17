@@ -361,7 +361,7 @@ function modifyPassword(usersActualPassword){
     return false;
 }
 
-var myElement = document.getElementById('checkbox');
+var myElement = document.getElementById('flexibleDate');
 if (myElement) {
 
     var checkbox = document.getElementById("flexibleDate");
