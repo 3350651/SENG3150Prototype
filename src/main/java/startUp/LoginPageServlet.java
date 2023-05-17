@@ -30,6 +30,7 @@ public class LoginPageServlet extends HttpServlet {
 	 */
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		HttpSession session = request.getSession();
 		RequestDispatcher requestDispatcher = null;
 

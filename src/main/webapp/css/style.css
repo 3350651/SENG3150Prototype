@@ -1,61 +1,92 @@
-  h1{
-      text-align: center;
-      display: block;
-      font-size: 2em;
-      font-weight: bold;
-      margin-block-start: 0.25em;
-      margin-block-end: 0.25em;
-      margin-inline-start: 0px;
-      margin-inline-end: 0px;
+  h1 {
+    text-align: center;
+    display: block;
+    font-size: 2em;
+    font-weight: bold;
+    margin-block-start: 0.25em;
+    margin-block-end: 0.25em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
   }
 
-  br{
+  br {
     line-height: 60px
   }
 
-  h2{
+  h2 {
     text-align: center;
-      margin-block-start: 0.1em;
-      margin-block-end: 0.1em;
-      margin-inline-start: 0px;
-      margin-inline-end: 0px;
+    margin-block-start: 0.1em;
+    margin-block-end: 0.1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
   }
 
-  fieldset{
+  fieldset {
     border-color: black;
   }
 
-  #login{
+  fieldset.filled {
+    border-color: black;
+    width: 70%;
+    margin: auto;
+    background-color: cornflowerblue;
+  }
+
+  fieldset.foreground {
+    border-color: black;
+    color: black;
+    background-color: cornflowerblue;
+    text-align: left;
+  }
+
+  fieldset.background {
+    text-align: center;
+    color: white;
+    border-color: black;
+    width: 70%;
+    margin: auto;
+    background-color: rgb(77, 114, 183);
+  }
+
+  #login {
     padding-top: 100px;
     text-align: center;
     line-height: 60px;
   }
 
-  .notification{
+  .notification {
     background-color: yellow;
   }
 
-  table, th, td, tr{
-    border:1px solid;
+  table,
+  th,
+  td,
+  tr {
+    border: 1px solid;
   }
 
-  table{
+  table {
     width: 70%;
     border-collapse: collapse;
     text-align: center;
     margin-left: auto;
     margin-right: auto;
   }
-  #statsButton{
+
+  #statsButton {
     margin-top: 10px;
   }
 
-.AccountSettingsHomePage{
+  .AccountSettingsHomePage {
     background-color: white;
     color: black;
-}
+  }
 
- .button {
+  .passengerDetails {
+    background-color: darkseagreen;
+  }
+
+  .button {
     background-color: #156283;
     color: white;
     border-radius: 8px;
@@ -67,12 +98,32 @@
     display: inline-block;
     transition-duration: 0.25s;
     width: 215px;
- }
+  }
 
- .button:hover {
+  .button:hover {
     background-color: white;
     color: #156283;
- }
+  }
+
+  .selectFlight {
+    background-color: #156283;
+    color: white;
+    border-radius: 8px;
+    font-size: 20px;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    transition-duration: 0.25s;
+    width: 215px;
+    float: right;
+  }
+
+  .selectFlight:hover {
+    background-color: white;
+    color: #156283;
+  }
 
 .sidebar {
   display: flex;
@@ -87,9 +138,24 @@
   position: fixed;
   top: 0;
   left: 0;
+  font-family: Arial;
 }
 
-.main-content {
+.sidebar form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial;
+  margin-top: 5px;
+}
+
+form.groups{
+    bottom: 5px;
+    position: fixed;
+}
+
+  .main-content {
     display: flex;
     flex-direction: row;
     margin-left: 250px;
@@ -97,9 +163,9 @@
     align-items: flex-start;
     justify-content: flex-start;
     font-family: Arial;
-}
+  }
 
-p.labelOfSetting{
+  p.labelOfSetting {
     font-weight: bold;
     /*background-color: #156283;*/
     display: inline;
@@ -108,19 +174,19 @@ p.labelOfSetting{
     margin-block-end: 1em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
-}
-
-  p.valueOfSetting{
-      /*background-color: darkseagreen;*/
-      display: inline;
-      margin-block-start: 1em;
-      margin-block-end: 1em;
-      margin-inline-start: 1em;
-      margin-inline-end: 0px;
-      width: 100px;
   }
 
-ul{
+  p.valueOfSetting {
+    /*background-color: darkseagreen;*/
+    display: inline;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 1em;
+    margin-inline-end: 0px;
+    width: 100px;
+  }
+
+  ul {
     list-style-type: none;
     display: block;
     margin-block-start: 0.15em;
@@ -128,31 +194,662 @@ ul{
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     padding-inline-start: 1.2em;
-}
-
-  .settingsCategory {
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-bottom: 10px;
-      padding: 5px;
-      width: 850px;
-      background-color: cadetblue;
   }
 
-  img.logo{
-      width:150px;
-      height:150px;
-      padding-top: 10px;
+  .settingsCategory {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 850px;
+    background-color: cadetblue;
+  }
+
+  img.logo {
+    width: 150px;
+    height: 150px;
+    padding-top: 10px;
+  }
+
+  img.centreLogo {
+    width: 150px;
+    height: 150px;
+    padding-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .top-right {
-      position: absolute;
-      top: 1em;
-      right: 3em;
+    position: absolute;
+    top: 1em;
+    right: 3em;
   }
 
+  .radioButton {
+    background-color: #156283;
+    color: white;
+    border-radius: 8px;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    transition-duration: 0.25s;
+    width: 200px;
+    height: 100px;
+    position: relative;
+    text-align: center;
+  }
+
+  .radioButton:hover {
+    background-color: seagreen;
+  }
+.viewAccountSettings{
+    display: flex;
+      align-items: center;
+      /*border-style: solid;*/
+      /*border-color: white;*/
+      height: 100px;
+      width: 100px;
+      position: fixed;
+      top: 0;
+      right: 20em;
+}
+
+div.logInToAccount{
+    padding-left: 5px;
+}
+.accountButton {
+    background-color: #156283;
+    color: white;
+    border-radius: 8px;
+    font-size: 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    transition-duration: 0.25s;
+    height: 50px;
+    width:200px;
+ }
+
+.accountButton:hover {
+    background-color: dodgerblue;
+ }
+
+ .radioButton input[type="radio"] {
+  opacity: 0.011;
+  z-index: 100;
+}
+.radioButton input[type="radio"]:checked {
+  background: #20b8be;
+  border-radius: 4px;
+}
+.radioButton label {
+  cursor: pointer;
+  z-index: 90;
+  line-height: 1.8em;
+}
+
+  .selectReturn {
+    background-color: darkseagreen;
+    text-align: center;
+  }
+
+  .destinationTags {
+    float: left;
+    width: 221px;
+    background-color: darkseagreen;
+  }
+
+  .innerProgress {
+    background-color: lightseagreen;
+    color: white;
+    text-align: center;
+  }
+
+  .outerProgress {
+    background-color: lightgray;
+  }
+
+  .backButton {
+    float: left;
+  }
+
+  .filledSection {
+    background-color: cornflowerblue;
+    text-align: left;
+  }
+
+  #submit {
+    margin-left: 225px;
+  }
+
+div.recurringBookingInput{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div.simpleSearch{
+    border-style: solid;
+    border-color: black;
+    padding: 30px;
+    border-radius: 10px;
+    margin-left: 200px;
+    margin-top: 100px;
+}
+
+div.savedSearches div.travelHistoryRecWithHeading{
+    display: inline-block;
+}
 
 
+input[type="number"] {
+  width: 45px; /* adjust the width as desired */
+  height: 30px;
+}
+
+input[type="text"] {
+  width: 200px;
+  height: 30px; /* adjust the width as desired */
+}
+
+input[type="date"] {
+  height: 30px; /* adjust the width as desired */
+}
+
+input[type="checkbox"] {
+  margin: 0 15;
+  display: block;
+  width: 30px;
+  height: 30px;
+}
+
+div.departureLocation{
+    float: left;
+    width: 300px;
+    font-size: 25;
+}
+
+div.arrivalLocation{
+    float: left;
+    font-size: 25;
+}
+
+div.departureDate{
+    float: left;
+    width: 150px;
+    padding-right: 20px
+}
+
+div.numberOfAdults{
+    float: left;
+    width: 75px;
+}
+
+div.numberOfChildren{
+    float: left;
+    width: 75px;
+}
+
+div.flexibleDateDiv{
+    float: left;
+    padding-right: 75px;
+}
+
+div.flexibleDaysGroup{
+    float: left;
+    width: 100px;
+}
+
+div.saveParam{
+    float: left;
+    padding-right: 200px;
+}
+
+div.search{
+}
+
+button.saveParam {
+    background-color: #156283;
+    color: white;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    transition-duration: 0.25s;
+    height: 50px;
+    width: 150px;
+ }
+
+button.saveParam:hover {
+    background-color: dodgerblue;
+ }
+
+ button.search {
+     background-color: #156283;
+     color: white;
+     border-radius: 8px;
+     font-size: 15px;
+     margin-top: 10px;
+     border: none;
+     border-radius: 5px;
+     display: inline-block;
+     transition-duration: 0.25s;
+     height: 50px;
+    width: 150px;
+  }
+
+ button.search:hover {
+     background-color: dodgerblue;
+  }
+
+  h2.homepageHeader{
+    text-align: center;
+    font-family: Arial;
+  }
+
+h1.homepageHeader{
+    text-align: center;
+    font-family: Arial;
+  }
+
+   .savedParameter {
+       background-color: dodgerblue;
+       color: white;
+       border-color: #156283;
+       border-radius: 8px;
+       font-size: 14px;
+       margin-top: 10px;
+       border: none;
+       border-radius: 5px;
+       display: inline-block;
+       transition-duration: 0.25s;
+       height: 40px;
+      width: 270px;
+    }
+
+   .savedParameter:hover {
+       background-color: #156283;
+    }
+
+div.travelHistoryRecommendation{
+}
+
+div.simpleSearchSupports{
+    padding-top: 20px;
+    display: flex;
+    margin-left: 155px;
+}
+
+h2.travelHistoryRecommendationHeading{
+    font-size: 20;
+}
+
+div.travelHistoryRecWithHeading{
+    display: inline-block;
+}
 
 
+div.savedSearches{
+    display: inline-block;
+}
 
+h2.savedSearchesHeading{
+    font-size: 20;
+}
+
+div.FlightSearchResult{
+    border: 2px solid black;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+div.travelHistoryRecommendation{
+    border: 2px solid black;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left:10px;
+}
+
+.FlightSearchResult:not(:first-child) {
+  margin-top: 10px;
+}
+
+.flight-info {
+  display: flex;
+  align-items: center;
+}
+
+div.DepartureLocationResult{
+    font-size: 25;
+}
+
+
+div.DestinationLocationResult{
+    font-size: 25;
+}
+
+  img.smallPlaneLogo{
+      width:40px;
+      height:30px;
+  }
+
+.DepartureLocationResult, .DestinationLocationResult, .smallPlaneLogo {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.priceResult, .dateResult, .numPassengersResult {
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+div.floatGroupFavButton{
+
+}
+
+.destinationImage {
+  margin-left: 10px;
+}
+
+.destinationImage img {
+  width: 200px;
+  height: auto;
+}
+
+.destinationImageTravelHistory img{
+  width: 150px;
+  height: auto;
+}
+
+.destinationImageTravelHistory {
+  margin-left: 10px;
+}
+
+.flight-info {
+  display: flex;
+  align-items: center;
+}
+
+div.DepartureLocationResultTravelHistory{
+    font-size: 20;
+    font-weight: bold;
+}
+
+div.DestinationLocationResultTravelHistory{
+    font-size: 20;
+    font-weight: bold;
+}
+
+  img.smallPlaneLogoTravelHistory{
+      width:20px;
+      height:auto;
+      padding-left: 5px;
+      padding-right: 5px;
+  }
+
+.DepartureLocationResultTravelHistory, .DestinationLocationResultTravelHistory, .smallPlaneLogoTravelHistory {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.priceResultTravelHistory, .dateResultTravelHistory, .numPassengersResultTravelHistory {
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+input[type="image"].btn-image1 {
+    width:18px;
+    height:auto;
+}
+
+button.viewFlightDetailsButton {
+    background-color: #156283;
+    color: white;
+    border-radius: 8px;
+    font-size: 15px;
+    padding: 5px 5px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 2px;
+    display: inline-block;
+    transition-duration: 0.25s;
+    width: 300px;
+    height: 25px;
+ }
+
+ button.viewFlightDetailsButton:hover {
+    background-color: white;
+    color: #156283;
+    border: 2px solid black;
+ }
+
+ button.viewFlightDetailsButtonTravelHistory {
+     background-color: #156283;
+     color: white;
+     border-radius: 8px;
+     font-size: 15px;
+     padding: 5px 5px;
+     border: none;
+     border-radius: 2px;
+     display: inline-block;
+     transition-duration: 0.25s;
+     width: 220px;
+     height: 25px;
+  }
+
+  button.viewFlightDetailsButtonTravelHistory:hover {
+     background-color: white;
+     color: #156283;
+     border: 2px solid black;
+  }
+
+input[type="image"]{
+    width:25px;
+    height:auto;
+}
+
+.btn-image:hover {
+  opacity: 0.8;
+  border: 1px solid black;
+}
+
+div.searchResultButtons img{
+    width: 25px;
+    height: 25px;
+}
+
+div.searchResultButtons{
+    padding-top:5px;
+}
+
+form.flightSearchResultButtons{
+    margin-block-end: 0em;
+}
+
+.searchResultRow1{
+    padding-left: 10px;
+}
+
+.searchResultRow2{
+    padding-left: 10px;
+    padding-top: 5px;
+}
+
+.searchResultRow1TravelHistory{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchResultRow2TravelHistory{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bookmarkFlight, .favouriteDestination, .addToGroupFavouriteList {
+  display: inline-block;
+  vertical-align: middle;
+   text-align: center;
+   padding-top: 10px;
+   padding-right: 40px;
+   padding-left: 30px;
+}
+
+.bookmarkFlightTravelHistory, .favouriteDestinationTravelHistory, .addToGroupFavouriteListTravelHistory {
+  display: inline-block;
+  vertical-align: middle;
+   text-align: center;
+   padding-top: 5px;
+   padding-right: 20px;
+   padding-left: 20px;
+}
+
+div.searchResultButtonsTravelHistory{
+    padding-left: 20px;
+}
+
+div.searchResults{
+   margin-left: 100px;
+   margin-top: 50px;
+}
+
+div.searchParametersSent{
+    margin-left:150px;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+h2.headingForSearchParameters{
+    padding-top:0;
+    padding-bottom:0;
+}
+
+p.summaryOfSearch{
+    margin-block-start: 5px;
+        margin-block-end: 5px;
+}
+
+  div.recResults{
+
+  }
+
+  .tag1
+  {
+      float: left;
+      border-style: solid;
+      border-color: black;
+      padding: 5px;
+      border-width: 2px;
+  }
+
+  .tag2
+  {
+      float: left;
+      border-style: solid;
+      border-color: black;
+      padding: 5px;
+      border-width: 2px;
+  }
+
+  .brmedium {
+      display: block;
+      margin-bottom: 2em;
+  }
+
+  button.recsearch
+  {
+      background-color: #156283;
+      color: white;
+      border-radius: 8px;
+      font-size: 15px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      display: inline-block;
+      transition-duration: 0.25s;
+      height: 60px;
+      width: 150px;
+  }
+
+  button.recsearch:hover {
+      background-color: dodgerblue;
+  }
+  .gridParent
+  {
+      display: grid;
+      column-gap: 50px;
+      display: flex;
+      margin-left: 250px;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial;
+  }
+
+  div.FlightSearchResult1{
+      border: 2px solid black;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      grid-column-start: 1;
+      grid-column-end: 1;
+      grid-row-start: 1;
+      grid-row-end: 1;
+  }
+
+  div.FlightSearchResult2{
+      border: 2px solid black;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      grid-column-start: 2;
+      grid-column-end: 2;
+      grid-row-start: 2;
+      grid-row-end: 2;
+  }
+
+  div.FlightSearchResult3{
+      border: 2px solid black;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      grid-column-start: 3;
+      grid-column-end: 3;
+      grid-row-start: 3;
+      grid-row-end: 3;
+
+  }
+
+  .centeringtext
+  {
+      display: flex;
+      flex-direction: row;
+      margin-left: 250px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      font-family: Arial;
+  }
+
+  div.textcolorgreen
+  {
+      color: green;
+  }

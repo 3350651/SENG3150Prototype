@@ -360,3 +360,37 @@ function modifyPassword(usersActualPassword){
     console.log("reached end of function");
     return false;
 }
+
+var myElement = document.getElementById('checkbox');
+if (myElement) {
+
+    var checkbox = document.getElementById("flexibleDate");
+    var flexibleDiv = document.getElementById("flexibleDateDiv");
+    var daysInput = document.getElementById("flexibleDaysGroup");
+
+    checkbox.addEventListener('change', function() {
+      if (this.checked) {
+        daysInput.style.display = "block";
+        flexibleDiv.style.display = "flex";
+        flexibleDiv.style.paddingRight = "25px";
+      } else {
+        daysInput.style.display = "none";
+      }
+    });
+
+}
+
+var myElement2 = document.getElementById('recurCheck');
+if (myElement2) {
+    var recurringCheck = document.getElementById("recurCheck");
+    var weeklyOrBiWeekly = document.getElementById("recurringWeeklyOrBiWeekly");
+
+    recurringCheck.addEventListener('change', function() {
+      if (this.checked) {
+        weeklyOrBiWeekly.style.display = "block";
+      } else {
+        weeklyOrBiWeekly.style.display = "none";
+      }
+    });
+}
+
