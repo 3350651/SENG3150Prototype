@@ -72,6 +72,7 @@
             <form method="POST" action="Search">
             <input type="hidden" value="savedParameter1">
             <button name="savedParameter" type="submit" value="savedParameter1" class="savedParameter">NTL > BNE, 2 adults, 28/12/23 (+5d)</button><br>
+            <button name="savedParameter" type="submit" value="savedParameter2" class="savedParameter">NTL > MLB, 1 adult, 28/05/23</button>
             </form>
         </div>
 
@@ -82,12 +83,12 @@
                 <div class="searchResultRow1TravelHistory">
                     <div class="DepartureLocationResultTravelHistory">Newcastle  </div>
                     <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogoTravelHistory" >
-                    <div class="DestinationLocationResultTravelHistory">Adelaide</div>
+                    <div class="DestinationLocationResultTravelHistory">  Brisbane</div>
                 </div>
                 <div class="searchResultRow2TravelHistory">
-                    <div class="priceResultTravelHistory">$422</div>
-                    <div class="dateResultTravelHistory">21/06/23</div>
-                    <div class="numPassengersResultTravelHistory">1 adult</div>
+                    <div class="priceResultTravelHistory">$662</div>
+                    <div class="dateResultTravelHistory">26/12/23</div>
+                    <div class="numPassengersResultTravelHistory">2 adults</div>
                 </div>
 
                 <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
@@ -109,10 +110,11 @@
 
             </div>
             <div class="destinationImageTravelHistory">
-                <img src="${pageContext.request.contextPath}/images/Adelaide.jpg" alt="Adelaide Logo" class="smallBrisbaneLogo" >
+                <img src="${pageContext.request.contextPath}/images/brisbaneCity.jpg" alt="Brisbane Logo" class="smallBrisbaneLogo" >
             </div>
         </div>
     </div>
+</div>
 </div>
 </body>
 <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/script.js"></script>

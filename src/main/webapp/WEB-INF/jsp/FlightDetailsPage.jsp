@@ -19,7 +19,8 @@
                     <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo"
                         class="centreLogo">
                     <h1>
-                        Newcastle To Brisbane
+                        <%= flight.getDeparture().getDestinationName()%> To <%=
+                                flight.getDestination().getDestinationName()%>
                     </h1>
                     <br />
                     <label for="progress">
@@ -144,9 +145,7 @@
                         </fieldset>
                     </fieldset>
                 </form>
-
             </main>
         </body>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/script.js"></script>
 
     </html>

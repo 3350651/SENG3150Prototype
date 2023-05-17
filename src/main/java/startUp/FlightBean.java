@@ -2,6 +2,7 @@ package startUp;
 
 import java.io.Serializable;
 import java.sql.*;
+import java.util.LinkedList;
 
 public class FlightBean implements Serializable {
 
@@ -14,10 +15,12 @@ public class FlightBean implements Serializable {
     private DestinationBean departure;
     private DestinationBean stopOver;
     private DestinationBean destination;
+    private LinkedList<AvailabilityBean> seatAvailability;
 
     // constructor
 
-    public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightTime, String newflightName, String newPlaneType,
+    public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightTime, String newflightName,
+            String newPlaneType,
             /* float newMinCost, */ DestinationBean newDeparture, DestinationBean newStopOver,
             DestinationBean newDestination) {
         airline = newAirline;
@@ -29,6 +32,7 @@ public class FlightBean implements Serializable {
         departure = newDeparture;
         stopOver = newStopOver;
         destination = newDestination;
+        seatAvailability = new LinkedList<>();
     }
 
     public FlightBean(String airline, String flightName, Timestamp flightTime){
@@ -96,20 +100,36 @@ public class FlightBean implements Serializable {
         this.departure = departure;
     }
 
-    public DestinationBean getStopover() {
-        return stopOver;
-    }
-
-    public void setStopover(DestinationBean stopover) {
-        this.stopOver = stopover;
-    }
-
     public DestinationBean getDestination() {
         return destination;
     }
 
     public void setDestination(DestinationBean destination) {
         this.destination = destination;
+    }
+
+    public float getMinCost() {
+        return minCost;
+    }
+
+    public void setMinCost(float minCost) {
+        this.minCost = minCost;
+    }
+
+    public DestinationBean getStopOver() {
+        return stopOver;
+    }
+
+    public void setStopOver(DestinationBean stopOver) {
+        this.stopOver = stopOver;
+    }
+
+    public LinkedList<AvailabilityBean> getSeatAvailability() {
+        return seatAvailability;
+    }
+
+    public void setSeatAvailability(LinkedList<AvailabilityBean> seatAvailability) {
+        this.seatAvailability = seatAvailability;
     }
 
     // get flight
@@ -129,11 +149,10 @@ public class FlightBean implements Serializable {
 
             statement.setString(1, airlineCode);
             statement.setString(2, flightName);
-            statement.setString(3, flightDepartureTime.toString());
+            statement.setTimestamp(3, flightDepartureTime);
 
             ResultSet result = statement.executeQuery();
 
-            // TODO:Possibly won't work?
             // TODO:Retrieve min cost of flight...
 
             while (result.next()) {
@@ -150,7 +169,8 @@ public class FlightBean implements Serializable {
                 DestinationBean rStopOver = new DestinationBean(stopOverCode);
                 DestinationBean rDestination = new DestinationBean(destinationCode);
 
-                flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture, rStopOver,
+                flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
+                        rStopOver,
                         rDestination);
             }
 
@@ -164,5 +184,10 @@ public class FlightBean implements Serializable {
     }
 
     // TODO: get min cost
+
+    public void getAvailabilities(){
+        seatAvailability = AvailabilityBean.getAvailability(this.airline, this.flightName, this.flightTime);
+    }
+
 
 }
