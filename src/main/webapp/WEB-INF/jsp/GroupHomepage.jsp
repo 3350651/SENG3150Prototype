@@ -100,6 +100,19 @@ Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
                 </fieldset>
             </div>
 
+            <div class="chatContainer">
+                <form name="chat" id="chat" method="POST" action="GroupHomepage">
+                 <button type="submit" name="getChat" value="getChat">Go to Group Chat</button>
+                </form>
+            </div>
+
+            <!--Need to add button only when available, instead it should have window that says pool not available yet.-->
+            <div class="poolContainer">
+                <form name="pool" id="pool" method="POST" action="GroupHomepage">
+                 <button type="submit" name="getPool" value="getPool">Go to Money Pool</button>
+                </form>
+            </div>
+
     </main>
 </body>
 <script type="text/javascript" src="script.js"></script>

@@ -7,6 +7,7 @@ LinkedList<String> memberIDs = (LinkedList<String>) session.getAttribute("member
 LinkedList<String> memberNames = (LinkedList<String>) session.getAttribute("memberNames");
 int size = (int) session.getAttribute("size");
 GroupBean group = (GroupBean) session.getAttribute("group");
+LinkedList<Boolean> hasDeposited = (LinkedList<Boolean>) session.getAttribute("hasDeposited");
 %>
 
 
@@ -37,15 +38,20 @@ GroupBean group = (GroupBean) session.getAttribute("group");
             for(int i = 0; i < size; i++){
             String name = memberNames.pop();
             String id = memberIDs.pop();
+            Boolean deposited = hasDeposited.pop();
             %>
                 <p>Member Name: <%= name %></p>
                 <p>Member ID: <%= id %></p>
+                <%if(deposited){%>
                 <form method="POST" action="ManageGroup" onsubmit="return removeMemberForm()">
                     <button type="submit" name="removeMember" value="removeMember">Remove</button>
                     <input type="hidden" id="memberID" name="memberID" value="<%= id %>">
                 </form>
-            <% memberNames.addLast(name);
+                <%} else {%>
+                <p>Cannot remove <%= name %> due to their contribution to the money pool.</p><br>
+            <% } memberNames.addLast(name);
             memberIDs.addLast(id);
+            hasDeposited.addLast(deposited);
             }
             %>
         </div>

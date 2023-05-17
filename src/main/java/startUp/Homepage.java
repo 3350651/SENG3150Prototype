@@ -43,8 +43,9 @@ public class Homepage extends HttpServlet {
 		// sends the user to the correct homepage depending on their role
 		if (role.equals("user")){
 
+			//this could be redundant?
 			if(request.getParameter("groupHomepage") != null){
-				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
+				request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
 			}
 
 			//stuff to set and display groups for user.
@@ -110,7 +111,7 @@ public class Homepage extends HttpServlet {
 			String defaultCurrency = request.getParameter("defaultCurrency");
 			String defaultTimeZone = request.getParameter("defaultTimeZone");
 			String themePreference = request.getParameter("themePreference");
-			Boolean questionnaireCompleted = Boolean.parseBoolean(request.getParameter("questionnaireCompleted"));
+			String questionnaireCompleted = request.getParameter("questionnaireCompleted");
 			LocalDate dateOfBirth = LocalDate.parse(request.getParameter("dateOfBirth"));
 
 			UserBean user = new UserBean(firstName, lastName, email, password, phoneNumber, role, address,

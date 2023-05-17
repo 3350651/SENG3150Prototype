@@ -42,7 +42,7 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
                     GroupBean group = groups.pop();
                     name = group.getGroupName(); %>
                     <div class="goGroup">
-                        <form method="GET" action="Homepage">
+                        <form method="GET" action="GroupHomepage">
                             <button name="goGroup" value="goGroup">
                                 <%= name %>
                             </button>

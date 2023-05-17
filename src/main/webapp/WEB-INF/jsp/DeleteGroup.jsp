@@ -16,10 +16,6 @@ GroupBean group = (GroupBean) session.getAttribute("group");
     <main>
 
         <header>
-           <form name="backToManageGroup" action="ManageGroup" method="GET">
-                   <button type="submit" name="manageGroup" value="true">Return to Manage Group</button>
-           </form>
-
             <div class="titleContainer">
                 <h1>Delete Group</h1>
             </div>
