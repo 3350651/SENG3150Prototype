@@ -143,7 +143,7 @@ public class FlightBean implements Serializable {
 
             statement.setString(1, airlineCode);
             statement.setString(2, flightName);
-            statement.setString(3, flightDepartureTime.toString());
+            statement.setTimestamp(3, flightDepartureTime);
 
             ResultSet result = statement.executeQuery();
 
