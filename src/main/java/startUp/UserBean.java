@@ -745,6 +745,63 @@ public class UserBean implements Serializable {
 		}
 	}
 
+	public static void addToBookmarkedFlights(String userID, String airlineCode, String flightNumber, Timestamp departureTime) {
+		String query = "INSERT INTO USERBOOKMARKEDFLIGHTS VALUES (?, ?, ?, ?, ?)";
+		String tagID = "-1"; // initialize tagID to an invalid value
+
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement checkFlight = connection.prepareStatement("SELECT * FROM USERBOOKMARKEDFLIGHTS WHERE userID = ? AND airlineCode = ? AND flightNumber = ? AND departureTime = ?");
+			checkFlight.setString(1, userID);
+			checkFlight.setString(2, airlineCode);
+			checkFlight.setString(3, flightNumber);
+			checkFlight.setTimestamp(4, departureTime);
+			ResultSet resultSet1 = checkFlight.executeQuery();
+			checkFlight.close();
+			connection.close();
+			if (resultSet1.next()) {
+				resultSet1.close();
+			} else {
+				try {
+					connection = ConfigBean.getConnection();
+					PreparedStatement statement = connection.prepareStatement(query);
+					Random random = new Random();
+					String userBookmarkedFlightID = String.format("%08d", random.nextInt(100000000));
+					statement.setString(1, userBookmarkedFlightID);
+					statement.setString(2, userID);
+					statement.setString(3, airlineCode);
+					statement.setString(4, flightNumber);
+					statement.executeUpdate();
+					statement.close();
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (Exception e) {
+
+		}
+	}
+
+	public static void removeFromBookmarkedFlights(String userID, String airlineCode, String flightNumber, Timestamp departureTime) {
+		String query = "DELETE FROM USERBOOKMARKEDFLIGHTS WHERE userID = ? AND airlineCode = ? AND flightNumber = ? AND departureTime = ?";
+
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, userID);
+			statement.setString(2, airlineCode);
+			statement.setString(3, flightNumber);
+			statement.setTimestamp(4, departureTime);
+			statement.executeUpdate();
+			statement.close();
+
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void updateUIPreferences(String id, String defaultSearch, String themePreference){
 		try {
 			Connection connection = ConfigBean.getConnection();

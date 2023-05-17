@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @WebServlet(urlPatterns = { "/AccountSettings" })
@@ -111,6 +112,30 @@ public class AccountSettingsServlet extends HttpServlet {
 			}
 			session.setAttribute("userBean", user);
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("addBookmarkedFlight") != null){
+			String id = request.getParameter("userID"); // do this for all others as hidden form input
+			String airlineCode = request.getParameter("airlineCode");
+			String flightNumber = request.getParameter("flightNumber");
+			Timestamp departureTime = Timestamp.valueOf(request.getParameter("departureTime"));
+			UserBean.addToBookmarkedFlights(id, airlineCode, flightNumber, departureTime);
+			FlightBean f = new FlightBean(airlineCode, flightNumber, departureTime); // make this constructor search for the remainder of flight information upon instantiation
+			user.addBookmarkedFlight(f);
+			session.setAttribute("userBean", user);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("removeTags") != null){
+			String id = request.getParameter("userID"); // do this for all others as hidden form input
+			String airlineCode = request.getParameter("airlineCode");
+			String flightNumber = request.getParameter("flightNumber");
+			Timestamp departureTime = Timestamp.valueOf(request.getParameter("departureTime"));
+			UserBean.removeFromBookmarkedFlights(id, airlineCode, flightNumber, departureTime);
+			FlightBean f = new FlightBean(airlineCode, flightNumber, departureTime); // make this constructor search for the remainder of flight information upon instantiation
+			user.removeBookmarkedFlight(f);
+			session.setAttribute("userBean", user);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("goToUIPreferences") != null){
