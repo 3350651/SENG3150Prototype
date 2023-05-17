@@ -46,7 +46,7 @@
         <label for="confirmPassword">Confirm New Password:</label>
         <input type="password" id="confirmPassword" name="confirmPassword" required><br>
 
-        <input type="hidden" name="userID" value="123456789">
+        <input type="hidden" name="userID" value="<%= user.getUserID() %>">
 
         <button type="submit" name="changePassword" value="changePassword">Change Password</button>
     </form>

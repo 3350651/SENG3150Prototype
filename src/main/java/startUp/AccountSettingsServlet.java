@@ -18,7 +18,7 @@ public class AccountSettingsServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		RequestDispatcher requestDispatcher = null;
+		RequestDispatcher requestDispatcher;
 
 		// send the user to an unauthorised page if they try to access the homepage without being logged in.
 		if (session.getAttribute("userBean") == null){
@@ -95,9 +95,9 @@ public class AccountSettingsServlet extends HttpServlet {
 		if(request.getParameter("addTags") != null){
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
 			String[] tagValues = request.getParameterValues("tags[]");
-			for (int i=0; i< tagValues.length; i++) {
-				UserBean.addToTagSet(id, tagValues[i]);
-				user.addTag(tagValues[i]);
+			for (String tagValue : tagValues) {
+				UserBean.addToTagSet(id, tagValue);
+				user.addTag(tagValue);
 			}
 			session.setAttribute("userBean", user);
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
@@ -106,9 +106,9 @@ public class AccountSettingsServlet extends HttpServlet {
 		if(request.getParameter("removeTags") != null){
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
 			String[] tagValues = request.getParameterValues("tags[]");
-			for (int i=0; i< tagValues.length; i++) {
-				UserBean.removeFromTagSet(id, tagValues[i]);
-				user.removeTag(tagValues[i]);
+			for (String tagValue : tagValues) {
+				UserBean.removeFromTagSet(id, tagValue);
+				user.removeTag(tagValue);
 			}
 			session.setAttribute("userBean", user);
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
@@ -157,6 +157,10 @@ public class AccountSettingsServlet extends HttpServlet {
 		}
 		if(request.getParameter("goToModifyTags") != null){
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyTags.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("goToModifyBookmarkedFlights") != null){
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyBookmarkedFlights.jsp");
 			requestDispatcher.forward(request, response);
 		}
 	}

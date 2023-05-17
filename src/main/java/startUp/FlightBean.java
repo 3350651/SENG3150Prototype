@@ -2,6 +2,7 @@ package startUp;
 
 import java.io.Serializable;
 import java.sql.*;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class FlightBean implements Serializable {
@@ -35,11 +36,26 @@ public class FlightBean implements Serializable {
         seatAvailability = new LinkedList<>();
     }
 
+    // FlightBean constructor with primary key elements of Flights table
     public FlightBean(String airline, String flightName, Timestamp flightTime){
         this.airline = airline;
         this.flightName = flightName;
         this.flightTime = flightTime;
+        FlightBean infoToImport = getFlight(airline, flightName, flightTime);
+        this.airlineName = infoToImport.getAirlineName();
+        this.planeType = infoToImport.getPlaneType();
+        this.destination = infoToImport.getDestination();
+        this.departure = infoToImport.getDeparture();
+        this.stopOver = infoToImport.getStopOver();
     }
+
+//    public FlightBean(String airline, String flightName, String departureCode, String stopOverCode, Timestamp flightTime){
+//        this.airline = airline;
+//        this.flightName = flightName;
+//        this.departure = new DestinationBean(departureCode);
+//        this.stopOver = new DestinationBean(stopOverCode);
+//        this.flightTime = flightTime;
+//    }
 
     // getters and setters
     public String getAirline() {
@@ -178,7 +194,7 @@ public class FlightBean implements Serializable {
             connection.close();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            System.err.println(e.getStackTrace());
+            System.err.println(Arrays.toString(e.getStackTrace()));
         }
         return flight;
     }
@@ -188,6 +204,5 @@ public class FlightBean implements Serializable {
     public void getAvailabilities(){
         seatAvailability = AvailabilityBean.getAvailability(this.airline, this.flightName, this.flightTime);
     }
-
 
 }

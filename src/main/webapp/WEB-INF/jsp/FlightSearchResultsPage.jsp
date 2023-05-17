@@ -1,6 +1,14 @@
 <%@ page import="startUp.FlightBean" %>
 <%@ page import="startUp.SearchBean" %>
 <%@ page import="java.util.LinkedList"%>
+<%@ page import="startUp.UserBean" %>
+<%
+  UserBean user = (UserBean) session.getAttribute("userBean");
+  LinkedList<FlightBean> bookmarkedFlights = new LinkedList<>();
+  if (user != null && user.getBookmarkedFlights() != null) {
+    bookmarkedFlights = user.getBookmarkedFlights();
+  }
+%>
 
     <!DOCTYPE html>
     <html lang="en">
@@ -26,8 +34,17 @@
         <!--        Favourited Flights         -->
             <form name="goToBookmarkedFlight" action="ViewFlight" method="POST">
             <h2>Bookmarked Flights</h2>
-                <button type="submit" class="button" name="goToBookmarkedFlight1" value="goToBookmarkedFlight1">Morrocco, $1,290, 15/12/2023</button>
-                <button type="submit" class="button" name="goToBookmarkedFlight2" value="goToBookmarkedFlight2">Thailand, $679, 6/10/2023</button>
+            <%
+              int j=0;
+              if (bookmarkedFlights.size() > 0){
+              for(FlightBean flight : bookmarkedFlights) { ;
+            %>
+                <button type="submit" class="button" name="goToBookmarkedFlight<%= j+1 %>" value="goToBookmarkedFlight<%= j+1 %>">
+                  <%= flight.getDestination() %>, <%= flight.getFlightTime() %>
+                </button>
+            <%
+              j++;}}
+            %>
             </form>
         <!--        Groups You're In         -->
             <form name="goToGroup" action="MockupGroup" class="groups" method="POST">
@@ -65,8 +82,12 @@
                             </div>
                             <div class="searchResultButtons">
                             <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
+                                <input type="hidden" name="userID" value="<%= user.getUserID() %>">
+                                <input type="hidden" name="airlineCode" value="<%= flight.getAirline() %>">
+                                <input type="hidden" name="flightNumber" value="<%= flight.getFlightName() %>">
+                                <input type="hidden" name="departureTime" value="<%= flight.getFlightTime() %>">
                                 <div class="bookmarkFlight">
-                                    <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value=<%="bookmark" + i %>>
+                                    <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value=<%=flight%>>
                                 </div>
                                 <div class="favouriteDestination">
                                     <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/favouriteStar.png" alt="Favourite Destination Logo" name="favourite" value=<%="favourite" + i %>>

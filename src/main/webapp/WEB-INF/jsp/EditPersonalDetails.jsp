@@ -15,18 +15,18 @@
         <button type="submit" class="button" name="home" value="backToHome">Return to Home</button>
     </form>
     <%--    Back to User Profile--%>
-    <form method="POST" action="MockUpAccountSettings">
+    <form method="POST" action="AccountSettings">
         <button name="viewAccountSettings" class="button" value="viewAccountSettings">Back to Account</button>
     </form>
     <%--        UI Preferences button         --%>
-    <form name="goToUIPreferences" action="MockUpAccountSettings" method="POST">
+    <form name="goToUIPreferences" action="AccountSettings" method="POST">
         <button type="submit" class="button" name="goToUIPreferences" value="goToUIPreferences">Modify UI Preferences</button>
     </form>
     <%--        Change Password button         --%>
-    <form name="goToChangePassword" action="MockUpAccountSettings" method="POST">
+    <form name="goToChangePassword" action="AccountSettings" method="POST">
         <button type="submit" class="button" name="goToChangePassword" value="goToChangePassword">Change Password</button>
     </form>
-    <form name="goToModifyTags" action="MockUpAccountSettings" method="POST">
+    <form name="goToModifyTags" action="AccountSettings" method="POST">
         <button type="submit" class="button" name="goToModifyTags" value="goToModifyTags">Modify Tags</button>
     </form>
 </div>
