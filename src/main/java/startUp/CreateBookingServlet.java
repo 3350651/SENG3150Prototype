@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.LinkedList;
 
 @WebServlet(urlPatterns = {"/createBooking"})
 public class CreateBookingServlet extends HttpServlet {
@@ -27,20 +28,26 @@ public class CreateBookingServlet extends HttpServlet {
 
         UserBean user = (UserBean) session.getAttribute("userBean");
 
-        FlightBean flight = (FlightBean) session.getAttribute("Flight");
+        FlightBean flight = (FlightBean) session.getAttribute("flight");
         flight.getAvailabilities();
-        session.setAttribute("Flight", flight);
-        //TODO: Get return flight information here
+        session.setAttribute("flight", flight);     //overwrite the flight attribute
+        LinkedList<FlightBean> returnFlights = (LinkedList<FlightBean>) req.getAttribute("returnFlights");
+        FlightBean returnFlight = null;
+        if(returnFlights != null){
+            returnFlight = returnFlights.get(Integer.valueOf(req.getParameter("returnFlight")));
+        }
+        
         //TODO: Get some booking information e.g. Number of guests
-        BookingBean booking = new BookingBean(user.getUserID(), flight, null);
+        int passengers = Integer.valueOf(req.getParameter("numPassengers"));
+
+        BookingBean booking = new BookingBean(user.getUserID(), flight, returnFlight);
         session.setAttribute("booking", booking);
-        booking.addBooking();
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightOptionsPage.jsp");
+        booking.addBooking();   //saving progress of booking
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/PassengerDetailsPage.jsp");
         requestDispatcher.forward(req,resp);
         }
         else if(req.getParameter("options") != null){
-            //TODO: needs to be a class selection for each passenger in each flight
-            String departureClass = req.getParameter("departureClass");
+            
 
         }
     }
