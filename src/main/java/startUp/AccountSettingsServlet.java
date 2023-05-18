@@ -29,7 +29,7 @@ public class AccountSettingsServlet extends HttpServlet {
 		// gets the user object and their role from the session object.
 		UserBean user = (UserBean) session.getAttribute("userBean");
 
-		requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+		requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 
 		requestDispatcher.forward(request, response);
 	}
@@ -46,7 +46,7 @@ public class AccountSettingsServlet extends HttpServlet {
 			// save to user.LinkedList<Tag>
 			//String tags = request.getParameter("tags");
 			//UserBean.editTags((String) request.getSession().getAttribute("editID"), tags);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("changePassword") != null){
@@ -55,7 +55,7 @@ public class AccountSettingsServlet extends HttpServlet {
 			UserBean.updateUserPassword(id, password);
 			user.setUserPassword(password);
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("editPersonalDetails") != null){
@@ -78,7 +78,7 @@ public class AccountSettingsServlet extends HttpServlet {
 			user.setDefaultTimeZone(defaultTimezone);
 			user.setDateOfBirth(dateOfBirth);
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("updateUIPreferences") != null){
@@ -89,7 +89,7 @@ public class AccountSettingsServlet extends HttpServlet {
 			user.setDefaultSearch(defaultSearch);
 			user.setThemePreference(themePreference);
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("addTags") != null){
@@ -100,7 +100,7 @@ public class AccountSettingsServlet extends HttpServlet {
 				user.addTag(tagValue);
 			}
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("removeTags") != null){
@@ -111,7 +111,7 @@ public class AccountSettingsServlet extends HttpServlet {
 				user.removeTag(tagValue);
 			}
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("addBookmarkedFlight") != null){
@@ -135,7 +135,7 @@ public class AccountSettingsServlet extends HttpServlet {
 			user.removeBookmarkedFlight(f);
 			UserBean.removeFromBookmarkedFlights(id, airlineCode, flightNumber, departureTime);
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("goToUIPreferences") != null){
@@ -152,7 +152,7 @@ public class AccountSettingsServlet extends HttpServlet {
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("viewAccountSettings") != null){
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("goToModifyTags") != null){
