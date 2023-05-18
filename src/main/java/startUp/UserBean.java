@@ -266,8 +266,14 @@ public class UserBean implements Serializable {
 	}
 
 	public void removeBookmarkedFlight(FlightBean flight){
-		for (int i =0; i<getTagSet().size(); i++){
-			if (getBookmarkedFlights().get(i).equals(flight)){
+		String airlineCodeToAdd = flight.getAirline();
+		String flightNumberToAdd = flight.getFlightName();
+		Timestamp departureTimeToAdd = flight.getFlightTime();
+		for (int i =0; i<getBookmarkedFlights().size(); i++){
+			String existingAirlineCode = getBookmarkedFlights().get(i).getAirline();
+			String existingFlightNumber = getBookmarkedFlights().get(i).getFlightName();
+			Timestamp existingDepartureTime = getBookmarkedFlights().get(i).getFlightTime();
+			if (airlineCodeToAdd.equals(existingAirlineCode) && flightNumberToAdd.equals(existingFlightNumber) && departureTimeToAdd.equals(existingDepartureTime)){
 				getBookmarkedFlights().remove(i);
 				break;
 			}

@@ -126,16 +126,16 @@ public class AccountSettingsServlet extends HttpServlet {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
 			requestDispatcher.forward(request, response);
 		}
-		if(request.getParameter("removeTags") != null){
+		if(request.getParameter("removeBookmarkedFlight") != null){
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
 			String airlineCode = request.getParameter("airlineCode");
 			String flightNumber = request.getParameter("flightNumber");
-			Timestamp departureTime = Timestamp.valueOf(request.getParameter("departureTime"));
-			UserBean.removeFromBookmarkedFlights(id, airlineCode, flightNumber, departureTime);
-			FlightBean f = new FlightBean(airlineCode, flightNumber, departureTime); // make this constructor search for the remainder of flight information upon instantiation
+			Timestamp departureTime = Timestamp.valueOf(request.getParameter("departureTime"));// adds to database with foreign keys, creates PK
+			FlightBean f = new FlightBean(airlineCode, flightNumber, departureTime); // constructor searches for the remainder of flight information upon instantiation
 			user.removeBookmarkedFlight(f);
+			UserBean.removeFromBookmarkedFlights(id, airlineCode, flightNumber, departureTime);
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("goToUIPreferences") != null){

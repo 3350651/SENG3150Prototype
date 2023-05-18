@@ -34,7 +34,7 @@
                     <button type="submit" class="button" name="home"
                         value="recommendSearch">Recommend Search</button>
             </form>
-            <%-- Favourited Flights --%>
+            <%-- Bookmarked Flights --%>
             <form name="goToBookmarkedFlight" action="ViewFlight" method="POST">
             <h2>Bookmarked Flights</h2>
             <%
@@ -49,7 +49,6 @@
               j++;}}
             %>
             </form>
-            </form>
             <%-- Groups You're In --%>
             <form name="goToGroup" action="MockupGroup" class="groups" method="POST">
                 <h2>Group Membership</h2>
@@ -58,28 +57,61 @@
             </form>
     </div>
     <div class="main-content">
+    <div class="accountAccess">
+        <% if (user !=null) { %>
         <div class="viewAccountSettings">
-            <% if (user !=null) { %>
-                <form method="POST" action="AccountSettings">
-                    <button name="viewAccountSettings" class="accountButton"
-                        value="viewAccountSettings">View Profile</button>
-                </form>
-                <% } %>
-                    <% if (user==null) { %>
-                        <div class="createAccount">
-                            <form method="GET" action="CreateAccount">
-                                <button name="viewAccountSettings" class="accountButton"
-                                    value="viewAccountSettings">Create Account</button>
-                            </form>
-                        </div>
-                        <div class="logInToAccount">
-                            <form method="GET" action="login">
-                                <button name="viewAccountSettings" class="accountButton"
-                                    value="viewAccountSettings">Log In</button>
-                            </form>
-                        </div>
-                        <% } %>
+        <form method="POST" action="AccountSettings">
+            <button name="viewAccountSettings" class="accountButton"
+                value="viewAccountSettings">View Profile</button>
+        </form>
         </div>
+        <% } %>
+        <% if (user==null) { %>
+        <div class="createAccount">
+            <form method="GET" action="CreateAccount">
+                <button name="viewAccountSettings" class="accountButton"
+                    value="viewAccountSettings">Create Account</button>
+            </form>
+        </div>
+        <div class="logInToAccount">
+            <form method="GET" action="login">
+                <button name="viewAccountSettings" class="accountButton"
+                    value="viewAccountSettings">Log In</button>
+            </form>
+        </div>
+        <br style="clear:both" />
+        <div class="loginDisplay">
+            <input type="checkbox" name="loginButton" id="loginButton" value="login">
+            <div id="login" style="display: none">
+            <%--			Login form					--%>
+            <h3>Login</h3>
+            <form method = "POST" action="login">
+                <label>Email </label>
+                <input type="text" name ="email" required></input>
+
+                <br>
+
+                <label>Password </label>
+                <input type="password" name ="password" required></input>
+
+                <br>
+
+                <button type="submit" name ="button" value="submit" >Submit</button>
+            </form>
+            </div>
+        </div>
+        <% } %>
+
+
+        <div id="createAccount Container" style="display: none">
+        <form method= "POST" action="CreateAccount" >
+            <button name="createAccount" value="createAccount">Create Account</button>
+        </form>
+
+        </div>
+
+        </div>
+
         <br><br>
         <div class="simpleSearch">
             <form method="POST" action="flightSearch" class="simpleSearchForm">

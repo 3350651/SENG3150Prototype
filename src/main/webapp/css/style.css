@@ -168,7 +168,9 @@ div.dateAndCheckBox{
     justify-content: flex-start;
     font-family: Arial;
   }
+div.loginDisplay{
 
+}
   p.labelOfSetting {
     font-weight: bold;
     /*background-color: #156283;*/
@@ -258,12 +260,28 @@ div.dateAndCheckBox{
       width: 100px;
       position: fixed;
       top: 0;
-      right: 20em;
+      right: 25em;
 }
 
 div.logInToAccount{
     padding-left: 5px;
 }
+
+div.accountAccess{
+    display: flex;
+    align-items: center;
+    /*border-style: solid;*/
+    /*border-color: white;*/
+    height: 100px;
+    position: fixed;
+    top: 10px;
+    right: 25em;
+}
+
+div.loginDisplay{
+    display: block;
+}
+
 .accountButton {
     background-color: #156283;
     color: white;

@@ -394,3 +394,17 @@ if (myElement2) {
     });
 }
 
+var loginCheckBox = document.getElementById('loginButton');
+    if (loginCheckBox) {
+        console.log("loginCheckBoxChecked");
+        var loginForm = document.getElementById("login");
+
+        loginCheckBox.addEventListener('change', function() {
+            if (this.checked) {
+                loginForm.style.display = "block";
+            } else {
+                loginForm.style.display = "none";
+            }
+        });
+    }
+

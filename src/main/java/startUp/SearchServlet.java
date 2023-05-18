@@ -53,18 +53,18 @@ public class SearchServlet extends HttpServlet {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
 			requestDispatcher.forward(request, response);
 		}
-		if(request.getParameter("removeTags") != null){
-			String id = request.getParameter("userID"); // do this for all others as hidden form input
-			String airlineCode = request.getParameter("airlineCode");
-			String flightNumber = request.getParameter("flightNumber");
-			Timestamp departureTime = Timestamp.valueOf(request.getParameter("departureTime"));
-			UserBean.removeFromBookmarkedFlights(id, airlineCode, flightNumber, departureTime);
-			FlightBean f = new FlightBean(airlineCode, flightNumber, departureTime); // make this constructor search for the remainder of flight information upon instantiation
-			user.removeBookmarkedFlight(f);
-			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
-			requestDispatcher.forward(request, response);
-		}
+//		if(request.getParameter("removeTags") != null){
+//			String id = request.getParameter("userID"); // do this for all others as hidden form input
+//			String airlineCode = request.getParameter("airlineCode");
+//			String flightNumber = request.getParameter("flightNumber");
+//			Timestamp departureTime = Timestamp.valueOf(request.getParameter("departureTime"));
+//			UserBean.removeFromBookmarkedFlights(id, airlineCode, flightNumber, departureTime);
+//			FlightBean f = new FlightBean(airlineCode, flightNumber, departureTime); // make this constructor search for the remainder of flight information upon instantiation
+//			user.removeBookmarkedFlight(f);
+//			session.setAttribute("userBean", user);
+//			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
+//			requestDispatcher.forward(request, response);
+//		}
 		if (request.getParameter("favourite") != null) {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/MockUp-Homepage-SimpleSearch-LoggedIn.jsp");
 			requestDispatcher.forward(request, response);
