@@ -49,9 +49,7 @@
   }
 
   #login {
-    padding-top: 100px;
     text-align: center;
-    line-height: 60px;
   }
 
   .notification {
@@ -267,7 +265,34 @@ div.logInToAccount{
     padding-left: 5px;
 }
 
+div.logOut{
+    display: flex;
+    align-items: center;
+    /* border-style: solid; */
+    /* border-color: white; */
+    height: 100px;
+    width: 100px;
+    position: fixed;
+    top: 0;
+    right: 12em;
+}
+
 div.accountAccess{
+    display: block;
+}
+
+div.loggedInAccountAccess{
+    display: flex;
+    align-items: center;
+    /*border-style: solid;*/
+    /*border-color: white;*/
+    height: 100px;
+    position: fixed;
+    top: 10px;
+    right: 25em;
+}
+
+div.loggedOutAccountAccess{
     display: flex;
     align-items: center;
     /*border-style: solid;*/
@@ -279,7 +304,9 @@ div.accountAccess{
 }
 
 div.loginDisplay{
-    display: block;
+    top: 150px;
+    position: absolute;
+    right: 150px;
 }
 
 .accountButton {
@@ -376,6 +403,11 @@ input[type="number"] {
 input[type="text"] {
   width: 200px;
   height: 30px; /* adjust the width as desired */
+}
+
+input[type="password"] {
+    width: 200px;
+    height: 30px;
 }
 
 input[type="date"] {

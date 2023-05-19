@@ -1,3 +1,17 @@
+<%@ page import="startUp.UserBean" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.util.LinkedList" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="startUp.FlightBean" %>
+<%@ page import="startUp.DestinationBean" %>
+<%
+  UserBean user = (UserBean) session.getAttribute("userBean");
+  LinkedList<FlightBean> bookmarkedFlights = new LinkedList<>();
+  if (user != null && user.getBookmarkedFlights() != null) {
+    bookmarkedFlights = user.getBookmarkedFlights();
+}
+%>
+
 <body class="AccountSettingsHomePage">
     <div class="sidebar">
         <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="logo" >

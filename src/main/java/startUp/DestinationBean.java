@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class DestinationBean {
@@ -20,7 +21,7 @@ public class DestinationBean {
 
         try {
             String query = "SELECT *" +
-                    " FROM dbo.Destinations  " +
+                    " FROM dbo.Destinations " +
                     " WHERE DestinationCode = ?";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
@@ -36,7 +37,7 @@ public class DestinationBean {
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            System.err.println(e.getStackTrace());
+            System.err.println(Arrays.toString(e.getStackTrace()));
         }
     }
 

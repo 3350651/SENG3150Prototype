@@ -21,7 +21,7 @@ if (user != null && user.getBookmarkedFlights() != null) {
     <title>Edit user account</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
-<jsp:include page='sidebarForAccount.jsp'></jsp:include>
+<jsp:include page='c-Sidebar-Account.jsp'></jsp:include>
 <div class="main-content">
     <h1>User Profile Details & Settings</h1>
 
