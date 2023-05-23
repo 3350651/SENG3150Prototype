@@ -11,7 +11,7 @@
 </head>
 <body>
     <main>
-        <header>
+        <jsp:include page='c-Sidebar-Account.jsp'></jsp:include>
            <div id="SkipQuestionnaireButton">
                 <form method="POST" action="ModifyAccountDetail" onsubmit="return questionnaire()">
                     <button type="submit" name="skipQuestionnaire" value="skipQuestionnaire">Skip Questionnaire</button>

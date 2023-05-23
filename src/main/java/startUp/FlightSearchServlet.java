@@ -21,11 +21,11 @@ public class FlightSearchServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        FlightBean flight = FlightBean.getFlight("AA", "AA1735", Timestamp
-                .valueOf("2014-09-23 09:50:00.000"));
+        SearchBean search = new SearchBean(null, "Atlanta", "Rio De Janeiro", null, false, 0, 0, 0);
+        //search.getInitialFlight();
         HttpSession session = req.getSession();
-        session.setAttribute("Flight", flight);
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
+        session.setAttribute("results", search);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightSearchResultsPage.jsp");
         requestDispatcher.forward(req, resp);
 
     }

@@ -8,30 +8,12 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-<div class="sidebar">
-    <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="logo" >
-    <%--        Home page button         --%>
-    <form name="returnHome" action="Homepage" method="POST">
-        <button type="submit" class="button" name="home" value="true">Return to Home</button>
-    </form>
-    <%--    Back to User Profile--%>
-    <form method="POST" action="AccountSettings">
-        <button name="viewAccountSettings" class="button" value="viewAccountSettings">Back to Account</button>
-    </form>
-    <%--        Personal Details button         --%>
-    <form name="goToPersonalDetails" action="AccountSettings" method="POST">
-        <button type="submit" class="button" name="goToPersonalDetails" value="goToPersonalDetails">Modify Personal Details</button>
-    </form>
-    <%--        Change Password button         --%>
-    <form name="goToChangePassword" action="AccountSettings" method="POST">
-        <button type="submit" class="button" name="goToChangePassword" value="goToChangePassword">Change Password</button>
-    </form>
-</div>
+<jsp:include page='c-Sidebar-Account.jsp'></jsp:include>
 
 <div class="main-content">
 <%--            Edit user form                 --%>
     <h1>Modify User Interface Preferences</h1>
-    <form method="POST" action="AccountSettings" onsubmit="return modifyUIPreferences()">
+    <form method="POST" action="AccountSettings" onsubmit="">
         <label for="themePreference">Theme Preference: </label>
             <select id="themePreference" name="themePreference">
                 <option value="Light">Light Mode</option>
@@ -43,7 +25,7 @@
                <option value="Simple">Simple</option>
                <option value="Recommend">Recommend</option>
            </select><br>
-        <input type="hidden" name="userID" value="<%=user.getUserID()%>">
+        <input type="hidden" name="userID" value=123456789">
         <button type="submit" name="updateUIPreferences" value="updateUIPreferences">Update UI Preferences</button>
     </form>
 </div>

@@ -5,6 +5,14 @@
 <%@ page import="java.util.Iterator" %>
 <% DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
   String dateOfBirthFormatted = user.getDateOfBirth().format(formatter); %>
+<%@ page import="startUp.FlightBean" %>
+<%@ page import="startUp.DestinationBean" %>
+<%
+LinkedList<FlightBean> bookmarkedFlights = new LinkedList<>();
+if (user != null && user.getBookmarkedFlights() != null) {
+  bookmarkedFlights = user.getBookmarkedFlights();
+}
+%>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -36,6 +44,10 @@
     <form name="goToModifyTags" action="AccountSettings" method="POST">
         <button type="submit" class="button" name="goToModifyTags" value="goToModifyTags">Modify Tags</button>
     </form>
+    <%--        Modify Bookmarked Flights button         --%>
+        <form name="goToModifyBookmarkedFlights" action="AccountSettings" method="POST">
+            <button type="submit" class="button" name="goToModifyBookmarkedFlights" value="goToModifyBookmarkedFlights">Modify Bookmarked Flights</button>
+        </form>
 </div>
 <div class="main-content">
     <h1>User Profile Details & Settings</h1>
@@ -81,16 +93,20 @@
     </div>
     <h2>Bookmarked Flights</h2>
     <div class="settingsCategory">
+        <ul>
+        <% for(FlightBean flight : bookmarkedFlights) { ;%>
+            <li><p class="valueOfSetting">From <%= flight.getDeparture().getDestinationName() %> to <%= flight.getDestination().getDestinationName() %>, departing on <%= flight.getFlightTime() %></p> </li>
+        <% } %>
+        </ul>
+    </div>
+
+    <h2>Favourite Destinations</h2>
+    <div class="settingsCategory">
     <ul>
         <li><p class="valueOfSetting">FlightExample</p> </li>
     </ul>
     </div>
-    <h2>Favourite Destinations</h2>
-    <div class="settingsCategory">
-    <ul>
-        <li><p class="valueOfSetting">DestinationExample</p> </li>
-    </ul>
-    </div>
+
     <h2>Saved Searches</h2>
     <div class="settingsCategory">
     <ul>

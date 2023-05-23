@@ -19,7 +19,7 @@ public class LoginPageServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/LoginPage.jsp");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
 		requestDispatcher.forward(request, response);
 	}
 
@@ -30,22 +30,29 @@ public class LoginPageServlet extends HttpServlet {
 	 */
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		HttpSession session = request.getSession();
-		RequestDispatcher requestDispatcher = null;
+		RequestDispatcher requestDispatcher;
 
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-
-		UserBean user = new UserBean();
-		user.login(email, password);
-
-		if (user.getHasLogin()) {
-			session.setAttribute("userBean", user);
-			response.sendRedirect(request.getContextPath() + "/Homepage");
+		String buttonValue = request.getParameter("logOutButton");
+		if(buttonValue != null){
+			request.getSession().invalidate();
+			response.sendRedirect("login");
 		}
 		else {
-			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/LoginPage-input.jsp");
-			requestDispatcher.forward(request, response);
+			String email = request.getParameter("email");
+			String password = request.getParameter("password");
+
+			UserBean user = new UserBean();
+			user.login(email, password);
+
+			if (user.getHasLogin()) {
+				session.setAttribute("userBean", user);
+				response.sendRedirect(request.getContextPath() + "/Homepage");
+			} else {
+				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/LoginPage-input.jsp");
+				requestDispatcher.forward(request, response);
+			}
 		}
 	}
 

@@ -19,7 +19,6 @@ import static startUp.UserBean.getUsersName;
 
     public class UserTagsBean implements Serializable {
 
-    private String userGroupsID;
     private String userID;
     private String tagID;
     private String userTagsID;
@@ -39,7 +38,7 @@ import static startUp.UserBean.getUsersName;
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
 
-            statement.setString(1, this.userGroupsID);
+            statement.setString(1, this.userTagsID);
             statement.setString(2, this.userID);
             statement.setString(3, this.tagID);
 
