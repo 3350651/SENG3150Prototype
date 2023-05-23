@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @WebServlet(urlPatterns = { "/AccountSettings" })
@@ -17,7 +18,7 @@ public class AccountSettingsServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		RequestDispatcher requestDispatcher = null;
+		RequestDispatcher requestDispatcher;
 
 		// send the user to an unauthorised page if they try to access the homepage without being logged in.
 		if (session.getAttribute("userBean") == null){
@@ -28,7 +29,7 @@ public class AccountSettingsServlet extends HttpServlet {
 		// gets the user object and their role from the session object.
 		UserBean user = (UserBean) session.getAttribute("userBean");
 
-		requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+		requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 
 		requestDispatcher.forward(request, response);
 	}
@@ -45,7 +46,7 @@ public class AccountSettingsServlet extends HttpServlet {
 			// save to user.LinkedList<Tag>
 			//String tags = request.getParameter("tags");
 			//UserBean.editTags((String) request.getSession().getAttribute("editID"), tags);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("changePassword") != null){
@@ -54,7 +55,7 @@ public class AccountSettingsServlet extends HttpServlet {
 			UserBean.updateUserPassword(id, password);
 			user.setUserPassword(password);
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("editPersonalDetails") != null){
@@ -77,7 +78,7 @@ public class AccountSettingsServlet extends HttpServlet {
 			user.setDefaultTimeZone(defaultTimezone);
 			user.setDateOfBirth(dateOfBirth);
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("updateUIPreferences") != null){
@@ -88,29 +89,53 @@ public class AccountSettingsServlet extends HttpServlet {
 			user.setDefaultSearch(defaultSearch);
 			user.setThemePreference(themePreference);
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("addTags") != null){
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
 			String[] tagValues = request.getParameterValues("tags[]");
-			for (int i=0; i< tagValues.length; i++) {
-				UserBean.addToTagSet(id, tagValues[i]);
-				user.addTag(tagValues[i]);
+			for (String tagValue : tagValues) {
+				UserBean.addToTagSet(id, tagValue);
+				user.addTag(tagValue);
 			}
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("removeTags") != null){
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
 			String[] tagValues = request.getParameterValues("tags[]");
-			for (int i=0; i< tagValues.length; i++) {
-				UserBean.removeFromTagSet(id, tagValues[i]);
-				user.removeTag(tagValues[i]);
+			for (String tagValue : tagValues) {
+				UserBean.removeFromTagSet(id, tagValue);
+				user.removeTag(tagValue);
 			}
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("addBookmarkedFlight") != null){
+			String id = request.getParameter("userID"); // do this for all others as hidden form input
+			String airlineCode = request.getParameter("airlineCode");
+			String flightNumber = request.getParameter("flightNumber");
+			Timestamp departureTime = Timestamp.valueOf(request.getParameter("departureTime"));
+			UserBean.addToBookmarkedFlights(id, airlineCode, flightNumber, departureTime);
+			FlightBean f = new FlightBean(airlineCode, flightNumber, departureTime); // make this constructor search for the remainder of flight information upon instantiation
+			user.addBookmarkedFlight(f);
+			session.setAttribute("userBean", user);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("removeBookmarkedFlight") != null){
+			String id = request.getParameter("userID"); // do this for all others as hidden form input
+			String airlineCode = request.getParameter("airlineCode");
+			String flightNumber = request.getParameter("flightNumber");
+			Timestamp departureTime = Timestamp.valueOf(request.getParameter("departureTime"));// adds to database with foreign keys, creates PK
+			FlightBean f = new FlightBean(airlineCode, flightNumber, departureTime); // constructor searches for the remainder of flight information upon instantiation
+			user.removeBookmarkedFlight(f);
+			UserBean.removeFromBookmarkedFlights(id, airlineCode, flightNumber, departureTime);
+			session.setAttribute("userBean", user);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("goToUIPreferences") != null){
@@ -127,11 +152,15 @@ public class AccountSettingsServlet extends HttpServlet {
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("viewAccountSettings") != null){
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("goToModifyTags") != null){
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyTags.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("goToModifyBookmarkedFlights") != null){
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyBookmarkedFlights.jsp");
 			requestDispatcher.forward(request, response);
 		}
 	}

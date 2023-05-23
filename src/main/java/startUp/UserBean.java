@@ -2,11 +2,9 @@ package startUp;
 
 import java.io.Serializable;
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * The user Bean which contains all the details of the user.
@@ -33,8 +31,7 @@ public class UserBean implements Serializable {
 	private String questionnaireCompleted;
 	private LocalDate dateOfBirth;
 	private LinkedList<String> tagSet;
-
-	//private LinkedList<Flights> bookmarkedFlights
+	private LinkedList<FlightBean> bookmarkedFlights;
 	//private LinkedList<Searches> savedSearches
 	//private LinkedList<Groups> groups
 	//private LinkedList<Tags> tags
@@ -73,12 +70,11 @@ public class UserBean implements Serializable {
 		this.defaultTimeZone = defaultTimeZone;
 		this.themePreference = themePreference;
 		this.questionnaireCompleted = questionnaireCompleted;
-		this.tagSet = new LinkedList<String>();
+		this.tagSet = new LinkedList<>();
+		this.bookmarkedFlights = new LinkedList<>();
 	}
 
 	public UserBean(String fname, String lname, String email, String userPassword, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, String questionnaireCompleted, LocalDate dateOfBirth) {
-		this.hasLogin = hasLogin;
-		this.userID = userID;
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
@@ -92,7 +88,8 @@ public class UserBean implements Serializable {
 		this.themePreference = themePreference;
 		this.questionnaireCompleted = questionnaireCompleted;
 		this.dateOfBirth = dateOfBirth;
-		this.tagSet = new LinkedList<String>();
+		this.tagSet = new LinkedList<>();
+		this.bookmarkedFlights = new LinkedList<>();
 	}
 
 	public Boolean isHasLogin() {
@@ -243,6 +240,46 @@ public class UserBean implements Serializable {
 		this.tagSet = tagSet;
 	}
 
+	public void setHasLogin(boolean hasLogin) {
+		this.hasLogin = hasLogin;
+	}
+
+	public LinkedList<FlightBean> getBookmarkedFlights() {
+		return bookmarkedFlights;
+	}
+
+	public void setBookmarkedFlights(LinkedList<FlightBean> bookmarkedFlights) {
+		this.bookmarkedFlights = bookmarkedFlights;
+	}
+
+	public void addBookmarkedFlight(FlightBean flight) {
+		boolean tagExists = false;
+		for (int i=0; i<getBookmarkedFlights().size(); i++) {
+			if (getBookmarkedFlights().get(i).equals(flight)) {
+				tagExists = true;
+				break;
+			}
+		}
+		if (!tagExists) {
+			getBookmarkedFlights().add(flight);
+		}
+	}
+
+	public void removeBookmarkedFlight(FlightBean flight){
+		String airlineCodeToAdd = flight.getAirline();
+		String flightNumberToAdd = flight.getFlightName();
+		Timestamp departureTimeToAdd = flight.getFlightTime();
+		for (int i =0; i<getBookmarkedFlights().size(); i++){
+			String existingAirlineCode = getBookmarkedFlights().get(i).getAirline();
+			String existingFlightNumber = getBookmarkedFlights().get(i).getFlightName();
+			Timestamp existingDepartureTime = getBookmarkedFlights().get(i).getFlightTime();
+			if (airlineCodeToAdd.equals(existingAirlineCode) && flightNumberToAdd.equals(existingFlightNumber) && departureTimeToAdd.equals(existingDepartureTime)){
+				getBookmarkedFlights().remove(i);
+				break;
+			}
+		}
+	}
+
 	public void addTag(String tag) {
 		boolean tagExists = false;
 		for (String s : getTagSet()) {
@@ -260,10 +297,9 @@ public class UserBean implements Serializable {
 		for (int i =0; i<getTagSet().size(); i++){
 			if (getTagSet().get(i).equals(tag)){
 				getTagSet().remove(i);
+				break;
 			}
 		}
-
-		getTagSet().remove(tag);
 	}
 
 	/**
@@ -298,7 +334,7 @@ public class UserBean implements Serializable {
 			connection.close();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
+			System.err.println(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
@@ -334,8 +370,10 @@ public class UserBean implements Serializable {
 				this.setThemePreference(result.getString("themePreference"));
 				this.setQuestionnaireCompleted(result.getString("questionnaireCompleted"));
 				this.setDateOfBirth(LocalDate.parse(result.getString("dateOfBirth")));
-				this.setTagSet(new LinkedList<String>());
+				this.setTagSet(new LinkedList<>());
 				loadTags(result.getString("userID"));
+				this.setBookmarkedFlights(new LinkedList<>());
+				loadBookmarkedFlights(result.getString("userID"));
 			}
 			
 			result.close();
@@ -344,7 +382,7 @@ public class UserBean implements Serializable {
 		}
 		catch (SQLException e) {
 			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
+			System.err.println(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
@@ -369,10 +407,43 @@ public class UserBean implements Serializable {
 		}
 		catch (SQLException e) {
 			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
+			System.err.println(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
+	public void loadBookmarkedFlights(String userID) {
+		try {
+			String query = "SELECT *\n" +
+					"FROM Flights\n" +
+					"INNER JOIN USERBOOKMARKEDFLIGHTS ON Flights.AirlineCode = USERBOOKMARKEDFLIGHTS.AirlineCode\n" +
+					"AND Flights.FlightNumber = USERBOOKMARKEDFLIGHTS.FlightNumber AND Flights.DepartureTime = USERBOOKMARKEDFLIGHTS.DepartureTime\n" +
+					"WHERE USERBOOKMARKEDFLIGHTS.userID = ?;";
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, userID);
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				String airlineCodeToAdd = result.getString("AirlineCode");
+				String flightNumberToAdd = result.getString("FlightNumber");
+				String departureCode = result.getString("DepartureCode");
+				if (result.getString("FlightNumber") != null){
+					String stopOverCode = result.getString("StopOverCode");
+				}
+				Timestamp departureTimeToAdd = result.getTimestamp("DepartureTime");
+				FlightBean flightToAdd = new FlightBean(airlineCodeToAdd, flightNumberToAdd, departureTimeToAdd);
+				this.addBookmarkedFlight(flightToAdd);
+			}
+
+			result.close();
+			statement.close();
+			connection.close();
+		}
+		catch (SQLException e) {
+			System.err.println(e.getMessage());
+			System.err.println(Arrays.toString(e.getStackTrace()));
+		}
+	}
 
 	/**
 	 * Checks if the argument username exists in the database.
@@ -398,7 +469,7 @@ public class UserBean implements Serializable {
 			connection.close();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
+			System.err.println(Arrays.toString(e.getStackTrace()));
 		}
 
 		return isExist;
@@ -418,7 +489,7 @@ public class UserBean implements Serializable {
 			connection.close();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
+			System.err.println(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
@@ -523,6 +594,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
+			assert statement != null;
 			statement.close();
 			connection.close();
 		} catch (Exception e){
@@ -543,6 +615,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
+			assert statement != null;
 			statement.close();
 			connection.close();
 		} catch (Exception e){
@@ -617,7 +690,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
-			if (!dateOfBirth.equals("")){
+			if (dateOfBirth != null){
 				String query = "UPDATE USERS SET [dateOfBirth] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -626,6 +699,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
+			assert statement != null;
 			statement.close();
 			connection.close();
 		} catch (Exception e){
@@ -681,7 +755,7 @@ public class UserBean implements Serializable {
 					}
 				}
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 
 		}
@@ -713,6 +787,63 @@ public class UserBean implements Serializable {
 		}
 	}
 
+	public static void addToBookmarkedFlights(String userID, String airlineCode, String flightNumber, Timestamp departureTime) {
+		String query = "INSERT INTO USERBOOKMARKEDFLIGHTS VALUES (?, ?, ?, ?, ?)";
+		String tagID = "-1"; // initialize tagID to an invalid value
+
+		try (Connection connection = ConfigBean.getConnection();
+			 PreparedStatement checkFlight = connection.prepareStatement("SELECT * FROM USERBOOKMARKEDFLIGHTS WHERE userID = ? AND airlineCode = ? AND flightNumber = ? AND departureTime = ?");
+			 PreparedStatement insertStatement = connection.prepareStatement(query)) {
+
+			checkFlight.setString(1, userID);
+			checkFlight.setString(2, airlineCode);
+			checkFlight.setString(3, flightNumber);
+			checkFlight.setTimestamp(4, departureTime);
+
+			try (ResultSet resultSet1 = checkFlight.executeQuery()) {
+				if (resultSet1.next()) {
+					// Flight already exists
+					return;
+				}
+			}
+
+			// Generate userBookmarkedFlightID
+			Random random = new Random();
+			String userBookmarkedFlightID = String.format("%08d", random.nextInt(100000000));
+
+			insertStatement.setString(1, userBookmarkedFlightID);
+			insertStatement.setString(2, userID);
+			insertStatement.setString(3, airlineCode);
+			insertStatement.setString(4, flightNumber);
+			insertStatement.setTimestamp(5, departureTime);
+
+			insertStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			// Handle or log the exception
+			e.printStackTrace();
+		}
+	}
+
+	public static void removeFromBookmarkedFlights(String userID, String airlineCode, String flightNumber, Timestamp departureTime) {
+		String query = "DELETE FROM USERBOOKMARKEDFLIGHTS WHERE userID = ? AND airlineCode = ? AND flightNumber = ? AND departureTime = ?";
+
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, userID);
+			statement.setString(2, airlineCode);
+			statement.setString(3, flightNumber);
+			statement.setTimestamp(4, departureTime);
+			statement.executeUpdate();
+			statement.close();
+
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void updateUIPreferences(String id, String defaultSearch, String themePreference){
 		try {
 			Connection connection = ConfigBean.getConnection();
@@ -734,6 +865,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
+			assert statement != null;
 			statement.close();
 			connection.close();
 		} catch (Exception e){
@@ -760,7 +892,7 @@ public class UserBean implements Serializable {
 		}
 		catch(SQLException e){
 			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
+			System.err.println(Arrays.toString(e.getStackTrace()));
 		}
 
 		return groupIDs;
@@ -784,7 +916,7 @@ public class UserBean implements Serializable {
 			connection.close();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
+			System.err.println(Arrays.toString(e.getStackTrace()));
 		}
 
 		return userID;
@@ -809,7 +941,7 @@ public class UserBean implements Serializable {
 			connection.close();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
+			System.err.println(Arrays.toString(e.getStackTrace()));
 		}
 		return usersName;
 	}
@@ -833,7 +965,7 @@ public class UserBean implements Serializable {
 		}
 		catch(SQLException e){
 			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
+			System.err.println(Arrays.toString(e.getStackTrace()));
 		}
 
 		return tagSet;

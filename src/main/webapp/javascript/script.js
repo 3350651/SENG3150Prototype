@@ -361,7 +361,7 @@ function modifyPassword(usersActualPassword){
     return false;
 }
 
-var myElement = document.getElementById('checkbox');
+var myElement = document.getElementById('flexibleDate');
 if (myElement) {
 
     var checkbox = document.getElementById("flexibleDate");
@@ -392,5 +392,29 @@ if (myElement2) {
         weeklyOrBiWeekly.style.display = "none";
       }
     });
+}
+
+//var loginCheckBox = document.getElementById('loginButton');
+//    if (loginCheckBox) {
+//        console.log("loginCheckBoxChecked");
+//        var loginForm = document.getElementById("login");
+//
+//        loginCheckBox.addEventListener('change', function() {
+//            if (this.checked) {
+//                loginForm.style.display = "block";
+//            } else {
+//                loginForm.style.display = "none";
+//            }
+//        });
+//    }
+
+var logInButton = document.querySelector('.logInToAccount button');
+var loginForm = document.getElementById('login');
+
+if (logInButton && loginForm) {
+  logInButton.addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent form submission if needed
+    loginForm.style.display = 'block';
+  });
 }
 
