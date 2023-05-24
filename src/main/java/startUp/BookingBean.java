@@ -18,8 +18,8 @@ public class BookingBean implements Serializable {
     private LinkedList<PassengerBean> passengers;
     private float totalAmount;
 
-    //constructors
-    public BookingBean(String newBookingUserId, FlightBean newDepartureFlight, float newTotalAmount){
+    // constructors
+    public BookingBean(String newBookingUserId, FlightBean newDepartureFlight, float newTotalAmount) {
         Random random = new Random();
         bookingId = String.format("%08d", random.nextInt(100000000));
         bookingUserId = newBookingUserId;
@@ -29,7 +29,9 @@ public class BookingBean implements Serializable {
         tickets = null;
         passengers = null;
     }
-    public BookingBean(String newBookingUserId, FlightBean newDepartureFlight, FlightBean newReturnFlight, float newTotalAmount){
+
+    public BookingBean(String newBookingUserId, FlightBean newDepartureFlight, FlightBean newReturnFlight,
+            float newTotalAmount) {
         Random random = new Random();
         bookingId = String.format("%08d", random.nextInt(100000000));
         bookingUserId = newBookingUserId;
@@ -40,7 +42,7 @@ public class BookingBean implements Serializable {
         passengers = null;
     }
 
-    public BookingBean(String newBookingUserId,  FlightBean newDepartureFlight, FlightBean newReturnFlight){
+    public BookingBean(String newBookingUserId, FlightBean newDepartureFlight, FlightBean newReturnFlight) {
         Random random = new Random();
         bookingId = String.format("%08d", random.nextInt(100000000));
         bookingUserId = newBookingUserId;
@@ -50,7 +52,7 @@ public class BookingBean implements Serializable {
         passengers = null;
     }
 
-    //getters and setters
+    // getters and setters
 
     public String getBookingId() {
         return bookingId;
@@ -108,13 +110,13 @@ public class BookingBean implements Serializable {
         this.totalAmount = totalAmount;
     }
 
-
-    //add booking to database
-    //TODO: Add ability to add with return flight if not null.
-    public void addBooking(){
-        try{
-            String query = "INSERT INTO dbo.BOOKINGS (BookingId, BookingUserId, DepartureAirlineCode, DepartureFlightNumber, DepartureTime, Progress)\n" +
-                            "VALUES(?,?,?,?,?,?);";
+    // add booking to database
+    // TODO: Add ability to add with return flight if not null.
+    public void addBooking() {
+        try {
+            String query = "INSERT INTO dbo.BOOKINGS (BookingId, BookingUserId, DepartureAirlineCode, DepartureFlightNumber, DepartureTime, Progress)\n"
+                    +
+                    "VALUES(?,?,?,?,?,?);";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, this.bookingId);
@@ -124,21 +126,37 @@ public class BookingBean implements Serializable {
             statement.setString(5, this.departureFlight.getFlightTime().toString());
             statement.setBoolean(6, true);
             statement.execute();
+            statement.close();
+            connection.close();
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+
+    }
+
+    public void finalise() {
+        try {
+            String query = "UPDATE BOOKINGS SET Progress = 0 WHERE BookingId = ?";
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, this.bookingId);
+            statement.execute();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
         }
     }
 
+    // save Booking Progress
 
-    //save Booking Progress
+    // get booking
 
-    //get booking
+    // update booking
 
-    //update booking
-
-    //remove booking
-
+    // remove booking
 
 }

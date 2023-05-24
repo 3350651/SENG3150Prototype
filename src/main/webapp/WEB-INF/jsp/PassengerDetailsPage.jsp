@@ -1,10 +1,12 @@
+<%@ page import="startUp.FlightBean" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>startUp.FlightDetailsPage</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <title>Passeger Details</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/passengerDetails.css">
 </head>
 
 <body>
@@ -24,157 +26,172 @@
                 <div class="innerProgress" id="progress" style="width:66%">66%</div>
             </div>
         </header>
-        <form name="test" action="PassengersToReview" method="POST">
-            <fieldset class="filled">
-                <h3>Passenger 1</h3>
-                <h3>Personal Details</h3>
-                <label for="title">Title: </label>
-                <select name="title" id="title">
-                    <option value="">Please Select---</option>
-                    <option value="Mr">Mr</option>
-                    <option value="Mrs">Mrs</option>
-                    <option value="Ms">Ms</option>
-                    <option value="">Prefer not to say</option>
-                </select>
+        <form name="test" action="createBooking" method="POST">
+            <%int passengers=(int) request.getAttribute("passengers");%>
+                <input type="hidden" name="options" value="true">
+                <input type="hidden" name="passengers" value=<%=passengers%>>
+                <%for(int i=1; i<=passengers; i++){ %>
 
-                <label for="fName">Given Name(s): </label>
-                <input type="text" name="fName" id="fName" />
+                    <fieldset class="filled">
+                        <h3>Passenger <%=i%>
+                        </h3>
+                        <h3>Personal Details</h3>
+                        <label for=<%="title" +i%>>Title: </label>
+                        <select name=<%="title" +i%> id=<%="title"+i%>>
+                                <option value="">Please Select---</option>
+                                <option value="Mr">Mr</option>
+                                <option value="Mrs">Mrs</option>
+                                <option value="Ms">Ms</option>
+                                <option value="">Prefer not to say</option>
+                        </select>
 
-                <label for="lName">Family Name: </label>
-                <input type="text" name="lName" id="lName" />
-                <br />
-                <label for="email">Email: </label>
-                <input type="email" name="email" id="email" />
-                <br />
-                <label for="mobile">Mobile Number: </label>
-                <input type="text" name="mobile" id="mobile" />
-                <br />
+                        <label for=<%="fName" +i%>>Given Name(s): </label>
+                        <input type="text" name=<%="fName" +i%> id=<%="fName"+i%> />
 
-                <h3>Ticket Details</h3>
-                <div>
-                    <h4>Select Class:</h4>
+                            <label for=<%="lName" +i%>>Family Name: </label>
+                            <input type="text" name=<%="lName" +i%> id=<%="lName"+i%> />
+                                <br />
+                                <label for=<%="email" +i%>>Email: </label>
+                                <input type="email" name=<%="email"+i%> id=<%="email"+i%> />
+                                    <br />
+                                    <label for=<%="mobile" +i%>>Mobile Number: </label>
+                                    <input type="text" name=<%="mobile" +i%> id=<%="mobile"+i%> />
+                                        <br />
+                                        <label for=<%="dob" +i%>>Date of Birth: </label>
+                                        <input type="date" name=<%="dob" +i%> id=<%="dob"+i%> />
+                                            <br />
 
-                    <div class="radioButton">
-                        <label for="first">
-                            <input type="radio" name="ticketClass" id="first" value="first" />
-                            First Class: <br />$1000</label>
-                    </div>
+                                            <h3>Ticket Details</h3>
+                                            <div>
+                                                <h4>Select Class:</h4>
 
-                    <div class="radioButton">
-                        <label for="business">
-                            <input type="radio" name="ticketClass" id="business" value="business" />
-                            Business Class: <br />$800</label>
-                    </div>
+                                                <div class="radioButton">
 
-                    <div class="radioButton">
-                        <label for="premEco">
-                            <input type="radio" name="ticketClass" id="premEco" value="premEco" />
-                            Premium Economy Class: <br />$600</label>
-                    </div>
+                                                    <input type="radio" name=<%="ticketClass" +i%> id=<%="first"+i%>
+                                                        value="FIR" />
+                                                        <label for=<%="first" +i%>>First Class: <br />$1000</label>
+                                                </div>
 
-                    <div class="radioButton">
-                        <label for="eco">
-                            <input type="radio" name="ticketClass" id="eco" value="eco" />
-                            Economy Class:<br />$500</label>
-                    </div>
-                </div>
-                <h4>Select Package:</h4>
+                                                <div class="radioButton">
 
-                <div class="radioButton">
-                    <label for="standard">
-                        <input type="radio" name="ticketType" id="standard" value="standard" />
-                        Standard: <br />+$0</label>
-                </div>
+                                                    <input type="radio" name=<%="ticketClass" +i%> id=<%="business"+i%>
+                                                        value="BUS" />
+                                                        <label for=<%="business" +i%>>Business Class: <br />$800</label>
+                                                </div>
 
-                <div class="radioButton">
-                    <label for="premium">
-                        <input type="radio" name="ticketType" id="premium" value="premium" />
-                        Premium: <br />+$50</label>
-                </div>
+                                                <div class="radioButton">
 
-                <div class="radioButton">
-                    <label for="platinum">
-                        <input type="radio" name="ticketType" id="platinum" value="platinum" />
-                        Platinum: <br />+$100</label>
-                </div>
+                                                    <input type="radio" name=<%="ticketClass" +i%> id=<%="premEco"+i%>
+                                                        value="PME" />
+                                                        <label for=<%="premEco" +i%>>Premium Economy Class:
+                                                            <br />$600</label>
+                                                </div>
 
-            </fieldset>
-            <br />
-            <fieldset class="filled">
-                <h3>Passenger 2</h3>
-                <h3>Personal Details</h3>
-                <label for="title2">Title: </label>
-                <select name="title" id="title2">
-                    <option value="">Please Select---</option>
-                    <option value="Mr">Mr</option>
-                    <option value="Mrs">Mrs</option>
-                    <option value="Ms">Ms</option>
-                    <option value="">Prefer not to say</option>
-                </select>
+                                                <div class="radioButton">
 
-                <label for="fName2">Given Name(s): </label>
-                <input type="text" name="fName" id="fName2" />
+                                                    <input type="radio" name=<%="ticketClass" +i%> id=<%="eco"+i%>
+                                                        value="ECO"/>
+                                                        <label for=<%="eco" +i%>>Economy Class:<br />$500</label>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <br />
+                                            <h4>Select Package:</h4>
 
-                <label for="lName2">Family Name: </label>
-                <input type="text" name="lName" id="lName2" />
-                <br />
-                <label for="email2">Email: </label>
-                <input type="email" name="email" id="email2" />
-                <br />
-                <label for="mobile2">Mobile Number: </label>
-                <input type="text" name="mobile" id="mobile2" />
-                <br />
+                                            <div class="radioButton">
 
-                <h3>Ticket Details</h3>
-                <div>
-                    <h4>Select Class:</h4>
+                                                <input type="radio" name=<%="ticketType" +i%> id=<%="standard"+i%>
+                                                    value="D" />
+                                                    <label for=<%="standard" +i%>>Standard: <br />+$0</label>
+                                            </div>
 
-                    <div class="radioButton">
-                        <label for="first2">
-                            <input type="radio" name="ticketClass" id="first2" value="first" />
-                            First Class: <br />$1000</label>
-                    </div>
+                                            <div class="radioButton">
 
-                    <div class="radioButton">
-                        <label for="business2">
-                            <input type="radio" name="ticketClass" id="business2" value="business" />
-                            Business Class: <br />$800</label>
-                    </div>
+                                                <input type="radio" name=<%="ticketType" +i%> id=<%="premium"+i%>
+                                                    value="E" />
+                                                    <label for=<%="premium" +i%>>Premium: <br />+$50</label>
+                                            </div>
 
-                    <div class="radioButton">
-                        <label for="premEco2">
-                            <input type="radio" name="ticketClass" id="premEco2" value="premEco" />
-                            Premium Economy Class: <br />$600</label>
-                    </div>
+                                            <div class="radioButton">
 
-                    <div class="radioButton">
-                        <label for="eco2">
-                            <input type="radio" name="ticketClass" id="eco2" value="eco" />
-                            Economy Class:<br />$500</label>
-                    </div>
-                </div>
-                <h4>Select Package:</h4>
+                                                <input type="radio" name=<%="ticketType" +i%> id=<%="platinum"+i%>
+                                                    value="G" />
+                                                    <label for=<%="platinum" +i%>>Platinum: <br />+$100</label>
+                                            </div>
 
-                <div class="radioButton">
-                    <label for="standard2">
-                        <input type="radio" name="ticketType" id="standard2" value="standard" />
-                        Standard: <br />+$0</label>
-                </div>
+                                            <%FlightBean returnFlight=(FlightBean) request.getAttribute("returnFlight");
+                                                if(returnFlight !=null){%>
+                                                <h4>Select Return Class:</h4>
 
-                <div class="radioButton">
-                    <label for="premium2">
-                        <input type="radio" name="ticketType" id="premium2" value="premium" />
-                        Premium: <br />+$50</label>
-                </div>
+                                                <div class="radioButton">
 
-                <div class="radioButton">
-                    <label for="platinum2">
-                        <input type="radio" name="ticketType" id="platinum2" value="platinum" />
-                        Platinum: <br />+$100</label>
-                </div>
+                                                    <input type="radio" name=<%="ticketClassReturn" +i%> id=
+                                                    <%="firstReturn"+i%>
+                                                        value="FIR" />
+                                                        <label for=<%="first" +i%>>First Class: <br />$1000</label>
+                                                </div>
 
-            </fieldset>
-            <button class="button" id="submit" type="submit">Submit</button>
+                                                <div class="radioButton">
+
+                                                    <input type="radio" name=<%="ticketClassReturn" +i%> id=
+                                                    <%="businessReturnReturn"+i%>
+                                                        value="BUS" />
+                                                        <label for=<%="businessReturn" +i%>>Business Class:
+                                                            <br />$800</label>
+                                                </div>
+
+                                                <div class="radioButton">
+
+                                                    <input type="radio" name=<%="ticketClassReturn" +i%> id=
+                                                    <%="premEcoReturn"+i%>
+                                                        value="PME />
+                                                        <label for=<%="premEcoReturn" +i%>>Premium Economy Class:
+                                                            <br />$600</label>
+                                                </div>
+
+                                                <div class="radioButton">
+
+                                                    <input type="radio" name=<%="ticketClassReturn" +i%> id=
+                                                    <%="ecoReturn"+i%>
+                                                        value="ECO"/>
+                                                        <label for=<%="ecoReturn" +i%>>Economy Class:<br />$500</label>
+                                                </div>
+                                                </div>
+                                                <br />
+                                                <br />
+                                                <h4>Select Return Package:</h4>
+
+                                                <div class="radioButton">
+
+                                                    <input type="radio" name=<%="ticketTypeReturn" +i%> id=
+                                                    <%="standardReturn"+i%>
+                                                        value="D" />
+                                                        <label for=<%="standardReturn" +i%>>Standard: <br />+$0</label>
+                                                </div>
+
+                                                <div class="radioButton">
+
+                                                    <input type="radio" name=<%="ticketTypeReturn" +i%> id=
+                                                    <%="premiumReturn"+i%>
+                                                        value="E" />
+                                                        <label for=<%="premiumReturn" +i%>>Premium: <br />+$50</label>
+                                                </div>
+
+                                                <div class="radioButton">
+
+                                                    <input type="radio" name=<%="ticketTypeReturn" +i%> id=
+                                                    <%="platinumReturn"+i%>
+                                                        value="G" />
+                                                        <label for=<%="platinumReturn" +i%>>Platinum:
+                                                            <br />+$100</label>
+                                                </div>
+                                                <%}%>
+
+                    </fieldset>
+                    <br />
+                    <%}%>
+
+                        <button class="button" id="submit" type="submit">Submit</button>
         </form>
     </main>
 </body>

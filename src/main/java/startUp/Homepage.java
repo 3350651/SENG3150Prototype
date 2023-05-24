@@ -33,7 +33,7 @@ public class Homepage extends HttpServlet {
 
 		// send the user to an unauthorised page if they try to access the homepage without being logged in.
 		if (session.getAttribute("userBean") == null){
-			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
+			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		else {
@@ -44,10 +44,10 @@ public class Homepage extends HttpServlet {
 			String defaultSearch = ((UserBean) session.getAttribute("userBean")).getDefaultSearch();
 
 			if (defaultSearch.equals("Simple")) {
-				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
+				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
 				requestDispatcher.forward(request, response);
 			} else if (defaultSearch.equals("Recommend")) {
-				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Mock-Rec-Home.jsp");
+				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
 				requestDispatcher.forward(request, response);
 			}
 

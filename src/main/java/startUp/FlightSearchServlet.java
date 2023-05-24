@@ -21,7 +21,7 @@ public class FlightSearchServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-
+        //simple search flow
         SearchBean search = new SearchBean(null, "Atlanta", "Rio De Janeiro", null, false, 0, 0, 0);
         HttpSession session = req.getSession();
         session.setAttribute("results", search);
