@@ -46,7 +46,7 @@ public class Homepage extends HttpServlet {
 			requestDispatcher.forward(request, response);
 		}
 		else if(defaultSearch.equals("Recommend")){
-			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Mock-Rec-Home.jsp");
+			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/recHome.jsp");
 			requestDispatcher.forward(request, response);
 		}
 

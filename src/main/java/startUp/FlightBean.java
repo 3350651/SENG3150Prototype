@@ -5,7 +5,7 @@ import java.sql.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-public class FlightBean implements Serializable {
+public class  FlightBean implements Serializable {
 
     private String airline;
     private String airlineName;
@@ -34,6 +34,16 @@ public class FlightBean implements Serializable {
         stopOver = newStopOver;
         destination = newDestination;
         seatAvailability = new LinkedList<>();
+    }
+
+    public FlightBean(String aline, String fname, DestinationBean dep, DestinationBean sover, DestinationBean arr, Timestamp ftime)
+    {
+        airline = aline;
+        flightName = fname;
+        departure = dep;
+        stopOver = sover;
+        destination = arr;
+        flightTime = ftime;
     }
 
     // FlightBean constructor with primary key elements of Flights table
