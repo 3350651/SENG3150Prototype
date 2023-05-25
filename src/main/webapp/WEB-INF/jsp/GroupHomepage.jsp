@@ -100,9 +100,9 @@ Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
                 </fieldset>
             </div>
 
-            <div class="chatContainer">
-                <form name="chat" id="chat" method="POST" action="GroupHomepage">
-                 <button type="submit" name="getChat" value="getChat">Go to Group Chat</button>
+            <div class="groupFaveList">
+                <form name="groupFaveList" id="groupFaveList" method="POST" action="GroupHomepage">
+                 <button type="submit" name="getGroupFaveList" value="getGroupFaveList">Go to Group Favourite List</button>
                 </form>
             </div>
 

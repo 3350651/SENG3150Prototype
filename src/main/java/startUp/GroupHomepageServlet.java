@@ -1,6 +1,7 @@
 package startUp;
 
 import java.io.*;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import javax.servlet.*;
@@ -9,6 +10,7 @@ import javax.servlet.http.*;
 
 import static startUp.GroupBean.getGroup;
 import static startUp.GroupBean.getGroups;
+import static startUp.GroupFaveFlightBean.*;
 import static startUp.PoolDepositBean.hasMadeDeposit;
 import static startUp.UserGroupsBean.isAdmin;
 
@@ -28,6 +30,15 @@ public class GroupHomepageServlet extends HttpServlet {
             LinkedList<GroupBean> groups = getGroups(groupIDs);
             session.setAttribute("groups", groups);
 
+            if(request.getParameter("addToGroupFaveList") != null){
+                //Add to Group Fave List from Add Page.
+                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToGroupFaveList.jsp");
+                requestDispatcher.forward(request, response);
+            }
+
+
+            }
+
 
             if (request.getParameter("goGroup") != null) {
                 String groupName = request.getParameter("groupName");
@@ -40,18 +51,12 @@ public class GroupHomepageServlet extends HttpServlet {
                 requestDispatcher.forward(request, response);
 
             }
-            else if(request.getParameter("groupHomepage") != null){
+            else if(request.getParameter("groupHomepage") != null) {
                 requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
             }
-            else {
-                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepageWithGroups.jsp");
-            }
-        }
         else{
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepage.jsp");
         }
-
-
         requestDispatcher.forward(request, response);
     }
 
@@ -66,25 +71,68 @@ public class GroupHomepageServlet extends HttpServlet {
         GroupBean group = (GroupBean) session.getAttribute("group");
         UserBean user = (UserBean) session.getAttribute("userBean");
 
-        if(request.getParameter("getChat") != null || request.getParameter("newMessage") != null){
-            String chatID = group.getChatID();
+        if(request.getParameter("addToGroupFaveList") != null){
 
-            if(request.getParameter("newMessage") != null){
-                String newMessage = request.getParameter("newMessage");
-                MessageBean message = new MessageBean(chatID, newMessage, user.getUserID());
+            String groupName = request.getParameter("groupName");
+            group = getGroup(groupName);
+
+            boolean alreadyAdded = isInGroupFaveList(group.getGroupID());
+
+            //if already in the group list
+            if(alreadyAdded){
+                session.setAttribute("message", "Looks like that flight is already in your groups Favourite List!");
+                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToGroupFaveListMessage.jsp");
+                requestDispatcher.forward(request, response);
+            }
+            else {
+                String flightDetails = (String) session.getAttribute("flightDetails");
+                String[] details = flightDetails.split(",", 0);
+                //Create the GroupFaveFlightBean
+                GroupFaveFlightBean flight = new GroupFaveFlightBean(details[0], details[1], Timestamp.valueOf(details[2]), group.getGroupID());
+
+                session.setAttribute("message", "Success! Flight was successfully added to your groups Favourite List!");
+                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToGroupFaveListMessage.jsp");
+                requestDispatcher.forward(request, response);
             }
 
-            LinkedList<MessageBean> chatMessages = group.getChat(chatID);
+            //it has not been added to group list
 
-            if(!chatMessages.isEmpty()) {
-                session.setAttribute("chatMessages", chatMessages);
-                session.setAttribute("messagesExist", true);
-            }
-            else{
-                session.setAttribute("messagesExist", false);
-            }
-            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Chat.jsp");
+            //set the group fave list
+
+
+
         }
+        else if(request.getParameter("doNotAddFaveFlight") != null){
+            //go back to the flights details page.
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        //user has been presented with a message after attempting to add a flight to a Group Favourite List
+        else if(request.getParameter("addFlightContinue") != null){
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+//      GROUP CHAT FUNCTIONALITY
+//        if(request.getParameter("getChat") != null || request.getParameter("newMessage") != null){
+//            String chatID = group.getChatID();
+//
+//            if(request.getParameter("newMessage") != null){
+//                String newMessage = request.getParameter("newMessage");
+//                MessageBean message = new MessageBean(chatID, newMessage, user.getUserID());
+//            }
+//
+//            LinkedList<MessageBean> chatMessages = group.getChat(chatID);
+//
+//            if(!chatMessages.isEmpty()) {
+//                session.setAttribute("chatMessages", chatMessages);
+//                session.setAttribute("messagesExist", true);
+//            }
+//            else{
+//                session.setAttribute("messagesExist", false);
+//            }
+//            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Chat.jsp");
+//        }
 
         if(request.getParameter("cancel") != null && request.getParameter("toPool") != null){
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Pool.jsp");
@@ -93,6 +141,17 @@ public class GroupHomepageServlet extends HttpServlet {
 
         if(request.getParameter("cancel") != null){
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        if(request.getParameter("getGroupFaveList") != null){
+            //get all the Flights that are added to the group Fave list.
+            LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(group.getGroupID());
+            LinkedList<String> destinations = getDestinations(faveFlights);
+            session.setAttribute("faveFlights", faveFlights);
+            session.setAttribute("destinations", destinations);
+            session.setAttribute("group", group);
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupFavouriteList.jsp");
             requestDispatcher.forward(request, response);
         }
 

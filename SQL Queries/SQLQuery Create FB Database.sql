@@ -678,7 +678,9 @@ VALUES
 
 	INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
 VALUES
-	('AA','AA1735','ATL','MIA','GIG','2014-09-23 09:50:00','2014-09-23 11:50:00','2014-09-23 23:20:00','2014-09-24 09:00:00','A380',120,520);
+	('AA','AA1735','ATL','MIA','GIG','2014-09-23 09:50:00','2014-09-23 11:50:00','2014-09-23 23:20:00','2014-09-24 09:00:00','A380',120,520),
+	('QF','QF2','LAX',NULL,'YYZ','2015-12-22 11:55:00',NULL,NULL,'2015-12-22 19:35:00','767-400',280,NULL),
+	('JQ','JQ82','DRW',NULL,'BNE','2015-06-11 06:20:00',NULL,NULL,'2015-06-11 10:40:00','A340-500',220,NULL);
 
   INSERT INTO Price (AirlineCode, FlightNumber, ClassCode, TicketCode, StartDate, EndDate, Price, PriceLeg1, PriceLeg2)
 VALUES

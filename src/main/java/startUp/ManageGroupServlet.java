@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 
 import static startUp.ChatBean.deleteChat;
 import static startUp.GroupBean.*;
+import static startUp.GroupFaveFlightBean.deleteGroupFaveFlights;
 import static startUp.MessageBean.deleteMessages;
 import static startUp.PoolBean.deletePool;
 import static startUp.PoolDepositBean.hasMadeDeposit;
@@ -144,9 +145,13 @@ public class ManageGroupServlet extends HttpServlet {
                 //could make this nicer by putting all deletes in the deleteGroup call.
                 deleteUserGroups(groupID);
                 deleteGroup(groupID);
+                deleteGroupFaveFlights(groupID);
+                //NEED TO DELETE CHAT AND MESSAGES.
+                //maybe need to get a list of the flights in the list and instantiate.
                 //delete messages.
-                deleteMessages(group.getChatID());
-                deleteChat(group.getChatID());
+//                deleteMessages(group.getChatID());
+//                deleteChat(group.getChatID());
+                //NEED TO DELETE MEMBERFLIGHTVOTE.
                 deletePool(group.getPoolID());
                 session.setAttribute("message", "Success! The group was deleted.");
                 session.setAttribute("goHome", true);

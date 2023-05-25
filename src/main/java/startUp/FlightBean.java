@@ -205,4 +205,6 @@ public class FlightBean implements Serializable {
         seatAvailability = AvailabilityBean.getAvailability(this.airline, this.flightName, this.flightTime);
     }
 
+
+
 }

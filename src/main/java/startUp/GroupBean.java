@@ -19,7 +19,6 @@ public class GroupBean implements Serializable {
 
     private String groupID;
     private String groupName;
-    private String chatID;
     private String poolID;
 
     /*
@@ -35,8 +34,6 @@ public class GroupBean implements Serializable {
         Random random = new Random();
         this.groupID = String.format("%08d", random.nextInt(100000000));
         this.groupName = groupName;
-        ChatBean chat = new ChatBean();
-        this.chatID = chat.getChatID();
         PoolBean pool = new PoolBean();
         //TEMPORARY POOL AMOUNT BEFORE ENTIRE FUNCTIONALITY.
         this.poolID = pool.getPoolID();
@@ -49,23 +46,21 @@ public class GroupBean implements Serializable {
     }
 
     //Already existing GroupBean
-    public GroupBean(String id, String name, String chatID, String poolID){
+    public GroupBean(String id, String name, String poolID){
         this.groupID = id;
         this.groupName = name;
-        this.chatID = chatID;
         this.poolID = poolID;
     }
 
     public void addGroupToDB(){
-        String query = "INSERT INTO GROUPS VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO GROUPS VALUES (?, ?, ?)";
         try {
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setString(1, this.groupID);
             statement.setString(2, this.groupName);
-            statement.setString(3, this.chatID);
-            statement.setString(4, this.poolID);
+            statement.setString(3, this.poolID);
 
             statement.executeUpdate();
             statement.close();
@@ -100,10 +95,9 @@ public class GroupBean implements Serializable {
                 while (result.next()){
                     String id = result.getString(1);
                     String groupName = result.getString(2);
-                    String chatID = result.getString(3);
-                    String poolID = result.getString(4);
+                    String poolID = result.getString(3);
 
-                    GroupBean group = new GroupBean(id, groupName, chatID, poolID);
+                    GroupBean group = new GroupBean(id, groupName, poolID);
                     groups.add(group);
                 }
                 groupIDs.addLast(tempID);
@@ -125,7 +119,7 @@ public class GroupBean implements Serializable {
 
     public static GroupBean getGroup(String name) {
         String query = "SELECT * FROM GROUPS WHERE [groupName] = ?";
-        String id = "", groupName = "", chatID = "", poolID = "";
+        String id = "", groupName = "", poolID = "";
         try {
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
@@ -136,8 +130,7 @@ public class GroupBean implements Serializable {
             while (result.next()) {
                 id = result.getString(1);
                 groupName = result.getString(2);
-                chatID = result.getString(3);
-                poolID = result.getString(4);
+                poolID = result.getString(3);
             }
             statement.close();
             connection.close();
@@ -145,7 +138,7 @@ public class GroupBean implements Serializable {
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
         }
-        return new GroupBean(id, groupName, chatID, poolID);
+        return new GroupBean(id, groupName, poolID);
     }
 
     public static void deleteGroup(String id){
@@ -171,9 +164,6 @@ public class GroupBean implements Serializable {
         return getChatMessages(chatID);
     }
 
-    public String getChatID(){
-        return this.chatID;
-    }
 
     public void setPoolTotalAmount(double total){
         String query = "UPDATE POOL SET [totalAmount] = ? WHERE [poolID] = ?";
@@ -297,4 +287,6 @@ public class GroupBean implements Serializable {
         return false;
 
     }
+
+
 }
