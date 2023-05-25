@@ -61,7 +61,7 @@ public class CreateBookingServlet extends HttpServlet {
                 String lastName = req.getParameter("lName" + i);
                 String givenNames = req.getParameter("title" + i) + " " + req.getParameter("fName" + i);
                 String email = req.getParameter("email" + i);
-                int mobile = Integer.parseInt(req.getParameter("mobile" + i));
+                String mobile = req.getParameter("mobile" + i);
                 Timestamp dateOfBirth = Timestamp.valueOf(req.getParameter("dob" + i) + " 00:00:00");
 
                 passengerBean = new PassengerBean(lastName, givenNames, email, mobile, dateOfBirth,

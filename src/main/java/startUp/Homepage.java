@@ -42,6 +42,12 @@ public class Homepage extends HttpServlet {
 			UserBean user = (UserBean) session.getAttribute("userBean");
 			String role = ((UserBean) session.getAttribute("userBean")).getRoleInSystem();
 			String defaultSearch = ((UserBean) session.getAttribute("userBean")).getDefaultSearch();
+			
+			LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
+				if (!groupIDs.isEmpty()) {
+					LinkedList<GroupBean> groups = getGroups(groupIDs);
+					session.setAttribute("groups", groups);
+				}
 
 			if (defaultSearch.equals("Simple")) {
 				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
@@ -60,7 +66,7 @@ public class Homepage extends HttpServlet {
 				}
 
 				//stuff to set and display groups for user.
-				LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
+//				LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
 				if (!groupIDs.isEmpty()) {
 					LinkedList<GroupBean> groups = getGroups(groupIDs);
 					session.setAttribute("groups", groups);

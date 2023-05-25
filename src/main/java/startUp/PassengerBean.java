@@ -14,13 +14,13 @@ public class PassengerBean implements Serializable {
     private String lastName;
     private String givenNames;
     private String email;
-    private int phoneNumber;
+    private String phoneNumber;
     private Timestamp dateOfBirth;
     private String bookingId;
     private TicketBean departureTicket;
     private TicketBean returnTicket;
 
-    public PassengerBean(String lastName, String givenNames, String email, int phoneNumber, Timestamp dateOfBirth, String bookingId){
+    public PassengerBean(String lastName, String givenNames, String email, String phoneNumber, Timestamp dateOfBirth, String bookingId){
         this.lastName = lastName;
         this.givenNames = givenNames;
         this.email = email;
@@ -66,11 +66,11 @@ public class PassengerBean implements Serializable {
         this.email = email;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

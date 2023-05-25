@@ -30,7 +30,7 @@ public class CreateGroupServlet extends HttpServlet {
             requestDispatcher.forward(request, response);
         }
 
-        requestDispatcher.forward(request, response);
+
     }
 
 
