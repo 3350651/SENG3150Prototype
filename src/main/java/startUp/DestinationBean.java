@@ -30,9 +30,40 @@ public class DestinationBean {
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                destinationName = result.getString("Airport");
+                destinationName = result.getString(2);
                 // TODO: Add destinationDescription, tags and reputationScore here
+                tagSet t = new tagSet();
+                t.setDestinationTag(this);
+            }
 
+            result.close();
+            statement.close();
+            connection.close();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    public DestinationBean(String destination, String a) {
+        destinationName = destination;
+
+        try {
+            String query = "SELECT *" +
+                    " FROM Destinations " +
+                    " WHERE Airport = ?";
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, destination);
+
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                destinationCode = result.getString(1);
+                // TODO: Add destinationDescription, tags and reputationScore here
+                tagSet t = new tagSet();
+                t.setDestinationTag(this);
             }
 
         } catch (SQLException e) {

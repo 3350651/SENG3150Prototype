@@ -6,35 +6,38 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="s" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="startUp.FlightBean" %>
+<%@ page import="startUp.recSearchBean" %>
+<%@ page import="java.util.LinkedList" %>
+<%@ page import="startUp.UserBean" %>
 <html>
 <head>
     <title>Title</title>
 </head>
-<jsp:useBean id="search" class="startUp.recSearchBean"/>
-<s:forEach items="${flightResults}" var="flightBean" varStatus="counter">
+<% recSearchBean search = (recSearchBean) session.getAttribute("flightResults"); LinkedList<FlightBean> searchResults = search.getFlightResults();%>
+<% int i = 0; for (FlightBean flight : searchResults ) { %>
         <tr>
             <td>
-                    ${flightBean.getAirline()}
+                <%=flight.getAirline()%>
             </td>
 
             <td>
-                    ${flightBean.getFlightName()}
+                <%=flight.getFlightName()%>
             </td>
             <td>
-                    ${flightBean.getDeparture()}
+                        <%=flight.getDeparture().getDestinationName()%>
             </td>
             <td>
-                    ${flightBean.getDestination()}
+                        <%=flight.getDestination().getDestinationName()%>
             </td>
             <td>
-                    ${flightBean.getStopOver}
+                        <%=flight.getStopOver().getDestinationName()%>
             </td>
             <td>
-                    ${flightBean.getFlightTime()}
+                        <%=flight.getFlightTime()%>
             </td>
         </tr>
-</s:forEach>
+<% i++; }%>
 <body>
 
 </body>

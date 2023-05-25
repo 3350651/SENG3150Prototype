@@ -19,6 +19,24 @@ public class recSearch extends HttpServlet
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
+        //getAllDestinations des = new getAllDestinations();
+        //des.execute();
+       // LinkedList<DestinationBean> dest = des.getDestinations();
+        //session.setAttribute("destinationList", dest);
+        recSearchBean recs = new recSearchBean();
+
+        if (session.getAttribute("userBean") != null)
+        {
+            System.out.println("User not null");
+            UserBean user = (UserBean) session.getAttribute("userBean");
+            recs.getRecommendedFlights(user);
+
+            session.setAttribute("recFlights", recs);
+        }
+        else if (session.getAttribute("userBean") == null)
+        {
+            System.out.println("User is null");
+        }
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/recHome.jsp");
         requestDispatcher.forward(request, response);
     }
@@ -29,7 +47,8 @@ public class recSearch extends HttpServlet
 
         if (request.getParameter("searchResults") != null) {
             recSearchBean search = new recSearchBean();
-            search.getResults(request.getParameter("destinationLocation"), request.getParameter("departureLocation"));
+            search.getResults(request.getParameter("destination"), request.getParameter("departure"));
+            session.setAttribute("flightResults", search);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/recSearchResults.jsp");
             requestDispatcher.forward(request, response);
         }

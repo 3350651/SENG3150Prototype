@@ -47,11 +47,11 @@
 
     <div class="departureLocation"><label for="departureLocation">Leaving
       From</label><br>
-      <input type="text" id="departureLocation" value="Newcastle"
-             name="departureLocation">
+      <input type="text" id="departureLocation" value="Melbourne"
+             name="departure">
     </div>
-    <div class="arrivalLocation"><label for="arrivalLocation">aaaaa</label><br>
-      <input type="text" id="arrivalLocation" name="arrivalLocation">
+    <div class="arrivalLocation"><label for="arrivalLocation">Destination</label><br>
+      <input type="text" id="arrivalLocation" name="destination" value="Melbourne">
     </div>
     <div style="clear:both;">&nbsp;</div>
     <div class="departureDate"><label for="departureDate">Date</label><br>
