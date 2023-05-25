@@ -1,7 +1,12 @@
 package startUp;
 
 import java.io.Serializable;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Random;
 
 public class PassengerBean implements Serializable {
 
@@ -9,9 +14,23 @@ public class PassengerBean implements Serializable {
     private String lastName;
     private String givenNames;
     private String email;
-    private int phoneNumber;
-    private Date dateOfBirth;
+    private String phoneNumber;
+    private Timestamp dateOfBirth;
     private String bookingId;
+    private TicketBean departureTicket;
+    private TicketBean returnTicket;
+
+    public PassengerBean(String lastName, String givenNames, String email, String phoneNumber, Timestamp dateOfBirth, String bookingId){
+        this.lastName = lastName;
+        this.givenNames = givenNames;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.dateOfBirth = dateOfBirth;
+        this.bookingId = bookingId;
+        Random random = new Random();
+        this.passengerId = String.format("%08d", random.nextInt(100000000));
+    }
+
 
     //getters and setters
 
@@ -47,19 +66,19 @@ public class PassengerBean implements Serializable {
         this.email = email;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public Date getDateOfBirth() {
+    public Timestamp getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(Timestamp dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -71,7 +90,43 @@ public class PassengerBean implements Serializable {
         this.bookingId = bookingId;
     }
 
+    public TicketBean getDepartureTicket() {
+        return departureTicket;
+    }
+
+    public void setDepartureTicket(TicketBean departureTicket) {
+        this.departureTicket = departureTicket;
+    }
+
+    public TicketBean getReturnTicket() {
+        return returnTicket;
+    }
+
+    public void setReturnTicket(TicketBean returnTicket) {
+        this.returnTicket = returnTicket;
+    }
+
     //create passenger
+    public void addPassenger(){
+        try{
+            String query = "INSERT INTO dbo.PASSENGERS (PassengerId, LastName, GivenNames, Email, PhoneNumber, DateOfBirth, BookingId)\n" +
+                            "VALUES(?,?,?,?,?,?,?);";
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, this.passengerId);
+            statement.setString(2, this.lastName);
+            statement.setString(3, this.givenNames);
+            statement.setString(4, this.email);
+            statement.setString(5, ""+this.phoneNumber);
+            statement.setString(6, this.dateOfBirth.toString());
+            statement.setString(7, this.bookingId);
+            statement.execute();
+
+        }catch(SQLException e){
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+    }
 
     //remove passenger
 

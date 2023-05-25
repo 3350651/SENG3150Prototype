@@ -3,7 +3,12 @@
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="startUp.FlightBean" %>
+<%@ page import="startUp.GroupBean" %>
+<%@ page import="java.util.List" %>
 <%@ page import="startUp.DestinationBean" %>
+<%
+LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("groups");
+%>
 <%
   UserBean user = (UserBean) session.getAttribute("userBean");
   LinkedList<FlightBean> bookmarkedFlights = new LinkedList<>();
@@ -39,7 +44,27 @@
     %>
     </form>
     <%-- Groups You're In --%>
-    <form name="goToGroup" action="MockupGroup" class="groups" method="POST">
+    <%
+            if(groups != null && (!groups.isEmpty())){
+                int size = groups.size();
+                String name = "";
+                for(int i = 0; i < size; i++){
+                    GroupBean group = groups.pop();
+                    name = group.getGroupName(); %>
+                    <div class="goGroup">
+                        <form method="GET" action="GroupHomepage">
+                            <button name="goGroup" value="goGroup">
+                                <%= name %>
+                            </button>
+                            <input type="hidden" id="groupName" name="groupName" value="<%= name %>">
+                        </form>
+                    </div>
+                    <%
+                    groups.addLast(group);
+                }
+            }
+            %>
+    <form name="goToGroup" action="CreateGroup" class="groups" method="GET">
         <h2>Group Membership</h2>
         <button type="submit" class="button" name="createGroup"
             value="createGroup">Create New Group</button>

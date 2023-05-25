@@ -8,6 +8,7 @@ import java.util.*;
 
 /**
  * The user Bean which contains all the details of the user.
+ * 
  * @author Jordan Eade c3350651
  * @author Lucy Knight c3350691
  * @author Ahmed Al-khazraji c3277545
@@ -32,10 +33,10 @@ public class UserBean implements Serializable {
 	private LocalDate dateOfBirth;
 	private LinkedList<String> tagSet;
 	private LinkedList<FlightBean> bookmarkedFlights;
-	//private LinkedList<Searches> savedSearches
-	//private LinkedList<Groups> groups
-	//private LinkedList<Tags> tags
-	//private LinkedList<Destinations> favouriteDestinations
+	// private LinkedList<Searches> savedSearches
+	// private LinkedList<Groups> groups
+	// private LinkedList<Tags> tags
+	// private LinkedList<Destinations> favouriteDestinations
 
 	public UserBean() {
 	}
@@ -43,7 +44,8 @@ public class UserBean implements Serializable {
 	/**
 	 * Constructor which will instantiate a new user with the argument details.
 	 */
-	public UserBean(String newFirstName, String newLastName, String newEmail, String newUserPassword, String newPhoneNo, String newRole) {
+	public UserBean(String newFirstName, String newLastName, String newEmail, String newUserPassword, String newPhoneNo,
+			String newRole) {
 		Random random = new Random();
 		this.userID = String.format("%08d", random.nextInt(100000000));
 		this.fname = newFirstName;
@@ -54,7 +56,9 @@ public class UserBean implements Serializable {
 		this.role = newRole;
 	}
 
-	public UserBean(boolean hasLogin, String userID, String fname, String lname, String email,String userPassword, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, String questionnaireCompleted, LocalDate dateOfBirth) {
+	public UserBean(boolean hasLogin, String userID, String fname, String lname, String email, String userPassword,
+			String phoneNo, String role, String address, String defaultSearch, String defaultCurrency,
+			String defaultTimeZone, String themePreference, String questionnaireCompleted, LocalDate dateOfBirth) {
 		this.hasLogin = hasLogin;
 		this.userID = userID;
 		this.fname = fname;
@@ -74,7 +78,9 @@ public class UserBean implements Serializable {
 		this.bookmarkedFlights = new LinkedList<>();
 	}
 
-	public UserBean(String fname, String lname, String email, String userPassword, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, String questionnaireCompleted, LocalDate dateOfBirth) {
+	public UserBean(String fname, String lname, String email, String userPassword, String phoneNo, String role,
+			String address, String defaultSearch, String defaultCurrency, String defaultTimeZone,
+			String themePreference, String questionnaireCompleted, LocalDate dateOfBirth) {
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
@@ -254,7 +260,7 @@ public class UserBean implements Serializable {
 
 	public void addBookmarkedFlight(FlightBean flight) {
 		boolean tagExists = false;
-		for (int i=0; i<getBookmarkedFlights().size(); i++) {
+		for (int i = 0; i < getBookmarkedFlights().size(); i++) {
 			if (getBookmarkedFlights().get(i).equals(flight)) {
 				tagExists = true;
 				break;
@@ -265,15 +271,16 @@ public class UserBean implements Serializable {
 		}
 	}
 
-	public void removeBookmarkedFlight(FlightBean flight){
+	public void removeBookmarkedFlight(FlightBean flight) {
 		String airlineCodeToAdd = flight.getAirline();
 		String flightNumberToAdd = flight.getFlightName();
 		Timestamp departureTimeToAdd = flight.getFlightTime();
-		for (int i =0; i<getBookmarkedFlights().size(); i++){
+		for (int i = 0; i < getBookmarkedFlights().size(); i++) {
 			String existingAirlineCode = getBookmarkedFlights().get(i).getAirline();
 			String existingFlightNumber = getBookmarkedFlights().get(i).getFlightName();
 			Timestamp existingDepartureTime = getBookmarkedFlights().get(i).getFlightTime();
-			if (airlineCodeToAdd.equals(existingAirlineCode) && flightNumberToAdd.equals(existingFlightNumber) && departureTimeToAdd.equals(existingDepartureTime)){
+			if (airlineCodeToAdd.equals(existingAirlineCode) && flightNumberToAdd.equals(existingFlightNumber)
+					&& departureTimeToAdd.equals(existingDepartureTime)) {
 				getBookmarkedFlights().remove(i);
 				break;
 			}
@@ -293,9 +300,9 @@ public class UserBean implements Serializable {
 		}
 	}
 
-	public void removeTag(String tag){
-		for (int i =0; i<getTagSet().size(); i++){
-			if (getTagSet().get(i).equals(tag)){
+	public void removeTag(String tag) {
+		for (int i = 0; i < getTagSet().size(); i++) {
+			if (getTagSet().get(i).equals(tag)) {
 				getTagSet().remove(i);
 				break;
 			}
@@ -305,7 +312,9 @@ public class UserBean implements Serializable {
 	/**
 	 * Inserts a new user Bean with the argumented details into the database.
 	 */
-	public void addUserToTheSystem(String firstName, String lastName, String email, String password, String phoneNo, String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone, String themePreference, String questionnaireCompleted, LocalDate dateOfBirth) {
+	public void addUserToTheSystem(String firstName, String lastName, String email, String password, String phoneNo,
+			String role, String address, String defaultSearch, String defaultCurrency, String defaultTimeZone,
+			String themePreference, String questionnaireCompleted, LocalDate dateOfBirth) {
 		try {
 			Random random = new Random();
 			userID = String.format("%08d", random.nextInt(100000000));
@@ -338,11 +347,10 @@ public class UserBean implements Serializable {
 		}
 	}
 
-
-
 	/**
 	 * Checks if the argument username and password are in the database.
-	 * If the username and password are in the database this method will assign the user Bean
+	 * If the username and password are in the database this method will assign the
+	 * user Bean
 	 * attributes with the ones found in the database.
 	 */
 	public void login(String email, String password) {
@@ -375,12 +383,11 @@ public class UserBean implements Serializable {
 				this.setBookmarkedFlights(new LinkedList<>());
 				loadBookmarkedFlights(result.getString("userID"));
 			}
-			
+
 			result.close();
 			statement.close();
 			connection.close();
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 			System.err.println(Arrays.toString(e.getStackTrace()));
 		}
@@ -404,8 +411,7 @@ public class UserBean implements Serializable {
 			result.close();
 			statement.close();
 			connection.close();
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 			System.err.println(Arrays.toString(e.getStackTrace()));
 		}
@@ -416,7 +422,8 @@ public class UserBean implements Serializable {
 			String query = "SELECT *\n" +
 					"FROM Flights\n" +
 					"INNER JOIN USERBOOKMARKEDFLIGHTS ON Flights.AirlineCode = USERBOOKMARKEDFLIGHTS.AirlineCode\n" +
-					"AND Flights.FlightNumber = USERBOOKMARKEDFLIGHTS.FlightNumber AND Flights.DepartureTime = USERBOOKMARKEDFLIGHTS.DepartureTime\n" +
+					"AND Flights.FlightNumber = USERBOOKMARKEDFLIGHTS.FlightNumber AND Flights.DepartureTime = USERBOOKMARKEDFLIGHTS.DepartureTime\n"
+					+
 					"WHERE USERBOOKMARKEDFLIGHTS.userID = ?;";
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -427,7 +434,7 @@ public class UserBean implements Serializable {
 				String airlineCodeToAdd = result.getString("AirlineCode");
 				String flightNumberToAdd = result.getString("FlightNumber");
 				String departureCode = result.getString("DepartureCode");
-				if (result.getString("FlightNumber") != null){
+				if (result.getString("FlightNumber") != null) {
 					String stopOverCode = result.getString("StopOverCode");
 				}
 				Timestamp departureTimeToAdd = result.getTimestamp("DepartureTime");
@@ -438,8 +445,7 @@ public class UserBean implements Serializable {
 			result.close();
 			statement.close();
 			connection.close();
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 			System.err.println(Arrays.toString(e.getStackTrace()));
 		}
@@ -496,7 +502,7 @@ public class UserBean implements Serializable {
 	/**
 	 * Generates and returns an arraylist of all non-admin users in the database.
 	 */
-	public static ArrayList<UserBean> getNonAdminUsers(){
+	public static ArrayList<UserBean> getNonAdminUsers() {
 		String query = "SELECT * FROM USERS";
 		ArrayList<UserBean> userList = new ArrayList<>();
 
@@ -505,7 +511,7 @@ public class UserBean implements Serializable {
 			PreparedStatement statement = connection.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
 
-			while (result.next()){
+			while (result.next()) {
 				String id = result.getString(1);
 				String firstName = result.getString(2);
 				String lastName = result.getString(3);
@@ -514,17 +520,17 @@ public class UserBean implements Serializable {
 				String phoneNumber = result.getString(6);
 				String role = result.getString(7);
 
-				if (role.equals("admin")){
+				if (role.equals("admin")) {
 					continue;
 				}
-				
+
 				UserBean user = new UserBean(firstName, lastName, email, password, phoneNumber, role);
 				user.setUserId(id);
 				userList.add(user);
 			}
 			statement.close();
 			connection.close();
-		} catch (SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
@@ -535,12 +541,13 @@ public class UserBean implements Serializable {
 	 * Edits the account details of the account with the argumented id.
 	 * If an argument is empty then that field will not be updated.
 	 */
-	public static void editUser(String id, String firstName, String lastName, String email, String password, String phoneNo, String role){
+	public static void editUser(String id, String firstName, String lastName, String email, String password,
+			String phoneNo, String role) {
 		try {
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = null;
 
-			if (!firstName.equals("")){
+			if (!firstName.equals("")) {
 				String query = "UPDATE USERS SET [first_name] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -549,7 +556,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
-			if (!lastName.equals("")){
+			if (!lastName.equals("")) {
 				String query = "UPDATE USERS SET [last_name] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -558,7 +565,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
-			if (!email.equals("")){
+			if (!email.equals("")) {
 				String query = "UPDATE USERS SET [email] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -567,7 +574,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
-			if (!password.equals("")){
+			if (!password.equals("")) {
 				String query = "UPDATE USERS SET [userPassword] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -576,7 +583,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
-			if (!phoneNo.equals("")){
+			if (!phoneNo.equals("")) {
 				String query = "UPDATE USERS SET [phoneNo] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -585,7 +592,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
-			if (!role.equals("")){
+			if (!role.equals("")) {
 				String query = "UPDATE USERS SET [roles] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -597,17 +604,17 @@ public class UserBean implements Serializable {
 			assert statement != null;
 			statement.close();
 			connection.close();
-		} catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void updateUserPassword(String id, String password){
+	public static void updateUserPassword(String id, String password) {
 		try {
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = null;
 
-			if (!password.equals("")){
+			if (!password.equals("")) {
 				String query = "UPDATE USERS SET [userPassword] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 				statement.setString(1, password);
@@ -618,16 +625,17 @@ public class UserBean implements Serializable {
 			assert statement != null;
 			statement.close();
 			connection.close();
-		} catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void updatePersonalDetails(String id, String firstName, String lastName, String email, String address, String phoneNo, String defaultCurrency, String defaultTimezone, LocalDate dateOfBirth){
+	public static void updatePersonalDetails(String id, String firstName, String lastName, String email, String address,
+			String phoneNo, String defaultCurrency, String defaultTimezone, LocalDate dateOfBirth) {
 		try {
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = null;
-			if (!firstName.equals("")){
+			if (!firstName.equals("")) {
 				String query = "UPDATE USERS SET [first_name] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -636,7 +644,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
-			if (!lastName.equals("")){
+			if (!lastName.equals("")) {
 				String query = "UPDATE USERS SET [last_name] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -645,7 +653,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
-			if (!email.equals("")){
+			if (!email.equals("")) {
 				String query = "UPDATE USERS SET [email] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -654,7 +662,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
-			if (!address.equals("")){
+			if (!address.equals("")) {
 				String query = "UPDATE USERS SET [address] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -663,7 +671,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
-			if (!phoneNo.equals("")){
+			if (!phoneNo.equals("")) {
 				String query = "UPDATE USERS SET [phoneNo] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -672,7 +680,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
-			if (!defaultCurrency.equals("")){
+			if (!defaultCurrency.equals("")) {
 				String query = "UPDATE USERS SET [defaultCurrency] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -681,7 +689,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
-			if (!defaultTimezone.equals("")){
+			if (!defaultTimezone.equals("")) {
 				String query = "UPDATE USERS SET [defaultTimezone] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -690,7 +698,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
-			if (dateOfBirth != null){
+			if (dateOfBirth != null) {
 				String query = "UPDATE USERS SET [dateOfBirth] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 
@@ -702,7 +710,7 @@ public class UserBean implements Serializable {
 			assert statement != null;
 			statement.close();
 			connection.close();
-		} catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -730,7 +738,8 @@ public class UserBean implements Serializable {
 		if (!tagID.equals("-1")) {
 			try {
 				Connection connection = ConfigBean.getConnection();
-				PreparedStatement checkTag = connection.prepareStatement("SELECT * FROM USERTAGS WHERE userID = ? AND tagID = ?");
+				PreparedStatement checkTag = connection
+						.prepareStatement("SELECT * FROM USERTAGS WHERE userID = ? AND tagID = ?");
 				checkTag.setString(1, userID);
 				checkTag.setString(2, tagID);
 				ResultSet resultSet2 = checkTag.executeQuery();
@@ -787,13 +796,15 @@ public class UserBean implements Serializable {
 		}
 	}
 
-	public static void addToBookmarkedFlights(String userID, String airlineCode, String flightNumber, Timestamp departureTime) {
+	public static void addToBookmarkedFlights(String userID, String airlineCode, String flightNumber,
+			Timestamp departureTime) {
 		String query = "INSERT INTO USERBOOKMARKEDFLIGHTS VALUES (?, ?, ?, ?, ?)";
 		String tagID = "-1"; // initialize tagID to an invalid value
 
 		try (Connection connection = ConfigBean.getConnection();
-			 PreparedStatement checkFlight = connection.prepareStatement("SELECT * FROM USERBOOKMARKEDFLIGHTS WHERE userID = ? AND airlineCode = ? AND flightNumber = ? AND departureTime = ?");
-			 PreparedStatement insertStatement = connection.prepareStatement(query)) {
+				PreparedStatement checkFlight = connection.prepareStatement(
+						"SELECT * FROM USERBOOKMARKEDFLIGHTS WHERE userID = ? AND airlineCode = ? AND flightNumber = ? AND departureTime = ?");
+				PreparedStatement insertStatement = connection.prepareStatement(query)) {
 
 			checkFlight.setString(1, userID);
 			checkFlight.setString(2, airlineCode);
@@ -825,7 +836,8 @@ public class UserBean implements Serializable {
 		}
 	}
 
-	public static void removeFromBookmarkedFlights(String userID, String airlineCode, String flightNumber, Timestamp departureTime) {
+	public static void removeFromBookmarkedFlights(String userID, String airlineCode, String flightNumber,
+			Timestamp departureTime) {
 		String query = "DELETE FROM USERBOOKMARKEDFLIGHTS WHERE userID = ? AND airlineCode = ? AND flightNumber = ? AND departureTime = ?";
 
 		try {
@@ -844,12 +856,12 @@ public class UserBean implements Serializable {
 		}
 	}
 
-	public static void updateUIPreferences(String id, String defaultSearch, String themePreference){
+	public static void updateUIPreferences(String id, String defaultSearch, String themePreference) {
 		try {
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = null;
 
-			if (!defaultSearch.equals("")){
+			if (!defaultSearch.equals("")) {
 				String query = "UPDATE USERS SET [defaultSearch] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 				statement.setString(1, defaultSearch);
@@ -857,7 +869,7 @@ public class UserBean implements Serializable {
 				statement.executeUpdate();
 			}
 
-			if (!themePreference.equals("")){
+			if (!themePreference.equals("")) {
 				String query = "UPDATE USERS SET [themePreference] = ? WHERE [userID] = ?";
 				statement = connection.prepareStatement(query);
 				statement.setString(1, themePreference);
@@ -868,37 +880,36 @@ public class UserBean implements Serializable {
 			assert statement != null;
 			statement.close();
 			connection.close();
-		} catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public LinkedList<String> getGroupIDs(String userID){
+	public LinkedList<String> getGroupIDs(String userID) {
 		LinkedList<String> groupIDs = new LinkedList<>();
 
 		String query = "SELECT groupID FROM USERGROUPS WHERE [userID] = ?";
-		try{
+		try {
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, userID);
 			ResultSet result = statement.executeQuery();
 
-			while (result.next()){
+			while (result.next()) {
 				String id = result.getString(1);
 				groupIDs.add(id);
 			}
 			statement.close();
 			connection.close();
-		}
-		catch(SQLException e){
+		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 			System.err.println(Arrays.toString(e.getStackTrace()));
 		}
 
 		return groupIDs;
 	}
-	
-	public static String userExists(String email){
+
+	public static String userExists(String email) {
 		String userID = null;
 
 		String query = "SELECT userID FROM USERS WHERE [email] = ?";
@@ -909,7 +920,7 @@ public class UserBean implements Serializable {
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
 
-			while(result.next()) {
+			while (result.next()) {
 				userID = result.getString(1);
 			}
 			statement.close();
@@ -922,7 +933,7 @@ public class UserBean implements Serializable {
 		return userID;
 	}
 
-	public static String getUsersName(String userID){
+	public static String getUsersName(String userID) {
 		String usersName = "";
 		String query = "SELECT first_name, last_name FROM USERS WHERE [userID] = ?";
 		try {
@@ -932,7 +943,7 @@ public class UserBean implements Serializable {
 			statement.setString(1, userID);
 			ResultSet result = statement.executeQuery();
 
-			while(result.next()) {
+			while (result.next()) {
 				String fName = result.getString(1);
 				String lName = result.getString(2);
 				usersName = fName + " " + lName;
@@ -946,24 +957,23 @@ public class UserBean implements Serializable {
 		return usersName;
 	}
 
-	public LinkedList<String> getTags(String userID){
+	public LinkedList<String> getTags(String userID) {
 		LinkedList<String> tagSet = new LinkedList<>();
 
 		String query = "SELECT * FROM USERTAGS WHERE [userID] = ?";
-		try{
+		try {
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, userID);
 			ResultSet result = statement.executeQuery();
 
-			while (result.next()){
+			while (result.next()) {
 				String id = result.getString(1);
 				tagSet.add(id);
 			}
 			statement.close();
 			connection.close();
-		}
-		catch(SQLException e){
+		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 			System.err.println(Arrays.toString(e.getStackTrace()));
 		}

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>startUp.FlightDetailsPage</title>
+    <title>Booking Details</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 
@@ -12,10 +12,10 @@
     <main>
         <header>
             <form name="BackToHome" action="login" method="GET">
-                <%-- <button type="submit" class="button" name="home" value="simpleSearch">Simple Search</button> --%>
                 <button type="submit" class="button" name="home" value="backToHome">Home</button>
             </form>
-            <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="centreLogo" >
+            <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo"
+                class="centreLogo">
             <h1>
                 Review Booking Details
             </h1>
@@ -27,50 +27,12 @@
                 <div class="innerProgress" id="progress" style="width:99%">99%</div>
             </div>
         </header>
-
-        <fieldset class="filled">
-            <h3>Flight Details:</h3>
-
-            <p class="reviewDetails">
-                <strong>Airline: </strong>American Airlines
-
-                <br />
-                <strong>Departure Time:</strong> 11:50 am 11/05/2014
-
-                <br />
-                <strong>Flight Name:</strong> F1375
-
-                <br />
-                <strong>Plane Model:</strong> A380
-            </p>
-        </fieldset>
-
-        <br />
-
-        <fieldset class="background">
-            <h3>Passenger Details:</h3>
-            <fieldset class="foreground">
-                <h3>Passenger 1</h3>
-                <p class="reviewDetails">
-                    <strong>Name: </strong>Mr John Barry Smith<br />
-                    <strong>Email: </strong>johnSmith@gmail.com<br />
-                    <strong>Mobile Number: </strong>0412 123 123
-                </p>
-            </fieldset>
-            <fieldset class="foreground">
-                <h3>Passenger 2</h3>
-                <p class="reviewDetails">
-                    <strong>Name: </strong>Mr John Barry Smith<br />
-                    <strong>Email: </strong>johnSmith@gmail.com<br />
-                    <strong>Mobile Number: </strong>0412 123 123
-                </p>
-            </fieldset>
-
-        </fieldset>
+        <jsp:include page="c-BookingDetails.jsp"></jsp:include>
         <br />
         <fieldset class="filled">
             <h3>Payment Details:</h3>
-            <form>
+            <form method="POST" action="createBooking">
+                <input type="hidden" name="payment" value="true">
                 <label for="cardNumber">Card Number:</label>
                 <input type="text" id="cardNumber" />
                 <label for="expiry">Expiry Date:</label>

@@ -30,7 +30,7 @@ public class CreateGroupServlet extends HttpServlet {
             requestDispatcher.forward(request, response);
         }
 
-        requestDispatcher.forward(request, response);
+
     }
 
 
@@ -56,8 +56,7 @@ public class CreateGroupServlet extends HttpServlet {
         LinkedList<GroupBean> groups = getGroups(groupIDs);
 
         session.setAttribute("groups", groups);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepageWithGroups.jsp");
-        requestDispatcher.forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/Homepage");
 
     }
 
