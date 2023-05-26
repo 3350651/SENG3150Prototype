@@ -17,9 +17,9 @@
                         <body>
                             <main>
                                 <header>
-                                    <form class="backButton">
-                                        <button>Back</button>
-                                    </form>
+                                    
+                                        <button class="backButton" type="submit" link="${pageContext.request.contextPath}/WEB-INF/jsp/Homepage-Index.jsp">Back</button>
+                                    
                                     <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
                                         alt="FlightPub Logo" class="centreLogo">
                                     <h1>

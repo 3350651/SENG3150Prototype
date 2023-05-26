@@ -13,10 +13,10 @@ import static startUp.UserGroupsBean.isAdmin;
 
 /**
  * The homepage servlet which handles requests made to the homepage.
- * @author Jordan Eade c3350651
- * @author Lucy Knight c3350691
- * @author Ahmed Al-khazraji c3277545
- * @author Jason Walls c3298757
+ * @author Jordan Eade
+ * @author Lucy Knight
+ * @author Lachlan O'Neil
+ * @author Blake Baldin
  */
 @WebServlet(urlPatterns = { "/Homepage" })
 public class Homepage extends HttpServlet {
