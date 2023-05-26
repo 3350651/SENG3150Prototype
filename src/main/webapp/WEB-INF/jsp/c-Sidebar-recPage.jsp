@@ -16,12 +16,12 @@
   <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
        alt="FlightPub Logo" class="logo">
   <%-- Home page button --%>
-  <form name="SearchSelect" action="recSearch" method="GET">
+  <form name="SearchSelect" action="recSearch" method="POST">
     <h2>Toggle Search Mode</h2>
     <%-- <button type="submit" class="button" name="home" value="simpleSearch">Simple
         Search</button> --%>
-    <button type="submit" class="button" name="home"
-            value="Simple">Simple Search</button>
+    <button type="submit" class="button" name="gotoSimple"
+            value="gotoSimple">Simple Search</button>
   </form>
   <%-- Bookmarked Flights --%>
   <form name="goToBookmarkedFlight" action="ViewFlight" method="POST">

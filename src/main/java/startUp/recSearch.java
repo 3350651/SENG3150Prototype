@@ -19,17 +19,19 @@ public class recSearch extends HttpServlet
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        //getAllDestinations des = new getAllDestinations();
-        //des.execute();
-       // LinkedList<DestinationBean> dest = des.getDestinations();
-        //session.setAttribute("destinationList", dest);
+        DestinationBean des = new DestinationBean();
+        des.getAllDestinations();
+
+        LinkedList<DestinationBean> dest = des.getDestinations();
+        session.setAttribute("destinationList", dest);
         recSearchBean recs = new recSearchBean();
 
         if (session.getAttribute("userBean") != null)
         {
             System.out.println("User not null");
             UserBean user = (UserBean) session.getAttribute("userBean");
-            recs.getRecommendedFlights(user);
+            //recs.getRecommendedFlights(user);
+            recs.getpresetFlights();
 
             session.setAttribute("recFlights", recs);
         }
@@ -47,9 +49,16 @@ public class recSearch extends HttpServlet
 
         if (request.getParameter("searchResults") != null) {
             recSearchBean search = new recSearchBean();
-            search.getResults(request.getParameter("destination"), request.getParameter("departure"));
+            //search.getResults(request.getParameter("destination"), request.getParameter("departure"));
+            search.getpresetFlights();
             session.setAttribute("flightResults", search);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/recSearchResults.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        if (request.getParameter("gotoSimple") != null)
+        {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
             requestDispatcher.forward(request, response);
         }
 

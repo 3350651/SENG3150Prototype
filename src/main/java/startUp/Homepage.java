@@ -41,12 +41,18 @@ public class Homepage extends HttpServlet {
 		String role = ((UserBean)session.getAttribute("userBean")).getRoleInSystem();
 		String defaultSearch = ((UserBean)session.getAttribute("userBean")).getDefaultSearch();
 
+		if(session.getAttribute("gotoSimple") != null)
+		{
+			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
+			requestDispatcher.forward(request, response);
+		}
+
 		if (defaultSearch.equals("Simple")){
 			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		else if(defaultSearch.equals("Recommend")){
-			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/recHome.jsp");
+			requestDispatcher = request.getRequestDispatcher("/recSearch");
 			requestDispatcher.forward(request, response);
 		}
 
