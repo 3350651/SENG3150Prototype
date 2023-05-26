@@ -9,8 +9,10 @@
 <%@ page import="startUp.DestinationBean" %>
 <%
 LinkedList<FlightBean> bookmarkedFlights = new LinkedList<>();
+LinkedList<DestinationBean> favouritedDestinations = new LinkedList<>();
 if (user != null && user.getBookmarkedFlights() != null) {
   bookmarkedFlights = user.getBookmarkedFlights();
+  favouritedDestinations = user.getFavouritedDestinations();
 }
 %>
 <!DOCTYPE html>
@@ -76,7 +78,9 @@ if (user != null && user.getBookmarkedFlights() != null) {
     <h2>Favourite Destinations</h2>
     <div class="settingsCategory">
     <ul>
-        <li><p class="valueOfSetting">FlightExample</p> </li>
+    <% for(DestinationBean destination : favouritedDestinations) { ;%>
+        <li><p class="valueOfSetting"><%= destination.getDestinationName() %></p> </li>
+    <% } %>
     </ul>
     </div>
 

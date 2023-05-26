@@ -39,5 +39,9 @@
         <form name="goToModifyBookmarkedFlights" action="AccountSettings" method="POST">
             <button type="submit" class="button" name="goToModifyBookmarkedFlights" value="goToModifyBookmarkedFlights">Modify Bookmarked Flights</button>
         </form>
+        <%--        Modify Favourited Destinations button         --%>
+        <form name="goToModifyFavouritedDestinations" action="AccountSettings" method="POST">
+            <button type="submit" class="button" name="goToModifyFavouritedDestinations" value="goToModifyFavouritedDestinations">Modify Favourited Destinations</button>
+        </form>
     </div>
 </body>

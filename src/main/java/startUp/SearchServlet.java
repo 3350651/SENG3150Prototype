@@ -53,6 +53,16 @@ public class SearchServlet extends HttpServlet {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
 			requestDispatcher.forward(request, response);
 		}
+		if(request.getParameter("favourite.x") != null){
+			String id = request.getParameter("userID"); // do this for all others as hidden form input
+			String destinationCode = request.getParameter("destinationCode");
+			UserBean.addToFavouritedDestinations(id, destinationCode);
+			DestinationBean d = new DestinationBean(destinationCode); // TODO: make this constructor search for the remainder of flight information upon instantiation
+			user.addFavouritedDestination(d);
+			session.setAttribute("userBean", user);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
+			requestDispatcher.forward(request, response);
+		}
 //		if(request.getParameter("removeTags") != null){
 //			String id = request.getParameter("userID"); // do this for all others as hidden form input
 //			String airlineCode = request.getParameter("airlineCode");

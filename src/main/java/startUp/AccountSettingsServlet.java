@@ -138,6 +138,26 @@ public class AccountSettingsServlet extends HttpServlet {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
+		if(request.getParameter("addFavouriteDestination") != null){
+			String id = request.getParameter("userID"); // do this for all others as hidden form input
+			String destinationCode = request.getParameter("destinationCode");
+			UserBean.addToFavouritedDestinations(id, destinationCode);
+			DestinationBean d = new DestinationBean(destinationCode); // TODO: make this constructor search for the remainder of flight information upon instantiation
+			user.addFavouritedDestination(d);
+			session.setAttribute("userBean", user);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("removeFavouritedDestination") != null){
+			String id = request.getParameter("userID"); // do this for all others as hidden form input
+			String destinationCode = request.getParameter("destinationCode");
+			UserBean.removeFromFavouritedDestinations(id, destinationCode);
+			DestinationBean d = new DestinationBean(destinationCode); // TODO: make this constructor search for the remainder of flight information upon instantiation
+			user.removeFavouritedDestination(d);
+			session.setAttribute("userBean", user);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
+			requestDispatcher.forward(request, response);
+		}
 		if(request.getParameter("goToUIPreferences") != null){
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/EditUIPreferences.jsp");
@@ -161,6 +181,10 @@ public class AccountSettingsServlet extends HttpServlet {
 		}
 		if(request.getParameter("goToModifyBookmarkedFlights") != null){
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyBookmarkedFlights.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("goToModifyFavouritedDestinations") != null){
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyFavouritedDestinations.jsp");
 			requestDispatcher.forward(request, response);
 		}
 	}
