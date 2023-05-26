@@ -30,11 +30,12 @@ public class DestinationBean {
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                destinationName = result.getString("Airport");
+                destinationName = result.getString(2);
+                destinationCode = result.getString(1);
                 // TODO: Add destinationDescription, tags and reputationScore here
-
             }
-
+            statement.close();
+            connection.close();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             System.err.println(Arrays.toString(e.getStackTrace()));

@@ -121,6 +121,8 @@ public class PassengerBean implements Serializable {
             statement.setString(6, this.dateOfBirth.toString());
             statement.setString(7, this.bookingId);
             statement.execute();
+            statement.close();
+            connection.close();
 
         }catch(SQLException e){
             System.err.println(e.getMessage());
