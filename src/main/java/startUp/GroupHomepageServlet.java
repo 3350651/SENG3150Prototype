@@ -75,8 +75,10 @@ public class GroupHomepageServlet extends HttpServlet {
 
             String groupName = request.getParameter("groupName");
             group = getGroup(groupName);
+            String flightDetails = (String) session.getAttribute("flightDetails");
+            String[] details = flightDetails.split(",", 0);
 
-            boolean alreadyAdded = isInGroupFaveList(group.getGroupID());
+            boolean alreadyAdded = isInGroupFaveList(details[0], details[1], Timestamp.valueOf(details[2]), group.getGroupID());
 
             //if already in the group list
             if(alreadyAdded){
@@ -85,11 +87,8 @@ public class GroupHomepageServlet extends HttpServlet {
                 requestDispatcher.forward(request, response);
             }
             else {
-                String flightDetails = (String) session.getAttribute("flightDetails");
-                String[] details = flightDetails.split(",", 0);
                 //Create the GroupFaveFlightBean
                 GroupFaveFlightBean flight = new GroupFaveFlightBean(details[0], details[1], Timestamp.valueOf(details[2]), group.getGroupID());
-
                 session.setAttribute("message", "Success! Flight was successfully added to your groups Favourite List!");
                 requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToGroupFaveListMessage.jsp");
                 requestDispatcher.forward(request, response);
@@ -151,14 +150,27 @@ public class GroupHomepageServlet extends HttpServlet {
             session.setAttribute("faveFlights", faveFlights);
             session.setAttribute("destinations", destinations);
             session.setAttribute("group", group);
+
+            //TODO: Rank the flights according to their score.
+
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupFavouriteList.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        //The user wishes to view a fave flight.
+        else if(request.getParameter("viewFaveFlight") != null){
+            String airlineCode = request.getParameter("airlineCode");
+            String flightName = request.getParameter("flightName");
+            Timestamp flightTime = Timestamp.valueOf(request.getParameter("flightTime"));
+            GroupFaveFlightBean faveFlight = getFaveFlight(airlineCode, flightName, flightTime, group.getGroupID());
+            session.setAttribute("faveFlight", faveFlight);
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ViewFaveFlight.jsp");
             requestDispatcher.forward(request, response);
         }
 
         //add code that checks if a flight is locked in - get the score from the top of the list.
         //and figure out if it was chosen - aka. number of group members and the score. math.
         //just hard coded to allow for pool to be seen at the moment.
-        boolean flightLockedIn = true;
+        boolean flightLockedIn = false;
         boolean poolFinished = group.isPoolComplete(group.getPoolID());
         if(flightLockedIn && !poolFinished){
             //add some functionality that changes the appearance of the group flight list,

@@ -20,6 +20,8 @@ public class GroupFaveFlightBean implements Serializable {
     private String groupID;
 
 
+    public GroupFaveFlightBean(){}
+
     public GroupFaveFlightBean(String airline, String flightName, Timestamp flightTime, String groupID){
         Random random = new Random();
         this.groupFaveFlightID = String.format("%08d", random.nextInt(100000000));
@@ -59,56 +61,6 @@ public class GroupFaveFlightBean implements Serializable {
         }
     }
 
-    public static FlightBean getGroupFaveFlight(String airlineCode, String flightName, Timestamp flightDepartureTime) {
-
-        int available = 0;
-        FlightBean flight = null;
-
-        try {
-            String query = "SELECT f.*," +
-                    "a.AirlineName" +
-                    " FROM dbo.Flights f " +
-                    "LEFT JOIN Dbo.Airlines a ON a.AirlineCode = f.AirlineCode" +
-                    " WHERE f.[AirlineCode] = ? AND f.[FlightNumber] = ? AND f.[DepartureTime] = ?";
-            Connection connection = ConfigBean.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
-
-            statement.setString(1, airlineCode);
-            statement.setString(2, flightName);
-            statement.setTimestamp(3, flightDepartureTime);
-
-            ResultSet result = statement.executeQuery();
-
-            // TODO:Retrieve min cost of flight...
-
-            while (result.next()) {
-                String aCode = result.getString(1);
-                String flightCode = result.getString(2);
-                String plane = result.getString(10);
-                Timestamp departTime = result.getTimestamp(6);
-                String departureCode = result.getString(3);
-                String stopOverCode = result.getString(4);
-                String destinationCode = result.getString(5);
-                String airlineName = result.getString(13);
-
-                DestinationBean rDeparture = new DestinationBean(departureCode);
-                DestinationBean rStopOver = new DestinationBean(stopOverCode);
-                DestinationBean rDestination = new DestinationBean(destinationCode);
-
-                flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
-                        rStopOver,
-                        rDestination);
-            }
-
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            System.err.println(Arrays.toString(e.getStackTrace()));
-        }
-        return flight;
-    }
-
     public GroupFaveFlightBean(String id, String airlineCode, String flightName, Timestamp flightTime, String chatID, float rank, String groupID){
         this.groupFaveFlightID = id;
         this.airline = airlineCode;
@@ -143,13 +95,17 @@ public class GroupFaveFlightBean implements Serializable {
 
     }
 
-    public static boolean isInGroupFaveList(String groupID){
+    public static boolean isInGroupFaveList(String airlineCode, String flightName, Timestamp departureTime, String groupID){
         boolean isFavourited = false;
-        String query = "SELECT * FROM GROUPFAVEFLIGHT WHERE [groupID] = ?";
+        String query = "SELECT * FROM GROUPFAVEFLIGHT WHERE [AirlineCode] = ? AND [FlightNumber] = ? AND" +
+                " [DepartureTime] = ? AND [groupID] = ?";
         try{
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, groupID);
+            statement.setString(1, airlineCode);
+            statement.setString(2, flightName);
+            statement.setTimestamp(3, departureTime);
+            statement.setString(4, groupID);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
@@ -221,5 +177,93 @@ public class GroupFaveFlightBean implements Serializable {
         }
 
         return destinations;
+    }
+
+    public String getDestination(){
+        FlightBean flightBean = getFlight(this.getAirlineCode(), this.getFlightName(), this.getFlightTime());
+        return flightBean.getDestination().getDestinationName();
+    }
+
+    public static GroupFaveFlightBean getFaveFlight(String airlineCode, String flightName, Timestamp departureTime, String groupID){
+        GroupFaveFlightBean faveFlight = new GroupFaveFlightBean();
+
+        String query = "SELECT * FROM GROUPFAVEFLIGHT WHERE [AirlineCode] = ? AND [FlightNumber] = ? AND" +
+                " [DepartureTime] = ? AND [groupID] = ?";
+        try{
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, airlineCode);
+            statement.setString(2, flightName);
+            statement.setTimestamp(3, departureTime);
+            statement.setString(4, groupID);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String id = result.getString(1);
+                String code = result.getString(2);
+                String name = result.getString(3);
+                Timestamp time = result.getTimestamp(4);
+                String chatID = result.getString(5);
+                float rank = result.getFloat(6);
+                String group = result.getString(7);
+
+                faveFlight = new GroupFaveFlightBean(id, code, name, time, chatID, rank, group);
+            }
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+
+        return faveFlight;
+    }
+
+    public static FlightBean getFlight(String airline, String flightName, Timestamp flightTime){
+        int available = 0;
+        FlightBean flight = null;
+
+        try {
+            String query = "SELECT f.*," +
+                    "a.AirlineName" +
+                    " FROM dbo.Flights f " +
+                    "LEFT JOIN Dbo.Airlines a ON a.AirlineCode = f.AirlineCode" +
+                    " WHERE f.[AirlineCode] = ? AND f.[FlightNumber] = ? AND f.[DepartureTime] = ?";
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, airline);
+            statement.setString(2, flightName);
+            statement.setTimestamp(3, flightTime);
+
+            ResultSet result = statement.executeQuery();
+
+            // TODO:Retrieve min cost of flight...
+
+            while (result.next()) {
+                String aCode = result.getString(1);
+                String flightCode = result.getString(2);
+                String plane = result.getString(10);
+                Timestamp departTime = result.getTimestamp(6);
+                String departureCode = result.getString(3);
+                String stopOverCode = result.getString(4);
+                String destinationCode = result.getString(5);
+                String airlineName = result.getString(13);
+
+                DestinationBean rDeparture = new DestinationBean(departureCode);
+                DestinationBean rStopOver = new DestinationBean(stopOverCode);
+                DestinationBean rDestination = new DestinationBean(destinationCode);
+
+                flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
+                        rStopOver,
+                        rDestination);
+            }
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(Arrays.toString(e.getStackTrace()));
+        }
+        return flight;
     }
 }

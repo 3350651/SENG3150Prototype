@@ -108,8 +108,8 @@ public class SearchBean implements Serializable{
     //getFlight for now
     public void getInitialFlight(){
         results.add(FlightBean.getFlight("AA", "AA1735", Timestamp.valueOf("2014-09-23 09:50:00")));
-//        results.add(FlightBean.getFlight("JQ", "JQ82", Timestamp.valueOf("2015-06-11 06:20:00")));
-//        results.add(FlightBean.getFlight("QF", "QF2", Timestamp.valueOf("2015-12-22 11:55:00")));
+        results.add(FlightBean.getFlight("JQ", "JQ82", Timestamp.valueOf("2015-06-11 06:20:00")));
+        results.add(FlightBean.getFlight("QF", "QF2", Timestamp.valueOf("2015-12-22 11:55:00")));
     }
 
 
