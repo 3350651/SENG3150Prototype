@@ -37,12 +37,35 @@ public class Homepage extends HttpServlet {
 			requestDispatcher.forward(request, response);
 		}
 		else {
+		// gets the person object and their role from the session object.
+		UserBean user = (UserBean) session.getAttribute("userBean");
+		String role = ((UserBean)session.getAttribute("userBean")).getRoleInSystem();
+		String defaultSearch = ((UserBean)session.getAttribute("userBean")).getDefaultSearch();
 
-			// gets the person object and their role from the session object.
-			UserBean user = (UserBean) session.getAttribute("userBean");
-			String role = ((UserBean) session.getAttribute("userBean")).getRoleInSystem();
-			String defaultSearch = ((UserBean) session.getAttribute("userBean")).getDefaultSearch();
-			
+		if(session.getAttribute("gotoSimple") != null)
+		{
+			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
+			requestDispatcher.forward(request, response);
+		}
+
+		if (defaultSearch.equals("Simple")){
+			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		else if(defaultSearch.equals("Recommend")){
+			requestDispatcher = request.getRequestDispatcher("/recSearch");
+			requestDispatcher.forward(request, response);
+		}
+
+		// sends the user to the correct homepage depending on their role
+		if (role.equals("user")){
+
+			//this could be redundant?
+			if(request.getParameter("groupHomepage") != null){
+				request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
+			}
+
+			//stuff to set and display groups for user.
 			LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
 				if (!groupIDs.isEmpty()) {
 					LinkedList<GroupBean> groups = getGroups(groupIDs);
@@ -87,8 +110,9 @@ public class Homepage extends HttpServlet {
 				} else {
 					requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepage.jsp");
 				}
-
-			} else if (role.equals("admin")) {
+			}
+			}
+			else if (role.equals("admin")) {
 				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/StaffHomepage.jsp");
 			} else {
 				System.out.println("Unknown role error: (webapp.Homepage.java)");

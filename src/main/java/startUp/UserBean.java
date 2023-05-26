@@ -410,8 +410,9 @@ public class UserBean implements Serializable {
 				this.setThemePreference(result.getString("themePreference"));
 				this.setQuestionnaireCompleted(result.getString("questionnaireCompleted"));
 				this.setDateOfBirth(LocalDate.parse(result.getString("dateOfBirth")));
-				this.setTagSet(new LinkedList<>());
-				loadTags(result.getString("userID"));
+				//this.setTagSet(new LinkedList<>());
+				//loadTags(result.getString("userID"));
+				this.setTagSet(findUserTags(userID));
 				this.setBookmarkedFlights(new LinkedList<>());
 				loadBookmarkedFlights(result.getString("userID"));
 				this.setFavouritedDestinations(new LinkedList<>());
@@ -427,7 +428,30 @@ public class UserBean implements Serializable {
 		}
 	}
 
-	public void loadTags(String userID) {
+	public LinkedList<String> findUserTags(String userID) {
+		try {
+			String query = "SELECT * FROM USERS Where userID= ?";
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, userID);
+			ResultSet result = statement.executeQuery();
+
+			LinkedList<String> tags = new LinkedList<>();
+			while (result.next()) {
+				String a = result.getString(4);
+
+			}
+
+			result.close();
+			statement.close();
+			connection.close();
+			return tags;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+		public void loadTags(String userID) {
 		try {
 			String query = "SELECT tagName\n" +
 					"FROM TAGS\n" +
