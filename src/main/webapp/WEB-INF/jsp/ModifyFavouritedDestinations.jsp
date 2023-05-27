@@ -25,6 +25,7 @@ if (user != null && user.getBookmarkedFlights() != null) {
 
 <div class="main-content">
 <%--            Edit user bookmarked flights form                 --%>
+    <h1>Modify Favourited Destinations</h1>
     <form name="removeBookmarkedFlight" action="AccountSettings" method="POST">
     <ul>
         <% for(DestinationBean destination : favouritedDestinations) { ;%>

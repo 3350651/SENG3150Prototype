@@ -56,6 +56,12 @@ if(!depositMade){
                </form>
             </div>
         <%}%>
+        <form name="completeQuestionnaire" action="ManageGroup" method="GET">
+             <button class="groupButton" type="submit" name="manageGroup" value="true">Complete Questionnaire</button>
+        </form>
+        <form name="modifyTags" action="ManageGroup" method="GET">
+                     <button class="groupButton" type="submit" name="manageGroup" value="true">Modify Tags</button>
+                </form>
         </div>
 
 
