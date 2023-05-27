@@ -15,8 +15,8 @@
 
                 <html lang="en">
 
-                <%if(user !=null && user.getDefaultSearch()=="Recommend" ){%>
-                  <jsp:include page="Homepage-RecommendedSearch.jsp"></jsp:include>
+                <%if(user !=null && user.getDefaultSearch()=="Recommend"){%>
+                  <jsp:include page="recHome.jsp"></jsp:include>
                   <%}else{%>
                     <jsp:include page="Homepage-SimpleSearch.jsp"></jsp:include>
                     <%}%>

@@ -2,6 +2,7 @@
     <%@ page import="startUp.SearchBean" %>
         <%@ page import="java.util.LinkedList" %>
             <%@ page import="startUp.UserBean" %>
+            <%@ page import="startUp.DestinationBean" %>
                 <%@ page import="startUp.GroupBean" %>
                     <% UserBean user=(UserBean) session.getAttribute("userBean");%>
 
@@ -127,18 +128,19 @@
                                                                 <form name="flightActions"
                                                                     class="flightSearchResultButtons" action="Search"
                                                                     method="POST">
+                                                                    <input type="hidden" name="userID" value= <%= user.getUserID() %> >
+                                                                    <input type="hidden" name="destinationCode" value= <%= flight.getDestination().getDestinationCode()%> >
                                                                     <div class="bookmarkFlight">
                                                                         <input type="image" class="btn-image"
                                                                             src="${pageContext.request.contextPath}/images/bookmark.png"
                                                                             alt="Bookmark Flight Logo" name="bookmark"
-                                                                            value=<%="bookmark," + i %>>
+                                                                            value=<%= i %>>
                                                                     </div>
                                                                     <div class="favouriteDestination">
                                                                         <input type="image" class="btn-image"
                                                                             src="${pageContext.request.contextPath}/images/favouriteStar.png"
                                                                             alt="Favourite Destination Logo"
-                                                                            name="favourite" value=<%="favourite," + i
-                                                                            %>>
+                                                                            name="favourite" value="favouriteDestination">
                                                                     </div>
                                                                     <div class="addToGroupFavouriteList">
                                                                         <input type="image" class="btn-image"

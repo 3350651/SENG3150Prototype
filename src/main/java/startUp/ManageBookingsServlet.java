@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: ManageBookingsServlet.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Controller for managing bookings being made
+ */
+
 package startUp;
 
 import javax.servlet.RequestDispatcher;

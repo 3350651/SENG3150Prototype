@@ -1,10 +1,15 @@
+/**
+ * FILE NAME: TicketBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model object for flight tickets
+ */
+
 package startUp;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Random;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 

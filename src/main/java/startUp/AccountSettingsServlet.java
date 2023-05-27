@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: AccountSettingsServlet.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Controller to manage modifications to Account Settings/User Profiles
+ */
+
 package startUp;
 
 import javax.servlet.RequestDispatcher;
@@ -43,9 +49,6 @@ public class AccountSettingsServlet extends HttpServlet {
 		UserBean user = (UserBean) session.getAttribute("userBean");
 		if (request.getParameter("submitQuestionnaire") != null) {
 			//add tags based on the questionnaire results
-			// save to user.LinkedList<Tag>
-			//String tags = request.getParameter("tags");
-			//UserBean.editTags((String) request.getSession().getAttribute("editID"), tags);
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
@@ -138,6 +141,26 @@ public class AccountSettingsServlet extends HttpServlet {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
+		if(request.getParameter("addFavouriteDestination") != null){
+			String id = request.getParameter("userID"); // do this for all others as hidden form input
+			String destinationCode = request.getParameter("destinationCode");
+			UserBean.addToFavouritedDestinations(id, destinationCode);
+			DestinationBean d = new DestinationBean(destinationCode);
+			user.addFavouritedDestination(d);
+			session.setAttribute("userBean", user);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("removeFavouritedDestination") != null){
+			String id = request.getParameter("userID"); // do this for all others as hidden form input
+			String destinationCode = request.getParameter("destinationCode");
+			UserBean.removeFromFavouritedDestinations(id, destinationCode);
+			DestinationBean d = new DestinationBean(destinationCode); // TODO: make this constructor search for the remainder of flight information upon instantiation
+			user.removeFavouritedDestination(d);
+			session.setAttribute("userBean", user);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
+			requestDispatcher.forward(request, response);
+		}
 		if(request.getParameter("goToUIPreferences") != null){
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/EditUIPreferences.jsp");
@@ -161,6 +184,10 @@ public class AccountSettingsServlet extends HttpServlet {
 		}
 		if(request.getParameter("goToModifyBookmarkedFlights") != null){
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyBookmarkedFlights.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("goToModifyFavouritedDestinations") != null){
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyFavouritedDestinations.jsp");
 			requestDispatcher.forward(request, response);
 		}
 	}

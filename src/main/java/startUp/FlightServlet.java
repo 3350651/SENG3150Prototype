@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: FlightServlet.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Controller for obtaining a flight
+ */
+
 package startUp;
 
 import javax.servlet.RequestDispatcher;

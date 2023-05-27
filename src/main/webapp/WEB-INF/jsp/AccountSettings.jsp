@@ -11,6 +11,7 @@
 LinkedList<FlightBean> bookmarkedFlights = new LinkedList<>();
 if (user != null && user.getBookmarkedFlights() != null) {
   bookmarkedFlights = user.getBookmarkedFlights();
+  favouritedDestionations = user.getFavouritedDestinations();
 }
 %>
 <!DOCTYPE html>
@@ -103,7 +104,9 @@ if (user != null && user.getBookmarkedFlights() != null) {
     <h2>Favourite Destinations</h2>
     <div class="settingsCategory">
     <ul>
-        <li><p class="valueOfSetting">FlightExample</p> </li>
+    <% for(DestinationBean destination : favouritedDestionations) { ;%>
+        <li><p class="valueOfSetting"><%= destination.getDestinationCode() %></p> </li>
+    <% } %>
     </ul>
     </div>
 

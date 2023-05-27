@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: SearchBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model object for Searches made
+ */
+
 package startUp;
 
 import java.io.Serializable;

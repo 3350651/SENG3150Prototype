@@ -1,19 +1,16 @@
+/**
+ * FILE NAME: FlightBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model object for a user, their account and relevant settings.
+ */
+
 package startUp;
 
 import java.io.Serializable;
 import java.sql.*;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 
-/**
- * The user Bean which contains all the details of the user.
- * 
- * @author Jordan Eade c3350651
- * @author Lucy Knight c3350691
- * @author Ahmed Al-khazraji c3277545
- * @author Jason Walls c3298757
- */
 public class UserBean implements Serializable {
 
 	private boolean hasLogin;
@@ -34,9 +31,7 @@ public class UserBean implements Serializable {
 	private LinkedList<String> tagSet;
 	private LinkedList<FlightBean> bookmarkedFlights;
 	// private LinkedList<Searches> savedSearches
-	// private LinkedList<Groups> groups
-	// private LinkedList<Tags> tags
-	// private LinkedList<Destinations> favouriteDestinations
+	private LinkedList<DestinationBean> favouriteDestinations;
 
 	public UserBean() {
 	}
@@ -76,6 +71,7 @@ public class UserBean implements Serializable {
 		this.questionnaireCompleted = questionnaireCompleted;
 		this.tagSet = new LinkedList<>();
 		this.bookmarkedFlights = new LinkedList<>();
+		this.favouriteDestinations = new LinkedList<>();
 	}
 
 	public UserBean(String fname, String lname, String email, String userPassword, String phoneNo, String role,
@@ -96,6 +92,7 @@ public class UserBean implements Serializable {
 		this.dateOfBirth = dateOfBirth;
 		this.tagSet = new LinkedList<>();
 		this.bookmarkedFlights = new LinkedList<>();
+		this.favouriteDestinations = new LinkedList<>();
 	}
 
 	public Boolean isHasLogin() {
@@ -287,6 +284,38 @@ public class UserBean implements Serializable {
 		}
 	}
 
+	public LinkedList<DestinationBean> getFavouritedDestinations() {
+		return favouriteDestinations;
+	}
+
+	public void setFavouritedDestinations(LinkedList<DestinationBean> favouriteDestinations) {
+		this.favouriteDestinations = favouriteDestinations;
+	}
+
+	public void addFavouritedDestination(DestinationBean destination) {
+		boolean destinationExists = false;
+		for (int i = 0; i < getFavouritedDestinations().size(); i++) {
+			if (getFavouritedDestinations().get(i).getDestinationCode().equals(destination.getDestinationCode())) {
+				destinationExists = true;
+				break;
+			}
+		}
+		if (!destinationExists) {
+			getFavouritedDestinations().add(destination);
+		}
+	}
+
+	public void removeFavouritedDestination(DestinationBean destination) {
+		String destinationCodeToRemove = destination.getDestinationCode();
+		for (int i = 0; i < getFavouritedDestinations().size(); i++) {
+			String destinationCode = getFavouritedDestinations().get(i).getDestinationCode();
+			if (destinationCodeToRemove.equals(destinationCode)){
+				getFavouritedDestinations().remove(i);
+				break;
+			}
+		}
+	}
+
 	public void addTag(String tag) {
 		boolean tagExists = false;
 		for (String s : getTagSet()) {
@@ -378,10 +407,13 @@ public class UserBean implements Serializable {
 				this.setThemePreference(result.getString("themePreference"));
 				this.setQuestionnaireCompleted(result.getString("questionnaireCompleted"));
 				this.setDateOfBirth(LocalDate.parse(result.getString("dateOfBirth")));
-				this.setTagSet(new LinkedList<>());
-				loadTags(result.getString("userID"));
+				//this.setTagSet(new LinkedList<>());
+				//loadTags(result.getString("userID"));
+				this.setTagSet(findUserTags(userID));
 				this.setBookmarkedFlights(new LinkedList<>());
 				loadBookmarkedFlights(result.getString("userID"));
+				this.setFavouritedDestinations(new LinkedList<>());
+				loadFavouritedDestinations(result.getString("userID"));
 			}
 
 			result.close();
@@ -393,7 +425,30 @@ public class UserBean implements Serializable {
 		}
 	}
 
-	public void loadTags(String userID) {
+	public LinkedList<String> findUserTags(String userID) {
+		try {
+			String query = "SELECT * FROM USERS Where userID= ?";
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, userID);
+			ResultSet result = statement.executeQuery();
+
+			LinkedList<String> tags = new LinkedList<>();
+			while (result.next()) {
+				String a = result.getString(4);
+
+			}
+
+			result.close();
+			statement.close();
+			connection.close();
+			return tags;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+		public void loadTags(String userID) {
 		try {
 			String query = "SELECT tagName\n" +
 					"FROM TAGS\n" +
@@ -440,6 +495,34 @@ public class UserBean implements Serializable {
 				Timestamp departureTimeToAdd = result.getTimestamp("DepartureTime");
 				FlightBean flightToAdd = new FlightBean(airlineCodeToAdd, flightNumberToAdd, departureTimeToAdd);
 				this.addBookmarkedFlight(flightToAdd);
+			}
+
+			result.close();
+			statement.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			System.err.println(Arrays.toString(e.getStackTrace()));
+		}
+	}
+
+	public void loadFavouritedDestinations(String userID) {
+		try {
+			String query = "SELECT *\n" +
+					"FROM Destinations\n" +
+					"INNER JOIN USERFAVOURITEDDESTINATIONS ON Destinations.DestinationCode = USERFAVOURITEDDESTINATIONS.destinationCode\n" +
+					"WHERE USERFAVOURITEDDESTINATIONS.userID = ?;";
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, userID);
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				String destinationCodeToAdd = result.getString("DestinationCode");
+				String airportToAdd = result.getString("Airport");
+				String countryCodeToAdd = result.getString("CountryCode3");
+				DestinationBean destination = new DestinationBean(destinationCodeToAdd);
+				this.addFavouritedDestination(destination);
 			}
 
 			result.close();
@@ -716,57 +799,61 @@ public class UserBean implements Serializable {
 	}
 
 	public static void addToTagSet(String userID, String tagName) {
-		String query = "INSERT INTO USERTAGS VALUES (?, ?, ?)";
 		String tagID = "-1"; // initialize tagID to an invalid value
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		ResultSet resultSet2 = null;
 
+		// get the tag IDs for the relevant tags
 		try {
-			Connection connection = ConfigBean.getConnection();
-			PreparedStatement statement = connection.prepareStatement("SELECT tagID FROM TAGS WHERE tagName = ?");
+			connection = ConfigBean.getConnection();
+			statement = connection.prepareStatement("SELECT tagID FROM TAGS WHERE tagName = ?");
 			statement.setString(1, tagName);
-			ResultSet result = statement.executeQuery();
+			result = statement.executeQuery();
 
 			if (result.next()) {
 				tagID = result.getString("tagID");
 			}
-
-			result.close();
 			connection.close();
+			statement.close();
+			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		if (!tagID.equals("-1")) {
 			try {
-				Connection connection = ConfigBean.getConnection();
-				PreparedStatement checkTag = connection
-						.prepareStatement("SELECT * FROM USERTAGS WHERE userID = ? AND tagID = ?");
+				connection = ConfigBean.getConnection();
+				// check if user already has that tag saved
+				PreparedStatement checkTag = connection.prepareStatement("SELECT * FROM USERTAGS WHERE userID = ? AND tagID = ?");
 				checkTag.setString(1, userID);
 				checkTag.setString(2, tagID);
-				ResultSet resultSet2 = checkTag.executeQuery();
-				checkTag.close();
-				connection.close();
+				resultSet2 = checkTag.executeQuery();
+
 				if (resultSet2.next()) {
-					resultSet2.close();
-				} else {
+
+				}
+				else {
 					try {
-						connection = ConfigBean.getConnection();
-						PreparedStatement statement = connection.prepareStatement(query);
+						PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO USERTAGS VALUES (?, ?, ?)");
 						Random random = new Random();
 						String userTagsID = String.format("%08d", random.nextInt(100000000));
-						statement.setString(1, userTagsID);
-						statement.setString(2, tagID);
-						statement.setString(3, userID);
-						statement.executeUpdate();
-						statement.close();
+						insertStatement.setString(1, userTagsID);
+						insertStatement.setString(2, tagID);
+						insertStatement.setString(3, userID);
+						insertStatement.executeUpdate();
+						insertStatement.close();
 						connection.close();
-					} catch (SQLException e) {
+					}
+					catch (SQLException e) {
 						e.printStackTrace();
 					}
 				}
-			} catch (Exception e) {
+			}
+			catch (SQLException e) {
 				e.printStackTrace();
 			}
-
 		}
 	}
 
@@ -847,6 +934,58 @@ public class UserBean implements Serializable {
 			statement.setString(2, airlineCode);
 			statement.setString(3, flightNumber);
 			statement.setTimestamp(4, departureTime);
+			statement.executeUpdate();
+			statement.close();
+
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void addToFavouritedDestinations(String userID, String destinationCode) {
+		String query = "INSERT INTO USERFAVOURITEDDESTINATIONS VALUES (?, ?, ?)";
+		String tagID = "-1"; // initialize tagID to an invalid value
+
+		try (Connection connection = ConfigBean.getConnection();
+			 PreparedStatement checkFlight = connection.prepareStatement(
+					 "SELECT * FROM USERFAVOURITEDDESTINATIONS WHERE userID = ? AND destinationCode = ?");
+			 PreparedStatement insertStatement = connection.prepareStatement(query)) {
+
+			checkFlight.setString(1, userID);
+			checkFlight.setString(2, destinationCode);
+
+			try (ResultSet resultSet1 = checkFlight.executeQuery()) {
+				if (resultSet1.next()) {
+					// Flight already exists
+					return;
+				}
+			}
+
+			// Generate userBookmarkedFlightID
+			Random random = new Random();
+			String userFavouritedDestinationID = String.format("%08d", random.nextInt(100000000));
+
+			insertStatement.setString(1, userFavouritedDestinationID);
+			insertStatement.setString(2, destinationCode);
+			insertStatement.setString(3, userID);
+
+			insertStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			// Handle or log the exception
+			e.printStackTrace();
+		}
+	}
+
+	public static void removeFromFavouritedDestinations(String userID, String destinationCode) {
+		String query = "DELETE FROM USERFAVOURITEDDESTINATIONS WHERE userID = ? AND destinationCode = ?";
+
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, userID);
+			statement.setString(2, destinationCode);
 			statement.executeUpdate();
 			statement.close();
 

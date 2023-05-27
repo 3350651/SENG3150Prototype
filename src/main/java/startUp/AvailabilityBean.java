@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: AvailabilityBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model Object to obtain Availability data on flights
+ */
+
 package startUp;
 
 import java.sql.*;

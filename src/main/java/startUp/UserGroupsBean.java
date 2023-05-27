@@ -1,9 +1,13 @@
+/**
+ * FILE NAME: UserGroupsBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model object for groups a users is a part of
+ */
+
 package startUp;
 
 import java.io.Serializable;
 import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 

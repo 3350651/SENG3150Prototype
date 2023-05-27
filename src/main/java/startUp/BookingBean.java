@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: BookingBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model Object to hold data pertaining to bookings for customers
+ */
+
 package startUp;
 
 import java.io.Serializable;
