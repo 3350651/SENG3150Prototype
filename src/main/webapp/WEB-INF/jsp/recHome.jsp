@@ -32,7 +32,6 @@
     <jsp:include page='c-recSearchBar.jsp'></jsp:include>
     <%---<jsp:include page='c-SimpleSearchUtilities.jsp'></jsp:include>---%>
 </div>
-    <% if (user != null) { %>
     <div class="centeringtext"> <h1>Recommended Flights for You</h1> </div>
     <div class="gridParent">
     <% recSearchBean search = (recSearchBean) session.getAttribute("recFlights"); LinkedList<FlightBean> searchResults = search.getFlightResults();%>
@@ -205,7 +204,6 @@
     </form>
     <% k++; }%>
 </div>
-    <%}%>
 <%--</div>--%>
 </body>
 <script type="text/javascript"

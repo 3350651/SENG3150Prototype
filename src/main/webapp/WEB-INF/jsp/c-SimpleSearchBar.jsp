@@ -1,11 +1,11 @@
 
 <div class="simpleSearch">
-    <form method="POST" action="recSearch" class="simpleSearchForm">
+    <form method="POST" action="flightSearch" class="simpleSearchForm">
 
         <div class="departureLocation"><label for="departureLocation">Leaving
-                From</label><br>
+            From</label><br>
             <input type="text" id="departureLocation" value="Newcastle"
-                name="departureLocation">
+                   name="departureLocation">
         </div>
         <div class="arrivalLocation"><label for="arrivalLocation">Going To</label><br>
             <input type="text" id="arrivalLocation" name="arrivalLocation">
@@ -20,7 +20,7 @@
             <div class="flexibleDaysGroup" id="flexibleDaysGroup" style="display:none;">
                 <label for="flexibleDays">Days flexible?</label><br>
                 <input type="number" min="0" max="30" step="1" id="flexibleDays"
-                    name="flexibleDays">
+                       name="flexibleDays">
             </div>
         </div>
         <div class="numberOfAdults"><label for="numberOfAdults"># Adults</label><br>
@@ -37,7 +37,7 @@
         </div>
         <div class="search">
             <button name="searchResults" type="submit" value="searchResults"
-                class="search">Search For Flights</button>
+                    class="search">Search For Flights</button>
         </div>
     </form>
 </div>
