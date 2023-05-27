@@ -20,7 +20,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>FlightPub</title>
+    <title>FlightPub - Recommended Search</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 

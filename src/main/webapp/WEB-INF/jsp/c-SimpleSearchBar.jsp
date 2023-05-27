@@ -1,6 +1,6 @@
 
 <div class="simpleSearch">
-    <form method="POST" action="flightSearch" class="simpleSearchForm">
+    <form method="POST" action="recSearch" class="simpleSearchForm">
 
         <div class="departureLocation"><label for="departureLocation">Leaving
                 From</label><br>
@@ -36,8 +36,8 @@
                 Search Parameters</button>
         </div>
         <div class="search">
-            <button name="searchLogged" type="submit" value="searchLogged"
-                class="search">Search For Flights</button>
+            <button name="searchResults" type="submit" value="searchResults"
+                class="searchResults">Search For Flights</button>
         </div>
     </form>
 </div>

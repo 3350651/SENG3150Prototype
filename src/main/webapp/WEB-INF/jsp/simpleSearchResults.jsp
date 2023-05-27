@@ -20,9 +20,10 @@
     <title>FlightPub</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
+
+<body>
 <jsp:include page='c-Sidebar-Homepage.jsp'></jsp:include>
 <jsp:include page='c-AccountAccess.jsp'></jsp:include>
-<body>
 <% recSearchBean search = (recSearchBean) session.getAttribute("flightResults");
 LinkedList<FlightBean> searchResults = search.getFlightResults();%>
 <br>

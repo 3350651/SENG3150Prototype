@@ -14,7 +14,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>FlightPub</title>
+    <title>Search Results</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <jsp:include page='c-Sidebar-recPage.jsp'></jsp:include>
