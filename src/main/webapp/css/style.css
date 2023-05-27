@@ -853,9 +853,12 @@ p.summaryOfSearch{
       display: grid;
       column-gap: 50px;
       display: flex;
-      margin-left: 250px;
+      /*margin-left: 250px;
       align-items: center;
-      justify-content: center;
+      justify-content: center;*/
+      margin-left: 9000px;
+      align-items: center;
+      justify-content: right;
       font-family: Arial;
   }
 
