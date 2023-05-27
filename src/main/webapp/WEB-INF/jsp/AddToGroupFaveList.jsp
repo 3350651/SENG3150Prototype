@@ -12,7 +12,7 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
-    <link rel="stylesheet" href="Style.css">
+     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mockGroupStyle.css">
 </head>
 <body>
     <main>
@@ -22,11 +22,13 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
 
  <header>
             <div class="titleContainer">
+                          <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="groupLogo" >
                 <h1>Add Flight to Group Favourite List</h1>
             </div>
         </header>
 
-        <div id="addGroupFaveFlight">
+        <div id="addMemberFormContainer">
+        <div>
         <form method="POST" action="GroupHomepage">
             <%
                 if(!groups.isEmpty()){
@@ -35,18 +37,19 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
                     for(int i = 0; i < size; i++){
                         GroupBean group = groups.pop();
                         name = group.getGroupName(); %>
-                        <input type="checkbox" id="groupFaveFlight" name="groupName" value="<%= name %>"
-                        <label for="<%= name %>"><%= name %></label><br>
+                        <input class="checkFave" type="checkbox" id="groupFaveFlight" name="groupName" value="<%= name %>"
+                        <label class="addFaveFlight" for="<%= name %>"><%= name %></label>
                         <%
                         groups.addLast(group);
                     } %>
-                    <button name="addToGroupFaveList" value="addToGroupFaveList">Add!</button>
+                    <br><button class="groupButton" name="addToGroupFaveList" value="addToGroupFaveList">Add!</button>
               <%  }
             %>
             </form>
             <form method="POST" action="GroupHomepage">
-               <button type="submit" name="doNotAddFaveFlight" value="true">Cancel</button>
+               <button class="groupButton" type="submit" name="doNotAddFaveFlight" value="true">Cancel</button>
             </form>
+            </div>
         </div>
         </main>
     </body>
