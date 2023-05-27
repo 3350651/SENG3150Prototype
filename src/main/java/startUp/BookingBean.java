@@ -142,7 +142,7 @@ public class BookingBean implements Serializable {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, this.bookingId);
             statement.setString(2, this.bookingUserId);
-            statement.setString(3, this.departureFlight.getAirline());
+            statement.setString(3, this.departureFlight.getAirlineName());
             statement.setString(4, this.departureFlight.getFlightName());
             statement.setString(5, this.departureFlight.getFlightTime().toString());
             statement.setBoolean(6, true);
