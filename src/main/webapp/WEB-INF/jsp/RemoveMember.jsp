@@ -36,26 +36,28 @@ LinkedList<Boolean> hasDeposited = (LinkedList<Boolean>) session.getAttribute("h
 
         <div class="removeMember">
 
-                <%
-                for(int i = 0; i < size; i++){
-                String name = memberNames.pop();
-                String id = memberIDs.pop();
-                Boolean deposited = hasDeposited.pop();
-                %>
-                    <p>Member Name: <%= name %></p>
-                    <p>Member ID: <%= id %></p>
-                    <%if(!deposited){%>
-                    <form method="POST" action="ManageGroup" onsubmit="return removeMemberForm()">
-                        <button class="groupButton" type="submit" name="removeMember" value="removeMember">Remove</button>
-                        <input type="hidden" id="memberID" name="memberID" value="<%= id %>">
-                    </form>
-                    <%} else {%>
-                    <p>Cannot remove <%= name %> due to their contribution to the money pool.</p><br>
-                <% } memberNames.addLast(name);
-                memberIDs.addLast(id);
-                hasDeposited.addLast(deposited);
-                }
-                %>
+                <% if(size > 0) {
+                    for(int i = 0; i < size; i++){
+                    String name = memberNames.pop();
+                    String id = memberIDs.pop();
+                    Boolean deposited = hasDeposited.pop();
+                    %>
+                        <p>Member Name: <%= name %></p>
+                        <p>Member ID: <%= id %></p>
+                        <%if(!deposited){%>
+                        <form method="POST" action="ManageGroup" onsubmit="return removeMemberForm()">
+                            <button class="groupButton" type="submit" name="removeMember" value="removeMember">Remove</button>
+                            <input type="hidden" id="memberID" name="memberID" value="<%= id %>">
+                        </form>
+                        <%} else {%>
+                        <p>Cannot remove <%= name %> due to their contribution to the money pool.</p><br>
+                    <% } memberNames.addLast(name);
+                    memberIDs.addLast(id);
+                    hasDeposited.addLast(deposited);
+                    }
+                } else {%>
+                    <p> The group currently has no members.</p>
+                <% } %>
 
         </div>
 
