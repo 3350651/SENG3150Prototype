@@ -15,17 +15,18 @@ LinkedList<Boolean> hasDeposited = (LinkedList<Boolean>) session.getAttribute("h
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Homepage</title>
-    <link rel="stylesheet" href="Style.css">
+    <title>Remove Member</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mockGroupStyle.css">
 </head>
 <body>
     <main>
         <header>
            <form name="backToManageGroup" action="ManageGroup" method="GET">
-                   <button type="submit" name="manageGroup" value="true">Return to Manage Group</button>
+                   <button class="groupButton" type="submit" name="manageGroup" value="true">Return to Manage Group</button>
            </form>
 
             <div class="titleContainer">
+             <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="groupLogo" >
                 <h1>Remove Group Member</h1>
             </div>
             <div class="groupName">
@@ -33,27 +34,29 @@ LinkedList<Boolean> hasDeposited = (LinkedList<Boolean>) session.getAttribute("h
             </div>
         </header>
 
-        <div>
-            <%
-            for(int i = 0; i < size; i++){
-            String name = memberNames.pop();
-            String id = memberIDs.pop();
-            Boolean deposited = hasDeposited.pop();
-            %>
-                <p>Member Name: <%= name %></p>
-                <p>Member ID: <%= id %></p>
-                <%if(!deposited){%>
-                <form method="POST" action="ManageGroup" onsubmit="return removeMemberForm()">
-                    <button type="submit" name="removeMember" value="removeMember">Remove</button>
-                    <input type="hidden" id="memberID" name="memberID" value="<%= id %>">
-                </form>
-                <%} else {%>
-                <p>Cannot remove <%= name %> due to their contribution to the money pool.</p><br>
-            <% } memberNames.addLast(name);
-            memberIDs.addLast(id);
-            hasDeposited.addLast(deposited);
-            }
-            %>
+        <div class="removeMember">
+
+                <%
+                for(int i = 0; i < size; i++){
+                String name = memberNames.pop();
+                String id = memberIDs.pop();
+                Boolean deposited = hasDeposited.pop();
+                %>
+                    <p>Member Name: <%= name %></p>
+                    <p>Member ID: <%= id %></p>
+                    <%if(!deposited){%>
+                    <form method="POST" action="ManageGroup" onsubmit="return removeMemberForm()">
+                        <button class="groupButton" type="submit" name="removeMember" value="removeMember">Remove</button>
+                        <input type="hidden" id="memberID" name="memberID" value="<%= id %>">
+                    </form>
+                    <%} else {%>
+                    <p>Cannot remove <%= name %> due to their contribution to the money pool.</p><br>
+                <% } memberNames.addLast(name);
+                memberIDs.addLast(id);
+                hasDeposited.addLast(deposited);
+                }
+                %>
+
         </div>
 
     </main>

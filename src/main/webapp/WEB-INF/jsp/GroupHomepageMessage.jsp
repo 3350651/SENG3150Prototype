@@ -12,30 +12,33 @@ boolean goHome = (boolean) session.getAttribute("goHome");
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
-    <link rel="stylesheet" href="Style.css">
+     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mockGroupStyle.css">
 </head>
 <body>
     <main>
 
  <header>
             <div class="titleContainer">
+            <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="groupLogo" >
                 <h1>Group Update Message</h1>
             </div>
             <div class="groupName">
                 <h2><%= group.getGroupName() %></h2>
             </div>
         </header>
-        <div>
-            <%= message %>
-        </div>
-        <div id="continueFormContainer">
-            <form method="POST" action="ManageGroup">
-                <button type="submit" name="continue" value="continue">Continue</button>
+        <div id="addMemberFormContainer">
+            <div>
+                <%= message %>
+            </div>
+            <div>
+                <form method="POST" action="ManageGroup">
+                    <button class="groupButton" type="submit" name="continue" value="continue">Continue</button>
 
-                <%if(goHome){%>
-                <input type="hidden" id="goHome" name="goHome" value="<%= goHome %>">
-                <%}%>
-            </form>
+                    <%if(goHome){%>
+                    <input type="hidden" id="goHome" name="goHome" value="<%= goHome %>">
+                    <%}%>
+                </form>
+            </div>
         </div>
         </main>
     </body>

@@ -18,17 +18,19 @@ if(!depositMade){
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
-    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mockGroupStyle.css">
 </head>
 <body>
     <main>
         <header>
 
            <form name="backToGroup" action="GroupHomepage" method="GET">
-                   <button type="submit" name="groupHomepage" value="true">Return to Group Home</button>
+                   <button class="groupButton" type="submit" name="groupHomepage" value="true">Return to Group Home</button>
            </form>
 
             <div class="titleContainer">
+            <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="groupLogo" >
                 <h1>Manage Group</h1>
             </div>
             <div class="groupName">
@@ -36,23 +38,25 @@ if(!depositMade){
             </div>
         </header>
 
+        <div class="manageGroupContent">
         <div>
            <form name="addMember" action="ManageGroup" method="POST">
-                  <button type="submit" name="addMember" value="addMember">Add Member</button>
+                  <button class="groupButton"type="submit" name="addMember" value="addMember">Add Member</button>
            </form>
         </div>
         <div>
            <form name="removeMember" action="ManageGroup" method="POST">
-                 <button type="submit" name="removeMember" value="removeMember">Remove Member</button>
+                 <button class="groupButton" type="submit" name="removeMember" value="removeMember">Remove Member</button>
            </form>
         </div>
         <%if(!depositMade) {%>
             <div>
                <form name="deleteGroup" action="ManageGroup" method="POST">
-                     <button type="submit" name="deleteGroup" value="deleteGroup">Delete Group</button>
+                     <button class="groupButton" type="submit" name="deleteGroup" value="deleteGroup">Delete Group</button>
                </form>
             </div>
         <%}%>
+        </div>
 
 
     </main>
