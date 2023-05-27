@@ -51,6 +51,7 @@ if(faveFlights != null && !faveFlights.isEmpty()){
                         <input type="hidden" id="airlineCode" name="airlineCode" value="<%= faveFlight.getAirlineCode() %>">
                         <input type="hidden" id="flightName" name="flightName" value="<%= faveFlight.getFlightName() %>">
                         <input type="hidden" id="flightTime" name="flightTime" value="<%= faveFlight.getFlightTime() %>">
+                        <input type="hidden" id="getFlight" name="getFlight" value="true">
                     </form>
                 <% faveFlights.addLast(faveFlight);
                    destinations.addLast(dest);

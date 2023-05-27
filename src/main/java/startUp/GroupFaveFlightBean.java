@@ -3,11 +3,16 @@ package startUp;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 import java.sql.*;
+import java.util.Comparator;
 
+import static startUp.ChatBean.getChatMessages;
 import static startUp.FlightBean.getFlight;
+import static startUp.MemberFlightVoteBean.getFaveFlightScore;
+import static startUp.UserGroupsBean.getNumberOfMembers;
 
 public class GroupFaveFlightBean implements Serializable {
     private String groupFaveFlightID;
@@ -16,7 +21,7 @@ public class GroupFaveFlightBean implements Serializable {
     private Timestamp flightTime;
 
     private String chatID;
-    private float rank;
+    private double score;
     private String groupID;
 
 
@@ -30,7 +35,7 @@ public class GroupFaveFlightBean implements Serializable {
         this.flightTime = flightTime;
         ChatBean chat = new ChatBean();
         this.chatID = chat.getChatID();
-        this.rank = 0;
+        this.score = 0.5;
         this.groupID = groupID;
 
         addGroupFaveFlightToDB();
@@ -47,7 +52,7 @@ public class GroupFaveFlightBean implements Serializable {
             statement.setString(3, this.flightName);
             statement.setString(4, String.valueOf(this.flightTime));
             statement.setString(5, this.chatID);
-            statement.setBigDecimal(6, BigDecimal.valueOf(this.rank));
+            statement.setBigDecimal(6, BigDecimal.valueOf(this.score));
             statement.setString(7, this.groupID);
 
 
@@ -61,13 +66,13 @@ public class GroupFaveFlightBean implements Serializable {
         }
     }
 
-    public GroupFaveFlightBean(String id, String airlineCode, String flightName, Timestamp flightTime, String chatID, float rank, String groupID){
+    public GroupFaveFlightBean(String id, String airlineCode, String flightName, Timestamp flightTime, String chatID, double score, String groupID){
         this.groupFaveFlightID = id;
         this.airline = airlineCode;
         this.flightName = flightName;
         this.flightTime = flightTime;
         this.chatID = chatID;
-        this.rank = rank;
+        this.score = score;
         this.groupID = groupID;
     }
 
@@ -204,11 +209,12 @@ public class GroupFaveFlightBean implements Serializable {
                 String name = result.getString(3);
                 Timestamp time = result.getTimestamp(4);
                 String chatID = result.getString(5);
-                float rank = result.getFloat(6);
+                double rank = result.getFloat(6);
                 String group = result.getString(7);
 
                 faveFlight = new GroupFaveFlightBean(id, code, name, time, chatID, rank, group);
             }
+
         }
         catch(SQLException e){
             System.err.println(e.getMessage());
@@ -265,5 +271,44 @@ public class GroupFaveFlightBean implements Serializable {
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
         return flight;
+    }
+
+    public LinkedList<MessageBean> getChat(String chatID){
+        return getChatMessages(chatID);
+    }
+
+    public String getGroupID(){
+        return this.groupID;
+    }
+
+    public String getGroupFaveFlightID(){
+        return this.groupFaveFlightID;
+    }
+
+    public void setScore(double score){
+        this.score = score;
+    }
+
+    public double getScore(){
+        return this.score;
+    }
+
+    //Sort the fave flights.
+    public static LinkedList<GroupFaveFlightBean> getSortedList(LinkedList<GroupFaveFlightBean> faveFlights, String groupID){
+        LinkedList<GroupFaveFlightBean> sortedFlights = new LinkedList<>();
+        int size = faveFlights.size();
+
+        //Get the score for each flight, in order to rank them.
+        for(int i = 0; i < size; i++){
+            GroupFaveFlightBean flight = faveFlights.removeFirst();
+            double flightScore = getFaveFlightScore(flight.getGroupID(), flight.getGroupFaveFlightID());
+            flight.setScore(flightScore);
+            sortedFlights.addLast(flight);
+        }
+
+        //Sort the flights based on their score, will give the ranking from largest score.
+        sortedFlights.sort(new FlightComparator());
+
+        return sortedFlights;
     }
 }

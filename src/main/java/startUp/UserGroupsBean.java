@@ -176,4 +176,26 @@ public class UserGroupsBean implements Serializable {
         return inGroup;
     }
 
+    public static int getNumberOfMembers(String groupID){
+        int members = 0;
+
+        String query = "SELECT COUNT(*) FROM USERGROUPS WHERE [groupID] = ?";
+        try{
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, groupID);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                members = result.getInt(1);
+            }
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+
+        return members;
+    }
+
 }

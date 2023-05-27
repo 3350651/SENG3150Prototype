@@ -42,7 +42,7 @@ LinkedList<Boolean> hasDeposited = (LinkedList<Boolean>) session.getAttribute("h
             %>
                 <p>Member Name: <%= name %></p>
                 <p>Member ID: <%= id %></p>
-                <%if(deposited){%>
+                <%if(!deposited){%>
                 <form method="POST" action="ManageGroup" onsubmit="return removeMemberForm()">
                     <button type="submit" name="removeMember" value="removeMember">Remove</button>
                     <input type="hidden" id="memberID" name="memberID" value="<%= id %>">
