@@ -36,7 +36,6 @@
     <div class="gridParent">
     <% recSearchBean search = (recSearchBean) session.getAttribute("recFlights"); LinkedList<FlightBean> searchResults = search.getFlightResults();%>
     <% int i = 0; for (FlightBean flight : searchResults ) { %>
-        <form method="POST" action="recSearch">
             <div class="recResults">
                 <div class="FlightSearchResult1">
                     <div class="flightInfo">
@@ -49,10 +48,6 @@
                         </div>
                         <div class="searchResultRow2">
                             <div class="priceResult">$662</div>
-                            <input type="hidden" name="flightTime" id="flightTime" value="<%=flight.getFlightTime()%>">
-                            <input type="hidden" name="AirlineName" id="AirlineName" value="<%=flight.getAirlineName()%>">
-                            <input type="hidden" name="FlightName" id="FlightName" value="<%=flight.getFlightName()%>">
-                            <input type="hidden" name="PlaneType" id="PlaneType" value="<%=flight.getPlaneType()%>">
                             <div class="dateResult"><%=flight.getFlightTime()%></div>
                             <div class="numPassengersResult">2 adults</div>
                         </div>
@@ -65,7 +60,7 @@
                         <span class="brmedium"></span>
 
                         <div class="searchResultButtons">
-                            <form name="flightActions" class="flightSearchResultButtons" action="flightSearch" method="POST">
+                            <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
                                 <div class="bookmarkFlight">
                                     <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value="bookmark">
                                 </div>
@@ -75,6 +70,12 @@
                                 <div class="addToGroupFavouriteList">
                                     <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="add-to-list" value="add-to-list">
                                 </div>
+                                </form>
+                                <form method="POST" action="recSearch">
+                                <input type="hidden" name="flightTime" id="flightTime" value="<%=flight.getFlightTime()%>">
+                                <input type="hidden" name="AirlineName" id="AirlineName" value="<%=flight.getAirlineName()%>">
+                                <input type="hidden" name="FlightName" id="FlightName" value="<%=flight.getFlightName()%>">
+                                <input type="hidden" name="PlaneType" id="PlaneType" value="<%=flight.getPlaneType()%>">
                                 <div class="viewFlightDetailsButton">
                                     <button type="submit" class="viewFlightDetailsButton" name="viewFlight" value="viewFlight">View Details</button>
                                 </div>

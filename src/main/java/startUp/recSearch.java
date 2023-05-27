@@ -74,7 +74,8 @@ public class recSearch extends HttpServlet
             String planeType = request.getParameter("PlaneType");
 
             FlightBean flight = new FlightBean(flightname, airline, timestamp, flightname, planeType, departure, destination, destination);
-            session.setAttribute("flightDetails", flight);
+            session.setAttribute("flightDetails", flight); //TODO: clean up
+            session.setAttribute("flight", flight);
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(request, response);
