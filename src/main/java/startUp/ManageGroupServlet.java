@@ -42,9 +42,6 @@ public class ManageGroupServlet extends HttpServlet {
 
         requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
         requestDispatcher.forward(request, response);
-
-
-        requestDispatcher.forward(request, response);
     }
 
 
@@ -147,6 +144,7 @@ public class ManageGroupServlet extends HttpServlet {
         if(request.getParameter("confirmDeleteGroup") != null){
             boolean delete = Boolean.parseBoolean(request.getParameter("confirmDeleteGroup"));
 
+            //Group cannot currently be deleted.
             if(delete){
 //                deleteUserGroups(groupID);
 //
@@ -165,8 +163,8 @@ public class ManageGroupServlet extends HttpServlet {
 //                deleteGroup(groupID);
 //                //For full implementation: delete the MemberFlightVote rows for the given group (votes made by users).
 //                deletePool(group.getPoolID());
-//                session.setAttribute("message", "Success! The group was deleted.");
-//                session.setAttribute("goHome", true);
+                session.setAttribute("message", "Success! The group was deleted.");
+                session.setAttribute("goHome", true);
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepageMessage.jsp");
                 requestDispatcher.forward(request, response);
             }

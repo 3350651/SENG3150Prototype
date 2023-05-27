@@ -20,16 +20,17 @@ if(faveFlights != null && !faveFlights.isEmpty()){
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
-    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mockGroupStyle.css">
 </head>
 <body>
     <main>
         <header>
            <form name="backtoGroupHomepage" action="GroupHomepage" method="GET">
-                   <button type="submit" name="groupHomepage" value="true">Return to Group Homepage</button>
+                   <button class="groupButton" type="submit" name="groupHomepage" value="true">Return to Group Homepage</button>
            </form>
 
             <div class="titleContainer">
+            <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="groupLogo" >
                 <h1>Group Favourite List</h1>
             </div>
             <div class="groupName">
@@ -37,7 +38,7 @@ if(faveFlights != null && !faveFlights.isEmpty()){
             </div>
         </header>
 
-        <div>
+        <div class="manageGroupContent">
             <%
             if(size > 0){
                 for(int i = 0; i < size; i++){

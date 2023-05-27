@@ -12,7 +12,7 @@ PoolBean pool = (PoolBean) session.getAttribute("pool");
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
-    <link rel="stylesheet" href="Style.css">
+     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mockGroupStyle.css">
 </head>
 <body>
     <main>
@@ -22,24 +22,26 @@ PoolBean pool = (PoolBean) session.getAttribute("pool");
 
  <header>
             <div class="titleContainer">
+            <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="groupLogo" >
                 <h1>Add To Money Pool</h1>
             </div>
             <div class="groupName">
                 <h2><%= group.getGroupName() %></h2>
             </div>
         </header>
+
+        <div class="manageGroupContent">
         <div>
             Required Pool Amount Remaining: <%= pool.getAmountRemaining() %>
         </div>
-        <div id="addMoneyToPoolFormContainer">
             <form method="POST" action="GroupHomepage" onsubmit="return addMoneyToPool()">
                 <label for="addMoney">Amount to Deposit: </label>
                 <input type="number" id="addMoney" name="addMoney"><br>
 
-                <button type="submit" name="addMoney" value="addMoney">Add to Pool</button>
+                <button class="groupButton" type="submit" name="addMoney" value="addMoney">Add to Pool</button>
             </form>
             <form method="POST" action="GroupHomepage">
-               <button type="submit" name="cancel" value="true">Cancel</button>
+               <button class="groupButton" type="submit" name="cancel" value="true">Cancel</button>
                <input type="hidden" id="toPool" name="toPool" value="toPool">
             </form>
         </div>
