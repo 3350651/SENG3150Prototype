@@ -5,8 +5,8 @@ public class tagSet
     public tagSet()
     {}
 
-    public void setDestinationTag(DestinationBean a)
-    {
+//    public void setDestinationTag(DestinationBean a)
+//    {
 //        if (a.getDestinationCode().contains("MEL"))
 //        {
 //            LinkedList<String> tags = new LinkedList<>();
@@ -15,5 +15,5 @@ public class tagSet
 //            tags.add("Windy");
 //            a.setTags(tags);
 //        }
-    }
+//    }
 }

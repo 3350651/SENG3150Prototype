@@ -17,8 +17,6 @@ public class DestinationBean {
     private String destinationDescription;
     private LinkedList<String> tags;
     private int reputationScore;
-
-    LinkedList<DestinationBean> destinations;
     LinkedList<String> codes;
 
     public DestinationBean()
@@ -28,7 +26,6 @@ public class DestinationBean {
         destinationDescription = null;
         tags = null;
         reputationScore = 0;
-        destinations = new LinkedList<>();
         codes = new LinkedList<>();
     }
 
@@ -49,8 +46,8 @@ public class DestinationBean {
             while (result.next()) {
                 destinationName = result.getString(2);
                 // TODO: Add destinationDescription, tags and reputationScore here
-                tagSet t = new tagSet();
-                t.setDestinationTag(this);
+//                tagSet t = new tagSet();
+//                t.setDestinationTag(this);
 
                 /*LinkedList<String> tlist = new LinkedList<>();
                 String tag1 = result.getString(4);
@@ -94,8 +91,6 @@ public class DestinationBean {
             while (result.next()) {
                 destinationCode = result.getString(1);
                 // TODO: Add destinationDescription, tags and reputationScore here
-                tagSet t = new tagSet();
-                t.setDestinationTag(this);
                 /*LinkedList<String> tlist = new LinkedList<>();
                 String tag1 = result.getString(4);
                 String tag2 = result.getString(5);
@@ -185,13 +180,7 @@ public class DestinationBean {
         for (int i = 0; i < codes.size(); i++)
         {
             DestinationBean a = new DestinationBean(codes.get(i));
-            destinations.add(a);
         }
-    }
-
-    public LinkedList<DestinationBean> getDestinations()
-    {
-        return this.destinations;
     }
 
 
