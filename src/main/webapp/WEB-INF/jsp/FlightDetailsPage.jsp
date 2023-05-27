@@ -6,7 +6,7 @@
                     <!DOCTYPE html>
                     <html lang="en">
 
-                    <%FlightBean flight=(FlightBean) session.getAttribute("flight");%>
+                    <%FlightBean flight=(FlightBean) session.getAttribute("flightDetails");%>
 
                         <head>
                             <meta charset="UTF-8">

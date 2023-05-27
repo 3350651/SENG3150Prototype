@@ -113,6 +113,7 @@ public class recSearchBean implements Serializable
             {
                 String airCode = result.getString(1);
                 String flightNum = result.getString(2);
+                System.out.println(flightNum);
                 DestinationBean departure = new DestinationBean(result.getString(3));
                 DestinationBean stopOver = new DestinationBean(result.getString(4));
                 DestinationBean arrival = new DestinationBean(result.getString(5));
@@ -121,7 +122,8 @@ public class recSearchBean implements Serializable
                 String planeCode = result.getString(10);
                 int duration = result.getInt(11);
 
-                FlightBean flight = new FlightBean(airCode, flightNum, departure, stopOver, arrival, leaveTime);
+                //FlightBean flight = new FlightBean(airCode, flightNum, departure, stopOver, arrival, leaveTime);
+                FlightBean flight = new FlightBean(airCode, airCode, leaveTime, flightNum, planeCode, departure, arrival, arrival);
 
                 flightResults.add(flight);
             }
