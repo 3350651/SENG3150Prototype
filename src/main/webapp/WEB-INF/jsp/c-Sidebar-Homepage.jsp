@@ -29,7 +29,7 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
                 value="recommendSearch">Recommend Search</button>
     </form>
     <%-- Bookmarked Flights --%>
-    <% if (user != null) { %>
+    <% if (bookmarkedFlights.size() != 0) { %>
     <form name="goToBookmarkedFlight" action="ViewFlight" method="POST">
     <h2>Bookmarked Flights</h2>
     <%
