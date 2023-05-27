@@ -3,7 +3,12 @@
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="startUp.FlightBean" %>
+<%@ page import="startUp.GroupBean" %>
+<%@ page import="java.util.List" %>
 <%@ page import="startUp.DestinationBean" %>
+<%
+  LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("groups");
+%>
 <%
   UserBean user = (UserBean) session.getAttribute("userBean");
   LinkedList<FlightBean> bookmarkedFlights = new LinkedList<>();
@@ -16,7 +21,7 @@
   <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
        alt="FlightPub Logo" class="logo">
   <%-- Home page button --%>
-  <form name="SearchSelect" action="recSearch" method="POST">
+  <form name="gotoSimple" action="recSearch" method="POST">
     <h2>Toggle Search Mode</h2>
     <%-- <button type="submit" class="button" name="home" value="simpleSearch">Simple
         Search</button> --%>
@@ -39,9 +44,31 @@
     %>
   </form>
   <%-- Groups You're In --%>
-  <form name="goToGroup" action="MockupGroup" class="groups" method="POST">
-    <h2>Group Membership</h2>
-    <button type="submit" class="button" name="createGroup"
-            value="createGroup">Create New Group</button>
-  </form>
+  <div class = "GroupMembership">
+    <h2>Your Groups</h2>
+    <%
+      if(groups != null && (!groups.isEmpty())){
+        int size = groups.size();
+        String name = "";
+        for(int i = 0; i < size; i++){
+          GroupBean group = groups.pop();
+          name = group.getGroupName(); %>
+    <div>
+      <form method="GET" action="GroupHomepage">
+        <button class="button" name="goGroup" value="goGroup">
+          <%= name %>
+        </button>
+        <input type="hidden" id="groupName" name="groupName" value="<%= name %>">
+      </form>
+    </div>
+    <%
+          groups.addLast(group);
+        }
+      }
+    %>
+    <form name="goToGroup" action="CreateGroup" class="groups" method="GET">
+      <button type="submit" class="button" name="createGroup"
+              value="createGroup">Create New Group</button>
+    </form>
+  </div>
 </div>

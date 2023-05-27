@@ -31,19 +31,12 @@ public class recSearch extends HttpServlet
         //session.setAttribute("destinationList", dest);
         recSearchBean recs = new recSearchBean();
 
-        if (session.getAttribute("userBean") != null)
-        {
             System.out.println("User not null");
             UserBean user = (UserBean) session.getAttribute("userBean");
             //recs.getRecommendedFlights(user);
             recs.getpresetFlights();
-
             session.setAttribute("recFlights", recs);
-        }
-        else if (session.getAttribute("userBean") == null)
-        {
-            System.out.println("User is null");
-        }
+
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/recHome.jsp");
         requestDispatcher.forward(request, response);
     }
@@ -81,7 +74,8 @@ public class recSearch extends HttpServlet
             String planeType = request.getParameter("PlaneType");
 
             FlightBean flight = new FlightBean(flightname, airline, timestamp, flightname, planeType, departure, destination, destination);
-            session.setAttribute("flightDetails", flight);
+            session.setAttribute("flightDetails", flight); //TODO: clean up
+            session.setAttribute("flight", flight);
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(request, response);

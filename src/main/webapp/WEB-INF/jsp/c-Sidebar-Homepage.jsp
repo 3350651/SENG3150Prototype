@@ -29,6 +29,7 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
                 value="recommendSearch">Recommend Search</button>
     </form>
     <%-- Bookmarked Flights --%>
+    <% if (user != null) { %>
     <form name="goToBookmarkedFlight" action="ViewFlight" method="POST">
     <h2>Bookmarked Flights</h2>
     <%
@@ -43,7 +44,9 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
       j++;}}
     %>
     </form>
+    <% } %>
     <%-- Groups You're In --%>
+    <% if (user != null) { %>
     <div class = "GroupMembership">
     <h2>Your Groups</h2>
     <%
@@ -70,5 +73,6 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
         <button type="submit" class="button" name="createGroup"
             value="createGroup">Create New Group</button>
     </form>
+    <% } %>
     </div>
 </div>
