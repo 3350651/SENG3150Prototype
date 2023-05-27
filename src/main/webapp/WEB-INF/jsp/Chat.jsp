@@ -43,8 +43,8 @@ if(exist){
                 for(int i = 0; i < size; i++){
                     MessageBean message = chatMessages.removeFirst();
                 %>
-                    <%= message.getUserName() %>:<br>
-                    <%= message.getMessageTime() %><br>
+                    <%= message.getUserName() %>:
+                    <%= message.getMessageTime() %>
                     <%= message.getMessage() %><br><br>
                 <% chatMessages.addLast(message);
                 }

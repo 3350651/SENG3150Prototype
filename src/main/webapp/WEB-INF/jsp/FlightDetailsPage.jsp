@@ -102,9 +102,10 @@
                                     <tr>
                                         <td class="filledSection" colspan="2" style="text-align: center;">
                                             <div class="floatGroupFavButton">
-                                                <button class="button" class="addToGroupFav" name="addToGroupFavList"
-                                                    id="addToGroupFavList">Add To Group
-                                                    Favourite List</button>
+                                                <form name="addToGroupFaveList" action="GroupHomepage" method="GET">
+                                                    <button class="button" type="submit" class="addToGroupFaveList" name="addToGroupFaveList"
+                                                        id="addToGroupFaveList" value="addToGroupFaveList">Add To Group Favourite List</button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>

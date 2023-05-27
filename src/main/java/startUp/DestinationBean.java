@@ -18,6 +18,7 @@ public class DestinationBean {
     private LinkedList<String> tags;
     private int reputationScore;
 
+    //TODO: Need to go
     LinkedList<DestinationBean> destinations;
     LinkedList<String> codes;
 
@@ -166,8 +167,10 @@ public class DestinationBean {
     public void getAllDestinations()
     {
         String query = "SELECT * FROM Destinations;";
-        try (Connection connection = ConfigBean.getConnection(); Statement statement = connection.createStatement(); ResultSet result = statement.executeQuery(query);)
-        {
+        try{
+            Connection connection = ConfigBean.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(query);
             while (result.next())
             {
                 String d = result.getString(1);

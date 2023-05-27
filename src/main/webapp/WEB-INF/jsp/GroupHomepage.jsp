@@ -15,7 +15,7 @@ Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
-    <link rel="stylesheet" href="Style.css">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mockGroupStyle.css">
 </head>
 <body>
     <main>
@@ -23,10 +23,11 @@ Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
         <header>
 
            <form name="returnHome" action="Homepage" method="POST">
-                   <button type="submit" name="home" value="true">Return to Home</button>
+                   <button class="groupButton" type="submit" name="home" value="true">Return to Home</button>
            </form>
 
             <div class="titleContainer">
+             <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="groupLogo" >
                 <h1>Group Homepage</h1>
             </div>
             <div class="groupName">
@@ -35,7 +36,7 @@ Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
             <%
             if(isAdmin){ %>
             <form name="manageGroup" action="ManageGroup" method="GET">
-               <button type="submit" name="manageGroup" value="manageGroup">Manage Group</button>
+               <button class="groupButton" type="submit" name="manageGroup" value="manageGroup">Manage Group</button>
             </form>
             <%}%>
         </header>
@@ -84,7 +85,7 @@ Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
 <%--                <%}%>--%>
             </div>
 
-            <div class="flightSearchContainer">
+            <div>
                 <fieldset>
                     <form name="flightSearch" id="flightSearch" method="POST" action="flightSearch" onsubmit="return reportForm()">
 
@@ -100,19 +101,20 @@ Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
                 </fieldset>
             </div>
 
-            <div class="chatContainer">
-                <form name="chat" id="chat" method="POST" action="GroupHomepage">
-                 <button type="submit" name="getChat" value="getChat">Go to Group Chat</button>
+            <div class="manageGroupContent">
+            <div class="filledSection">
+                <form name="groupFaveList" id="groupFaveList" method="POST" action="GroupHomepage">
+                 <button class="groupButton" type="submit" name="getGroupFaveList" value="getGroupFaveList">Go to Group Favourite List</button>
                 </form>
             </div>
 
             <!--Need to add button only when available, instead it should have window that says pool not available yet.-->
-            <div class="poolContainer">
+            <div  class="filledSection">
                 <form name="pool" id="pool" method="POST" action="GroupHomepage">
-                 <button type="submit" name="getPool" value="getPool">Go to Money Pool</button>
+                 <button class="groupButton" type="submit" name="getPool" value="getPool">Go to Money Pool</button>
                 </form>
             </div>
-
+            </div>
     </main>
 </body>
 <script type="text/javascript" src="script.js"></script>

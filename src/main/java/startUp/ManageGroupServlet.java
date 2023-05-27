@@ -18,6 +18,8 @@ import java.util.LinkedList;
 
 import static startUp.ChatBean.deleteChat;
 import static startUp.GroupBean.*;
+import static startUp.GroupFaveFlightBean.deleteGroupFaveFlights;
+import static startUp.GroupFaveFlightBean.getGroupFaveFlights;
 import static startUp.MessageBean.deleteMessages;
 import static startUp.PoolBean.deletePool;
 import static startUp.PoolDepositBean.hasMadeDeposit;
@@ -146,15 +148,25 @@ public class ManageGroupServlet extends HttpServlet {
             boolean delete = Boolean.parseBoolean(request.getParameter("confirmDeleteGroup"));
 
             if(delete){
-                //could make this nicer by putting all deletes in the deleteGroup call.
-                deleteUserGroups(groupID);
-                deleteGroup(groupID);
-                //delete messages.
-                deleteMessages(group.getChatID());
-                deleteChat(group.getChatID());
-                deletePool(group.getPoolID());
-                session.setAttribute("message", "Success! The group was deleted.");
-                session.setAttribute("goHome", true);
+//                deleteUserGroups(groupID);
+//
+//                LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(groupID);
+//                int size = faveFlights.size();
+//                //Delete the favourite flights.
+//                deleteGroupFaveFlights(groupID);
+//
+//                for(int i = 0; i < size; i++){
+//                    GroupFaveFlightBean flight = faveFlights.removeFirst();
+//                    //Delete all chats and associated messages/comments.
+//                    deleteChat(flight.getChatID());
+//                    deleteMessages(flight.getChatID());
+//                }
+//
+//                deleteGroup(groupID);
+//                //For full implementation: delete the MemberFlightVote rows for the given group (votes made by users).
+//                deletePool(group.getPoolID());
+//                session.setAttribute("message", "Success! The group was deleted.");
+//                session.setAttribute("goHome", true);
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepageMessage.jsp");
                 requestDispatcher.forward(request, response);
             }
