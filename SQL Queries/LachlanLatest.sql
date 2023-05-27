@@ -27,8 +27,6 @@ go
 
 DROP TABLE IF EXISTS USERGROUPS;
 go
-DROP TABLE IF EXISTS GROUPS;
-go
 DROP TABLE IF EXISTS USERTAGS;
 go
 DROP TABLE IF EXISTS USERBOOKMARKEDFLIGHTS;
@@ -40,8 +38,6 @@ go
 DROP TABLE IF EXISTS TAGS;
 go
 DROP TABLE IF EXISTS MESSAGE;
-go
-DROP TABLE IF EXISTS CHAT;
 go
 DROP TABLE IF EXISTS POOLDEPOSIT;
 go
@@ -71,7 +67,15 @@ DROP TABLE IF EXISTS Airlines;
 go
 DROP TABLE IF EXISTS Country;
 go
+DROP TABLE IF EXISTS MEMBERFLIGHTVOTE;
+go
 DROP TABLE IF EXISTS USERS;
+go
+DROP TABLE IF EXISTS GROUPFAVEFLIGHT;
+go
+DROP TABLE IF EXISTS CHAT;
+go
+DROP TABLE IF EXISTS GROUPS;
 go
 DROP TABLE IF EXISTS POOL;
 go
@@ -269,11 +273,9 @@ CREATE TABLE GROUPS
 (
 	groupID 	CHAR(8) PRIMARY KEY,
 	groupName		VARCHAR(20),
-	chatID	CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID),
 	poolID 	CHAR(8) FOREIGN KEY REFERENCES POOL(poolID),
 	-- faveListID
 )
-go
 
 CREATE TABLE USERGROUPS
 (
@@ -281,6 +283,28 @@ CREATE TABLE USERGROUPS
 	userID	CHAR(8) FOREIGN KEY REFERENCES USERS(userID),
 	groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID),
 	isAdmin		INT DEFAULT(0),
+)
+go
+
+CREATE TABLE GROUPFAVEFLIGHT
+(
+    groupFaveFlightID CHAR(8) PRIMARY KEY,
+    AirlineCode CHAR(2),
+    FlightNumber VARCHAR(6),
+    DepartureTime DATETIME,
+    chatID  CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID),
+    rank   DECIMAL(1,1),
+    groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID),
+)
+go
+
+CREATE TABLE MEMBERFLIGHTVOTE
+(
+    memberFlightVoteID    CHAR(8) PRIMARY KEY,
+    groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID),
+    userID	CHAR(8) FOREIGN KEY REFERENCES USERS(userID),
+    groupFaveFlightID   CHAR(8) FOREIGN KEY REFERENCES GROUPFAVEFLIGHT(groupFaveFlightID),
+    score DECIMAL(1,1)
 )
 go
 
@@ -762,61 +786,36 @@ VALUES
 
 	INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
 VALUES
-	('AA','AA1735','ATL','MIA','GIG','2014-09-23 09:50:00','2014-09-23 11:50:00','2014-09-23 23:20:00','2014-09-24 09:00:00','A380',120,520);
-
- INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AC','AC786','LAX',NULL,'YYZ','2016-01-02 11:55:00',NULL,NULL,'2016-01-02 19:35:00','767-400',280,NULL); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AC','AC786','LAX',NULL,'YYZ','2016-01-03 11:55:00',NULL,NULL,'2016-01-03 19:35:00','767-400',280,NULL); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AC','AC786','LAX',NULL,'YYZ','2016-01-04 11:55:00',NULL,NULL,'2016-01-04 19:35:00','767-400',280,NULL); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AC','AC786','LAX',NULL,'YYZ','2016-01-05 11:55:00',NULL,NULL,'2016-01-05 19:35:00','767-400',280,NULL); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-09-23 18:35:00','2014-09-23 20:40:00','2014-09-24 09:35:00','2014-09-24 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-09-24 18:35:00','2014-09-24 20:40:00','2014-09-25 09:35:00','2014-09-25 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-09-25 18:35:00','2014-09-25 20:40:00','2014-09-26 09:35:00','2014-09-26 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-09-26 18:35:00','2014-09-26 20:40:00','2014-09-27 09:35:00','2014-09-27 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-09-27 18:35:00','2014-09-27 20:40:00','2014-09-28 09:35:00','2014-09-28 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-09-28 18:35:00','2014-09-28 20:40:00','2014-09-29 09:35:00','2014-09-29 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-09-29 18:35:00','2014-09-29 20:40:00','2014-09-30 09:35:00','2014-09-30 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-09-30 18:35:00','2014-09-30 20:40:00','2014-10-01 09:35:00','2014-10-01 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-10-01 18:35:00','2014-10-01 20:40:00','2014-10-02 09:35:00','2014-10-02 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-10-02 18:35:00','2014-10-02 20:40:00','2014-10-03 09:35:00','2014-10-03 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-10-03 18:35:00','2014-10-03 20:40:00','2014-10-04 09:35:00','2014-10-04 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-10-04 18:35:00','2014-10-04 20:40:00','2014-10-05 09:35:00','2014-10-05 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-10-05 18:35:00','2014-10-05 20:40:00','2014-10-06 09:35:00','2014-10-06 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-10-06 18:35:00','2014-10-06 20:40:00','2014-10-07 09:35:00','2014-10-07 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-10-07 18:35:00','2014-10-07 20:40:00','2014-10-08 09:35:00','2014-10-08 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-10-08 18:35:00','2014-10-08 20:40:00','2014-10-09 09:35:00','2014-10-09 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-10-09 18:35:00','2014-10-09 20:40:00','2014-10-10 09:35:00','2014-10-10 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-10-10 18:35:00','2014-10-10 20:40:00','2014-10-11 09:35:00','2014-10-11 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-10-11 18:35:00','2014-10-11 20:40:00','2014-10-12 09:35:00','2014-10-12 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-10-12 18:35:00','2014-10-12 20:40:00','2014-10-13 09:35:00','2014-10-13 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-10-13 18:35:00','2014-10-13 20:40:00','2014-10-14 09:35:00','2014-10-14 11:40:00','767-400',125,125); INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
-VALUES
-	('AF','AF1439','VIE','CDG','MAD','2014-10-14 18:35:00','2014-10-14 20:40:00','2014-10-15 09:35:00','2014-10-15 11:40:00','767-400',125,125);
+	('AA','AA1735','ATL','MIA','GIG','2014-09-23 09:50:00','2014-09-23 11:50:00','2014-09-23 23:20:00','2014-09-24 09:00:00','A380',120,520),
+	('AC','AC786','LAX',NULL,'YYZ','2016-01-02 11:55:00',NULL,NULL,'2016-01-02 19:35:00','767-400',280,NULL),
+    ('QF','QF686','ADL',NULL,'MEL','2014-10-21 13:40:00',NULL,NULL,'2014-10-21 15:25:00','767-400',75,NULL),
+    ('AY','AY81','HEL','SIN','PER','2015-08-07 23:40:00','2015-08-08 16:10:00','2015-08-08 19:20:00','2015-08-09 00:30:00','757-300',690,310),
+	('AF','AF1439','VIE','CDG','MAD','2014-09-23 18:35:00','2014-09-23 20:40:00','2014-09-24 09:35:00','2014-09-24 11:40:00','767-400',125,125),
+    ('LH','LH1849','FCO',NULL,'MUC','2015-07-28 18:55:00',NULL,NULL,'2015-07-28 20:35:00','A380',100,NULL),
+	('AF','AF1439','VIE','CDG','MAD','2014-09-24 18:35:00','2014-09-24 20:40:00','2014-09-25 09:35:00','2014-09-25 11:40:00','767-400',125,125),
+	('AY','AY81','HEL','SIN','PER','2015-08-04 23:40:00','2015-08-05 16:10:00','2015-08-05 19:20:00','2015-08-06 00:30:00','757-300',690,310),
+    ('LH','LH1849','FCO',NULL,'MUC','2015-07-26 18:55:00',NULL,NULL,'2015-07-26 20:35:00','A380',100,NULL),
+	('LH','LH1849','FCO',NULL,'MUC','2015-07-27 18:55:00',NULL,NULL,'2015-07-27 20:35:00','A380',100,NULL),
+	('LH','LH1849','FCO',NULL,'MUC','2015-07-29 18:55:00',NULL,NULL,'2015-07-29 20:35:00','A380',100,NULL),
+    ('QF','QF3275','HNL','ORD','YYZ','2014-09-28 15:50:00','2014-09-29 05:10:00','2014-09-29 06:05:00','2014-09-29 08:30:00','767-400',500,85),
+	('QF','QF3275','HNL','ORD','YYZ','2014-09-29 15:50:00','2014-09-30 05:10:00','2014-09-30 06:05:00','2014-09-30 08:30:00','767-400',500,85),
+	('QF','QF3275','HNL','ORD','YYZ','2014-09-30 15:50:00','2014-10-01 05:10:00','2014-10-01 06:05:00','2014-10-01 08:30:00','767-400',500,85),
+    ('AY','AY81','HEL','SIN','PER','2015-08-05 23:40:00','2015-08-06 16:10:00','2015-08-06 19:20:00','2015-08-07 00:30:00','757-300',690,310),
+	('AY','AY81','HEL','SIN','PER','2015-08-06 23:40:00','2015-08-07 16:10:00','2015-08-07 19:20:00','2015-08-08 00:30:00','757-300',690,310),
+	('QF','QF3275','HNL','ORD','YYZ','2014-10-01 15:50:00','2014-10-02 05:10:00','2014-10-02 06:05:00','2014-10-02 08:30:00','767-400',500,85),
+    ('AC','AC786','LAX',NULL,'YYZ','2016-01-03 11:55:00',NULL,NULL,'2016-01-03 19:35:00','767-400',280,NULL),
+	('AC','AC786','LAX',NULL,'YYZ','2016-01-04 11:55:00',NULL,NULL,'2016-01-04 19:35:00','767-400',280,NULL),
+	('AC','AC786','LAX',NULL,'YYZ','2016-01-05 11:55:00',NULL,NULL,'2016-01-05 19:35:00','767-400',280,NULL),
+    ('QF','QF67','PER','HKG','HEL','2015-11-28 22:15:00','2015-11-29 06:05:00','2015-11-29 09:20:00','2015-11-29 15:00:00','757-300',470,640),
+	('QF','QF67','PER','HKG','HEL','2015-11-29 22:15:00','2015-11-30 06:05:00','2015-11-30 09:20:00','2015-11-30 15:00:00','757-300',470,640),
+	('QF','QF67','PER','HKG','HEL','2015-11-30 22:15:00','2015-12-01 06:05:00','2015-12-01 09:20:00','2015-12-01 15:00:00','757-300',470,640),
+	('QF','QF67','PER','HKG','HEL','2015-12-01 22:15:00','2015-12-02 06:05:00','2015-12-02 09:20:00','2015-12-02 15:00:00','757-300',470,640),
+	('QF','QF67','PER','HKG','HEL','2015-12-02 22:15:00','2015-12-03 06:05:00','2015-12-03 09:20:00','2015-12-03 15:00:00','757-300',470,640),
+    ('QF','QF686','ADL',NULL,'MEL','2014-10-17 13:40:00',NULL,NULL,'2014-10-17 15:25:00','767-400',75,NULL),
+	('QF','QF686','ADL',NULL,'MEL','2014-10-18 13:40:00',NULL,NULL,'2014-10-18 15:25:00','767-400',75,NULL),
+	('QF','QF686','ADL',NULL,'MEL','2014-10-19 13:40:00',NULL,NULL,'2014-10-19 15:25:00','767-400',75,NULL),
+	('QF','QF686','ADL',NULL,'MEL','2014-10-22 13:40:00',NULL,NULL,'2014-10-22 15:25:00','767-400',75,NULL),
+	('QF','QF686','ADL',NULL,'MEL','2014-10-23 13:40:00',NULL,NULL,'2014-10-23 15:25:00','767-400',75,NULL)
 go
 
   INSERT INTO Price (AirlineCode, FlightNumber, ClassCode, TicketCode, StartDate, EndDate, Price, PriceLeg1, PriceLeg2)
@@ -1082,8 +1081,4 @@ INSERT INTO DESTINATIONTAGS VALUES('23231111', 'MEL', '77777777');
 INSERT INTO DESTINATIONTAGS VALUES('12341234', 'MEL', '55555555');
 INSERT INTO DESTINATIONTAGS VALUES('43121212', 'MEL', '55511155');
 GO
-
-SELECT * FROM USERTAGS;
-
-SELECT * FROM USERFAVOURITEDDESTINATIONS;
 
