@@ -29,6 +29,7 @@
             value="gotoSimple">Simple Search</button>
   </form>
   <%-- Bookmarked Flights --%>
+  <% if (bookmarkedFlights.size() != 0) { %>
   <form name="goToBookmarkedFlight" action="ViewFlight" method="POST">
     <h2>Bookmarked Flights</h2>
     <%
@@ -43,6 +44,7 @@
           j++;}}
     %>
   </form>
+  <% } %>
   <%-- Groups You're In --%>
   <div class = "GroupMembership">
     <h2>Your Groups</h2>
