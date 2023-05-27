@@ -1,10 +1,7 @@
 package startUp;
 
-import sun.security.krb5.internal.crypto.Des;
-
 import javax.servlet.http.HttpServlet;
 import java.sql.*;
-import java.util.*;
 import java.util.LinkedList;
 
 public class getAllDestinations extends HttpServlet

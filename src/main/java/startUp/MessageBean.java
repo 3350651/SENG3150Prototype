@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: MessageBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model object for messages made in a chat
+ */
+
 package startUp;
 
 import java.io.Serializable;

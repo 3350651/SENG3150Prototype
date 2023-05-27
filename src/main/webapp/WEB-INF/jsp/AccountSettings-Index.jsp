@@ -6,13 +6,16 @@
 <% DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
   String dateOfBirthFormatted = user.getDateOfBirth().format(formatter); %>
 <%@ page import="startUp.FlightBean" %>
+<%@ page import="startUp.TagBean" %>
 <%@ page import="startUp.DestinationBean" %>
 <%
 LinkedList<FlightBean> bookmarkedFlights = new LinkedList<>();
 LinkedList<DestinationBean> favouritedDestinations = new LinkedList<>();
+LinkedList<String> userTags = new LinkedList<>();
 if (user != null && user.getBookmarkedFlights() != null) {
   bookmarkedFlights = user.getBookmarkedFlights();
   favouritedDestinations = user.getFavouritedDestinations();
+  userTags = user.getTagSet();
 }
 %>
 <!DOCTYPE html>
@@ -55,15 +58,9 @@ if (user != null && user.getBookmarkedFlights() != null) {
     <h2>Tagset</h2>
     <div class="settingsCategory">
     <ul>
-        <%
-        LinkedList<String> tags = user.getTagSet();
-            for (Iterator<String> iter = tags.iterator(); iter.hasNext();) {
-                String tag = iter.next();
-            %>
-              <li><p class="valueOfSetting"><%= tag %></p></li>
-            <%
-            }
-        %>
+    <% for(String tag : userTags) { ;%>
+        <li><p class="valueOfSetting"><%= tag %></p> </li>
+    <% } %>
     </ul>
     </div>
     <h2>Bookmarked Flights</h2>

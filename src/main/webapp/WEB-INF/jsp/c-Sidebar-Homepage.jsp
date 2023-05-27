@@ -44,6 +44,8 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
     %>
     </form>
     <%-- Groups You're In --%>
+    <div class = "GroupMembership">
+    <h2>Group Membership</h2>
     <%
             if(groups != null && (!groups.isEmpty())){
                 int size = groups.size();
@@ -53,7 +55,7 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
                     name = group.getGroupName(); %>
                     <div class="goGroup">
                         <form method="GET" action="GroupHomepage">
-                            <button name="goGroup" value="goGroup">
+                            <button name="goGroup" value="goGroup" class="button">
                                 <%= name %>
                             </button>
                             <input type="hidden" id="groupName" name="groupName" value="<%= name %>">
@@ -65,8 +67,8 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
             }
             %>
     <form name="goToGroup" action="CreateGroup" class="groups" method="GET">
-        <h2>Group Membership</h2>
         <button type="submit" class="button" name="createGroup"
             value="createGroup">Create New Group</button>
     </form>
+    </div>
 </div>

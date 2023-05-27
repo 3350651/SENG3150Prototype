@@ -1,7 +1,12 @@
+/**
+ * FILE NAME: GroupHomepageServlet.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Controller for the group homepage functions
+ */
+
 package startUp;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.util.LinkedList;
 import javax.servlet.*;
 import javax.servlet.annotation.*;

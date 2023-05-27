@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: TagBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model object for tags - linked to destinations and users.
+ */
+
 package startUp;
 
 import java.io.Serializable;

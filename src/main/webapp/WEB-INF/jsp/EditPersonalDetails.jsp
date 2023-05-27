@@ -14,30 +14,30 @@
     <h1>Edit user account</h1>
     <form method="POST" action="AccountSettings" onsubmit="">
         <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" name="firstName" value="Joe"><br>
+        <input type="text" id="firstName" name="firstName" value="<%= user.getFname() %>"><br>
 
         <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" name="lastName" value="Swanson"><br>
+        <input type="text" id="lastName" name="lastName" value="<%=user.getLname()%>"><br>
 
         <label for="email">Email:</label>
-        <input type="text" id="email" name="email" value="JoeSwanson@Quahog.com"><br>
+        <input type="text" id="email" name="email" value="<%=user.getEmail()%>"><br>
 
         <label for="phoneNumber">Phone Number:</label>
-        <input type="text" id="phoneNumber" name="phoneNumber" value="0412345678"><br>
+        <input type="text" id="phoneNumber" name="phoneNumber" value="<%=user.getPhoneNo()%>"><br>
 
         <label for="address">Address: </label>
-        <input type="text" id="address" name="address" value="33 Spooner Street, Quahog, AUS"><br>
+        <input type="text" id="address" name="address" value="<%=user.getAddress()%>"><br>
 
         <label for="defaultCurrency">Default Currency: </label>
-        <input type="text" id="defaultCurrency" name="defaultCurrency" value="AUD"><br>
+        <input type="text" id="defaultCurrency" name="defaultCurrency" value="<%=user.getDefaultCurrency()%>"><br>
 
         <label for="defaultTimezone">Default Timezone: </label>
-        <input type="text" id="defaultTimezone" name="defaultTimezone" value="AEST"><br>
+        <input type="text" id="defaultTimezone" name="defaultTimezone" value="<%=user.getDefaultTimeZone()%>"><br>
 
         <label for="dateOfBirth">Birth Date:</label>
-        <input type="date" id="dateOfBirth" name="dateOfBirth" value="17/06/1977">
+        <input type="date" id="dateOfBirth" name="dateOfBirth" value="<%=user.getDateOfBirth()%>">
 
-        <input type="hidden" name="userID" value="123456789">
+        <input type="hidden" name="userID" value="<%=user.getUserID()%>">
         <button type="submit" name="editPersonalDetails" value="editPersonalDetails">Update Details</button>
     </form>
 </div>

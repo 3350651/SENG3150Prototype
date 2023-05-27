@@ -148,9 +148,13 @@
   margin-top: 5px;
 }
 
-form.groups{
-    bottom: 5px;
-    position: fixed;
+div.GroupMembership{
+    bottom: 1em;
+    position: absolute;
+}
+
+div.addUserFormContainer{
+    display: flex;
 }
 
 div.dateAndCheckBox{

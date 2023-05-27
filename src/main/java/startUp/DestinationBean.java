@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: DestinationBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model Object for destinations of flights
+ */
+
 package startUp;
 
 import java.sql.*;

@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: LoginPageServlet.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Controller for managing log in and log out attempts
+ */
+
 package startUp;
 
 import javax.servlet.RequestDispatcher;
@@ -8,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.LinkedList;
 
 
 @WebServlet(urlPatterns = { "/login" })
@@ -48,10 +53,6 @@ public class LoginPageServlet extends HttpServlet {
 			user.login(email, password);
 
 			if (user.getHasLogin()) {
-				LinkedList<String> tags = new LinkedList<>();
-				tags.add("Hot");//remove later
-				tags.add("Party");
-				user.setTagSet(tags);
 				session.setAttribute("userBean", user);
 				response.sendRedirect(request.getContextPath() + "/Homepage");
 			} else {

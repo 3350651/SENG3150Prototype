@@ -12,6 +12,8 @@
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="startUp.UserBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% UserBean user=(UserBean) session.getAttribute("userBean");%>
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -21,7 +23,8 @@
 <jsp:include page='c-Sidebar-Homepage.jsp'></jsp:include>
 <jsp:include page='c-AccountAccess.jsp'></jsp:include>
 <body>
-<% recSearchBean search = (recSearchBean) session.getAttribute("flightResults"); LinkedList<FlightBean> searchResults = search.getFlightResults();%>
+<% recSearchBean search = (recSearchBean) session.getAttribute("flightResults");
+LinkedList<FlightBean> searchResults = search.getFlightResults();%>
 <br>
 <br>
 <div class="centeringtext"> <h1>Search Results</h1> </div>
@@ -49,21 +52,46 @@
             <span class="brmedium"></span>
 
             <div class="searchResultButtons">
-                <form name="flightActions" class="flightSearchResultButtons" action="flightSearch" method="POST">
-                    <div class="bookmarkFlight">
-                        <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value="bookmark">
-                    </div>
-                    <div class="favouriteDestination">
-                        <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/favouriteStar.png" alt="Favourite Destination Logo" name="favourite" value="favourite">
-                    </div>
-                    <div class="addToGroupFavouriteList">
-                        <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="add-to-list" value="add-to-list">
-                    </div>
-                    <div class="viewFlightDetailsButton">
-                        <button type="submit" class="viewFlightDetailsButton" name="viewFlightDetails" value="flightSearch">View Details</button>
-                    </div>
-                </form>
-            </div>
+            <form name="flightActions"
+                class="flightSearchResultButtons" action="Search"
+                method="POST">
+                <input type="hidden" name="userID" value= <%= user.getUserID() %> >
+                <input type="hidden" name="destinationCode" value= <%= flight.getDestination().getDestinationCode()%> >
+                <input type="hidden" name="airlineCode" value= <%= flight.getAirline() %> >
+                <input type="hidden" name="flightNumber" value= <%= flight.getFlightName() %> >
+                <% String flightTime = flight.getFlightTime().toString(); %>
+                <input type="hidden" name="departureTime" value="<%= flightTime %>" >
+                <div class="bookmarkFlight">
+                    <input type="image" class="btn-image"
+                        src="${pageContext.request.contextPath}/images/bookmark.png"
+                        alt="Bookmark Flight Logo" name="bookmark"
+                        value=<%= i %>>
+                </div>
+                <div class="favouriteDestination">
+                    <input type="image" class="btn-image"
+                        src="${pageContext.request.contextPath}/images/favouriteStar.png"
+                        alt="Favourite Destination Logo"
+                        name="favourite" value="favouriteDestination">
+                </div>
+                <div class="addToGroupFavouriteList">
+                    <input type="image" class="btn-image"
+                        src="${pageContext.request.contextPath}/images/addToGroupList.png"
+                        alt="Add To Group Favourite List Logo"
+                        name="add-to-list" value=<%="add-to-list," +
+                        i %>>
+                </div>
+            </form>
+            <form name="viewFlightsForm" class="flightSearchResultButtons" action="flight" method="POST">
+                <div class="viewFlightDetailsButton">
+                    <button type="submit"
+                        class="viewFlightDetailsButton"
+                        name="viewFlightDetails"
+                        value=<%="viewFlightDetails," + i %>>View
+                        Details</button>
+                </div>
+            </form>
+
+        </div>
 
         </div>
         <div class="destinationImage">

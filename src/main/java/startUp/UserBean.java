@@ -1,19 +1,16 @@
+/**
+ * FILE NAME: FlightBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model object for a user, their account and relevant settings.
+ */
+
 package startUp;
 
 import java.io.Serializable;
 import java.sql.*;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 
-/**
- * The user Bean which contains all the details of the user.
- * 
- * @author Jordan Eade c3350651
- * @author Lucy Knight c3350691
- * @author Ahmed Al-khazraji c3277545
- * @author Jason Walls c3298757
- */
 public class UserBean implements Serializable {
 
 	private boolean hasLogin;
@@ -298,7 +295,7 @@ public class UserBean implements Serializable {
 	public void addFavouritedDestination(DestinationBean destination) {
 		boolean destinationExists = false;
 		for (int i = 0; i < getFavouritedDestinations().size(); i++) {
-			if (getFavouritedDestinations().get(i).equals(destination)) {
+			if (getFavouritedDestinations().get(i).getDestinationCode().equals(destination.getDestinationCode())) {
 				destinationExists = true;
 				break;
 			}
@@ -802,12 +799,13 @@ public class UserBean implements Serializable {
 	}
 
 	public static void addToTagSet(String userID, String tagName) {
-		String query = "INSERT INTO USERTAGS VALUES (?, ?, ?)";
 		String tagID = "-1"; // initialize tagID to an invalid value
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet result = null;
+		ResultSet resultSet2 = null;
 
+		// get the tag IDs for the relevant tags
 		try {
 			connection = ConfigBean.getConnection();
 			statement = connection.prepareStatement("SELECT tagID FROM TAGS WHERE tagName = ?");
@@ -817,38 +815,28 @@ public class UserBean implements Serializable {
 			if (result.next()) {
 				tagID = result.getString("tagID");
 			}
+			connection.close();
+			statement.close();
+			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				if (result != null) {
-					result.close();
-				}
-				if (statement != null) {
-					statement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 
 		if (!tagID.equals("-1")) {
 			try {
 				connection = ConfigBean.getConnection();
+				// check if user already has that tag saved
 				PreparedStatement checkTag = connection.prepareStatement("SELECT * FROM USERTAGS WHERE userID = ? AND tagID = ?");
 				checkTag.setString(1, userID);
 				checkTag.setString(2, tagID);
-				ResultSet resultSet2 = checkTag.executeQuery();
-				checkTag.close();
+				resultSet2 = checkTag.executeQuery();
 
 				if (resultSet2.next()) {
-					resultSet2.close();
-				} else {
+
+				}
+				else {
 					try {
-						PreparedStatement insertStatement = connection.prepareStatement(query);
+						PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO USERTAGS VALUES (?, ?, ?)");
 						Random random = new Random();
 						String userTagsID = String.format("%08d", random.nextInt(100000000));
 						insertStatement.setString(1, userTagsID);
@@ -856,24 +844,18 @@ public class UserBean implements Serializable {
 						insertStatement.setString(3, userID);
 						insertStatement.executeUpdate();
 						insertStatement.close();
-					} catch (SQLException e) {
+						connection.close();
+					}
+					catch (SQLException e) {
 						e.printStackTrace();
 					}
 				}
-			} catch (SQLException e) {
+			}
+			catch (SQLException e) {
 				e.printStackTrace();
-			} finally {
-				try {
-					if (connection != null) {
-						connection.close();
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 			}
 		}
 	}
-
 
 	public static void removeFromTagSet(String userID, String tagName) {
 		String query = "DELETE FROM USERTAGS WHERE userID = ? AND tagID = ?";

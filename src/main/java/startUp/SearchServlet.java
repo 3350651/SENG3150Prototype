@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Timestamp;
+import static java.sql.Timestamp.valueOf;
 
 
 @WebServlet(urlPatterns = { "/Search" })
@@ -45,7 +46,8 @@ public class SearchServlet extends HttpServlet {
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
 			String airlineCode = request.getParameter("airlineCode");
 			String flightNumber = request.getParameter("flightNumber");
-			Timestamp departureTime = Timestamp.valueOf(request.getParameter("departureTime"));
+			String timestampString = request.getParameter("departureTime");
+			Timestamp departureTime = Timestamp.valueOf(timestampString);
 			UserBean.addToBookmarkedFlights(id, airlineCode, flightNumber, departureTime); // adds to database with foreign keys, creates PK
 			FlightBean f = new FlightBean(airlineCode, flightNumber, departureTime); // constructor searches for the remainder of flight information upon instantiation
 			user.addBookmarkedFlight(f);

@@ -11,20 +11,9 @@ import static startUp.GroupBean.getGroup;
 import static startUp.GroupBean.getGroups;
 import static startUp.UserGroupsBean.isAdmin;
 
-/**
- * The homepage servlet which handles requests made to the homepage.
- * @author Jordan Eade c3350651
- * @author Lucy Knight c3350691
- * @author Ahmed Al-khazraji c3277545
- * @author Jason Walls c3298757
- */
 @WebServlet(urlPatterns = { "/Homepage" })
 public class Homepage extends HttpServlet {
 
-	/**
-	 * Handles GET requests made to the homepage, this servlet will forward the user to the
-	 * user, admin or staff homepage depending on their role.
-	 */
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
@@ -72,13 +61,13 @@ public class Homepage extends HttpServlet {
 					session.setAttribute("groups", groups);
 				}
 
-			if (defaultSearch.equals("Simple")) {
-				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
-				requestDispatcher.forward(request, response);
-			} else if (defaultSearch.equals("Recommend")) {
-				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
-				requestDispatcher.forward(request, response);
-			}
+//			if (defaultSearch.equals("Simple")) {
+//				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
+//				requestDispatcher.forward(request, response);
+//			} else if (defaultSearch.equals("Recommend")) {
+//				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
+//				requestDispatcher.forward(request, response);
+//			}
 
 			// sends the user to the correct homepage depending on their role
 			if (role.equals("user")) {

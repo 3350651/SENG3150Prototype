@@ -9,10 +9,10 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-<jsp:include page='c-Sidebar-Homepage.jsp'></jsp:include>
+<main>
+<jsp:include page='c-Sidebar-Account.jsp'></jsp:include>
 <%--            Edit user form                 --%>
 <div class="main-content">
-    <p class="top-right">Joe Swanson</p>
 <h1>Change Password</h1>
     <form method="POST" action="AccountSettings" onsubmit="">
         <label for="currentPassword">Current Password:</label>
@@ -29,6 +29,7 @@
         <button type="submit" name="changePassword" value="changePassword">Change Password</button>
     </form>
 </div>
+</main>
 </body>
 
 </html>

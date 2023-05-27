@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: CreateGroupServlet.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Controller for creation of groups
+ */
+
 package startUp;
 
 import javax.servlet.RequestDispatcher;
@@ -8,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.LinkedList;
 
 import static startUp.GroupBean.getGroups;

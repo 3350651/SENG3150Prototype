@@ -1,15 +1,16 @@
-package startUp;
+/**
+ * FILE NAME: GroupBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model object for holding group information
+ */
 
-import com.sun.jndi.ldap.pool.Pool;
+package startUp;
 
 import java.io.Serializable;
 import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
-import static startUp.ChatBean.deleteChat;
 import static startUp.ChatBean.getChatMessages;
 import static startUp.PoolBean.*;
 import static startUp.PoolDepositBean.getUsersPoolDeposits;
