@@ -49,8 +49,8 @@ public class DestinationBean {
             while (result.next()) {
                 destinationName = result.getString(2);
                 // TODO: Add destinationDescription, tags and reputationScore here
-                tagSet t = new tagSet();
-                t.setDestinationTag(this);
+                //tagSet t = new tagSet();
+                //t.setDestinationTag(this);
 
                 /*LinkedList<String> tlist = new LinkedList<>();
                 String tag1 = result.getString(4);
@@ -94,8 +94,8 @@ public class DestinationBean {
             while (result.next()) {
                 destinationCode = result.getString(1);
                 // TODO: Add destinationDescription, tags and reputationScore here
-                tagSet t = new tagSet();
-                t.setDestinationTag(this);
+                //tagSet t = new tagSet();
+                //t.setDestinationTag(this);
                 /*LinkedList<String> tlist = new LinkedList<>();
                 String tag1 = result.getString(4);
                 String tag2 = result.getString(5);

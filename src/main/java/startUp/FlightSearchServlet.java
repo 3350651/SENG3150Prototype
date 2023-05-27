@@ -36,10 +36,10 @@ public class FlightSearchServlet extends HttpServlet {
 //=======
         HttpSession session = req.getSession();
         DestinationBean des = new DestinationBean();
-        des.getAllDestinations();
+        //des.getAllDestinations();
 
-        LinkedList<DestinationBean> dest = des.getDestinations();
-        session.setAttribute("destinationList", dest);
+        //LinkedList<DestinationBean> dest = des.getDestinations();
+        //session.setAttribute("destinationList", dest);
         recSearchBean recs = new recSearchBean();
 
         recs.getpresetFlights();

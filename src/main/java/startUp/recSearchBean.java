@@ -113,7 +113,6 @@ public class recSearchBean implements Serializable
             {
                 String airCode = result.getString(1);
                 String flightNum = result.getString(2);
-                System.out.println(flightNum);
                 DestinationBean departure = new DestinationBean(result.getString(3));
                 DestinationBean stopOver = new DestinationBean(result.getString(4));
                 DestinationBean arrival = new DestinationBean(result.getString(5));
@@ -181,11 +180,12 @@ public class recSearchBean implements Serializable
     public void getRecommendedFlights(UserBean user) {
         LinkedList<String> userTags = user.getTagSet();
 
-        getAllDestinations des = new getAllDestinations();
+        //getAllDestinations des = new getAllDestinations();
 
-        des.execute();
+        //des.execute();
 
-        LinkedList<DestinationBean> destinations = des.getDestinations();
+        //LinkedList<DestinationBean> destinations = des.getDestinations();
+        /LinkedList<DestinationBean> destinations = new LinkedList<>();
 
         LinkedList<DestinationBean> acceptedDestinations = new LinkedList<>();
 

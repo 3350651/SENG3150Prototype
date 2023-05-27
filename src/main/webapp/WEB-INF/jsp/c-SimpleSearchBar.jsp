@@ -37,7 +37,7 @@
         </div>
         <div class="search">
             <button name="searchResults" type="submit" value="searchResults"
-                class="searchResults">Search For Flights</button>
+                class="search">Search For Flights</button>
         </div>
     </form>
 </div>

@@ -25,10 +25,10 @@ public class recSearch extends HttpServlet
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         DestinationBean des = new DestinationBean();
-        des.getAllDestinations();
+        //des.getAllDestinations();
 
-        LinkedList<DestinationBean> dest = des.getDestinations();
-        session.setAttribute("destinationList", dest);
+        //LinkedList<DestinationBean> dest = des.getDestinations();
+        //session.setAttribute("destinationList", dest);
         recSearchBean recs = new recSearchBean();
 
         if (session.getAttribute("userBean") != null)
