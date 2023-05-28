@@ -2,7 +2,8 @@
 <%@ page import="startUp.FlightBean" %>
 <%@ page import="startUp.DestinationBean" %>
 <%@ page import="java.util.LinkedList" %>
-
+<%@ page import="startUp.UserBean" %>
+<% UserBean user = (UserBean) session.getAttribute("userBean");%>
 
 <div class="gridParent">
     <% SearchBean search = (SearchBean) session.getAttribute("flightResults"); 
@@ -31,6 +32,11 @@
 
                         <div class="searchResultButtons">
                             <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
+                            <input type="hidden" name="userID" value="<%= user.getUserID() %>">
+                            <input type="hidden" name="destinationCode" value="<%= flight.getDestination().getDestinationCode() %>">
+                            <input type="hidden" name="airlineCode" value="<%= flight.getAirline() %>">
+                            <input type="hidden" name="flightNumber" value="<%= flight.getFlightName() %>">
+                            <input type="hidden" name="departureTime" value="<%= flight.getFlightTime() %>">
                                 <div class="bookmarkFlight">
                                     <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value="bookmark">
                                 </div>
