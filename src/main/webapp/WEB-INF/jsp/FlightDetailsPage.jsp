@@ -6,7 +6,7 @@
                     <!DOCTYPE html>
                     <html lang="en">
 
-                    <%FlightBean flight=(FlightBean) session.getAttribute("flightDetails");%>
+                    <%FlightBean flight=(FlightBean) session.getAttribute("flight");%>
 
                         <head>
                             <meta charset="UTF-8">
@@ -18,7 +18,7 @@
                             <main>
                                 <header>
                                     
-                                        <button class="backButton" type="submit" link="${pageContext.request.contextPath}/WEB-INF/jsp/Homepage-Index.jsp">Back</button>
+                                        <button class="button" onclick="history.back()" >Back</button>
                                     
                                     <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
                                         alt="FlightPub Logo" class="centreLogo">

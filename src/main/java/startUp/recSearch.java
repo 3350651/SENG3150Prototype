@@ -31,7 +31,7 @@ public class recSearch extends HttpServlet
         //session.setAttribute("destinationList", dest);
         recSearchBean recs = new recSearchBean();
 
-            System.out.println("User not null");
+            // System.out.println("User not null");
             UserBean user = (UserBean) session.getAttribute("userBean");
             //recs.getRecommendedFlights(user);
             recs.getpresetFlights();
@@ -54,12 +54,12 @@ public class recSearch extends HttpServlet
             requestDispatcher.forward(request, response);
         }
 
-        if (request.getParameter("gotoSimple") != null) {
+        else if (request.getParameter("gotoSimple") != null) {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
             requestDispatcher.forward(request, response);
         }
 
-        if (request.getParameter("viewFlight") != null)
+        else if (request.getParameter("viewFlight") != null)
         {
             String d = request.getParameter("destination");
             DestinationBean destination = new DestinationBean(d, "");
@@ -74,8 +74,11 @@ public class recSearch extends HttpServlet
             String planeType = request.getParameter("PlaneType");
 
             FlightBean flight = new FlightBean(flightname, airline, timestamp, flightname, planeType, departure, destination, destination);
-            session.setAttribute("flightDetails", flight); //TODO: clean up
+            
             session.setAttribute("flight", flight);
+            String flightDetails = flight.getAirline() + "," + flight.getFlightName() + ","
+                    + flight.getFlightTime();
+            session.setAttribute("flightDetails", flightDetails);
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(request, response);
