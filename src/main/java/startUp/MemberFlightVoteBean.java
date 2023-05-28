@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: MemberFlightVoteBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model object for information about a members vote made on a favourited flight.
+ */
+
 package startUp;
 
 import java.math.BigDecimal;
