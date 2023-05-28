@@ -81,10 +81,10 @@ public class SearchServlet extends HttpServlet {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/MockUp-Homepage-SimpleSearch-LoggedIn.jsp");
 			requestDispatcher.forward(request, response);
 		}
-		if (request.getParameter("add-to-list") != null) {
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/MockUp-Homepage-SimpleSearch-LoggedIn.jsp");
-			requestDispatcher.forward(request, response);
-		}
+		// if (request.getParameter("add-to-list") != null) {
+		// 	RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/MockUp-Homepage-SimpleSearch-LoggedIn.jsp");
+		// 	requestDispatcher.forward(request, response);
+		// }
 
 		if (request.getParameter("recSearch") != null)
 		{

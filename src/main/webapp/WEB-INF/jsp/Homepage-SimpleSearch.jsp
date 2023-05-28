@@ -17,6 +17,7 @@ bookmarkedFlights = user.getBookmarkedFlights();
 </head>
 
 <body class="hompage-simplesearch-loggedin">
+  <%request.setAttribute("simple", true);%>
   <jsp:include page='c-Sidebar-Homepage.jsp'></jsp:include>
   <div class="main-content">
     <jsp:include page='c-AccountAccess.jsp'></jsp:include>

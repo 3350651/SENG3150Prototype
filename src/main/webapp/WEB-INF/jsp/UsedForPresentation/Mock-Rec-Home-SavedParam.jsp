@@ -36,7 +36,7 @@
   </div>
   <br><br>
   <div class="simpleSearch">
-    <form method="POST" action="recSearch" class="recSearch">
+    <form method="POST" action="flightSearch" class="recSearch">
 
       <div class="departureLocation"><label for="departureLocation">Leaving From</label><br>
         <input type="text" id="departureLocation" name="departureLocation"></div>

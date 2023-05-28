@@ -21,7 +21,7 @@
   <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
        alt="FlightPub Logo" class="logo">
   <%-- Home page button --%>
-  <form name="gotoSimple" action="recSearch" method="POST">
+  <form name="gotoSimple" action="flightSearch" method="POST">
     <h2>Toggle Search Mode</h2>
     <%-- <button type="submit" class="button" name="home" value="simpleSearch">Simple
         Search</button> --%>

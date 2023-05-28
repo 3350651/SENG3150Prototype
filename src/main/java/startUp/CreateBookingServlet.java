@@ -82,7 +82,7 @@ public class CreateBookingServlet extends HttpServlet {
 
                 TicketBean departureTicket = new TicketBean(booking.getBookingId(), passengerBean.getPassengerId(),
                         booking.getDepartureFlight().getFlightName(),
-                        booking.getDepartureFlight().getAirlineName(), booking.getDepartureFlight().getFlightTime(),
+                        booking.getDepartureFlight().getAirline(), booking.getDepartureFlight().getFlightTime(),
                         ticketClass, ticketType);
                 departureTicket.addTicket();
 
