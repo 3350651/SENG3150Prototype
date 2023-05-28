@@ -1,7 +1,7 @@
 /**
  * FILE NAME: ManageGroupServlet.java
  * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
- * PURPOSE: SENG3150 Project - Controller for managing group membership
+ * PURPOSE: SENG3150 Project - Controller for managing group membership and group profile.
  */
 
 package startUp;

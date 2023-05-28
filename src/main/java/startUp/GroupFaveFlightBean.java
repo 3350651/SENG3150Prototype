@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: GroupFaveFlightBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model Object to hold data pertaining to favourited flights for groups.
+ */
+
 package startUp;
 
 import java.io.Serializable;
