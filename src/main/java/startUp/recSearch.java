@@ -34,7 +34,7 @@ public class recSearch extends HttpServlet
             // System.out.println("User not null");
             UserBean user = (UserBean) session.getAttribute("userBean");
             //recs.getRecommendedFlights(user);
-            recs.getpresetFlights();
+            recs.getAllFlights();
             session.setAttribute("recFlights", recs);
 
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/recHome.jsp");
@@ -48,7 +48,7 @@ public class recSearch extends HttpServlet
         if (request.getParameter("searchResults") != null) {
             recSearchBean search = new recSearchBean();
             //search.getResults(request.getParameter("destination"), request.getParameter("departure"));
-            search.getpresetFlights();
+            search.getAllFlights();
             session.setAttribute("flightResults", search);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/recSearchResults.jsp");
             requestDispatcher.forward(request, response);
@@ -73,7 +73,7 @@ public class recSearch extends HttpServlet
             String flightname = request.getParameter("FlightName");
             String planeType = request.getParameter("PlaneType");
 
-            FlightBean flight = new FlightBean(flightname, airline, timestamp, flightname, planeType, departure, destination, destination);
+            FlightBean flight = new FlightBean(flightname.substring(0, 2), airline, timestamp, flightname, planeType, departure, destination, destination); 
             
             session.setAttribute("flight", flight);
             String flightDetails = flight.getAirline() + "," + flight.getFlightName() + ","
