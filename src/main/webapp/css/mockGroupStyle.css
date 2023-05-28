@@ -505,7 +505,25 @@ ul{
 
      button.search:hover {
          background-color: dodgerblue;
+     }
+
+      label.addFaveFlight{
+          display: block;
+          padding-left: 15px;
+          text-indent: -15px;
       }
+
+      input.checkFave {
+          width: 15px;
+          height: 15px;
+          padding: 0;
+          margin: 0;
+          vertical-align: bottom;
+          position: relative;
+          top: -1px;
+      }
+
+
 }
 
 
