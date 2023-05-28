@@ -142,7 +142,7 @@ public class AvailabilityBean {
         this.leg2Price = leg2Price;
     }
 
-    //get availability
+    //retrieves availabilities for the specified flight
     public static LinkedList<AvailabilityBean> getAvailability(String airlineCode, String flightName, Timestamp flightDepartureTime){
 
         int available1 = 0;

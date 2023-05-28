@@ -26,7 +26,7 @@ public class SearchBean implements Serializable{
     int adultPassengers;
     int childPassengers;
     LinkedList<FlightBean> results;
-    //TODO: may need more for recommendation search
+    //TODO: may need more for completed recommendation search
 
     //constructors
     public SearchBean(Timestamp newDepartureDate, String newDestination, String newDeparture, LinkedList<TagBean> newTags, boolean newSimple, int newflexible, int newAdults, int newChildren){
@@ -116,6 +116,7 @@ public class SearchBean implements Serializable{
         this.results = results;
     }
 
+    //gets all flights from the database. Only used for examples for prototype
     public void getAllFlights() {
         try {
             String query = "SELECT f.*," +
@@ -154,6 +155,8 @@ public class SearchBean implements Serializable{
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
     }
+
+//this all may be useful for later when we start implementing properly...
 
     // public void getRecommendedFlights(UserBean user) {
     //     LinkedList<String> userTags = user.getTagSet();

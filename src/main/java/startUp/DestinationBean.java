@@ -18,10 +18,6 @@ public class DestinationBean {
     private LinkedList<String> tags;
     private int reputationScore;
 
-    //TODO: Need to go
-    LinkedList<DestinationBean> destinations;
-    LinkedList<String> codes;
-
     public DestinationBean()
     {
         destinationCode = null;
@@ -29,8 +25,6 @@ public class DestinationBean {
         destinationDescription = null;
         tags = null;
         reputationScore = 0;
-        destinations = new LinkedList<>();
-        codes = new LinkedList<>();
     }
 
     // constructors
@@ -164,41 +158,6 @@ public class DestinationBean {
         this.reputationScore = reputationScore;
     }
 
-    public void getAllDestinations()
-    {
-        String query = "SELECT * FROM Destinations;";
-        try{
-            Connection connection = ConfigBean.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery(query);
-            while (result.next())
-            {
-                String d = result.getString(1);
-                codes.add(d);
-            }
-
-            result.close();
-            statement.close();
-            connection.close();
-        } catch (SQLException e){
-            System.err.println(e.getMessage());
-            System.err.println(e.getStackTrace());
-        }
-
-        for (int i = 0; i < codes.size(); i++)
-        {
-            DestinationBean a = new DestinationBean(codes.get(i));
-            destinations.add(a);
-        }
-    }
-
-    public LinkedList<DestinationBean> getDestinations()
-    {
-        return this.destinations;
-    }
-
-
-    // get destination
 
     // TODO: increment/decrement reputation score
 

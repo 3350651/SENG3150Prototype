@@ -35,6 +35,7 @@ public class TicketBean implements Serializable {
         this.flightTime = flightTime;
         this.ticketClass = ticketClass;
         this.ticketType = ticketType;
+        //using the ticket class code to discern the class name. Will probably make this into a database call later as its better practice
         switch (ticketClass){
             case "FIR":
                 this.ticketClassName = "First Class";
@@ -49,6 +50,7 @@ public class TicketBean implements Serializable {
                 this.ticketClassName = "Economy";
                 break;
         }
+         //using the ticket type code to discern the type name. Will probably make this into a database call later as its better practice
         switch (ticketType){
             case "A":
                 this.ticketTypeName = "Standby";
@@ -159,7 +161,7 @@ public class TicketBean implements Serializable {
         this.ticketTypeName = ticketTypeName;
     }
 
-    //create ticket
+    //create ticket in database
     public void addTicket(){
         try{
             String query = "INSERT INTO dbo.TICKETS (TicketId, BookingId, PassengerId, AirlineCode, FlightNumber, DepartureTime, TicketClass, TicketType)\n" +
