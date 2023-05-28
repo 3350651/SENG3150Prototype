@@ -33,10 +33,10 @@ GroupBean group = (GroupBean) session.getAttribute("group");
                 <label for="userEmail">User email: </label>
                 <input type="text" id="userEmail" name="userEmail"><br>
 
-                <button style="align: right;" type="submit" name="addMember" value="addMember">Add Member</button>
+                <button class="groupButton" style="align: right;" type="submit" name="addMember" value="addMember">Add Member</button>
             </form>
             <form method="POST" action="ManageGroup">
-               <button style="align: left;" type="submit" name="continue" value="true">Cancel</button>
+               <button class="groupButton" style="align: left;" type="submit" name="continue" value="true">Cancel</button>
             </form>
         </div>
         </main>

@@ -42,26 +42,23 @@ public class GroupHomepageServlet extends HttpServlet {
                 requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToGroupFaveList.jsp");
                 requestDispatcher.forward(request, response);
             }
+        }
 
+        if (request.getParameter("goGroup") != null) {
+            String groupName = request.getParameter("groupName");
+            GroupBean group = getGroup(groupName);
+            session.setAttribute("group", group);
+            Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
+            session.setAttribute("isAdmin", isAdmin);
 
-            }
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
+            requestDispatcher.forward(request, response);
 
-
-            if (request.getParameter("goGroup") != null) {
-                String groupName = request.getParameter("groupName");
-                GroupBean group = getGroup(groupName);
-                session.setAttribute("group", group);
-                Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
-                session.setAttribute("isAdmin", isAdmin);
-
-                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
-                requestDispatcher.forward(request, response);
-
-            }
-            else if(request.getParameter("groupHomepage") != null) {
-                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
-                requestDispatcher.forward(request, response);
-            }
+        }
+        else if(request.getParameter("groupHomepage") != null) {
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
+            requestDispatcher.forward(request, response);
+        }
         else{
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepage.jsp");
             requestDispatcher.forward(request, response);
@@ -136,8 +133,6 @@ public class GroupHomepageServlet extends HttpServlet {
                 session.setAttribute("destinations", destinations);
                 session.setAttribute("group", group);
             }
-
-
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupFavouriteList.jsp");
             requestDispatcher.forward(request, response);
         }
@@ -224,20 +219,24 @@ public class GroupHomepageServlet extends HttpServlet {
             if(request.getParameter("getPool") != null){
                 session.setAttribute("pool", pool);
                 requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Pool.jsp");
+                requestDispatcher.forward(request, response);
             }
             //go to the page to add to the pool.
             else if(request.getParameter("addToPool") != null){
                 requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToPool.jsp");
+                requestDispatcher.forward(request, response);
             }
             //confirm withdraw from pool.
             else if(request.getParameter("withdrawFromPool") != null){
                 requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/WithdrawFromPool.jsp");
+                requestDispatcher.forward(request, response);
             }
             else if(request.getParameter("confirmWithdraw") != null){
                 double amount = group.withDrawFromPool(user.getUserID());
                 session.setAttribute("message", "Success! You have successfully withdrawn $" + amount +
                         " from the group money pool.");
                 requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/PoolMessage.jsp");
+                requestDispatcher.forward(request, response);
             }
             //request send to add money to pool. make a deposit to the pool.
             else if(request.getParameter("addMoney") != null){
@@ -257,23 +256,22 @@ public class GroupHomepageServlet extends HttpServlet {
                     session.setAttribute("message", "Success! You have successfully deposited $" + addMoney +
                     " into the group money pool.");
                     requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/PoolMessage.jsp");
+                    requestDispatcher.forward(request, response);
                 }
                 //An internal error or something else occurred. The value is checked if it is negative in the javascript.
                 else{
                     session.setAttribute("message", "An error occurred. Please check that the deposit does not exceed" +
                             " the remaining amount needed.");
                     requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/PoolMessage.jsp");
+                    requestDispatcher.forward(request, response);
                 }
-
-                requestDispatcher.forward(request, response);
             }
             else if(request.getParameter("poolContinue") != null){
                 pool = group.getPool();
                 session.setAttribute("pool", pool);
                 requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Pool.jsp");
+                requestDispatcher.forward(request, response);
             }
-
-            requestDispatcher.forward(request, response);
         }
         //If a flight is locked in and the pool is finished, then the group admin can book the flight for the group.
         else if(flightLockedIn && poolFinished){

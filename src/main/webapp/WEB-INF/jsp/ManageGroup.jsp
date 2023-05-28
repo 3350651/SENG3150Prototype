@@ -26,7 +26,7 @@ if(!depositMade){
         <header>
 
            <form name="backToGroup" action="GroupHomepage" method="GET">
-                   <button class="groupButton" type="submit" name="groupHomepage" value="true">Return to Group Home</button>
+                   <button class="groupButton" type="submit" name="groupHomepage" value="true">Return to Group Homepage</button>
            </form>
 
             <div class="titleContainer">

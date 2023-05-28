@@ -21,12 +21,12 @@ String message = (String) session.getAttribute("message");
                 <h1>Group Update Message</h1>
             </div>
         </header>
-        <div>
+        <div id="continueFormContainer">
         <div>
             <%= message %>
-        <div id="continueFormContainer">
+        <div>
             <form method="POST" action="GroupHomepage">
-                <button type="submit" name="addFlightContinue" value="continue">Continue</button>
+                <button class="groupButton" type="submit" name="addFlightContinue" value="continue">Continue</button>
             </form>
         </div>
         </div>

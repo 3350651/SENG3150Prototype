@@ -55,7 +55,6 @@ public class GroupFaveFlightBean implements Serializable {
             statement.setBigDecimal(6, BigDecimal.valueOf(this.score));
             statement.setString(7, this.groupID);
 
-
             statement.executeUpdate();
             statement.close();
             connection.close();
