@@ -17,8 +17,6 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
 <body>
     <main>
 
-        <header>
-
 
  <header>
             <div class="titleContainer">
@@ -30,6 +28,7 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
         <div id="addMemberFormContainer">
         <div>
         <form method="POST" action="GroupHomepage">
+        <div style="text-align: left;">
             <%
                 if(!groups.isEmpty()){
                     int size = groups.size();
@@ -37,19 +36,19 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
                     for(int i = 0; i < size; i++){
                         GroupBean group = groups.pop();
                         name = group.getGroupName(); %>
-                        <input class="checkFave" type="checkbox" id="groupFaveFlight" name="groupName" value="<%= name %>"
-                        <label class="addFaveFlight" for="<%= name %>"><%= name %></label>
+                        <label for="groupFaveFlight"><%= name %></label>
+                        <input type="checkbox" id="groupFaveFlight" name="groupName" value="<%= name %>">
+
                         <%
                         groups.addLast(group);
                     } %>
-                    <br><button class="groupButton" name="addToGroupFaveList" value="addToGroupFaveList">Add!</button>
+                    <button class="groupButton" name="addToGroupFaveList" value="addToGroupFaveList">Add!</button>
               <%  }
             %>
             </form>
             <form method="POST" action="GroupHomepage">
                <button class="groupButton" type="submit" name="doNotAddFaveFlight" value="true">Cancel</button>
             </form>
-            </div>
         </div>
         </main>
     </body>

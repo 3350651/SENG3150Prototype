@@ -274,7 +274,7 @@ CREATE TABLE GROUPS
 	groupID 	CHAR(8) PRIMARY KEY,
 	groupName		VARCHAR(20),
 	poolID 	CHAR(8) FOREIGN KEY REFERENCES POOL(poolID),
-	-- faveListID
+	questionnaireCompleted	VARCHAR(8),
 )
 
 CREATE TABLE USERGROUPS

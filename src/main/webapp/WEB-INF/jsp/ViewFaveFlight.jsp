@@ -20,13 +20,15 @@
                             <meta charset="UTF-8">
                             <title>startUp.FlightDetailsPage</title>
                             <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+                            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mockGroupStyle.css">
+
                         </head>
 
                         <body>
                             <main>
                                 <header>
-                                    <form class="backButton" method="POST" action="GroupHomepage">
-                                        <button type="submit" name="backToFaveFlightList" value="backToFaveFlightList">Back</button>
+                                    <form method="POST" action="GroupHomepage">
+                                        <button class="groupButton" type="submit" name="backToFaveFlightList" value="backToFaveFlightList">Back</button>
                                     </form>
                                     <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
                                         alt="FlightPub Logo" class="centreLogo">
@@ -106,10 +108,10 @@
                                         <%
                                         if(memberVote == 0) { %>
                                         <form method="POST" action="GroupHomepage">
-                                            <button type="submit" name="vote" value="2">Lock-in</button>
-                                            <button type="submit" name="vote" value="1">Upvote</button>
-                                            <button type="submit" name="vote" value="-1">Downvote</button>
-                                            <button type="submit" name="vote" value="-2">Blacklist</button>
+                                            <button class="groupButton"  type="submit" name="vote" value="2">Lock-in</button>
+                                            <button class="groupButton"  type="submit" name="vote" value="1">Upvote</button>
+                                            <button class="groupButton"  type="submit" name="vote" value="-1">Downvote</button>
+                                            <button class="groupButton" type="submit" name="vote" value="-2">Blacklist</button>
                                             <input type="hidden" name="viewFaveFlight" value="viewFaveFlight">
                                         </form>
                                         <%
@@ -121,17 +123,17 @@
                                         <%
                                         } else if(memberVote == 1){ %>
                                             <form method="POST" action="GroupHomepage">
-                                                <button type="submit" name="vote" value="2">Lock-in</button>
-                                                <button type="submit" name="vote" value="-1">Downvote</button>
-                                                <button type="submit" name="vote" value="-2">Blacklist</button>
+                                                <button class="groupButton"  type="submit" name="vote" value="2">Lock-in</button>
+                                                <button class="groupButton"  type="submit" name="vote" value="-1">Downvote</button>
+                                                <button class="groupButton" type="submit" name="vote" value="-2">Blacklist</button>
                                                 <input type="hidden" name="viewFaveFlight" value="viewFaveFlight">
                                             </form>
                                         <%
                                         } else { %>
                                             <form method="POST" action="GroupHomepage">
-                                                <button type="submit" name="vote" value="2">Lock-in</button>
-                                                <button type="submit" name="vote" value="1">Upvote</button>
-                                                <button type="submit" name="vote" value="-2">Blacklist</button>
+                                                <button class="groupButton" type="submit" name="vote" value="2">Lock-in</button>
+                                                <button class="groupButton" type="submit" name="vote" value="1">Upvote</button>
+                                                <button class="groupButton" type="submit" name="vote" value="-2">Blacklist</button>
                                                 <input type="hidden" name="viewFaveFlight" value="viewFaveFlight">
                                             </form>
                                         <% }
@@ -162,7 +164,7 @@
                                                 <label for="newMessage">Post a message: </label>
                                                 <input type="text" id="newMessage" name="newMessage"><br>
 
-                                                <button type="submit" name="newMessage" value="newMessage">Post Message</button>
+                                                <button class="groupButton" type="submit" name="newMessage" value="newMessage">Post Message</button>
                                                 <input type="hidden" name="viewFaveFlight" value="viewFaveFlight">
                                             </form>
                                         </div>

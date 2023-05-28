@@ -186,4 +186,11 @@ public class ManageGroupServlet extends HttpServlet {
         }
 
     }
+
+    /*
+    To do for full implementation:
+    - Group will have a tagset attached to the profile.
+    - They will therefore be able to modify their tags and complete the questionnaire - allowing for recommended search
+      for the group.
+     */
 }
