@@ -507,21 +507,25 @@ ul{
          background-color: dodgerblue;
      }
 
-      label.addFaveFlight{
-          display: block;
-          padding-left: 15px;
-          text-indent: -15px;
+     #addFaveFlightContainer {
+         text-align: left;
+         /* top | right | bottom | left */
+         margin: 5px auto;
+         width: 40%;
+         border: 3px;
+         padding: 5px;
+         background-color: #7CB9E8;
+         border-radius: 8px;
+       }
+
+      .calendar {
+        width:500px;
+        height:300px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
       }
 
-      input.checkFave {
-          width: 15px;
-          height: 15px;
-          padding: 0;
-          margin: 0;
-          vertical-align: bottom;
-          position: relative;
-          top: -1px;
-      }
 
 
 }

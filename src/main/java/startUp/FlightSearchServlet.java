@@ -42,7 +42,7 @@ public class FlightSearchServlet extends HttpServlet {
         //session.setAttribute("destinationList", dest);
         recSearchBean recs = new recSearchBean();
 
-        recs.getpresetFlights();
+        recs.getAllFlights();
         session.setAttribute("flightResults",recs);
 
         /*SearchBean search = new SearchBean(null, "Atlanta", "Rio De Janeiro", null, false, 0, 0, 0);

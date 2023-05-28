@@ -97,7 +97,7 @@ public class recSearchBean implements Serializable
         return this.destinationLocation;
     }
 
-    public void getpresetFlights()
+    public void getAllFlights()
     {
         flightResults = new LinkedList<>();
 

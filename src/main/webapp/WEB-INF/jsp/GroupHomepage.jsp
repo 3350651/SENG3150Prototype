@@ -33,29 +33,37 @@ Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
             <div class="groupName">
                 <h2><%= group.getGroupName() %></h2>
             </div>
-            <%
-            if(isAdmin){ %>
-            <form name="manageGroup" action="ManageGroup" method="GET">
-               <button class="groupButton" type="submit" name="manageGroup" value="manageGroup">Manage Group</button>
-            </form>
-            <%}%>
         </header>
 
         <jsp:include page='c-SimpleSearchBar.jsp'></jsp:include>
 
             <div class="manageGroupContent">
-            <div class="filledSection">
-                <form name="groupFaveList" id="groupFaveList" method="POST" action="GroupHomepage">
-                 <button class="groupButton" type="submit" name="getGroupFaveList" value="getGroupFaveList">Go to Group Favourite List</button>
-                </form>
-            </div>
 
-            <!--Need to add button only when available, instead it should have window that says pool not available yet.-->
-            <div  class="filledSection">
-                <form name="pool" id="pool" method="POST" action="GroupHomepage">
-                 <button class="groupButton" type="submit" name="getPool" value="getPool">Go to Money Pool</button>
+                <%
+                if(isAdmin){ %>
+                <form name="manageGroup" action="ManageGroup" method="GET">
+                   <button class="groupButton" type="submit" name="manageGroup" value="manageGroup">Manage Group</button>
                 </form>
-            </div>
+                <%}%>
+
+                <div class="filledSection">
+                    <form name="groupFaveList" id="groupFaveList" method="POST" action="GroupHomepage">
+                     <button class="groupButton" type="submit" name="getGroupFaveList" value="getGroupFaveList">Go to Group Favourite List</button>
+                    </form>
+                </div>
+
+                <!--Need to add button only when available, instead it should have window that says pool not available yet.-->
+                <div class="filledSection">
+                    <form name="pool" id="pool" method="POST" action="GroupHomepage">
+                     <button class="groupButton" type="submit" name="getPool" value="getPool">Go to Money Pool</button>
+                    </form>
+                </div>
+
+                <div class="filledSection">
+                    <form name="calendar" id="calendar" method="POST" action="GroupHomepage">
+                     <button class="groupButton" type="submit" name="getCalendar" value="getCalendar">Go to Group Calendar</button>
+                    </form>
+                </div>
             </div>
     </main>
 </body>

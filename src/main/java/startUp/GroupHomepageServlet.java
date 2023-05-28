@@ -44,7 +44,7 @@ public class GroupHomepageServlet extends HttpServlet {
             }
         }
 
-        if (request.getParameter("goGroup") != null) {
+       if (request.getParameter("goGroup") != null) {
             String groupName = request.getParameter("groupName");
             GroupBean group = getGroup(groupName);
             session.setAttribute("group", group);
@@ -236,6 +236,12 @@ public class GroupHomepageServlet extends HttpServlet {
                 session.setAttribute("message", "Success! You have successfully withdrawn $" + amount +
                         " from the group money pool.");
                 requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/PoolMessage.jsp");
+                requestDispatcher.forward(request, response);
+            }
+            //Get the group availability calendar.
+            else if(request.getParameter("getCalendar") != null){
+                //This feature is not implemented for the prototype. It serves as a placeholder.
+                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupCalendar.jsp");
                 requestDispatcher.forward(request, response);
             }
             //request send to add money to pool. make a deposit to the pool.
