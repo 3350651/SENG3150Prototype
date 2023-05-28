@@ -17,8 +17,9 @@
                         <body>
                             <main>
                                 <header>
-                                    
-                                        <button class="button" onclick="history.back()" >Back</button>
+                                    <form action="flightSearch" method="POST">
+                                        <button class="button" name="searchResults" value="simpleSearchResults">Back</button>
+                                    </form>
                                     
                                     <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
                                         alt="FlightPub Logo" class="centreLogo">
