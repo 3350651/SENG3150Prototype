@@ -26,7 +26,7 @@
                                                 alt="FlightPub Logo" class="logo">
                                             <%-- Home page button --%>
                                                 <!-- TODO: go to recommended search -->
-                                                <form name="SearchSelect" action="recSearch" method="GET">
+                                                <form name="SearchSelect" action="flightSearch" method="GET">
                                                     <h2>Toggle Search Mode</h2>
                                                     <%-- <button type="submit" class="button" name="home"
                                                         value="simpleSearch">Simple

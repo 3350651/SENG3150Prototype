@@ -19,74 +19,29 @@ public class Homepage extends HttpServlet {
 		HttpSession session = request.getSession();
 		RequestDispatcher requestDispatcher = null;
 
-
-		// send the user to an unauthorised page if they try to access the homepage without being logged in.
-		if (session.getAttribute("userBean") == null){
+		// send the user to an unauthorised page if they try to access the homepage
+		// without being logged in.
+		if (session.getAttribute("userBean") == null) {
 			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
 			requestDispatcher.forward(request, response);
-		}
-		else {
-		// gets the person object and their role from the session object.
-		UserBean user = (UserBean) session.getAttribute("userBean");
-		String role = ((UserBean)session.getAttribute("userBean")).getRoleInSystem();
-		String defaultSearch = ((UserBean)session.getAttribute("userBean")).getDefaultSearch();
-		//Get groups that the user is in.
-		LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
-		LinkedList<GroupBean> groups = getGroups(groupIDs);
-		session.setAttribute("groups", groups);
-
-		if(session.getAttribute("gotoSimple") != null)
-		{
-			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
-			requestDispatcher.forward(request, response);
-		}
-
-		if (defaultSearch.equals("Simple")){
-			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
-			requestDispatcher.forward(request, response);
-		}
-		else if(defaultSearch.equals("Recommend")){
-			requestDispatcher = request.getRequestDispatcher("/recSearch");
-			requestDispatcher.forward(request, response);
-		}
-
-		// sends the user to the correct homepage depending on their role
-		if (role.equals("user")){
-
-			//this could be redundant?
-			if(request.getParameter("groupHomepage") != null){
-				request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
-			}
-
-			//stuff to set and display groups for user.
-			groupIDs = user.getGroupIDs(user.getUserID());
-				if (!groupIDs.isEmpty()) {
-					groups = getGroups(groupIDs);
-					session.setAttribute("groups", groups);
-				}
-
-//			if (defaultSearch.equals("Simple")) {
-//				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
-//				requestDispatcher.forward(request, response);
-//			} else if (defaultSearch.equals("Recommend")) {
-//				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
-//				requestDispatcher.forward(request, response);
-//			}
+		} else {
+			// gets the person object and their role from the session object.
+			UserBean user = (UserBean) session.getAttribute("userBean");
+			String role = ((UserBean) session.getAttribute("userBean")).getRoleInSystem();
+			String defaultSearch = ((UserBean) session.getAttribute("userBean")).getDefaultSearch();
+			// Get groups that the user is in.
+			LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
+			LinkedList<GroupBean> groups = getGroups(groupIDs);
+			// sends the user to the correct homepage depending on their role
 
 			// sends the user to the correct homepage depending on their role
 			if (role.equals("user")) {
 
-				//this could be redundant?
-				if (request.getParameter("groupHomepage") != null) {
-					request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
-				}
-
-				//stuff to set and display groups for user.
-//				LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
+				// stuff to set and display groups for user.
+				// LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
 				if (!groupIDs.isEmpty()) {
 					groups = getGroups(groupIDs);
 					session.setAttribute("groups", groups);
-
 
 					if (request.getParameter("goGroup") != null) {
 						String groupName = request.getParameter("groupName");
@@ -97,42 +52,42 @@ public class Homepage extends HttpServlet {
 
 						requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
 						requestDispatcher.forward(request, response);
-
 					}
-					requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepageWithGroups.jsp");
+					else{
+						requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
+						requestDispatcher.forward(request, response);
+					}
 				} else {
-					requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserHomepage.jsp");
+					requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
+					requestDispatcher.forward(request, response);
 				}
-			}
-			}
-			else if (role.equals("admin")) {
+			} else if (role.equals("admin")) {
 				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/StaffHomepage.jsp");
 			} else {
 				System.out.println("Unknown role error: (webapp.Homepage.java)");
 			}
-
-//		requestDispatcher.forward(request, response);
 		}
 	}
 
 	/**
-	 * Handles POST requests for the logout button, home button and admin functionality
+	 * Handles POST requests for the logout button, home button and admin
+	 * functionality
 	 */
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// logout button
-		if (request.getParameter("logout") != null){
+		if (request.getParameter("logout") != null) {
 			request.getSession().invalidate();
 			response.sendRedirect("login");
 		}
 
 		// home button
-		if(request.getParameter("home") != null){
+		if (request.getParameter("home") != null) {
 			response.sendRedirect("Homepage");
 		}
 
 		// admin - add user form
-		if (request.getParameter("addUser") != null){
+		if (request.getParameter("addUser") != null) {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/CreateAccount.jsp");
 			String firstName = request.getParameter("firstName");
 			String lastName = request.getParameter("lastName");
@@ -149,19 +104,20 @@ public class Homepage extends HttpServlet {
 			LocalDate dateOfBirth = LocalDate.parse(request.getParameter("dateOfBirth"));
 
 			UserBean user = new UserBean(firstName, lastName, email, password, phoneNumber, role, address,
-					defaultSearch, defaultCurrency, defaultTimeZone, themePreference, questionnaireCompleted, dateOfBirth);
+					defaultSearch, defaultCurrency, defaultTimeZone, themePreference, questionnaireCompleted,
+					dateOfBirth);
 
-			user.addUserToTheSystem(firstName, lastName, email, password, phoneNumber, role, address, defaultSearch, defaultCurrency, defaultTimeZone, themePreference, questionnaireCompleted, dateOfBirth);
+			user.addUserToTheSystem(firstName, lastName, email, password, phoneNumber, role, address, defaultSearch,
+					defaultCurrency, defaultTimeZone, themePreference, questionnaireCompleted, dateOfBirth);
 			requestDispatcher.forward(request, response);
 		}
 
 		// admin - remove user
-		if (request.getParameter("remove") != null){
+		if (request.getParameter("remove") != null) {
 			UserBean.removeUserFromSystem(request.getParameter("remove"));
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AdminHomepage.jsp");
 			requestDispatcher.forward(request, response);
 		}
-
 
 	}
 

@@ -21,12 +21,16 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
     <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
         alt="FlightPub Logo" class="logo">
     <%-- Home page button --%>
-    <form name="SearchSelect" action="recSearch" method="GET">
+    <!-- TODO: fix this servlet call? -->
+    <form name="SearchSelect" action="flightSearch" method="GET">
         <h2>Toggle Search Mode</h2>
-        <%-- <button type="submit" class="button" name="home" value="simpleSearch">Simple
-            Search</button> --%>
+        <%if(request.getAttribute("simple") != null){%>
             <button type="submit" class="button" name="home"
                 value="recommendSearch">Recommend Search</button>
+            
+            <%}else{%> 
+                <button type="submit" class="button" name="home" value="simpleSearch">Simple Search</button> 
+                <%}%>     
     </form>
     <%-- Bookmarked Flights --%>
     <% if (bookmarkedFlights.size() != 0) { %>

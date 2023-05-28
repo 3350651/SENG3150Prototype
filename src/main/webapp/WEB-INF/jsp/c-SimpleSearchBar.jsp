@@ -36,7 +36,7 @@
                 Search Parameters</button>
         </div>
         <div class="search">
-            <button name="searchResults" type="submit" value="searchResults"
+            <button name="searchResults" type="submit" value="simpleSearchResults"
                     class="search">Search For Flights</button>
         </div>
     </form>
