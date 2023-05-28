@@ -23,4 +23,8 @@ public class CalendarBean implements Serializable {
     public Timestamp getEndDate() {
         return endDate;
     }
+
+    public void addCalendarToDB() {
+
+    }
 }

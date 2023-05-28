@@ -162,11 +162,6 @@ public class GroupBean implements Serializable {
         }
     }
 
-    public LinkedList<MessageBean> getChat(String chatID){
-        return getChatMessages(chatID);
-    }
-
-
     public void setPoolTotalAmount(double total){
         String query = "UPDATE POOL SET [totalAmount] = ? WHERE [poolID] = ?";
 
