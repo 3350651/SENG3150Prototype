@@ -9,7 +9,6 @@
 .gradle/7.4/fileHashes/fileHashes.lock
 .gradle/7.4/fileHashes/resourceHashesCache.bin
 .gradle/buildOutputCleanup/buildOutputCleanup.lock
-src/main/java/startUp/FlightBean.java
 build/tmp/compileJava/previous-compilation-data.bin
 build/classes/java/main/startUp/recSearch.class
 .gradle/buildOutputCleanup/buildOutputCleanup.lock
@@ -18,3 +17,4 @@ build/classes/java/main/startUp/recSearch.class
 .gradle/7.4/fileHashes/fileHashes.bin
 .gradle/7.4/executionHistory/executionHistory.lock
 .gradle/7.4/executionHistory/executionHistory.bin
+src/main/webapp/META-INF/context.xml
