@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: CreateAccountServlet.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Controller for creation of user accounts
+ */
+
 package startUp;
 
 import javax.servlet.RequestDispatcher;
@@ -10,31 +16,15 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 
-/**
- * The homepage servlet which handles requests made to the homepage.
- * @author Jordan Eade c3350651
- * @author Lucy Knight c3350691
- * @author Ahmed Al-khazraji c3277545
- * @author Jason Walls c3298757
- */
 @WebServlet(urlPatterns = { "/CreateAccount" })
 public class CreateAccountServlet extends HttpServlet {
 
-	/**
-	 * Handles GET requests made to the homepage, this servlet will forward the user to the
-	 * user, admin or staff homepage depending on their role.
-	 */
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
+		HttpSession session = null;
 		RequestDispatcher requestDispatcher = null;
 
-		// send the user to an unauthorised page if they try to access the homepage without being logged in.
-		if (session.getAttribute("userBean") != null){
-			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/CreateAccount.jsp");
-			requestDispatcher.forward(request, response);
-		}
-
+		requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/CreateAccount.jsp");
 		requestDispatcher.forward(request, response);
 	}
 
@@ -46,7 +36,7 @@ public class CreateAccountServlet extends HttpServlet {
 
 		// add user form
 		if (request.getParameter("addUser") != null){
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/LoginPage.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
 			String firstName = request.getParameter("firstName");
 			String lastName = request.getParameter("lastName");
 			String email = request.getParameter("email");

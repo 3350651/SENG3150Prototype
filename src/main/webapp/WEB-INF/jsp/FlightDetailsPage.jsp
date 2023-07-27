@@ -17,8 +17,9 @@
                         <body>
                             <main>
                                 <header>
-                                    
-                                        <button class="backButton" type="submit" link="${pageContext.request.contextPath}/WEB-INF/jsp/Homepage-Index.jsp">Back</button>
+                                    <form action="flightSearch" method="POST">
+                                        <button class="button" name="searchResults" value="simpleSearchResults">Back</button>
+                                    </form>
                                     
                                     <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
                                         alt="FlightPub Logo" class="centreLogo">
@@ -102,9 +103,10 @@
                                     <tr>
                                         <td class="filledSection" colspan="2" style="text-align: center;">
                                             <div class="floatGroupFavButton">
-                                                <button class="button" class="addToGroupFav" name="addToGroupFavList"
-                                                    id="addToGroupFavList">Add To Group
-                                                    Favourite List</button>
+                                                <form name="addToGroupFaveList" action="GroupHomepage" method="GET">
+                                                    <button class="button" type="submit" class="addToGroupFaveList" name="addToGroupFaveList"
+                                                        id="addToGroupFaveList" value="addToGroupFaveList">Add To Group Favourite List</button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>

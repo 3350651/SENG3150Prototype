@@ -1,8 +1,13 @@
+/**
+ * FILE NAME: Passenger.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model object for passengers on a flight
+ */
+
 package startUp;
 
 import java.io.Serializable;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -20,6 +25,7 @@ public class PassengerBean implements Serializable {
     private TicketBean departureTicket;
     private TicketBean returnTicket;
 
+    //constructor
     public PassengerBean(String lastName, String givenNames, String email, String phoneNumber, Timestamp dateOfBirth, String bookingId){
         this.lastName = lastName;
         this.givenNames = givenNames;
@@ -106,7 +112,7 @@ public class PassengerBean implements Serializable {
         this.returnTicket = returnTicket;
     }
 
-    //create passenger
+    //create passenger in database
     public void addPassenger(){
         try{
             String query = "INSERT INTO dbo.PASSENGERS (PassengerId, LastName, GivenNames, Email, PhoneNumber, DateOfBirth, BookingId)\n" +

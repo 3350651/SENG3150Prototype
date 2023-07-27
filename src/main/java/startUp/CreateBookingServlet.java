@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: CreateBookingServlet.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Controller for creation of bookings
+ */
+
 package startUp;
 
 import javax.servlet.RequestDispatcher;
@@ -15,19 +21,16 @@ import java.util.LinkedList;
 public class CreateBookingServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-    }
-
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession();
 
+        //If request coming from details page
         if (req.getParameter("details") != null) {
 
             UserBean user = (UserBean) session.getAttribute("userBean");
 
+            //get the flight from the session and update availabilities
             FlightBean flight = (FlightBean) session.getAttribute("flight");
             flight.getAvailabilities();
             session.setAttribute("flight", flight); // overwrite the flight attribute
@@ -38,11 +41,13 @@ public class CreateBookingServlet extends HttpServlet {
                 req.setAttribute("returnFlight", returnFlight);
             }
 
+            //get number of passengers for form on next page
             int passengers = Integer.parseInt(req.getParameter("numPassengers"));
             req.setAttribute("passengers", passengers);
 
             // TODO: Check the availability of the flight
 
+            //create booking with the chose flights
             BookingBean booking = new BookingBean(user.getUserID(), flight, returnFlight);
             session.setAttribute("booking", booking);
             booking.addBooking(); // saving progress of booking
@@ -50,6 +55,7 @@ public class CreateBookingServlet extends HttpServlet {
             requestDispatcher.forward(req, resp);
         }
 
+        //if coming from the passenger oiptions page
         else if (req.getParameter("options") != null) {
 
             BookingBean booking = (BookingBean) session.getAttribute("booking");
@@ -78,26 +84,29 @@ public class CreateBookingServlet extends HttpServlet {
                         booking.getDepartureFlight().getFlightName(),
                         booking.getDepartureFlight().getAirline(), booking.getDepartureFlight().getFlightTime(),
                         ticketClass, ticketType);
-                departureTicket.addTicket();
+                departureTicket.addTicket();    //add ticket to database
 
                 TicketBean returnTicket = null;
+                //if there is a return flight to add a ticket for
                 if (returnTicketClass != null) {
                     returnTicket = new TicketBean(booking.getBookingId(), passengerBean.getPassengerId(),
                             booking.getReturnFlight().getFlightName(),
                             booking.getReturnFlight().getAirline(), booking.getReturnFlight().getFlightTime(),
                             returnTicketClass, returnTicketType);
-                    returnTicket.addTicket();
+                    returnTicket.addTicket();       //add ticket to database
                 }
                 passengerBean.setDepartureTicket(departureTicket);
                 passengerBean.setReturnTicket(returnTicket);
                 passengerBeans.add(passengerBean);
             }
 
+            //set details to display on next page
             booking.setPassengers(passengerBeans);
             session.setAttribute("booking", booking);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/ReviewDetailsPage.jsp");
             requestDispatcher.forward(req, resp);
         }
+        //if coming from the review details page
         else if(req.getParameter("payment") != null){
 
             BookingBean booking = (BookingBean) session.getAttribute("booking");

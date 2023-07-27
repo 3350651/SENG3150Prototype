@@ -21,14 +21,19 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
     <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
         alt="FlightPub Logo" class="logo">
     <%-- Home page button --%>
-    <form name="SearchSelect" action="recSearch" method="GET">
+    <!-- TODO: fix this servlet call? -->
+    <form name="SearchSelect" action="flightSearch" method="GET">
         <h2>Toggle Search Mode</h2>
-        <%-- <button type="submit" class="button" name="home" value="simpleSearch">Simple
-            Search</button> --%>
+        <%if(request.getAttribute("simple") != null){%>
             <button type="submit" class="button" name="home"
                 value="recommendSearch">Recommend Search</button>
+            
+            <%}else{%> 
+                <button type="submit" class="button" name="home" value="simpleSearch">Simple Search</button> 
+                <%}%>     
     </form>
     <%-- Bookmarked Flights --%>
+    <% if (bookmarkedFlights.size() != 0) { %>
     <form name="goToBookmarkedFlight" action="ViewFlight" method="POST">
     <h2>Bookmarked Flights</h2>
     <%
@@ -43,7 +48,11 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
       j++;}}
     %>
     </form>
+    <% } %>
     <%-- Groups You're In --%>
+    <% if (user != null) { %>
+    <div class = "GroupMembership">
+    <h2>Your Groups</h2>
     <%
             if(groups != null && (!groups.isEmpty())){
                 int size = groups.size();
@@ -51,9 +60,9 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
                 for(int i = 0; i < size; i++){
                     GroupBean group = groups.pop();
                     name = group.getGroupName(); %>
-                    <div class="goGroup">
+                    <div>
                         <form method="GET" action="GroupHomepage">
-                            <button name="goGroup" value="goGroup">
+                            <button class="button" name="goGroup" value="goGroup">
                                 <%= name %>
                             </button>
                             <input type="hidden" id="groupName" name="groupName" value="<%= name %>">
@@ -65,8 +74,9 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
             }
             %>
     <form name="goToGroup" action="CreateGroup" class="groups" method="GET">
-        <h2>Group Membership</h2>
         <button type="submit" class="button" name="createGroup"
             value="createGroup">Create New Group</button>
     </form>
+    <% } %>
+    </div>
 </div>

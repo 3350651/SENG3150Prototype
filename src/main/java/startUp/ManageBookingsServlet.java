@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: ManageBookingsServlet.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Controller for managing bookings being made
+ */
+
 package startUp;
 
 import javax.servlet.RequestDispatcher;
@@ -19,13 +25,15 @@ public class ManageBookingsServlet extends HttpServlet {
         // view bookings page
         HttpSession session = req.getSession();
         UserBean user = (UserBean) session.getAttribute("userBean");
+
+        
         if (user != null) {
-            LinkedList<BookingBean> bookings = BookingBean.getUserBookings(user.getUserID());
+            LinkedList<BookingBean> bookings = BookingBean.getUserBookings(user.getUserID());   //get all user bookings
             session.setAttribute("userBookings", bookings);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/ViewBookingsPage.jsp");
             requestDispatcher.forward(req, resp);
         } else {
-            // not authenticated
+            // not logged in
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/Homepage-Index.jsp");
             requestDispatcher.forward(req, resp);
         }

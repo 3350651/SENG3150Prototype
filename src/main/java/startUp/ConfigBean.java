@@ -1,16 +1,15 @@
+/**
+ * FILE NAME: ConfigBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Configuration for database connection
+ */
+
 package startUp;
 
 import javax.sql.*;
 import javax.naming.*;
 import java.sql.*;
 
-/**
- * The webapp.ConfigBean which establishes the connection to the database
- * @author Jordan Eade c3350651
- * @author Lucy Knight c3350691
- * @author Ahmed Al-khazraji c3277545
- * @author Jason Walls c3298757
- */
 public class ConfigBean {
     private static final DataSource dataSource = makeDataSource();
     private static DataSource makeDataSource(){

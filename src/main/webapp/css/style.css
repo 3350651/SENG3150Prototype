@@ -148,9 +148,13 @@
   margin-top: 5px;
 }
 
-form.groups{
-    bottom: 5px;
-    position: fixed;
+div.GroupMembership{
+    bottom: 1em;
+    position: absolute;
+}
+
+div.addUserFormContainer{
+    display: flex;
 }
 
 div.dateAndCheckBox{
@@ -849,9 +853,12 @@ p.summaryOfSearch{
       display: grid;
       column-gap: 50px;
       display: flex;
-      margin-left: 250px;
+      /*margin-left: 250px;
       align-items: center;
-      justify-content: center;
+      justify-content: center;*/
+      margin-left: 1000em;
+      align-items: center;
+      justify-content: right;
       font-family: Arial;
   }
 

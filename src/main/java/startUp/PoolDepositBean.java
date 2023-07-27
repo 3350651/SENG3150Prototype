@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: FlightBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model object for holding the information about a deposit made into the group money pool
+ */
+
 package startUp;
 
 import java.io.Serializable;

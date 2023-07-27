@@ -325,6 +325,17 @@ ul{
        border-radius: 8px;
     }
 
+    #continueFormContainer {
+       text-align:center;
+       /* top | right | bottom | left */
+       margin: 5px auto;
+       width: 40%;
+       border: 3px;
+       padding: 5px;
+       background-color: #7CB9E8;
+       border-radius: 8px;
+    }
+
     .removeMember{
        text-align:center;
        /* top | right | bottom | left */
@@ -494,7 +505,29 @@ ul{
 
      button.search:hover {
          background-color: dodgerblue;
+     }
+
+     #addFaveFlightContainer {
+         text-align: left;
+         /* top | right | bottom | left */
+         margin: 5px auto;
+         width: 40%;
+         border: 3px;
+         padding: 5px;
+         background-color: #7CB9E8;
+         border-radius: 8px;
+       }
+
+      .calendar {
+        width:500px;
+        height:300px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
       }
+
+
+
 }
 
 

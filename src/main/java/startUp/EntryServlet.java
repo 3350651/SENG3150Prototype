@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: EntryServlet.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Controller for users first connecting to the site.
+ */
+
 package startUp;
 
 import javax.servlet.ServletException;

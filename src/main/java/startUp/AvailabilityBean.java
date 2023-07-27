@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: AvailabilityBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model Object to obtain Availability data on flights
+ */
+
 package startUp;
 
 import java.sql.*;
@@ -136,7 +142,7 @@ public class AvailabilityBean {
         this.leg2Price = leg2Price;
     }
 
-    //get availability
+    //retrieves availabilities for the specified flight
     public static LinkedList<AvailabilityBean> getAvailability(String airlineCode, String flightName, Timestamp flightDepartureTime){
 
         int available1 = 0;

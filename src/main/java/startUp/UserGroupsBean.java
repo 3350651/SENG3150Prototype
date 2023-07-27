@@ -1,9 +1,13 @@
+/**
+ * FILE NAME: UserGroupsBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model object for groups a users is a part of
+ */
+
 package startUp;
 
 import java.io.Serializable;
 import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -174,6 +178,28 @@ public class UserGroupsBean implements Serializable {
         }
 
         return inGroup;
+    }
+
+    public static int getNumberOfMembers(String groupID){
+        int members = 0;
+
+        String query = "SELECT COUNT(*) FROM USERGROUPS WHERE [groupID] = ?";
+        try{
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, groupID);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                members = result.getInt(1);
+            }
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+
+        return members;
     }
 
 }

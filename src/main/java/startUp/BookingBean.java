@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: BookingBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model Object to hold data pertaining to bookings for customers
+ */
+
 package startUp;
 
 import java.io.Serializable;
@@ -151,6 +157,7 @@ public class BookingBean implements Serializable {
 
     }
 
+    //change progress bit of booking to false
     public void finalise() {
         try {
             String query = "UPDATE BOOKINGS SET Progress = 0 WHERE BookingId = ?";
@@ -196,7 +203,7 @@ public class BookingBean implements Serializable {
                 //getReturnFlight 
                 FlightBean returnFlight = FlightBean.getFlight(returnAirlineCode, returnFlightNumber, returnTime);
 
-                //get passengers
+                //get passengers from this booking
                 query = "SELECT * FROM PASSENGERS WHERE BookingId = ?";
                 statement = connection.prepareStatement(query);
                 statement.setString(1, bookingId);
@@ -212,7 +219,7 @@ public class BookingBean implements Serializable {
                     String passengerBookingId = passengerResults.getString(7);
                     passengers.add(new PassengerBean(lName, fName, email, mobile, DOB, passengerBookingId));
                 }
-                //get tickets
+                //get tickets from this booking
                 query = "SELECT * FROM TICKETS WHERE BookingId = ?";
                 statement = connection.prepareStatement(query);
                 statement.setString(1, bookingId);

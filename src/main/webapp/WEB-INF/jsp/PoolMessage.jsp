@@ -13,27 +13,30 @@ PoolBean pool = (PoolBean) session.getAttribute("pool");
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
-    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mockGroupStyle.css">
 </head>
 <body>
     <main>
 
  <header>
             <div class="titleContainer">
+             <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="groupLogo" >
                 <h1>Pool Update Message</h1>
             </div>
             <div class="groupName">
                 <h2><%= group.getGroupName() %></h2>
             </div>
         </header>
+        <div id="addMemberFormContainer">
         <div>
             <%= message %>
         </div>
         <div id="continueFormContainer">
             <form method="POST" action="GroupHomepage">
-                <button type="submit" name="poolContinue" value="poolContinue">Continue</button>
+                <button class="groupButton" type="submit" name="poolContinue" value="poolContinue">Continue</button>
 
             </form>
+        </div>
         </div>
         </main>
     </body>

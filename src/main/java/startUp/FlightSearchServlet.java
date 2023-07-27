@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: FlightSearchServlet.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Controller for searching for a flight
+ */
+
 package startUp;
 
 import javax.servlet.RequestDispatcher;
@@ -9,24 +15,66 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.LinkedList;
 
 @WebServlet(urlPatterns = { "/flightSearch" })
 public class FlightSearchServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+
+        if (request.getParameter("home").equalsIgnoreCase("recommendSearch")) {
+
+            SearchBean search = new SearchBean(null, null, null, null, false, 0, 0, 0);
+
+            session.setAttribute("flightResults", search);
+            request.setAttribute("goToRecommend", true);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
+            requestDispatcher.forward(request, response);
+        } else {
+            request.setAttribute("goToSimple", true);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
+            requestDispatcher.forward(request, response);
+        }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
 
-        //simple search flow
-        SearchBean search = new SearchBean(null, "Atlanta", "Rio De Janeiro", null, false, 0, 0, 0);
-        HttpSession session = req.getSession();
-        session.setAttribute("results", search);
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/SearchResultsPage-SimpleSearch.jsp");
-        requestDispatcher.forward(req, resp);
+        if (request.getParameter("searchResults") != null
+                && request.getParameter("searchResults").equalsIgnoreCase("recSearchResults")) {
+            SearchBean search = new SearchBean(null, null, null, null, false, 0, 0, 0);
+            session.setAttribute("flightResults", search);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/recSearchResults.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        else if (request.getParameter("searchResults") != null
+                && request.getParameter("searchResults").equalsIgnoreCase("simpleSearchResults")) {
+            SearchBean search = new SearchBean(null, null, null, null, true, 0, 0, 0);
+            session.setAttribute("flightResults", search);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/simpleSearchResults.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        else if (request.getParameter("viewFlight") != null) {
+            String airline = request.getParameter("airline");
+            String flightname = request.getParameter("flightName");
+            Timestamp flightTime = Timestamp.valueOf(request.getParameter("flightTime"));
+
+            FlightBean flight = FlightBean.getFlight(airline, flightname, flightTime);
+
+            session.setAttribute("flight", flight);
+            String flightDetails = flight.getAirline() + "," + flight.getFlightName() + ","
+                    + flight.getFlightTime();
+            session.setAttribute("flightDetails", flightDetails);
+
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
+            requestDispatcher.forward(request, response);
+        }
 
     }
 }

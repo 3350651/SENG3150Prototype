@@ -6,12 +6,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
-    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
     <main>
         <jsp:include page='c-Sidebar-Account.jsp'></jsp:include>
-            <div id="addUserFormContainer">
+            <div class="main-content">
                 <form method="POST" action="CreateAccount" onsubmit="return addUserForm()">
                 <label for="firstName">First Name: </label>
                 <input type="text" id="firstName" name="firstName"><br>

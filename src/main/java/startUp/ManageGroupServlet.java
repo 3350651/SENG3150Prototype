@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: ManageGroupServlet.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Controller for managing group membership and group profile.
+ */
+
 package startUp;
 
 import javax.servlet.RequestDispatcher;
@@ -9,10 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.LinkedList;
-import javax.servlet.http.HttpServlet;
 
 import static startUp.ChatBean.deleteChat;
 import static startUp.GroupBean.*;
+import static startUp.GroupFaveFlightBean.deleteGroupFaveFlights;
+import static startUp.GroupFaveFlightBean.getGroupFaveFlights;
 import static startUp.MessageBean.deleteMessages;
 import static startUp.PoolBean.deletePool;
 import static startUp.PoolDepositBean.hasMadeDeposit;
@@ -34,9 +41,6 @@ public class ManageGroupServlet extends HttpServlet {
         // send the user to an unauthorised page if they try to access the homepage without being logged in.
 
         requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
-        requestDispatcher.forward(request, response);
-
-
         requestDispatcher.forward(request, response);
     }
 
@@ -140,14 +144,25 @@ public class ManageGroupServlet extends HttpServlet {
         if(request.getParameter("confirmDeleteGroup") != null){
             boolean delete = Boolean.parseBoolean(request.getParameter("confirmDeleteGroup"));
 
+            //Group cannot currently be deleted.
             if(delete){
-                //could make this nicer by putting all deletes in the deleteGroup call.
-                deleteUserGroups(groupID);
-                deleteGroup(groupID);
-                //delete messages.
-                deleteMessages(group.getChatID());
-                deleteChat(group.getChatID());
-                deletePool(group.getPoolID());
+//                deleteUserGroups(groupID);
+//
+//                LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(groupID);
+//                int size = faveFlights.size();
+//                //Delete the favourite flights.
+//                deleteGroupFaveFlights(groupID);
+//
+//                for(int i = 0; i < size; i++){
+//                    GroupFaveFlightBean flight = faveFlights.removeFirst();
+//                    //Delete all chats and associated messages/comments.
+//                    deleteChat(flight.getChatID());
+//                    deleteMessages(flight.getChatID());
+//                }
+//
+//                deleteGroup(groupID);
+//                //For full implementation: delete the MemberFlightVote rows for the given group (votes made by users).
+//                deletePool(group.getPoolID());
                 session.setAttribute("message", "Success! The group was deleted.");
                 session.setAttribute("goHome", true);
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepageMessage.jsp");
@@ -171,4 +186,11 @@ public class ManageGroupServlet extends HttpServlet {
         }
 
     }
+
+    /*
+    To do for full implementation:
+    - Group will have a tagset attached to the profile.
+    - They will therefore be able to modify their tags and complete the questionnaire - allowing for recommended search
+      for the group.
+     */
 }

@@ -10,7 +10,7 @@ GroupBean group = (GroupBean) session.getAttribute("group");
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
-    <link rel="stylesheet" href="Style.css">
+      <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mockGroupStyle.css">
 </head>
 <body>
     <main>
@@ -20,6 +20,7 @@ GroupBean group = (GroupBean) session.getAttribute("group");
 
  <header>
             <div class="titleContainer">
+            <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="groupLogo" >
                 <h1>Add Group Member</h1>
             </div>
             <div class="groupName">
@@ -32,10 +33,10 @@ GroupBean group = (GroupBean) session.getAttribute("group");
                 <label for="userEmail">User email: </label>
                 <input type="text" id="userEmail" name="userEmail"><br>
 
-                <button type="submit" name="addMember" value="addMember">Add Member</button>
+                <button class="groupButton" style="align: right;" type="submit" name="addMember" value="addMember">Add Member</button>
             </form>
             <form method="POST" action="ManageGroup">
-               <button type="submit" name="continue" value="true">Cancel</button>
+               <button class="groupButton" style="align: left;" type="submit" name="continue" value="true">Cancel</button>
             </form>
         </div>
         </main>

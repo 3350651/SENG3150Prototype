@@ -1,15 +1,17 @@
-package startUp;
+/**
+ * FILE NAME: GroupBean.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Model object for holding group information
+ */
 
-import com.sun.jndi.ldap.pool.Pool;
+package startUp;
 
 import java.io.Serializable;
 import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
 
-import static startUp.ChatBean.deleteChat;
 import static startUp.ChatBean.getChatMessages;
 import static startUp.PoolBean.*;
 import static startUp.PoolDepositBean.getUsersPoolDeposits;
@@ -19,14 +21,9 @@ public class GroupBean implements Serializable {
 
     private String groupID;
     private String groupName;
-    private String chatID;
     private String poolID;
-
-    /*
-    private String poolID;
-    private String chatID;
-    private String faveListID;
-     */
+    private String questionnaireCompleted;
+    private LinkedList<String> tagSet;
 
     public GroupBean(){
     }
@@ -35,24 +32,24 @@ public class GroupBean implements Serializable {
         Random random = new Random();
         this.groupID = String.format("%08d", random.nextInt(100000000));
         this.groupName = groupName;
-        ChatBean chat = new ChatBean();
-        this.chatID = chat.getChatID();
         PoolBean pool = new PoolBean();
-        //TEMPORARY POOL AMOUNT BEFORE ENTIRE FUNCTIONALITY.
+        //TEMPORARY VALUES BEFORE FULL IMPLEMENTATION.
         this.poolID = pool.getPoolID();
         pool.setTotalAmount(250);
         pool.setAmountRemaining(250);
         this.setPoolTotalAmount(250);
         this.setAmountRemaining(250);
+        this.questionnaireCompleted = "";
+        this.tagSet = new LinkedList<>();
+
 
         addGroupToDB();
     }
 
     //Already existing GroupBean
-    public GroupBean(String id, String name, String chatID, String poolID){
+    public GroupBean(String id, String name, String poolID){
         this.groupID = id;
         this.groupName = name;
-        this.chatID = chatID;
         this.poolID = poolID;
     }
 
@@ -64,8 +61,8 @@ public class GroupBean implements Serializable {
 
             statement.setString(1, this.groupID);
             statement.setString(2, this.groupName);
-            statement.setString(3, this.chatID);
-            statement.setString(4, this.poolID);
+            statement.setString(3, this.poolID);
+            statement.setString(4, this.questionnaireCompleted);
 
             statement.executeUpdate();
             statement.close();
@@ -100,10 +97,9 @@ public class GroupBean implements Serializable {
                 while (result.next()){
                     String id = result.getString(1);
                     String groupName = result.getString(2);
-                    String chatID = result.getString(3);
-                    String poolID = result.getString(4);
+                    String poolID = result.getString(3);
 
-                    GroupBean group = new GroupBean(id, groupName, chatID, poolID);
+                    GroupBean group = new GroupBean(id, groupName, poolID);
                     groups.add(group);
                 }
                 groupIDs.addLast(tempID);
@@ -125,7 +121,7 @@ public class GroupBean implements Serializable {
 
     public static GroupBean getGroup(String name) {
         String query = "SELECT * FROM GROUPS WHERE [groupName] = ?";
-        String id = "", groupName = "", chatID = "", poolID = "";
+        String id = "", groupName = "", poolID = "";
         try {
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
@@ -136,8 +132,7 @@ public class GroupBean implements Serializable {
             while (result.next()) {
                 id = result.getString(1);
                 groupName = result.getString(2);
-                chatID = result.getString(3);
-                poolID = result.getString(4);
+                poolID = result.getString(3);
             }
             statement.close();
             connection.close();
@@ -145,7 +140,7 @@ public class GroupBean implements Serializable {
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
         }
-        return new GroupBean(id, groupName, chatID, poolID);
+        return new GroupBean(id, groupName, poolID);
     }
 
     public static void deleteGroup(String id){
@@ -165,14 +160,6 @@ public class GroupBean implements Serializable {
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
         }
-    }
-
-    public LinkedList<MessageBean> getChat(String chatID){
-        return getChatMessages(chatID);
-    }
-
-    public String getChatID(){
-        return this.chatID;
     }
 
     public void setPoolTotalAmount(double total){
@@ -297,4 +284,160 @@ public class GroupBean implements Serializable {
         return false;
 
     }
+
+    //Methods that are not currently used -- will be needed in full implementation.
+    public String isQuestionnaireCompleted() {
+        return questionnaireCompleted;
+    }
+
+    public void setQuestionnaireCompleted(String questionnaireCompleted) {
+        this.questionnaireCompleted = questionnaireCompleted;
+    }
+
+    public String getQuestionnaireCompleted() {
+        return questionnaireCompleted;
+    }
+
+    public LinkedList<String> getTagSet() {
+        return tagSet;
+    }
+
+    public void setTagSet(LinkedList<String> tagSet) {
+        this.tagSet = tagSet;
+    }
+
+
+    public void addTag(String tag) {
+        boolean tagExists = false;
+        for (String s : getTagSet()) {
+            if (s.equals(tag)) {
+                tagExists = true;
+                break;
+            }
+        }
+        if (!tagExists) {
+            getTagSet().add(tag);
+        }
+    }
+
+    public void removeTag(String tag) {
+        for (int i = 0; i < getTagSet().size(); i++) {
+            if (getTagSet().get(i).equals(tag)) {
+                getTagSet().remove(i);
+                break;
+            }
+        }
+    }
+
+
+    public static void addToTagSet(String groupID, String tagName) {
+        String tagID = "-1"; // initialize tagID to an invalid value
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        ResultSet resultSet2 = null;
+
+        // get the tag IDs for the relevant tags
+        try {
+            connection = ConfigBean.getConnection();
+            statement = connection.prepareStatement("SELECT tagID FROM TAGS WHERE tagName = ?");
+            statement.setString(1, tagName);
+            result = statement.executeQuery();
+
+            if (result.next()) {
+                tagID = result.getString("tagID");
+            }
+            connection.close();
+            statement.close();
+            result.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (!tagID.equals("-1")) {
+            try {
+                connection = ConfigBean.getConnection();
+                // check if user already has that tag saved
+                PreparedStatement checkTag = connection.prepareStatement("SELECT * FROM USERTAGS WHERE userID = ? AND tagID = ?");
+                checkTag.setString(1, groupID);
+                checkTag.setString(2, tagID);
+                resultSet2 = checkTag.executeQuery();
+
+                if (resultSet2.next()) {
+
+                }
+                else {
+                    try {
+                        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO USERTAGS VALUES (?, ?, ?)");
+                        Random random = new Random();
+                        String userTagsID = String.format("%08d", random.nextInt(100000000));
+                        insertStatement.setString(1, userTagsID);
+                        insertStatement.setString(2, tagID);
+                        insertStatement.setString(3, groupID);
+                        insertStatement.executeUpdate();
+                        insertStatement.close();
+                        connection.close();
+                    }
+                    catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void removeFromTagSet(String groupID, String tagName) {
+        String query = "DELETE FROM USERTAGS WHERE userID = ? AND tagID = ?";
+
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT tagID FROM TAGS WHERE tagName = ?");
+            statement.setString(1, tagName);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                String tagID = result.getString("tagID");
+
+                statement = connection.prepareStatement(query);
+                statement.setString(1, groupID);
+                statement.setString(2, tagID);
+                statement.executeUpdate();
+                statement.close();
+            }
+
+            result.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public LinkedList<String> getTags(String groupID) {
+        LinkedList<String> tagSet = new LinkedList<>();
+
+        String query = "SELECT * FROM USERTAGS WHERE [userID] = ?";
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, groupID);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String id = result.getString(1);
+                tagSet.add(id);
+            }
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(Arrays.toString(e.getStackTrace()));
+        }
+
+        return tagSet;
+    }
+
 }

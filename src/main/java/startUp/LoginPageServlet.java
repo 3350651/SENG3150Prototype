@@ -1,3 +1,9 @@
+/**
+ * FILE NAME: LoginPageServlet.java
+ * AUTHORS: Lucy Knight, Jordan Eade, Lachlan O'Neill, Blake Baldin
+ * PURPOSE: SENG3150 Project - Controller for managing log in and log out attempts
+ */
+
 package startUp;
 
 import javax.servlet.RequestDispatcher;
