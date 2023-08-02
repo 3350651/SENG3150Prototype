@@ -526,7 +526,26 @@ ul{
         margin-right: auto;
       }
 
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      /*border-style: solid;*/
+      /*border-color: white;*/
+      background-color: dodgerblue;
+      height: 100vh;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      font-family: Arial;
+    }
 
+    div.GroupActions{
+        bottom: 1em;
+        position: absolute;
+    }
 
 }
 
