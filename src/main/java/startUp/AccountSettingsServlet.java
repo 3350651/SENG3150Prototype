@@ -155,10 +155,19 @@ public class AccountSettingsServlet extends HttpServlet {
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
 			String destinationCode = request.getParameter("destinationCode");
 			UserBean.removeFromFavouritedDestinations(id, destinationCode);
-			DestinationBean d = new DestinationBean(destinationCode); // TODO: make this constructor search for the remainder of flight information upon instantiation
+			DestinationBean d = new DestinationBean(destinationCode);
 			user.removeFavouritedDestination(d);
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyFavouritedDestination.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("removeSearchParameters") != null) {
+			String id = request.getParameter("userID"); // do this for all others as hidden form input
+			int searchID = Integer.parseInt(request.getParameter("searchID"));
+			UserBean.removeFromSavedSearches(id, searchID);
+			user.removeSavedSearch(searchID);
+			session.setAttribute("userBean", user);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifySavedSearches.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("goToUIPreferences") != null){

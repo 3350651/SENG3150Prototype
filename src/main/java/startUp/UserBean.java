@@ -370,9 +370,9 @@ public class UserBean implements Serializable {
 		}
 	}
 
-	public void removeSavedSearch(SearchBean search) {
+	public void removeSavedSearch(int searchID) {
 		for (int i = 0; i < getSavedSearches().size(); i++) {
-			if (search.getSearchID() == getSavedSearches().get(i).getSearchID()) {
+			if (searchID == getSavedSearches().get(i).getSearchID()) {
 				getSavedSearches().remove(i);
 				break;
 			}
@@ -1090,7 +1090,7 @@ public class UserBean implements Serializable {
 	}
 
 	public static void removeFromSavedSearches(String userID, int searchID) {
-		String query = "DELETE FROM USERBOOKMARKEDFLIGHTS WHERE searchID = ? AND userID = ?";
+		String query = "DELETE FROM USERSAVEDSEARCHES WHERE searchID = ? AND userID = ?";
 
 		try {
 			Connection connection = ConfigBean.getConnection();
