@@ -11,11 +11,12 @@ import java.sql.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-public class  FlightBean implements Serializable {
+public class FlightBean implements Serializable {
 
     private String airline;
     private String airlineName;
-    private Timestamp flightTime;
+    private Timestamp flightDepartureTime;
+    private Timestamp flightArrivalTime;
     private String flightName;
     private String planeType;
     private float minCost;
@@ -23,16 +24,17 @@ public class  FlightBean implements Serializable {
     private DestinationBean stopOver;
     private DestinationBean destination;
     private LinkedList<AvailabilityBean> seatAvailability;
+    private FlightBean previousFlight;
 
     // constructor
 
     public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightTime, String newflightName,
-            String newPlaneType,
+                      String newPlaneType,
             /* float newMinCost, */ DestinationBean newDeparture, DestinationBean newStopOver,
-            DestinationBean newDestination) {
+                      DestinationBean newDestination) {
         airline = newAirline;
         airlineName = newAirlineName;
-        flightTime = newFlightTime;
+        flightDepartureTime = newFlightTime;
         flightName = newflightName;
         planeType = newPlaneType;
         /* minCost = newMinCost; */
@@ -42,21 +44,40 @@ public class  FlightBean implements Serializable {
         seatAvailability = new LinkedList<>();
     }
 
-    public FlightBean(String aline, String fname, DestinationBean dep, DestinationBean sover, DestinationBean arr, Timestamp ftime)
-    {
+    /**
+     * Used in the search algorithm
+     */
+    public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightDepartureTime, Timestamp newFlightArrivalTime, String newflightName,
+                      String newPlaneType, /* float newMinCost, */ DestinationBean newDeparture,
+                      DestinationBean newDestination, FlightBean newPreviousFlight) {
+        airline = newAirline;
+        airlineName = newAirlineName;
+        flightDepartureTime = newFlightDepartureTime;
+        flightArrivalTime = newFlightArrivalTime;
+        flightName = newflightName;
+        planeType = newPlaneType;
+        /* minCost = newMinCost; */
+        departure = newDeparture;
+        stopOver = null;
+        destination = newDestination;
+        seatAvailability = new LinkedList<>();
+        previousFlight = newPreviousFlight;
+    }
+
+    public FlightBean(String aline, String fname, DestinationBean dep, DestinationBean sover, DestinationBean arr, Timestamp ftime) {
         airline = aline;
         flightName = fname;
         departure = dep;
         stopOver = sover;
         destination = arr;
-        flightTime = ftime;
+        flightDepartureTime = ftime;
     }
 
     // FlightBean constructor with primary key elements of Flights table
-    public FlightBean(String airline, String flightName, Timestamp flightTime){
+    public FlightBean(String airline, String flightName, Timestamp flightTime) {
         this.airline = airline;
         this.flightName = flightName;
-        this.flightTime = flightTime;
+        this.flightDepartureTime = flightTime;
         FlightBean infoToImport = getFlight(airline, flightName, flightTime);
         this.airlineName = infoToImport.getAirlineName();
         this.planeType = infoToImport.getPlaneType();
@@ -91,11 +112,19 @@ public class  FlightBean implements Serializable {
     }
 
     public Timestamp getFlightTime() {
-        return flightTime;
+        return flightDepartureTime;
     }
 
     public void setFlightTime(Timestamp flightTime) {
-        this.flightTime = flightTime;
+        this.flightDepartureTime = flightTime;
+    }
+
+    public Timestamp getFlightArrivalTime() {
+        return flightArrivalTime;
+    }
+
+    public void setFlightArrivalTime(Timestamp flightArrivalTime) {
+        this.flightArrivalTime = flightArrivalTime;
     }
 
     public String getFlightName() {
@@ -118,7 +147,7 @@ public class  FlightBean implements Serializable {
      * public float getMinCost() {
      * return minCost;
      * }
-     * 
+     *
      * public void setMinCost(float minCost) {
      * this.minCost = minCost;
      * }
@@ -162,6 +191,14 @@ public class  FlightBean implements Serializable {
 
     public void setSeatAvailability(LinkedList<AvailabilityBean> seatAvailability) {
         this.seatAvailability = seatAvailability;
+    }
+
+    public FlightBean getPreviousFlight() {
+        return previousFlight;
+    }
+
+    public void setPreviousFlight(FlightBean previousFlight) {
+        this.previousFlight = previousFlight;
     }
 
     // get flight
@@ -217,10 +254,9 @@ public class  FlightBean implements Serializable {
 
     // TODO: get min cost
 
-    public void getAvailabilities(){
-        seatAvailability = AvailabilityBean.getAvailability(this.airline, this.flightName, this.flightTime);
+    public void getAvailabilities() {
+        seatAvailability = AvailabilityBean.getAvailability(this.airline, this.flightName, this.flightDepartureTime);
     }
-
 
 
 }

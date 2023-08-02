@@ -10,16 +10,16 @@ import sun.security.krb5.internal.crypto.Des;
 
 import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedList;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
-public class SearchBean implements Serializable{
-    
+public class SearchBean implements Serializable {
+
     Timestamp departureDate;
     String destination;
     String departure;
@@ -32,7 +32,7 @@ public class SearchBean implements Serializable{
     //TODO: may need more for completed recommendation search
 
     //constructors
-    public SearchBean(Timestamp newDepartureDate, String newDestination, String newDeparture, LinkedList<TagBean> newTags, boolean newSimple, int newflexible, int newAdults, int newChildren){
+    public SearchBean(Timestamp newDepartureDate, String newDestination, String newDeparture, LinkedList<TagBean> newTags, boolean newSimple, int newflexible, int newAdults, int newChildren) {
         departureDate = newDepartureDate;
         destination = newDestination;
         departure = newDeparture;
@@ -43,11 +43,14 @@ public class SearchBean implements Serializable{
         childPassengers = newChildren;
         results = new LinkedList<>();
         //TODO: get rid of this for full implementation
-        getAllFlights();
+        DestinationBean source = new DestinationBean("LAX");
+        DestinationBean destination = new DestinationBean("YYZ");
+        Timestamp time = Timestamp.valueOf("2016-01-02 11:55:00.000");
+        LinkedList<FlightPathBean> flights = searchFlights(source, destination, time);
     }
 
     //getters and setters
-    public LinkedList<FlightBean> getResults(){
+    public LinkedList<FlightBean> getResults() {
         return this.results;
     }
 
@@ -159,20 +162,132 @@ public class SearchBean implements Serializable{
         }
     }
 
-    public void SearchFlights(DestinationBean source, DestinationBean destination, Timestamp departure, FlightPathBean previousFlight) {
-        //get list of flights leaving destination on day
+    public LinkedList<FlightPathBean> searchFlights(DestinationBean source, DestinationBean destination, Timestamp departure) {
+        LinkedList<FlightPathBean> flightPaths = new LinkedList<>();
+        Queue<FlightBean> flightList = new LinkedList<>();
+        FlightBean flight = null;
 
-        //create Flight beans for each
+        do {
 
-        //add each to a new flight path that holds the previous flight info.
+            //get all flights leaving within 24 hours of departure
+            //add previous flight to each
+            //add all to queue
+            flightList.addAll(getAllFlightsFrom(source, departure, flight));
 
-        //add all flights to queue
+            //if queue empty return list of flight paths
+            if (flightList.isEmpty()) {
+                break;
+            }
+            //go to next in queue
+            flight = flightList.poll();
 
-        //take top flight from queue
 
-        //check if it reaches destination
+            //check if destination
+            if (Objects.equals(flight.getDestination().getDestinationCode(), destination.getDestinationCode())) {
+                //if destination, backtrack through previous flights to make complete flight path
+                //add to list of complete flight paths
+                flightPaths.add(getFlightPathFrom(flight));
+                //if 10 flights in list return
+            }
+        } while (flightPaths.size() < 10 || !flightList.isEmpty());
+        return flightPaths;
+    }
 
-        //New flight path object
+    public Queue<FlightBean> getAllFlightsFrom(DestinationBean source, Timestamp time, FlightBean previous) {
+        Queue<FlightBean> flights = new LinkedList<>();
+        Timestamp endtime = Timestamp.from(time.toInstant().plus(24, ChronoUnit.HOURS));
+        try {
+            String query = "SELECT " +
+                    "F.AirlineCode, " +
+                    "F.FlightNumber, " +
+                    "F.DepartureCode, " +
+                    "F.DestinationCode, " +
+                    "F.DepartureTime, " +
+                    "F.ArrivalTime, " +
+                    "F.PlaneCode, " +
+                    "A.AirlineName " +
+                    "FROM Flights F " +
+                    "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                    "WHERE StopOverCode IS NULL AND F.DepartureTime <= ? AND F.DepartureTime >= ? AND F.DepartureCode = ? " +
+                    "UNION " +
+                    "SELECT " +
+                    "F.AirlineCode, " +
+                    "F.FlightNumber, " +
+                    "F.DepartureCode, " +
+                    "F.StopOverCode AS DestinationCode, " +
+                    "F.DepartureTime, " +
+                    "F.ArrivalTimeStopOver AS ArrivalTime, " +
+                    "F.PlaneCode, " +
+                    "A.AirlineName " +
+                    "FROM Flights F " +
+                    "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                    "WHERE StopOverCode IS NOT NULL AND F.DepartureTime <= ? AND F.DepartureTime >= ? AND F.DepartureCode = ? " +
+                    "UNION " +
+                    "SELECT " +
+                    "F.AirlineCode, " +
+                    "F.FlightNumber, " +
+                    "F.StopOverCode AS DepartureCode, " +
+                    "F.DestinationCode, " +
+                    "F.DepartureTimeStopOver AS DepartureTime, " +
+                    "F.ArrivalTime, " +
+                    "F.PlaneCode, " +
+                    "A.AirlineName " +
+                    "FROM Flights F " +
+                    "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                    "WHERE StopOverCode IS NOT NULL AND F.DepartureTimeStopOver <= ? AND F.DepartureTimeStopOver >= ? AND F.StopOverCode = ? ";
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setTimestamp(1, endtime);
+            statement.setTimestamp(2, time);
+            statement.setString(3, source.getDestinationCode());
+            statement.setTimestamp(4, endtime);
+            statement.setTimestamp(5, time);
+            statement.setString(6, source.getDestinationCode());
+            statement.setTimestamp(7, endtime);
+            statement.setTimestamp(8, time);
+            statement.setString(9, source.getDestinationCode());
+
+
+            ResultSet result = statement.executeQuery();
+
+            // TODO:Retrieve min cost of flight...
+
+            while (result.next()) {
+                String aCode = result.getString(1);
+                String flightCode = result.getString(2);
+                String departureCode = result.getString(3);
+                String destinationCode = result.getString(4);
+                Timestamp departTime = result.getTimestamp(5);
+                Timestamp arrivalTime = result.getTimestamp(6);
+                String plane = result.getString(7);
+                String airlineName = result.getString(8);
+
+                DestinationBean rDeparture = new DestinationBean(departureCode);
+                DestinationBean rDestination = new DestinationBean(destinationCode);
+
+                flights.add(new FlightBean(aCode, airlineName, departTime, arrivalTime, flightCode, plane, /* mCost, */ rDeparture,
+                        rDestination, previous));
+            }
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(Arrays.toString(e.getStackTrace()));
+        }
+
+        return flights;
+    }
+
+    public FlightPathBean getFlightPathFrom(FlightBean destinationFlight) {
+        FlightBean temp = destinationFlight;
+        FlightPathBean flightPath = new FlightPathBean();
+        while (temp != null) {
+            flightPath.addToFlightPath(temp);
+            temp = temp.getPreviousFlight();
+        }
+
+        return flightPath;
     }
 
 
@@ -284,8 +399,6 @@ public class SearchBean implements Serializable{
     //         throw new RuntimeException(e);
     //     }
     // }
-
-    
 
 
 }

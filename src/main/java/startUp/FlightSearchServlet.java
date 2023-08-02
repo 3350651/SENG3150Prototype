@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.LinkedList;
 
 @WebServlet(urlPatterns = { "/flightSearch" })
 public class FlightSearchServlet extends HttpServlet {

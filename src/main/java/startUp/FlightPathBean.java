@@ -1,18 +1,15 @@
 package startUp;
 
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class FlightPathBean {
     private Queue<FlightBean> flightPath;
-    private FlightBean lastFlight;
 
-    public FlightBean getLastFlight() {
-        return lastFlight;
+    public FlightPathBean() {
+        flightPath = new LinkedList<>();
     }
 
-    public void setLastFlight(FlightBean lastFlight) {
-        this.lastFlight = lastFlight;
-    }
 
     public Queue<FlightBean> getFlightPath() {
         return flightPath;
@@ -20,5 +17,9 @@ public class FlightPathBean {
 
     public void setFlightPath(Queue<FlightBean> flightPath) {
         this.flightPath = flightPath;
+    }
+
+    public void addToFlightPath(FlightBean flight) {
+        this.flightPath.add(flight);
     }
 }
