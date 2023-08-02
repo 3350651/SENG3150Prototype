@@ -13,7 +13,7 @@
                     FlightBean flight=(FlightBean) session.getAttribute("flight");
                     GroupFaveFlightBean faveFlight = (GroupFaveFlightBean) session.getAttribute("faveFlight");
                     LinkedList<MessageBean> chatMessages = (LinkedList<MessageBean>) session.getAttribute("chatMessages");
-                    double memberVote = (double) session.getAttribute("memberVote");
+                    int memberVote = (int) session.getAttribute("memberVote");
                     %>
 
                         <head>
@@ -28,7 +28,7 @@
                             <main>
                                 <header>
                                     <form method="POST" action="GroupHomepage">
-                                        <button class="groupButton" type="submit" name="backToFaveFlightList" value="backToFaveFlightList">Back</button>
+                                        <button class="groupButton" type="submit" name="getGroupFaveList" value="getGroupFaveList">Back</button>
                                     </form>
                                     <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
                                         alt="FlightPub Logo" class="centreLogo">

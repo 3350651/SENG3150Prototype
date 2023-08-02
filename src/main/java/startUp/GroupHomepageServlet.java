@@ -16,8 +16,9 @@ import javax.servlet.http.*;
 import static startUp.GroupBean.getGroup;
 import static startUp.GroupBean.getGroups;
 import static startUp.GroupFaveFlightBean.*;
-import static startUp.MemberFlightVoteBean.getMembersVote;
+import static startUp.MemberFlightVoteBean.*;
 import static startUp.PoolDepositBean.hasMadeDeposit;
+import static startUp.UserGroupsBean.getNumberOfMembers;
 import static startUp.UserGroupsBean.isAdmin;
 
 @WebServlet(urlPatterns = { "/GroupHomepage" })
@@ -124,6 +125,18 @@ public class GroupHomepageServlet extends HttpServlet {
         if(request.getParameter("getGroupFaveList") != null){
             //get all the Flights that are added to the group Fave list.
             LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(group.getGroupID());
+            int size = faveFlights.size();
+
+            //Check whether any of the flights have been blacklisted, remove it.
+            for(int i = 0; i < size; i++){
+                GroupFaveFlightBean temp = faveFlights.removeFirst();
+                if(blacklisted(group.getGroupID(),temp.getScore())){
+                    deleteGroupFaveFlight(group.getGroupID(), temp.getGroupFaveFlightID());
+                }
+                else {
+                    faveFlights.addLast(temp);
+                }
+            }
 
             if(faveFlights.size() != 0) {
                 LinkedList<GroupFaveFlightBean> sortedFaveFlights = getSortedList(faveFlights, faveFlights.peek().getGroupID());
@@ -142,13 +155,17 @@ public class GroupHomepageServlet extends HttpServlet {
             Timestamp flightTime = Timestamp.valueOf(request.getParameter("flightTime"));
             GroupFaveFlightBean faveFlight = getFaveFlight(airlineCode, flightName, flightTime, group.getGroupID());
             FlightBean flightBean = getFlight(airlineCode, flightName, flightTime);
-            session.setAttribute("faveFlight", faveFlight);
             session.setAttribute("flight", flightBean);
             session.setAttribute("userBean", user);
 
-            //Score is -1 if the member has not voted.
-            double memberVote = getMembersVote(group.getGroupID(), user.getUserID(), faveFlight.getGroupFaveFlightID());
+            //Score is 0 if the member has not voted.
+            int memberVote = getMembersVote(group.getGroupID(), user.getUserID(), faveFlight.getGroupFaveFlightID());
             session.setAttribute("memberVote", memberVote);
+
+            int groupSize = getNumberOfMembers(group.getGroupID());
+            double membersScore = getFaveFlightScore(group.getGroupID(), faveFlight.getGroupFaveFlightID());
+            faveFlight.setScore(membersScore/groupSize);
+            session.setAttribute("faveFlight", faveFlight);
 
             //chat functionality
             String chatID = faveFlight.getChatID();
@@ -183,16 +200,26 @@ public class GroupHomepageServlet extends HttpServlet {
 
             LinkedList<MessageBean> chatMessages = faveFlight.getChat(chatID);
             session.setAttribute("chatMessages", chatMessages);
+
+            //Get the vote that the user has selected.
+            int memberVote = Integer.parseInt(request.getParameter("vote"));
+
+            //check if the member has already voted. If they have, then update the db accordingly.
+            if(hasVoted(faveFlight.getGroupFaveFlightID(), group.getGroupID(), user.getUserID())){
+                updateMemberScore(group.getGroupID(), faveFlight.getGroupFaveFlightID(), user.getUserID(), memberVote);
+            }
+            else {
+                //If they haven't, then add the new vote to the db.
+                MemberFlightVoteBean vote = new MemberFlightVoteBean(group.getGroupID(), user.getUserID(), faveFlight.getGroupFaveFlightID(), memberVote);
+            }
+            //Everytime a user votes on a favourite flight, the score for that flight needs to be updated.
+            //Need the number of members in the group.
+            int groupSize = getNumberOfMembers(group.getGroupID());
+            double membersScore = getFaveFlightScore(group.getGroupID(), faveFlight.getGroupFaveFlightID());
+            faveFlight.setScore(membersScore/groupSize);
             session.setAttribute("faveFlight", faveFlight);
 
-            //Score is -1 if the member has not voted.
-            double memberVote = Double.parseDouble(request.getParameter("vote"));
-            /* To implement for full implemented prototype.
-                    - If the users score is 2 then it has been locked in.
-                    - If the users score is -2 then they have blacklised it.
-             */
-
-            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupFavouriteList.jsp");
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ViewFaveFlight.jsp");
             requestDispatcher.forward(request, response);
         }
 
@@ -210,7 +237,6 @@ public class GroupHomepageServlet extends HttpServlet {
         if(flightLockedIn && !poolFinished){
 
             //add functionality that only displays the locked in flight within the Group Favourite List.
-
             PoolBean pool = group.getPool();
             boolean hasDeposited = hasMadeDeposit(pool.getPoolID(), user.getUserID());
             session.setAttribute("hasDeposited", hasDeposited);
