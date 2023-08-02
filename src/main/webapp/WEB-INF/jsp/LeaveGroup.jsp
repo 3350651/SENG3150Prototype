@@ -32,9 +32,9 @@ UserBean user = (UserBean) session.getAttribute("userBean");
                    <button class="groupButton" type="submit" name="confirmLeaveGroup" value="true">Yes, leave group</button>
                    <input type="hidden" name="memberID" value="<%=user.getUserID()%>">
                 </form>
-                <form method="GET" action="GroupHomepage">
-                   <button class="groupButton" type="submit">Cancel</button>
-                </form>
+                <form name="backtoGroupHomepage" action="GroupHomepage" method="GET">
+                                   <button class="groupButton" type="submit" name="groupHomepage" value="true">Cancel</button>
+                           </form>
             </div>
         </main>
     </body>
