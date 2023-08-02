@@ -183,12 +183,22 @@ public class SearchBean implements Serializable {
 
 
             //check if destination
-            if (Objects.equals(flight.getDestination().getDestinationCode(), destination.getDestinationCode())) {
+            while (Objects.equals(flight.getDestination().getDestinationCode(), destination.getDestinationCode())) {
                 //if destination, backtrack through previous flights to make complete flight path
                 //add to list of complete flight paths
                 flightPaths.add(getFlightPathFrom(flight));
                 //if 10 flights in list return
+                if (flightPaths.size() >= 10) {
+                    return flightPaths;
+                }
+                if (flightList.isEmpty()) {
+                    return flightPaths;
+                }
+                flight = flightList.poll();
+
             }
+            source = flight.getDeparture();
+            departure = flight.getFlightArrivalTime();
         } while (flightPaths.size() < 10 || !flightList.isEmpty());
         return flightPaths;
     }
