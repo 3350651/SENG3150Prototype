@@ -97,24 +97,24 @@ public class AccountSettingsServlet extends HttpServlet {
 		}
 		if(request.getParameter("addTags") != null){
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
-			String[] tagValues = request.getParameterValues("tags[]");
+			String[] tagValues = request.getParameterValues("tagsToAdd[]");
 			for (String tagValue : tagValues) {
 				UserBean.addToTagSet(id, tagValue);
 				user.addTag(tagValue);
 			}
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyTags.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("removeTags") != null){
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
-			String[] tagValues = request.getParameterValues("tags[]");
+			String[] tagValues = request.getParameterValues("tagsToRemove[]");
 			for (String tagValue : tagValues) {
 				UserBean.removeFromTagSet(id, tagValue);
 				user.removeTag(tagValue);
 			}
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyTags.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("addBookmarkedFlight") != null){
@@ -138,7 +138,7 @@ public class AccountSettingsServlet extends HttpServlet {
 			user.removeBookmarkedFlight(f);
 			UserBean.removeFromBookmarkedFlights(id, airlineCode, flightNumber, departureTime);
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyBookmarkedFlights.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("addFavouriteDestination") != null){
@@ -188,6 +188,10 @@ public class AccountSettingsServlet extends HttpServlet {
 		}
 		if(request.getParameter("goToModifyFavouritedDestinations") != null){
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyFavouritedDestinations.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("goToModifySavedSearches") != null){
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifySavedSearches.jsp");
 			requestDispatcher.forward(request, response);
 		}
 	}

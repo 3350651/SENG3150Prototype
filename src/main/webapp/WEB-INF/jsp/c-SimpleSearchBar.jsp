@@ -1,3 +1,16 @@
+<%@ page import="startUp.UserBean" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.util.LinkedList" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="startUp.FlightBean" %>
+<%@ page import="startUp.DestinationBean" %>
+<% UserBean user = (UserBean) session.getAttribute("userBean");
+LinkedList<FlightBean> bookmarkedFlights = new
+LinkedList<>();
+if (user != null && user.getBookmarkedFlights() != null) {
+bookmarkedFlights = user.getBookmarkedFlights();
+}
+%>
 
 <div class="simpleSearch">
     <form method="POST" action="flightSearch" class="simpleSearchForm">
@@ -32,6 +45,9 @@
         <div style="clear:both;">&nbsp;</div>
         <div style="clear:both;">&nbsp;</div>
         <div class="saveParam">
+        <% if (user != null) {%>
+        <input type="hidden" name="userID" value="<%= user.getUserID() %>">
+        <% } %>
             <button name="saveParam" type="submit" value="saveParam" class="saveParam">Save
                 Search Parameters</button>
         </div>

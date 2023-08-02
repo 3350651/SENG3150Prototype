@@ -56,7 +56,7 @@ public class LoginPageServlet extends HttpServlet {
 				session.setAttribute("userBean", user);
 				response.sendRedirect(request.getContextPath() + "/Homepage");
 			} else {
-				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/LoginPage-input.jsp");
+				requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Login-Failed.jsp");
 				requestDispatcher.forward(request, response);
 			}
 		}

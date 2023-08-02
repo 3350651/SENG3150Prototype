@@ -26,6 +26,7 @@ public class SearchBean implements Serializable{
     int adultPassengers;
     int childPassengers;
     LinkedList<FlightBean> results;
+    int searchID;
     //TODO: may need more for completed recommendation search
 
     //constructors
@@ -42,6 +43,32 @@ public class SearchBean implements Serializable{
         //TODO: get rid of this for full implementation
         getAllFlights();
     }
+
+    // empty search bean instantiation
+    public SearchBean(){
+        departureDate = null;
+        destination = null;
+        departure = null;
+        tags = null;
+        simple = true;
+        flexible = 0;
+        adultPassengers = 0;
+        childPassengers = 0;
+        results = new LinkedList<>();
+    }
+
+    // Search Bean for Saved Searches Instantiation
+    public SearchBean(String newDestination, String newDeparture, int newFlexible, int newAdultPassengers, int newChildPassengers, int newSearchID, Timestamp newDepartureDate){
+        searchID = newSearchID;
+        departureDate = newDepartureDate;
+        destination = newDestination;
+        departure = newDeparture;
+        simple = true;
+        flexible = newFlexible;
+        adultPassengers = newAdultPassengers;
+        childPassengers = newChildPassengers;
+    }
+
 
     //getters and setters
     public LinkedList<FlightBean> getResults(){
@@ -114,6 +141,14 @@ public class SearchBean implements Serializable{
 
     public void setResults(LinkedList<FlightBean> results) {
         this.results = results;
+    }
+
+    public int getSearchID() {
+        return searchID;
+    }
+
+    public void setSearchID(int searchID) {
+        this.searchID = searchID;
     }
 
     //gets all flights from the database. Only used for examples for prototype

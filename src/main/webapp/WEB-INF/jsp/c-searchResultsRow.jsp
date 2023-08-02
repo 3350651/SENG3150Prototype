@@ -31,6 +31,7 @@
                         <span class="brmedium"></span>
 
                         <div class="searchResultButtons">
+                        <div class="bookmarkFavouriteAddToGroup">
                             <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
                             <input type="hidden" name="userID" value="<%= user.getUserID() %>">
                             <input type="hidden" name="destinationCode" value="<%= flight.getDestination().getDestinationCode() %>">
@@ -44,20 +45,20 @@
                                     <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/favouriteStar.png" alt="Favourite Destination Logo" name="favourite" value="favourite">
                                 </div>
                             </form>
-                                <form name="groupFavourite" action="GroupHomepage" method="POST">
-                                <div class="addToGroupFavouriteList">
-                                    <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="addToGroupFaveList" value=<%=flight.getAirline() + "," + flight.getFlightName() + "," + flight.getFlightTime()%>>
-                                </div>
-                                </form>
-                            
-                                <form method="POST" action="flightSearch">
-                                <input type="hidden" name="flightTime" id="flightTime" value="<%=flight.getFlightTime()%>">
-                                <input type="hidden" name="airline" id="Airline" value="<%=flight.getAirline()%>">
-                                <input type="hidden" name="flightName" id="FlightName" value="<%=flight.getFlightName()%>">
-                                <div class="viewFlightDetailsButton">
-                                    <button type="submit" class="viewFlightDetailsButton" name="viewFlight" value="viewFlight">View Details</button>
-                                </div>
-                                </form>
+                            <form name="groupFavourite" action="GroupHomepage" method="POST">
+                            <div class="addToGroupFavouriteList">
+                                <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="addToGroupFaveList" value=<%=flight.getAirline() + "," + flight.getFlightName() + "," + flight.getFlightTime()%>>
+                            </div>
+                            </form>
+                            </div>
+                            <form method="POST" action="flightSearch">
+                            <input type="hidden" name="flightTime" id="flightTime" value="<%=flight.getFlightTime()%>">
+                            <input type="hidden" name="airline" id="Airline" value="<%=flight.getAirline()%>">
+                            <input type="hidden" name="flightName" id="FlightName" value="<%=flight.getFlightName()%>">
+                            <div class="viewFlightDetailsButton">
+                                <button type="submit" class="viewFlightDetailsButton" name="viewFlight" value="viewFlight">View Details</button>
+                            </div>
+                            </form>
                            
                         </div>
 
