@@ -44,7 +44,11 @@ Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
                 <form name="manageGroup" action="ManageGroup" method="GET">
                    <button class="groupButton" type="submit" name="manageGroup" value="manageGroup">Manage Group</button>
                 </form>
-                <%}%>
+                <%} else {%>
+                    <form name="leaveGroup" action="GroupHomepage" method="POST">
+                       <button class="groupButton" type="submit" name="leaveGroup" value="leaveGroup">Leave Group</button>
+                    </form>
+                <% } %>
 
                 <div class="filledSection">
                     <form name="groupFaveList" id="groupFaveList" method="POST" action="GroupHomepage">

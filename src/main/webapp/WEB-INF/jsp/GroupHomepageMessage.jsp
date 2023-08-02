@@ -5,6 +5,7 @@
 GroupBean group = (GroupBean) session.getAttribute("group");
 String message = (String) session.getAttribute("message");
 boolean goHome = (boolean) session.getAttribute("goHome");
+boolean homepage = (boolean) session.getAttribute("homepage");
 %>
 
 <!DOCTYPE html>
@@ -31,6 +32,12 @@ boolean goHome = (boolean) session.getAttribute("goHome");
                 <%= message %>
             </div>
             <div>
+            <% if(homepage) { %>
+              <form name="returnHome" action="Homepage" method="POST">
+                  <button class="groupButton" type="submit" name="home" value="true">Continue</button>
+              </form>
+
+            <% } else { %>
                 <form method="POST" action="ManageGroup">
                     <button class="groupButton" type="submit" name="continue" value="continue">Continue</button>
 
@@ -38,6 +45,7 @@ boolean goHome = (boolean) session.getAttribute("goHome");
                     <input type="hidden" id="goHome" name="goHome" value="<%= goHome %>">
                     <%}%>
                 </form>
+                <% } %>
             </div>
         </div>
         </main>
