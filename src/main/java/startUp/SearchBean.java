@@ -6,6 +6,8 @@
 
 package startUp;
 
+import sun.security.krb5.internal.crypto.Des;
+
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 
 public class SearchBean implements Serializable{
@@ -190,6 +193,23 @@ public class SearchBean implements Serializable{
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
     }
+
+    public void SearchFlights(DestinationBean source, DestinationBean destination, Timestamp departure, FlightPathBean previousFlight) {
+        //get list of flights leaving destination on day
+
+        //create Flight beans for each
+
+        //add each to a new flight path that holds the previous flight info.
+
+        //add all flights to queue
+
+        //take top flight from queue
+
+        //check if it reaches destination
+
+        //New flight path object
+    }
+
 
 //this all may be useful for later when we start implementing properly...
 

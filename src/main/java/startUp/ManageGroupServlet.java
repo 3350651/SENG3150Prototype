@@ -60,6 +60,7 @@ public class ManageGroupServlet extends HttpServlet {
         String groupID = group.getGroupID();
         boolean depositMade = poolDeposits(group.getPoolID());
         session.setAttribute("depositMade", depositMade);
+        session.setAttribute("homepage", false);
 
         //Admin has inputted email to add member.
         if((request.getParameter("addMember") != null) && (request.getParameter("userEmail") != null)){

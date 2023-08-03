@@ -19,6 +19,7 @@ import static startUp.GroupFaveFlightBean.*;
 import static startUp.MemberFlightVoteBean.getMembersVote;
 import static startUp.PoolDepositBean.hasMadeDeposit;
 import static startUp.UserGroupsBean.isAdmin;
+import static startUp.UserGroupsBean.removeGroupMember;
 
 @WebServlet(urlPatterns = { "/GroupHomepage" })
 public class GroupHomepageServlet extends HttpServlet {
@@ -198,6 +199,22 @@ public class GroupHomepageServlet extends HttpServlet {
 
         else if(request.getParameter("backToFaveFlightList") != null){
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupFavouriteList.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        else if(request.getParameter("leaveGroup") != null){
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/LeaveGroup.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        else if(request.getParameter("memberID") != null && request.getParameter("confirmLeaveGroup") != null){
+            String id = request.getParameter("memberID");
+            removeGroupMember(id);
+            session.setAttribute("group", group);
+            session.setAttribute("goHome", false);
+            session.setAttribute("homepage", true);
+            session.setAttribute("message", "Success! You were successfully removed from the group.");
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepageMessage.jsp");
             requestDispatcher.forward(request, response);
         }
 
