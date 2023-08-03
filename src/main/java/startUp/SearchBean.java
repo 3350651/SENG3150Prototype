@@ -43,8 +43,8 @@ public class SearchBean implements Serializable {
         childPassengers = newChildren;
         results = new LinkedList<>();
         //TODO: get rid of this for full implementation
-        DestinationBean source = new DestinationBean("LAX");
-        DestinationBean destination = new DestinationBean("YYZ");
+        DestinationBean source = new DestinationBean("AMS");
+        DestinationBean destination = new DestinationBean("MAD");
         Timestamp time = Timestamp.valueOf("2016-01-02 11:55:00.000");
         LinkedList<FlightPathBean> flights = searchFlights(source, destination, time);
     }
@@ -206,6 +206,10 @@ public class SearchBean implements Serializable {
     public Queue<FlightBean> getAllFlightsFrom(DestinationBean source, Timestamp time, FlightBean previous) {
         Queue<FlightBean> flights = new LinkedList<>();
         Timestamp endtime = Timestamp.from(time.toInstant().plus(24, ChronoUnit.HOURS));
+        String loopingDestinations = null;
+        if (previous != null) {
+            loopingDestinations = getFlightPathFrom(previous).getAllDestinations();
+        }
         try {
             String query = "SELECT " +
                     "F.AirlineCode, " +
@@ -245,8 +249,51 @@ public class SearchBean implements Serializable {
                     "FROM Flights F " +
                     "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
                     "WHERE StopOverCode IS NOT NULL AND F.DepartureTimeStopOver <= ? AND F.DepartureTimeStopOver >= ? AND F.StopOverCode = ? ";
+
+            if (loopingDestinations != null) {
+                query = "SELECT " +
+                        "F.AirlineCode, " +
+                        "F.FlightNumber, " +
+                        "F.DepartureCode, " +
+                        "F.DestinationCode, " +
+                        "F.DepartureTime, " +
+                        "F.ArrivalTime, " +
+                        "F.PlaneCode, " +
+                        "A.AirlineName " +
+                        "FROM Flights F " +
+                        "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                        "WHERE StopOverCode IS NULL AND F.DepartureTime <= ? AND F.DepartureTime >= ? AND F.DepartureCode = ? AND F.DestinationCode NOT IN (" + loopingDestinations + ") " +
+                        "UNION " +
+                        "SELECT " +
+                        "F.AirlineCode, " +
+                        "F.FlightNumber, " +
+                        "F.DepartureCode, " +
+                        "F.StopOverCode AS DestinationCode, " +
+                        "F.DepartureTime, " +
+                        "F.ArrivalTimeStopOver AS ArrivalTime, " +
+                        "F.PlaneCode, " +
+                        "A.AirlineName " +
+                        "FROM Flights F " +
+                        "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                        "WHERE StopOverCode IS NOT NULL AND F.DepartureTime <= ? AND F.DepartureTime >= ? AND F.DepartureCode = ? AND F.StopOverCode NOT IN (" + loopingDestinations + ") " +
+                        "UNION " +
+                        "SELECT " +
+                        "F.AirlineCode, " +
+                        "F.FlightNumber, " +
+                        "F.StopOverCode AS DepartureCode, " +
+                        "F.DestinationCode, " +
+                        "F.DepartureTimeStopOver AS DepartureTime, " +
+                        "F.ArrivalTime, " +
+                        "F.PlaneCode, " +
+                        "A.AirlineName " +
+                        "FROM Flights F " +
+                        "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                        "WHERE StopOverCode IS NOT NULL AND F.DepartureTimeStopOver <= ? AND F.DepartureTimeStopOver >= ? AND F.StopOverCode = ? AND F.DestinationCode NOT IN (" + loopingDestinations + ") ";
+            }
+
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
+
             statement.setTimestamp(1, endtime);
             statement.setTimestamp(2, time);
             statement.setString(3, source.getDestinationCode());
@@ -291,13 +338,12 @@ public class SearchBean implements Serializable {
 
     public FlightPathBean getFlightPathFrom(FlightBean destinationFlight) {
         FlightBean temp = destinationFlight;
-        FlightPathBean flightPath = new FlightPathBean();
+        Stack<FlightBean> flights = new Stack<>();
         while (temp != null) {
-            flightPath.addToFlightPath(temp);
+            flights.add(temp);
             temp = temp.getPreviousFlight();
         }
-
-        return flightPath;
+        return new FlightPathBean(flights);
     }
 
 
