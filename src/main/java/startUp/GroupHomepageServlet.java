@@ -122,10 +122,21 @@ public class GroupHomepageServlet extends HttpServlet {
             requestDispatcher.forward(request, response);
         }
 
-        if(request.getParameter("getGroupFaveList") != null){
+        //The admin wants to remove a flight from the fave list.
+        if(request.getParameter("getGroupFaveList") != null && request.getParameter("removeFlight") != null){
+            String faveFlightID = request.getParameter("faveFlightID");
+            deleteGroupFaveFlight(group.getGroupID(), faveFlightID);
+
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupFavouriteList.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        else if(request.getParameter("getGroupFaveList") != null){
             //get all the Flights that are added to the group Fave list.
             LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(group.getGroupID());
             int size = faveFlights.size();
+
+            Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
+            session.setAttribute("isAdmin", isAdmin);
 
             //Check whether any of the flights have been blacklisted, remove it.
             for(int i = 0; i < size; i++){
