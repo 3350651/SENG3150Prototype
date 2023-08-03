@@ -968,6 +968,20 @@ button.button#flightDetailsModifyBookmarked{
     font-size: medium;
 }
 
+button.button#skipQuestionnaire{
+    background-color: white;
+    color: red;
+    border: solid 1px red;
+    width: 100%;
+    font-size: medium;
+}
+
+button.button#skipQuestionnaire:hover{
+    background-color: red;
+    color: white;
+    border: solid 1px red;
+}
+
 img#imageModifyBookmarkedFlight{
     width: 25%;
     height: auto;

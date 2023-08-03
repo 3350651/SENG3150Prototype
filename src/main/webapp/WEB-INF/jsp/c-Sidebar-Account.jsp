@@ -51,5 +51,9 @@
         <form name="goToModifySavedSearches" action="AccountSettings" method="POST">
             <button type="submit" class="button" name="goToModifySavedSearches" value="goToModifySavedSearches">Modify Saved Searches</button>
         </form>
+        <%--        Complete Questionnaire button         --%>
+        <form name="goToQuestionnaire" action="AccountSettings" method="POST">
+            <button type="submit" class="button" name="goToQuestionnaire" value="goToQuestionnaire">Complete Questionnaire</button>
+        </form>
     </div>
 </body>

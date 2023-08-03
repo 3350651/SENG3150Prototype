@@ -21,6 +21,7 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
     <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
         alt="FlightPub Logo" class="logo">
     <%-- Home page button --%>
+
     <!-- TODO: fix this servlet call? -->
     <form name="SearchSelect" action="flightSearch" method="GET">
         <h2>Toggle Search Mode</h2>
@@ -32,6 +33,7 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
                 <button type="submit" class="button" name="home" value="simpleSearch">Simple Search</button> 
                 <%}%>     
     </form>
+
     <%-- Bookmarked Flights --%>
     <% if (bookmarkedFlights.size() != 0) { %>
     <h2>Bookmarked Flights</h2>

@@ -34,11 +34,11 @@ public class FlightSearchServlet extends HttpServlet {
 
             session.setAttribute("flightResults", search);
             request.setAttribute("goToRecommend", true);
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-RecommendedSearch.jsp");
             requestDispatcher.forward(request, response);
         } else {
             request.setAttribute("goToSimple", true);
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
             requestDispatcher.forward(request, response);
         }
     }

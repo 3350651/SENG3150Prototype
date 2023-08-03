@@ -31,6 +31,7 @@
                         <span class="brmedium"></span>
 
                         <div class="searchResultButtons">
+                        <% if (user != null){ %>
                         <div class="bookmarkFavouriteAddToGroup">
                             <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
                             <input type="hidden" name="userID" value="<%= user.getUserID() %>">
@@ -51,6 +52,7 @@
                             </div>
                             </form>
                             </div>
+                            <% } %>
                             <form method="POST" action="flightSearch">
                             <input type="hidden" name="flightTime" id="flightTime" value="<%=flight.getFlightTime()%>">
                             <input type="hidden" name="airline" id="Airline" value="<%=flight.getAirline()%>">
