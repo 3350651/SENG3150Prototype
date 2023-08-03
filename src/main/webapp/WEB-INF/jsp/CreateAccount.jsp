@@ -10,7 +10,7 @@
 </head>
 <body>
     <main>
-        <jsp:include page='c-Sidebar-Account.jsp'></jsp:include>
+        <jsp:include page='c-Sidebar-CreateAccount.jsp'></jsp:include>
             <div class="main-content">
                 <form method="POST" action="CreateAccount" onsubmit="return addUserForm()">
                 <label for="firstName">First Name: </label>
@@ -58,8 +58,8 @@
 
                 <label for="dateOfBirth">Birth Date:</label>
                 <input type="date" id="dateOfBirth" name="dateOfBirth">
-
-                <button type="submit" name="addUser" value="addUser">Add user</button>
+                <br>
+                <button type="submit" name="addUser" value="addUser" class="button">Create Account</button>
                 </form>
             </div>
     </main>

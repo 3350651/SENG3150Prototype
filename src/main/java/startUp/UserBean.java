@@ -30,7 +30,7 @@ public class UserBean implements Serializable {
 	private LocalDate dateOfBirth;
 	private LinkedList<String> tagSet;
 	private LinkedList<FlightBean> bookmarkedFlights;
-	// private LinkedList<Searches> savedSearches
+	private LinkedList<SearchBean> savedSearches;
 	private LinkedList<DestinationBean> favouriteDestinations;
 
 	public UserBean() {
@@ -72,6 +72,7 @@ public class UserBean implements Serializable {
 		this.tagSet = new LinkedList<>();
 		this.bookmarkedFlights = new LinkedList<>();
 		this.favouriteDestinations = new LinkedList<>();
+		this.savedSearches = new LinkedList<>();
 	}
 
 	public UserBean(String fname, String lname, String email, String userPassword, String phoneNo, String role,
@@ -93,6 +94,7 @@ public class UserBean implements Serializable {
 		this.tagSet = new LinkedList<>();
 		this.bookmarkedFlights = new LinkedList<>();
 		this.favouriteDestinations = new LinkedList<>();
+		this.savedSearches = new LinkedList<>();
 	}
 
 	public Boolean isHasLogin() {
@@ -255,6 +257,22 @@ public class UserBean implements Serializable {
 		this.bookmarkedFlights = bookmarkedFlights;
 	}
 
+	public LinkedList<SearchBean> getSavedSearches() {
+		return savedSearches;
+	}
+
+	public void setSavedSearches(LinkedList<SearchBean> savedSearches) {
+		this.savedSearches = savedSearches;
+	}
+
+	public LinkedList<DestinationBean> getFavouriteDestinations() {
+		return favouriteDestinations;
+	}
+
+	public void setFavouriteDestinations(LinkedList<DestinationBean> favouriteDestinations) {
+		this.favouriteDestinations = favouriteDestinations;
+	}
+
 	public void addBookmarkedFlight(FlightBean flight) {
 		boolean tagExists = false;
 		for (int i = 0; i < getBookmarkedFlights().size(); i++) {
@@ -338,6 +356,29 @@ public class UserBean implements Serializable {
 		}
 	}
 
+	// Add a search parameter
+	public void addSavedSearch(SearchBean search) {
+		boolean searchExists = false;
+		for (int i = 0; i < getSavedSearches().size(); i++) {
+			if (getSavedSearches().get(i).equals(search)) {
+				searchExists = true;
+				break;
+			}
+		}
+		if (!searchExists) {
+			getSavedSearches().add(search);
+		}
+	}
+
+	public void removeSavedSearch(int searchID) {
+		for (int i = 0; i < getSavedSearches().size(); i++) {
+			if (searchID == getSavedSearches().get(i).getSearchID()) {
+				getSavedSearches().remove(i);
+				break;
+			}
+		}
+	}
+
 	/**
 	 * Inserts a new user Bean with the argumented details into the database.
 	 */
@@ -407,13 +448,14 @@ public class UserBean implements Serializable {
 				this.setThemePreference(result.getString("themePreference"));
 				this.setQuestionnaireCompleted(result.getString("questionnaireCompleted"));
 				this.setDateOfBirth(LocalDate.parse(result.getString("dateOfBirth")));
-				//this.setTagSet(new LinkedList<>());
-				//loadTags(result.getString("userID"));
-				this.setTagSet(findUserTags(userID));
+				this.setTagSet(new LinkedList<>());
+				loadTags(result.getString("userID"));
 				this.setBookmarkedFlights(new LinkedList<>());
 				loadBookmarkedFlights(result.getString("userID"));
 				this.setFavouritedDestinations(new LinkedList<>());
 				loadFavouritedDestinations(result.getString("userID"));
+				this.setSavedSearches(new LinkedList<>());
+				loadSavedSearches(result.getString("userID"));
 			}
 
 			result.close();
@@ -425,30 +467,7 @@ public class UserBean implements Serializable {
 		}
 	}
 
-	public LinkedList<String> findUserTags(String userID) {
-		try {
-			String query = "SELECT * FROM USERS Where userID= ?";
-			Connection connection = ConfigBean.getConnection();
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, userID);
-			ResultSet result = statement.executeQuery();
-
-			LinkedList<String> tags = new LinkedList<>();
-			while (result.next()) {
-				String a = result.getString(4);
-
-			}
-
-			result.close();
-			statement.close();
-			connection.close();
-			return tags;
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-		public void loadTags(String userID) {
+	public void loadTags(String userID) {
 		try {
 			String query = "SELECT tagName\n" +
 					"FROM TAGS\n" +
@@ -523,6 +542,41 @@ public class UserBean implements Serializable {
 				String countryCodeToAdd = result.getString("CountryCode3");
 				DestinationBean destination = new DestinationBean(destinationCodeToAdd);
 				this.addFavouritedDestination(destination);
+			}
+
+			result.close();
+			statement.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			System.err.println(Arrays.toString(e.getStackTrace()));
+		}
+	}
+
+	public void loadSavedSearches(String userID){
+		try {
+			String query = "SELECT *\n" +
+					"FROM USERSAVEDSEARCHES\n" +
+					"WHERE userID = ?;";
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, userID);
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				int searchID = result.getInt("SearchID");
+				Timestamp departureTime = result.getTimestamp("DepartureTime");
+				String departureLocation = result.getString("DepartureLocation");
+				String destination = result.getString("Destination");
+				int flexibleDays = result.getInt("FlexibleDays");
+				int adultPassengers = result.getInt("AdultPassengers");
+				int childPassengers = result.getInt("ChildPassengers");
+//				String destinationLocationCode = result.getString("DestinationLocationCode");
+//				DestinationBean destinationBean = new DestinationBean(destinationLocationCode);
+//				String departureLocationCode = result.getString("DepartureLocationCode");
+//				DestinationBean departureLocationBean = new DestinationBean(departureLocationCode);
+				SearchBean searchToAdd = new SearchBean(destination, departureLocation, flexibleDays, adultPassengers, childPassengers, searchID, departureTime);
+				this.addSavedSearch(searchToAdd);
 			}
 
 			result.close();
@@ -986,6 +1040,63 @@ public class UserBean implements Serializable {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, userID);
 			statement.setString(2, destinationCode);
+			statement.executeUpdate();
+			statement.close();
+
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void addToSavedSearches(String userID, int searchID, String destination, String departure, int flexibleDays, int adultPassengers, int childPassengers, Timestamp departureTime) {
+		String query = "INSERT INTO USERSAVEDSEARCHES VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+		try (Connection connection = ConfigBean.getConnection();
+			 PreparedStatement checkSearch = connection.prepareStatement(
+					 "SELECT * FROM USERSAVEDSEARCHES WHERE userID = ? AND DepartureTime = ? AND DepartureLocation = ? AND Destination = ? AND FlexibleDays = ? AND AdultPassengers = ? AND ChildPassengers = ?");
+			 PreparedStatement insertStatement = connection.prepareStatement(query)) {
+
+			checkSearch.setString(1, userID);
+			checkSearch.setTimestamp(2, departureTime);
+			checkSearch.setString(3, departure);
+			checkSearch.setString(4, destination);
+			checkSearch.setInt(5, flexibleDays);
+			checkSearch.setInt(6, adultPassengers);
+			checkSearch.setInt(7, childPassengers);
+
+			try (ResultSet resultSet1 = checkSearch.executeQuery()) {
+				if (resultSet1.next()) {
+					// Flight already exists
+					int test = 0;
+					return;
+				}
+			}
+
+			insertStatement.setInt(1, searchID);
+			insertStatement.setTimestamp(2, departureTime);
+			insertStatement.setString(3, departure);
+			insertStatement.setString(4, destination);
+			insertStatement.setInt(5, flexibleDays);
+			insertStatement.setInt(6, adultPassengers);
+			insertStatement.setInt(7, childPassengers);
+			insertStatement.setString(8, userID);
+
+			insertStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void removeFromSavedSearches(String userID, int searchID) {
+		String query = "DELETE FROM USERSAVEDSEARCHES WHERE searchID = ? AND userID = ?";
+
+		try {
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, searchID);
+			statement.setString(2, userID);
 			statement.executeUpdate();
 			statement.close();
 

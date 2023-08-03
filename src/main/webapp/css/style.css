@@ -618,7 +618,7 @@ div.floatGroupFavButton{
 }
 
 .destinationImage {
-  margin-left: 10px;
+  margin-left: 2%;
 }
 
 .destinationImage img {
@@ -739,7 +739,7 @@ form.flightSearchResultButtons{
 }
 
 .searchResultRow1{
-    padding-left: 10px;
+    padding-left: 20%;
 }
 
 .searchResultRow2{
@@ -856,7 +856,7 @@ p.summaryOfSearch{
       /*margin-left: 250px;
       align-items: center;
       justify-content: center;*/
-      margin-left: 1000em;
+      margin-left: 980em;
       align-items: center;
       justify-content: right;
       font-family: Arial;
@@ -914,3 +914,90 @@ p.summaryOfSearch{
   {
       color: green;
   }
+
+  div.LoginFailedMessage{
+    text-align: right;
+    font-size: large;
+    color: red;
+    font-weight: 600;
+  }
+
+      .add-tags-form,
+      .remove-tags-form {
+          margin-bottom: 20px; /* Adjust this value to increase or decrease the spacing between the forms */
+      }
+
+    .tag-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 100px); /* Five columns of 100px each */
+        grid-gap: 10px; /* Adjust the gap between items */
+        justify-content: center; /* Center the grid horizontally */
+    }
+
+    .tag-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center the content vertically */
+        align-items: center; /* Center the content horizontally */
+        text-align: center; /* Center the text horizontally */
+        width: 100px; /* Fixed width for each .tag-item */
+        height: 100px; /* Fixed height for each .tag-item */
+        border: 1px solid #ccc; /* Add borders for better visualization */
+    }
+
+    .tag-item input[type="checkbox"] {
+        display: block; /* Hide the default checkbox */
+    }
+
+button.button#removeBookmarkedFlight{
+    background-color: white;
+    color: red;
+    border: solid 1px red;
+    width: 100%;
+    font-size: medium;
+}
+
+button.button#removeBookmarkedFlight:hover{
+    background-color: red;
+    color: white;
+    border: solid 1px red;
+}
+
+button.button#flightDetailsModifyBookmarked{
+    width: 100%;
+    font-size: medium;
+}
+
+button.button#skipQuestionnaire{
+    background-color: white;
+    color: red;
+    border: solid 1px red;
+    width: 100%;
+    font-size: medium;
+}
+
+button.button#skipQuestionnaire:hover{
+    background-color: red;
+    color: white;
+    border: solid 1px red;
+}
+
+img#imageModifyBookmarkedFlight{
+    width: 25%;
+    height: auto;
+}
+
+div.bookmarkFavouriteAddToGroup{
+    float: left;
+}
+
+div.bookmarkFavouriteAddToGroup form{
+    display: inline-block;
+}
+
+div.savedSearch{
+    border: black solid 1px;
+    border-radius: 1em;
+    padding: 1em;
+    margin: 1em
+}

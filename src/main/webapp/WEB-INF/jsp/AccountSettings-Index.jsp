@@ -7,15 +7,27 @@
   String dateOfBirthFormatted = user.getDateOfBirth().format(formatter); %>
 <%@ page import="startUp.FlightBean" %>
 <%@ page import="startUp.TagBean" %>
+<%@ page import="startUp.SearchBean" %>
 <%@ page import="startUp.DestinationBean" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
 LinkedList<FlightBean> bookmarkedFlights = new LinkedList<>();
 LinkedList<DestinationBean> favouritedDestinations = new LinkedList<>();
 LinkedList<String> userTags = new LinkedList<>();
+LinkedList<SearchBean> savedSearches = new LinkedList<>();
+
 if (user != null && user.getBookmarkedFlights() != null) {
   bookmarkedFlights = user.getBookmarkedFlights();
+}
+if (user != null && user.getFavouritedDestinations() != null) {
   favouritedDestinations = user.getFavouritedDestinations();
+}
+if (user != null && user.getTagSet() != null) {
   userTags = user.getTagSet();
+}
+if (user != null && user.getSavedSearches() != null) {
+  savedSearches = user.getSavedSearches();
 }
 %>
 <!DOCTYPE html>
@@ -26,7 +38,7 @@ if (user != null && user.getBookmarkedFlights() != null) {
     <title>Edit user account</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
-<jsp:include page='c-Sidebar-Account.jsp'></jsp:include>
+<jsp:include page='c-Sidebar-Account-Home.jsp'></jsp:include>
 <div class="main-content">
     <h1>User Profile Details & Settings</h1>
 
@@ -83,9 +95,15 @@ if (user != null && user.getBookmarkedFlights() != null) {
 
     <h2>Saved Searches</h2>
     <div class="settingsCategory">
-    <ul>
-        <li><p class="valueOfSetting">SearchExample</p> </li>
-    </ul>
+    <div class="savedSearches">
+        <ul>
+            <% for(SearchBean savedSearch : savedSearches){ %>
+            <li><p class="valueOfSetting"> <%= savedSearch.getDeparture() %> > <%= savedSearch.getDestination() %>
+            <fmt:formatDate value="<%= savedSearch.getDepartureDate() %>" pattern="dd-MM-yyyy" />
+            <%= savedSearch.getAdultPassengers() %> Adults, <%= savedSearch.getChildPassengers() %> Children </p></li>
+            <% } %>
+        </ul>
+        </div>
     </div>
 </div>
 </body>

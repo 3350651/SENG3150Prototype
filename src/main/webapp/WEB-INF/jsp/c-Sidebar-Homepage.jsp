@@ -21,6 +21,7 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
     <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
         alt="FlightPub Logo" class="logo">
     <%-- Home page button --%>
+
     <!-- TODO: fix this servlet call? -->
     <form name="SearchSelect" action="flightSearch" method="GET">
         <h2>Toggle Search Mode</h2>
@@ -32,17 +33,23 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
                 <button type="submit" class="button" name="home" value="simpleSearch">Simple Search</button> 
                 <%}%>     
     </form>
+
     <%-- Bookmarked Flights --%>
     <% if (bookmarkedFlights.size() != 0) { %>
-    <form name="goToBookmarkedFlight" action="ViewFlight" method="POST">
     <h2>Bookmarked Flights</h2>
     <%
       int j=0;
       if (bookmarkedFlights.size() > 0){
       for(FlightBean flight : bookmarkedFlights) { ;
     %>
-        <button type="submit" class="button" name="goToBookmarkedFlight<%= j+1 %>" value="goToBookmarkedFlight<%= j+1 %>">
-          <%= flight.getDestination().getDestinationName() %>, <%= flight.getFlightTime() %>
+    <form name="goToBookmarkedFlight<%= j+1 %>" action="flightSearch" method="POST">
+
+        <input type="hidden" name="airline" value="<%= flight.getAirline() %>" >
+        <input type="hidden" name="flightName" value="<%= flight.getFlightName() %>" >
+        <input type="hidden" name="flightTime" value="<%= flight.getFlightTime() %>" >
+
+        <button type="submit" class="button" name="viewFlight" value="viewFlight">
+          <%= flight.getDeparture().getDestinationName() %> > <%= flight.getDestination().getDestinationName() %>, <%= flight.getFlightTime() %>
         </button>
     <%
       j++;}}
