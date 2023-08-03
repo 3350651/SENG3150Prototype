@@ -425,6 +425,19 @@ go
 )
 go
 
+CREATE TABLE USERSAVEDSEARCHES
+(
+	SearchID CHAR(8) NOT NULL PRIMARY KEY,
+	DepartureTime DATETIME,
+	DepartureLocation VARCHAR(20),
+	Destination VARCHAR(20),
+	FlexibleDays VARCHAR(3),
+	AdultPassengers VARCHAR(3),
+	ChildPassengers VARCHAR(3),
+	userID CHAR(8) NOT NULL FOREIGN KEY REFERENCES USERS,
+)
+go
+
 INSERT INTO TAGS VALUES('12341234', 'Tropical', 'Sunny, tropical location.')
 INSERT INTO TAGS VALUES('22222222', 'Mild Weather', 'Mild, comfortable climate.')
 INSERT INTO TAGS VALUES('33333333', 'Snowsports', 'Knows for great snowsports, very popular in winter.')
@@ -435,6 +448,15 @@ INSERT INTO TAGS VALUES('77777777', 'Famous For Food & Drink', 'Diverse and exce
 INSERT INTO TAGS VALUES('11111111', 'Snowy', 'Snowy, cold, mountains, good for skiing.')
 INSERT INTO TAGS VALUES('88888888', 'Budget', 'Cheap flights.')
 INSERT INTO TAGS VALUES('55511155', 'Family', 'Flight suitable for family groups.')
+INSERT INTO TAGS VALUES('11111112', 'Exploration', 'Great for people wishing to experience new things, travel to new locations - hiking, culture etc.')
+INSERT INTO TAGS VALUES('11111113', 'Outdoor Adventures', 'Hiking, mountain climbing, 4WD & ATVing, absailing')
+INSERT INTO TAGS VALUES('11111114', 'Relaxing', 'Resorts, calm, quiet')
+INSERT INTO TAGS VALUES('11111115', 'Experiencing New Cultures', 'Multicultural or a cultural city hub')
+INSERT INTO TAGS VALUES('11111116', 'Tourist', 'Frequent tourist type locations - e.g. New York, Paris, Rome, Tokyo etc.')
+INSERT INTO TAGS VALUES('11111117', 'Remote', 'Locations rarely holidayed in or with small populations - e.g. Alice Springs, Nova Scotia, Ohio')
+INSERT INTO TAGS VALUES('11111118', 'Snowy', 'Locations known for often being heavily covered in snow, e.g. Ontario, Nepal, etc.')
+INSERT INTO TAGS VALUES('11111119', 'City', 'Locations know for skyscrapers, being a population center, a wide variety of things to do')
+INSERT INTO TAGS VALUES('11111120', 'Popular', 'Popular travel destination - e.g. Sydney, Los Angeles, Greece etc.')
 go
 
 INSERT INTO USERS VALUES ('01010101', 'Lachlan', 'ONeill', 'lachlan@gmail.com', 'lo', '04 123 456', 'user', '12 Main St, Carrington, NSW, Australia', 'Simple', 'AUD', '+10', 'Light', 'No', '1997-08-29')
