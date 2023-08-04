@@ -28,8 +28,7 @@ public class SearchBean implements Serializable {
     int flexible;
     int adultPassengers;
     int childPassengers;
-    LinkedList<FlightBean> results;
-    //TODO: may need more for completed recommendation search
+    LinkedList<FlightPathBean> results;
 
     //constructors
     public SearchBean(Timestamp newDepartureDate, String newDestination, String newDeparture, LinkedList<TagBean> newTags, boolean newSimple, int newflexible, int newAdults, int newChildren) {
@@ -42,15 +41,10 @@ public class SearchBean implements Serializable {
         adultPassengers = newAdults;
         childPassengers = newChildren;
         results = new LinkedList<>();
-        //TODO: get rid of this for full implementation
-        DestinationBean source = new DestinationBean("AMS");
-        DestinationBean destination = new DestinationBean("MAD");
-        Timestamp time = Timestamp.valueOf("2016-01-02 11:55:00.000");
-        LinkedList<FlightPathBean> flights = searchFlights(source, destination, time);
     }
 
     //getters and setters
-    public LinkedList<FlightBean> getResults() {
+    public LinkedList<FlightPathBean> getResults() {
         return this.results;
     }
 
@@ -118,12 +112,12 @@ public class SearchBean implements Serializable {
         this.childPassengers = childPassengers;
     }
 
-    public void setResults(LinkedList<FlightBean> results) {
+    public void setResults(LinkedList<FlightPathBean> results) {
         this.results = results;
     }
 
     //gets all flights from the database. Only used for examples for prototype
-    public void getAllFlights() {
+/*    public void getAllFlights() {
         try {
             String query = "SELECT f.*," +
                     "a.AirlineName" +
@@ -149,7 +143,7 @@ public class SearchBean implements Serializable {
                 DestinationBean rStopOver = new DestinationBean(stopOverCode);
                 DestinationBean rDestination = new DestinationBean(destinationCode);
 
-                results.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
+                results.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, *//* mCost, *//* rDeparture,
                         rStopOver,
                         rDestination));
             }
@@ -160,7 +154,7 @@ public class SearchBean implements Serializable {
             System.err.println(e.getMessage());
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
-    }
+    }*/
 
     public LinkedList<FlightPathBean> searchFlights(DestinationBean source, DestinationBean destination, Timestamp departure) {
         LinkedList<FlightPathBean> flightPaths = new LinkedList<>();
