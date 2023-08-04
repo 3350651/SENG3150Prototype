@@ -127,6 +127,35 @@ public class GroupHomepageServlet extends HttpServlet {
             String faveFlightID = request.getParameter("faveFlightID");
             deleteGroupFaveFlight(group.getGroupID(), faveFlightID);
 
+            LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(group.getGroupID());
+            int size = faveFlights.size();
+
+            session.setAttribute("faveFlights", faveFlights);
+
+            Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
+            session.setAttribute("isAdmin", isAdmin);
+
+            if(faveFlights.size() != 0) {
+
+                //Check whether any of the flights have been blacklisted, remove it.
+                for(int i = 0; i < size; i++){
+                    GroupFaveFlightBean temp = faveFlights.removeFirst();
+                    if(blacklisted(group.getGroupID(),temp.getScore())){
+                        deleteGroupFaveFlight(group.getGroupID(), temp.getGroupFaveFlightID());
+                    }
+                    else {
+                        faveFlights.addLast(temp);
+                    }
+                }
+
+                LinkedList<GroupFaveFlightBean> sortedFaveFlights = getSortedList(faveFlights, faveFlights.peek().getGroupID());
+                LinkedList<String> destinations = getDestinations(sortedFaveFlights);
+                //Overwrites existing faveFlights.
+                session.setAttribute("faveFlights", sortedFaveFlights);
+                session.setAttribute("destinations", destinations);
+            }
+            session.setAttribute("group", group);
+
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupFavouriteList.jsp");
             requestDispatcher.forward(request, response);
         }
@@ -134,28 +163,32 @@ public class GroupHomepageServlet extends HttpServlet {
             //get all the Flights that are added to the group Fave list.
             LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(group.getGroupID());
             int size = faveFlights.size();
+            session.setAttribute("faveFlights", faveFlights);
 
             Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
             session.setAttribute("isAdmin", isAdmin);
 
-            //Check whether any of the flights have been blacklisted, remove it.
-            for(int i = 0; i < size; i++){
-                GroupFaveFlightBean temp = faveFlights.removeFirst();
-                if(blacklisted(group.getGroupID(),temp.getScore())){
-                    deleteGroupFaveFlight(group.getGroupID(), temp.getGroupFaveFlightID());
-                }
-                else {
-                    faveFlights.addLast(temp);
-                }
-            }
-
             if(faveFlights.size() != 0) {
+
+                //Check whether any of the flights have been blacklisted, remove it.
+                for(int i = 0; i < size; i++){
+                    GroupFaveFlightBean temp = faveFlights.removeFirst();
+                    if(blacklisted(group.getGroupID(),temp.getScore())){
+                        deleteGroupFaveFlight(group.getGroupID(), temp.getGroupFaveFlightID());
+                    }
+                    else {
+                        faveFlights.addLast(temp);
+                    }
+                }
+
                 LinkedList<GroupFaveFlightBean> sortedFaveFlights = getSortedList(faveFlights, faveFlights.peek().getGroupID());
                 LinkedList<String> destinations = getDestinations(sortedFaveFlights);
+                //Overwrites existing faveFlights.
                 session.setAttribute("faveFlights", sortedFaveFlights);
                 session.setAttribute("destinations", destinations);
-                session.setAttribute("group", group);
             }
+            session.setAttribute("group", group);
+
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupFavouriteList.jsp");
             requestDispatcher.forward(request, response);
         }

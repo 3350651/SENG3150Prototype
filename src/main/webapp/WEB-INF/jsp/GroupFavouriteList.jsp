@@ -65,6 +65,8 @@ if(faveFlights != null && !faveFlights.isEmpty()){
                     <% faveFlights.addLast(faveFlight);
                        destinations.addLast(dest);
                     } else { %>
+                        <%= faveFlight.getFlightName() %>:<br>
+                        To <%= dest %><br>
                         <form method="POST" action="GroupHomepage">
                             <button class="groupButton" type="submit" name="viewFaveFlight" value="viewFaveFlight">View Flight</button><br><br>
                             <input type="hidden" id="airlineCode" name="airlineCode" value="<%= faveFlight.getAirlineCode() %>">
