@@ -122,6 +122,8 @@ public class GroupHomepageServlet extends HttpServlet {
             requestDispatcher.forward(request, response);
         }
 
+        //Test whether a flight has been locked in.
+
         //The admin wants to remove a flight from the fave list.
         if(request.getParameter("getGroupFaveList") != null && request.getParameter("removeFlight") != null){
             String faveFlightID = request.getParameter("faveFlightID");
@@ -167,6 +169,7 @@ public class GroupHomepageServlet extends HttpServlet {
 
             Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
             session.setAttribute("isAdmin", isAdmin);
+            boolean lockedIn = false;
 
             if(faveFlights.size() != 0) {
 
@@ -176,10 +179,22 @@ public class GroupHomepageServlet extends HttpServlet {
                     if(blacklisted(group.getGroupID(),temp.getScore())){
                         deleteGroupFaveFlight(group.getGroupID(), temp.getGroupFaveFlightID());
                     }
+                    //Check whether there is a flight that has been locked in.
+                    else if(lockedIn(group.getGroupID(), temp.getScore())){
+                        lockedIn = true;
+                    }
                     else {
                         faveFlights.addLast(temp);
                     }
                 }
+
+                session.setAttribute("lockedIn", lockedIn);
+
+                //If a flight has been locked in. Then get it.
+                if(lockedIn){
+                    GroupFaveFlightBean lockedInFlight = getLockedIn();
+                }
+
 
                 LinkedList<GroupFaveFlightBean> sortedFaveFlights = getSortedList(faveFlights, faveFlights.peek().getGroupID());
                 LinkedList<String> destinations = getDestinations(sortedFaveFlights);
@@ -202,24 +217,38 @@ public class GroupHomepageServlet extends HttpServlet {
             session.setAttribute("flight", flightBean);
             session.setAttribute("userBean", user);
 
-            //Score is 0 if the member has not voted.
-            int memberVote = getMembersVote(group.getGroupID(), user.getUserID(), faveFlight.getGroupFaveFlightID());
-            session.setAttribute("memberVote", memberVote);
+            //TODO:
+            //If the flight has been locked in - then give the appropriate message --> need to complete pool, or
+            //can book if they are admin.
+            boolean lockedIn = (boolean) session.getAttribute("lockedIn");
+            session.setAttribute("lockedIn", lockedIn);
 
-            int groupSize = getNumberOfMembers(group.getGroupID());
-            double membersScore = getFaveFlightScore(group.getGroupID(), faveFlight.getGroupFaveFlightID());
-            faveFlight.setScore(membersScore/groupSize);
-            session.setAttribute("faveFlight", faveFlight);
+            if(lockedIn){
 
-            //chat functionality
-            String chatID = faveFlight.getChatID();
-            LinkedList<MessageBean> chatMessages = faveFlight.getChat(chatID);
-            session.setAttribute("chatMessages", chatMessages);
+            }
+            //Otherwise, just show the page for that fave flight.
+            else {
 
-            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ViewFaveFlight.jsp");
-            requestDispatcher.forward(request, response);
+                //Score is 0 if the member has not voted.
+                int memberVote = getMembersVote(group.getGroupID(), user.getUserID(), faveFlight.getGroupFaveFlightID());
+                session.setAttribute("memberVote", memberVote);
+
+                int groupSize = getNumberOfMembers(group.getGroupID());
+                double membersScore = getFaveFlightScore(group.getGroupID(), faveFlight.getGroupFaveFlightID());
+                faveFlight.setScore(membersScore / groupSize);
+                session.setAttribute("faveFlight", faveFlight);
+
+                //chat functionality
+                String chatID = faveFlight.getChatID();
+                LinkedList<MessageBean> chatMessages = faveFlight.getChat(chatID);
+                session.setAttribute("chatMessages", chatMessages);
+
+                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ViewFaveFlight.jsp");
+                requestDispatcher.forward(request, response);
+            }
         }
         //The user has posted a comment to a favourite flight.
+        //TODO: change this section to work with a locked-in flight??
         else if(request.getParameter("viewFaveFlight") != null && request.getParameter("newMessage") != null){
             //Chat functionality
             GroupFaveFlightBean faveFlight = (GroupFaveFlightBean) session.getAttribute("faveFlight");
@@ -276,10 +305,10 @@ public class GroupHomepageServlet extends HttpServlet {
 
         //If a flight has been locked in then the money pool becomes available - for the prototype, we hardcode this
         //to be true to allow for the pool to be displayed.
-        boolean flightLockedIn = true;
+        boolean lockedIn = (boolean) session.getAttribute("lockedIn");
         boolean poolFinished = group.isPoolComplete(group.getPoolID());
         //If the flight has been locked in and the pool is not finished.
-        if(flightLockedIn && !poolFinished){
+        if(lockedIn && !poolFinished){
 
             //add functionality that only displays the locked in flight within the Group Favourite List.
             PoolBean pool = group.getPool();
@@ -350,7 +379,7 @@ public class GroupHomepageServlet extends HttpServlet {
             }
         }
         //If a flight is locked in and the pool is finished, then the group admin can book the flight for the group.
-        else if(flightLockedIn && poolFinished){
+        else if(lockedIn && poolFinished){
             //The pool is finished so do not show the pool option button,
             //instead show the booking button option from the view booking page on the locked-in flight.
         }

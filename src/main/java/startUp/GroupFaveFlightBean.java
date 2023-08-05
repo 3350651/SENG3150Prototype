@@ -365,15 +365,68 @@ public class GroupFaveFlightBean implements Serializable {
     }
 
     //Determine if the flight has been lockedIn
-    public static boolean lockedIn(GroupBean group, GroupFaveFlightBean faveFlight){
-        float groupSize = getNumberOfMembers(group.getGroupID());
-        return faveFlight.getScore() == (groupSize * 2) / groupSize;
+    public static boolean lockedIn(String groupID, double score){
+        float groupSize = getNumberOfMembers(groupID);
+        return score == (groupSize * 2) / groupSize;
     }
 
     //Determine if the flight has been blacklisted
     public static boolean blacklisted(String groupID, double score){
         float groupSize = getNumberOfMembers(groupID);
         return score == (groupSize * -2) / groupSize;
+    }
+
+    public static GroupFaveFlightBean getLockedIn(){
+        GroupFaveFlightBean lockedInFlight = new GroupFaveFlightBean();
+
+        String query = "SELECT * FROM GROUPFAVEFLIGHT WHERE [rank] = 2";
+        try{
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String id = result.getString(1);
+                String code = result.getString(2);
+                String name = result.getString(3);
+                Timestamp time = result.getTimestamp(4);
+                String chatID = result.getString(5);
+                double rank = result.getFloat(6);
+                String group = result.getString(7);
+
+                lockedInFlight = new GroupFaveFlightBean(id, code, name, time, chatID, rank, group);
+            }
+
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+
+        //Delete all the other flights for that group.
+        deleteAllNotLockedIn();
+
+        return lockedInFlight;
+    }
+
+    public static void deleteAllNotLockedIn(){
+        String query = "DELETE FROM GROUPFAVEFLIGHT WHERE [rank] != 2";
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setDouble(1, this.score);
+            statement.setString(2, this.groupFaveFlightID);
+
+
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
     }
 
 
