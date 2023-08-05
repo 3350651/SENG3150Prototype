@@ -9,7 +9,7 @@
 <div class="gridParent">
     <% SearchBean search = (SearchBean) session.getAttribute("flightResults"); 
     LinkedList<FlightPathBean> searchResults = search.getResults();
-    request.setAttribute("flights", searchResults);
+    session.setAttribute("flightResults", searchResults);
     %>
     <% int i = 0; for (FlightPathBean flightPath : searchResults ) { %>
             <div class="recResults">

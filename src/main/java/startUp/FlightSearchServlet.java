@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.LinkedList;
 
 @WebServlet(urlPatterns = { "/flightSearch" })
 public class FlightSearchServlet extends HttpServlet {
@@ -80,16 +81,15 @@ public class FlightSearchServlet extends HttpServlet {
         }
 
         else if (request.getParameter("viewFlight") != null) {
-            String airline = request.getParameter("airline");
-            String flightname = request.getParameter("flightName");
-            Timestamp flightTime = Timestamp.valueOf(request.getParameter("flightTime"));
+            LinkedList<FlightPathBean> flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResults");
 
-            FlightBean flight = FlightBean.getFlight(airline, flightname, flightTime);
+            FlightPathBean flight = flights.get(Integer.parseInt(request.getParameter("flightIndex")));
 
             session.setAttribute("flight", flight);
+            /* TODO: No longer valid
             String flightDetails = flight.getAirline() + "," + flight.getFlightName() + ","
                     + flight.getFlightTime();
-            session.setAttribute("flightDetails", flightDetails);
+            session.setAttribute("flightDetails", flightDetails);*/
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(request, response);
