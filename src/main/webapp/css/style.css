@@ -851,15 +851,12 @@ p.summaryOfSearch{
   .gridParent
   {
       display: grid;
-      column-gap: 50px;
-      display: flex;
-      /*margin-left: 250px;
+      margin-left: 20%;
       align-items: center;
-      justify-content: center;*/
-      margin-left: 1000em;
-      align-items: center;
-      justify-content: right;
+      justify-content: center;
       font-family: Arial;
+      overflow-y: hidden;
+      overflow-x: auto;
   }
 
   div.FlightSearchResult1{

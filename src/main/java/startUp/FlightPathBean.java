@@ -59,4 +59,12 @@ public class FlightPathBean {
         }
         return allDestinations;
     }
+
+    public FlightBean getInitialFlight() {
+        return flightPath.get(0);
+    }
+
+    public FlightBean getLastFlight() {
+        return flightPath.get(flightPath.size() - 1);
+    }
 }

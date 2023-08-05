@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @WebServlet(urlPatterns = { "/flightSearch" })
 public class FlightSearchServlet extends HttpServlet {
@@ -53,7 +54,26 @@ public class FlightSearchServlet extends HttpServlet {
 
         else if (request.getParameter("searchResults") != null
                 && request.getParameter("searchResults").equalsIgnoreCase("simpleSearchResults")) {
-            SearchBean search = new SearchBean(null, null, null, null, true, 0, 0, 0);
+
+            String departure = request.getParameter("departureLocation");
+            String destination = request.getParameter("arrivalLocation");
+            String time = request.getParameter("departureDate");
+            time += " 00:00:00";
+            Timestamp departureTime = Timestamp.valueOf(time);
+            int adults = Integer.parseInt(request.getParameter("numberOfAdults"));
+            int children = Integer.parseInt(request.getParameter("numberOfChildren"));
+            if (adults < 0 || children < 0 || (adults == 0 && children == 0)) {
+                throw new IOException("Invalid input: Invalid combination of adult and children passengers.");
+            }
+            if (destination == null) {
+                throw new IOException("Invalid input: Select a destination.");
+            }
+            if (departure == null) {
+                throw new IOException("Invalid input: Select a departure location.");
+            }
+
+            SearchBean search = new SearchBean(departureTime, destination, departure, null, true, 0, adults, children);
+            search.searchFlights();
             session.setAttribute("flightResults", search);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/simpleSearchResults.jsp");
             requestDispatcher.forward(request, response);

@@ -156,7 +156,7 @@ public class SearchBean implements Serializable {
         }
     }*/
 
-    public LinkedList<FlightPathBean> searchFlights(DestinationBean source, DestinationBean destination, Timestamp departure) {
+    public void searchFlights() {
         LinkedList<FlightPathBean> flightPaths = new LinkedList<>();
         Queue<FlightBean> flightList = new LinkedList<>();
         FlightBean flight = null;
@@ -166,7 +166,7 @@ public class SearchBean implements Serializable {
             //get all flights leaving within 24 hours of departure
             //add previous flight to each
             //add all to queue
-            flightList.addAll(getAllFlightsFrom(source, departure, flight));
+            flightList.addAll(getAllFlightsFrom(departure, departureDate, flight));
 
             //if queue empty return list of flight paths
             if (flightList.isEmpty()) {
@@ -177,27 +177,27 @@ public class SearchBean implements Serializable {
 
 
             //check if destination
-            while (Objects.equals(flight.getDestination().getDestinationCode(), destination.getDestinationCode())) {
+            while (Objects.equals(flight.getDestination().getDestinationCode(), destination)) {
                 //if destination, backtrack through previous flights to make complete flight path
                 //add to list of complete flight paths
                 flightPaths.add(getFlightPathFrom(flight));
                 //if 10 flights in list return
                 if (flightPaths.size() >= 10) {
-                    return flightPaths;
+                    results = flightPaths;
                 }
                 if (flightList.isEmpty()) {
-                    return flightPaths;
+                    results = flightPaths;
                 }
                 flight = flightList.poll();
 
             }
-            source = flight.getDestination();
-            departure = flight.getFlightArrivalTime();
-        } while (flightPaths.size() < 10 || !flightList.isEmpty());
-        return flightPaths;
+            departure = flight.getDestination().getDestinationCode();
+            departureDate = flight.getFlightArrivalTime();
+        } while (flightPaths.size() < 10 && !flightList.isEmpty());
+        results = flightPaths;
     }
 
-    public Queue<FlightBean> getAllFlightsFrom(DestinationBean source, Timestamp time, FlightBean previous) {
+    public Queue<FlightBean> getAllFlightsFrom(String source, Timestamp time, FlightBean previous) {
         Queue<FlightBean> flights = new LinkedList<>();
         Timestamp endtime = Timestamp.from(time.toInstant().plus(24, ChronoUnit.HOURS));
         String loopingDestinations = null;
@@ -290,13 +290,13 @@ public class SearchBean implements Serializable {
 
             statement.setTimestamp(1, endtime);
             statement.setTimestamp(2, time);
-            statement.setString(3, source.getDestinationCode());
+            statement.setString(3, source);
             statement.setTimestamp(4, endtime);
             statement.setTimestamp(5, time);
-            statement.setString(6, source.getDestinationCode());
+            statement.setString(6, source);
             statement.setTimestamp(7, endtime);
             statement.setTimestamp(8, time);
-            statement.setString(9, source.getDestinationCode());
+            statement.setString(9, source);
 
 
             ResultSet result = statement.executeQuery();
