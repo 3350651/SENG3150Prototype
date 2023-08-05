@@ -245,8 +245,9 @@ public class GroupHomepageServlet extends HttpServlet {
             LinkedList<MessageBean> chatMessages = faveFlight.getChat(chatID);
             session.setAttribute("chatMessages", chatMessages);
 
-            //Get the vote that the user has selected.
+            //Get the vote that the user has selected, and change the session attribute.
             int memberVote = Integer.parseInt(request.getParameter("vote"));
+            session.setAttribute("memberVote", memberVote);
 
             //check if the member has already voted. If they have, then update the db accordingly.
             if(hasVoted(faveFlight.getGroupFaveFlightID(), group.getGroupID(), user.getUserID())){
