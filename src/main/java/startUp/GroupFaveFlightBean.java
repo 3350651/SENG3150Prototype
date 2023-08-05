@@ -108,6 +108,9 @@ public class GroupFaveFlightBean implements Serializable {
 
     public static void deleteGroupFaveFlight(String groupID, String groupFaveFlightID){
 
+        //Get rid of related MemberFlightVotes
+        deleteMemberFlightVotes(groupID, groupFaveFlightID);
+
         String query = "DELETE FROM GROUPFAVEFLIGHT WHERE [groupID] = ? AND [groupFaveFlightID] = ?";
         try {
             Connection connection = ConfigBean.getConnection();
@@ -124,9 +127,6 @@ public class GroupFaveFlightBean implements Serializable {
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
         }
-
-        //Get rid of related MemberFlightVotes
-        deleteMemberFlightVotes(groupID, groupFaveFlightID);
 
     }
 
