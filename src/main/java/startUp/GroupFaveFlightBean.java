@@ -146,6 +146,8 @@ public class GroupFaveFlightBean implements Serializable {
             while (result.next()) {
                 isFavourited = true;
             }
+            statement.close();
+            connection.close();
         }
         catch(SQLException e){
             System.err.println(e.getMessage());
@@ -244,7 +246,8 @@ public class GroupFaveFlightBean implements Serializable {
 
                 faveFlight = new GroupFaveFlightBean(id, code, name, time, chatID, rank, group);
             }
-
+            statement.close();
+            connection.close();
         }
         catch(SQLException e){
             System.err.println(e.getMessage());
@@ -293,7 +296,6 @@ public class GroupFaveFlightBean implements Serializable {
                         rStopOver,
                         rDestination);
             }
-
             statement.close();
             connection.close();
         } catch (SQLException e) {
@@ -329,7 +331,6 @@ public class GroupFaveFlightBean implements Serializable {
 
             statement.setDouble(1, this.score);
             statement.setString(2, this.groupFaveFlightID);
-
 
             statement.executeUpdate();
             statement.close();
@@ -396,7 +397,8 @@ public class GroupFaveFlightBean implements Serializable {
 
                 lockedInFlight = new GroupFaveFlightBean(id, code, name, time, chatID, rank, group);
             }
-
+            statement.close();
+            connection.close();
         }
         catch(SQLException e){
             System.err.println(e.getMessage());
@@ -414,10 +416,6 @@ public class GroupFaveFlightBean implements Serializable {
         try {
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
-
-            statement.setDouble(1, this.score);
-            statement.setString(2, this.groupFaveFlightID);
-
 
             statement.executeUpdate();
             statement.close();

@@ -50,6 +50,8 @@ public class GroupHomepageServlet extends HttpServlet {
             session.setAttribute("group", group);
             Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
             session.setAttribute("isAdmin", isAdmin);
+           boolean poolFinished = group.isPoolComplete(group.getPoolID());
+           session.setAttribute("poolFinished", poolFinished);
 
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
             requestDispatcher.forward(request, response);
@@ -121,9 +123,6 @@ public class GroupHomepageServlet extends HttpServlet {
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
             requestDispatcher.forward(request, response);
         }
-
-        //Test whether a flight has been locked in.
-
         //The admin wants to remove a flight from the fave list.
         if(request.getParameter("getGroupFaveList") != null && request.getParameter("removeFlight") != null){
             String faveFlightID = request.getParameter("faveFlightID");
@@ -189,19 +188,22 @@ public class GroupHomepageServlet extends HttpServlet {
                 }
 
                 session.setAttribute("lockedIn", lockedIn);
-
+                LinkedList<GroupFaveFlightBean> sortedFaveFlights = new LinkedList<>();
+                LinkedList<String> destinations = new LinkedList<>();
                 //If a flight has been locked in. Then get it.
                 if(lockedIn){
                     GroupFaveFlightBean lockedInFlight = getLockedIn();
+                    sortedFaveFlights.add(lockedInFlight);
+                    destinations.add(lockedInFlight.getDestination());
                 }
-
-
-                LinkedList<GroupFaveFlightBean> sortedFaveFlights = getSortedList(faveFlights, faveFlights.peek().getGroupID());
-                LinkedList<String> destinations = getDestinations(sortedFaveFlights);
-                //Overwrites existing faveFlights.
+                else{
+                    sortedFaveFlights = getSortedList(faveFlights, faveFlights.peek().getGroupID());
+                    destinations = getDestinations(sortedFaveFlights);
+                }
                 session.setAttribute("faveFlights", sortedFaveFlights);
                 session.setAttribute("destinations", destinations);
             }
+
             session.setAttribute("group", group);
 
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupFavouriteList.jsp");
@@ -216,43 +218,37 @@ public class GroupHomepageServlet extends HttpServlet {
             FlightBean flightBean = getFlight(airlineCode, flightName, flightTime);
             session.setAttribute("flight", flightBean);
             session.setAttribute("userBean", user);
+            boolean poolFinished = group.isPoolComplete(group.getPoolID());
+            session.setAttribute("poolFinished", poolFinished);
 
-            //TODO:
             //If the flight has been locked in - then give the appropriate message --> need to complete pool, or
             //can book if they are admin.
             boolean lockedIn = (boolean) session.getAttribute("lockedIn");
             session.setAttribute("lockedIn", lockedIn);
 
-            if(lockedIn){
+            //Score is 0 if the member has not voted.
+            int memberVote = getMembersVote(group.getGroupID(), user.getUserID(), faveFlight.getGroupFaveFlightID());
+            session.setAttribute("memberVote", memberVote);
 
-            }
-            //Otherwise, just show the page for that fave flight.
-            else {
+            int groupSize = getNumberOfMembers(group.getGroupID());
+            double membersScore = getFaveFlightScore(group.getGroupID(), faveFlight.getGroupFaveFlightID());
+            faveFlight.setScore(membersScore / groupSize);
+            session.setAttribute("faveFlight", faveFlight);
 
-                //Score is 0 if the member has not voted.
-                int memberVote = getMembersVote(group.getGroupID(), user.getUserID(), faveFlight.getGroupFaveFlightID());
-                session.setAttribute("memberVote", memberVote);
+            //chat functionality
+            String chatID = faveFlight.getChatID();
+            LinkedList<MessageBean> chatMessages = faveFlight.getChat(chatID);
+            session.setAttribute("chatMessages", chatMessages);
 
-                int groupSize = getNumberOfMembers(group.getGroupID());
-                double membersScore = getFaveFlightScore(group.getGroupID(), faveFlight.getGroupFaveFlightID());
-                faveFlight.setScore(membersScore / groupSize);
-                session.setAttribute("faveFlight", faveFlight);
-
-                //chat functionality
-                String chatID = faveFlight.getChatID();
-                LinkedList<MessageBean> chatMessages = faveFlight.getChat(chatID);
-                session.setAttribute("chatMessages", chatMessages);
-
-                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ViewFaveFlight.jsp");
-                requestDispatcher.forward(request, response);
-            }
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ViewFaveFlight.jsp");
+            requestDispatcher.forward(request, response);
         }
         //The user has posted a comment to a favourite flight.
-        //TODO: change this section to work with a locked-in flight??
         else if(request.getParameter("viewFaveFlight") != null && request.getParameter("newMessage") != null){
             //Chat functionality
             GroupFaveFlightBean faveFlight = (GroupFaveFlightBean) session.getAttribute("faveFlight");
             String chatID = faveFlight.getChatID();
+            session.setAttribute("lockedIn", false);
 
             if(request.getParameter("newMessage") != null){
                 String newMessage = request.getParameter("newMessage");
@@ -270,6 +266,7 @@ public class GroupHomepageServlet extends HttpServlet {
         else if(request.getParameter("viewFaveFlight") != null && request.getParameter("vote") != null){
             GroupFaveFlightBean faveFlight = (GroupFaveFlightBean) session.getAttribute("faveFlight");
             String chatID = faveFlight.getChatID();
+            session.setAttribute("lockedIn", false);
 
             LinkedList<MessageBean> chatMessages = faveFlight.getChat(chatID);
             session.setAttribute("chatMessages", chatMessages);
@@ -305,83 +302,97 @@ public class GroupHomepageServlet extends HttpServlet {
 
         //If a flight has been locked in then the money pool becomes available - for the prototype, we hardcode this
         //to be true to allow for the pool to be displayed.
-        boolean lockedIn = (boolean) session.getAttribute("lockedIn");
-        boolean poolFinished = group.isPoolComplete(group.getPoolID());
-        //If the flight has been locked in and the pool is not finished.
-        if(lockedIn && !poolFinished){
 
-            //add functionality that only displays the locked in flight within the Group Favourite List.
-            PoolBean pool = group.getPool();
-            boolean hasDeposited = hasMadeDeposit(pool.getPoolID(), user.getUserID());
-            session.setAttribute("hasDeposited", hasDeposited);
-            //get the pool page.
-            if(request.getParameter("getPool") != null){
+        //Determine if a flight is locked-in. Cannot rely on the session attribute here.
+        LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(group.getGroupID());
+        int size = faveFlights.size();
+        boolean lockedIn = false;
+        if(faveFlights.size() != 0) {
+            for (int i = 0; i < size; i++) {
+                GroupFaveFlightBean temp = faveFlights.removeFirst();
+                if (lockedIn(group.getGroupID(), temp.getScore())) {
+                    lockedIn = true;
+                }
+            }
+        }
+
+        session.setAttribute("lockedIn", lockedIn);
+        boolean poolFinished = group.isPoolComplete(group.getPoolID());
+        session.setAttribute("poolFinished", poolFinished);
+        //Show the pool
+
+        //add functionality that only displays the locked in flight within the Group Favourite List.
+        PoolBean pool = group.getPool();
+        boolean hasDeposited = hasMadeDeposit(pool.getPoolID(), user.getUserID());
+        session.setAttribute("hasDeposited", hasDeposited);
+        //get the pool page.
+        if(request.getParameter("getPool") != null){
+            session.setAttribute("pool", pool);
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Pool.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        //go to the page to add to the pool.
+        else if(request.getParameter("addToPool") != null){
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToPool.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        //confirm withdraw from pool.
+        else if(request.getParameter("withdrawFromPool") != null){
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/WithdrawFromPool.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        else if(request.getParameter("confirmWithdraw") != null){
+            double amount = group.withDrawFromPool(user.getUserID());
+            session.setAttribute("message", "Success! You have successfully withdrawn $" + amount +
+                    " from the group money pool.");
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/PoolMessage.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        //Get the group availability calendar.
+        else if(request.getParameter("getCalendar") != null){
+            //This feature is not implemented for the prototype. It serves as a placeholder.
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupCalendar.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        //request send to add money to pool. make a deposit to the pool.
+        else if(request.getParameter("addMoney") != null){
+            //try and make the deposit. call the group method to make deposit. (java script to later check value is
+            //not less than 0.
+            pool = (PoolBean) session.getAttribute("pool");
+            double addMoney = Double.parseDouble(request.getParameter("addMoney"));
+            boolean deposited = group.depositToPool(addMoney);
+
+            if(deposited){
+                //set message to tell user that it was successful.
+                pool = group.getPool();
                 session.setAttribute("pool", pool);
-                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Pool.jsp");
-                requestDispatcher.forward(request, response);
-            }
-            //go to the page to add to the pool.
-            else if(request.getParameter("addToPool") != null){
-                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToPool.jsp");
-                requestDispatcher.forward(request, response);
-            }
-            //confirm withdraw from pool.
-            else if(request.getParameter("withdrawFromPool") != null){
-                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/WithdrawFromPool.jsp");
-                requestDispatcher.forward(request, response);
-            }
-            else if(request.getParameter("confirmWithdraw") != null){
-                double amount = group.withDrawFromPool(user.getUserID());
-                session.setAttribute("message", "Success! You have successfully withdrawn $" + amount +
-                        " from the group money pool.");
+
+                PoolDepositBean newDeposit = new PoolDepositBean(pool.getPoolID(), user.getUserID(), addMoney);
+
+                session.setAttribute("message", "Success! You have successfully deposited $" + addMoney +
+                " into the group money pool.");
                 requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/PoolMessage.jsp");
                 requestDispatcher.forward(request, response);
             }
-            //Get the group availability calendar.
-            else if(request.getParameter("getCalendar") != null){
-                //This feature is not implemented for the prototype. It serves as a placeholder.
-                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupCalendar.jsp");
-                requestDispatcher.forward(request, response);
-            }
-            //request send to add money to pool. make a deposit to the pool.
-            else if(request.getParameter("addMoney") != null){
-                //try and make the deposit. call the group method to make deposit. (java script to later check value is
-                //not less than 0.
-                pool = (PoolBean) session.getAttribute("pool");
-                double addMoney = Double.parseDouble(request.getParameter("addMoney"));
-                boolean deposited = group.depositToPool(addMoney);
-
-                if(deposited){
-                    //set message to tell user that it was successful.
-                    pool = group.getPool();
-                    session.setAttribute("pool", pool);
-
-                    PoolDepositBean newDeposit = new PoolDepositBean(pool.getPoolID(), user.getUserID(), addMoney);
-
-                    session.setAttribute("message", "Success! You have successfully deposited $" + addMoney +
-                    " into the group money pool.");
-                    requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/PoolMessage.jsp");
-                    requestDispatcher.forward(request, response);
-                }
-                //An internal error or something else occurred. The value is checked if it is negative in the javascript.
-                else{
-                    session.setAttribute("message", "An error occurred. Please check that the deposit does not exceed" +
-                            " the remaining amount needed.");
-                    requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/PoolMessage.jsp");
-                    requestDispatcher.forward(request, response);
-                }
-            }
-            else if(request.getParameter("poolContinue") != null){
-                pool = group.getPool();
-                session.setAttribute("pool", pool);
-                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Pool.jsp");
+            //An internal error or something else occurred. The value is checked if it is negative in the javascript.
+            else{
+                session.setAttribute("message", "An error occurred. Please check that the deposit does not exceed" +
+                        " the remaining amount needed.");
+                requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/PoolMessage.jsp");
                 requestDispatcher.forward(request, response);
             }
         }
-        //If a flight is locked in and the pool is finished, then the group admin can book the flight for the group.
-        else if(lockedIn && poolFinished){
-            //The pool is finished so do not show the pool option button,
-            //instead show the booking button option from the view booking page on the locked-in flight.
+        else if(request.getParameter("poolContinue") != null){
+            pool = group.getPool();
+            session.setAttribute("pool", pool);
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Pool.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        //Admin has requested to make a booking.
+        if(request.getParameter("makeBooking") != null){
+            //Need number of members to automatically fill the booking info.
+            //Will also have the flight path.
         }
 
         /*

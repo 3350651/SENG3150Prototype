@@ -14,6 +14,8 @@
                     GroupFaveFlightBean faveFlight = (GroupFaveFlightBean) session.getAttribute("faveFlight");
                     LinkedList<MessageBean> chatMessages = (LinkedList<MessageBean>) session.getAttribute("chatMessages");
                     int memberVote = (int) session.getAttribute("memberVote");
+                    boolean lockedIn = (boolean) session.getAttribute("lockedIn");
+                    boolean poolFinished = (boolean) session.getAttribute("poolFinished");
                     %>
 
                         <head>
@@ -105,8 +107,14 @@
 
                                 <table>
                                     <td class="filledSection">
+                                        <% if(poolFinished) { %>
+                                            <form method="POST" action="GroupHomepage">
+                                                 <button class="groupButton"  type="submit" name="makeBooking" value="true">Make Booking</button>
+                                            </form>
+                                        <% } else if(lockedIn) { %>
+                                            <p>Please finish group Money Pool to book trip!</p>
                                         <%
-                                        if(memberVote == 0) { %>
+                                        } else if(memberVote == 0) { %>
                                         <form method="POST" action="GroupHomepage">
                                             <button class="groupButton"  type="submit" name="vote" value="2">Lock-in</button>
                                             <button class="groupButton"  type="submit" name="vote" value="1">Upvote</button>
@@ -159,6 +167,7 @@
                                         <%}
                                         %>
 
+                                        <% if(!lockedIn) { %>
                                         <div>
                                             <form method="POST" action="GroupHomepage" onsubmit="return sendMessageForm()">
                                                 <label for="newMessage">Post a message: </label>
@@ -168,6 +177,7 @@
                                                 <input type="hidden" name="viewFaveFlight" value="viewFaveFlight">
                                             </form>
                                         </div>
+                                        <%}%>
                                     </td>
                                 </table>
 
