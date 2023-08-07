@@ -157,11 +157,14 @@ public class SearchBean implements Serializable{
     //gets all flights from the database. Only used for examples for prototype
     public void getAllFlights() {
         try {
-            String query = "SELECT f.*," +
-                    "a.AirlineName, p.Price" +
-                    " FROM dbo.Flights f " +
+            String query = "SELECT f.*, " +
+                    "a.AirlineName, " +
+                    "min(p.Price) AS Price " +
+                    "FROM dbo.Flights f " +
                     "LEFT JOIN Dbo.Airlines a ON a.AirlineCode = f.AirlineCode "+
-                    "LEFT JOIN dbo.Price p ON f.FlightNumber = p.FlightNumber AND f.DepartureTime >= p.StartDate AND f.DepartureTime <= p.EndDate";
+                    "FULL JOIN dbo.Price p ON f.FlightNumber = p.FlightNumber AND f.DepartureTime >= p.StartDate AND f.DepartureTime <= p.EndDate " +
+                    "WHERE f.FlightNumber IS NOT NULL " +
+                    "GROUP BY f.AirlineCode, f.FlightNumber, f.DepartureCode, f.StopOverCode, f.DestinationCode, f.DepartureTime, f.ArrivalTimeStopOver, f.DepartureTimeStopOver, f.ArrivalTime, f.PlaneCode, f.Duration, f.DurationSecondLeg, a.AirlineName";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet result = statement.executeQuery();
