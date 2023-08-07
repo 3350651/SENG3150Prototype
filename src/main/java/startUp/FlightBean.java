@@ -42,6 +42,22 @@ public class  FlightBean implements Serializable {
         seatAvailability = new LinkedList<>();
     }
 
+    public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightTime, String newflightName,
+                      String newPlaneType,
+                      float newMinCost, DestinationBean newDeparture, DestinationBean newStopOver,
+                      DestinationBean newDestination) {
+        airline = newAirline;
+        airlineName = newAirlineName;
+        flightTime = newFlightTime;
+        flightName = newflightName;
+        planeType = newPlaneType;
+        minCost = newMinCost;
+        departure = newDeparture;
+        stopOver = newStopOver;
+        destination = newDestination;
+        seatAvailability = new LinkedList<>();
+    }
+
     public FlightBean(String aline, String fname, DestinationBean dep, DestinationBean sover, DestinationBean arr, Timestamp ftime)
     {
         airline = aline;
@@ -118,7 +134,7 @@ public class  FlightBean implements Serializable {
      * public float getMinCost() {
      * return minCost;
      * }
-     * 
+     *
      * public void setMinCost(float minCost) {
      * this.minCost = minCost;
      * }

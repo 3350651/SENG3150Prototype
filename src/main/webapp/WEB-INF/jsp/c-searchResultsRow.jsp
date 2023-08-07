@@ -18,7 +18,7 @@
                             <div class="DestinationLocationResult"><%=flight.getDestination().getDestinationName()%></div>
                         </div>
                         <div class="searchResultRow2">
-                            <div class="priceResult">$662</div>
+                            <div class="priceResult"><%=flight.getMinCost()%></div>
                             <div class="dateResult"><%=flight.getFlightTime()%></div>
                             <div class="numPassengersResult">2 adults</div>
                         </div>

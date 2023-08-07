@@ -158,9 +158,10 @@ public class SearchBean implements Serializable{
     public void getAllFlights() {
         try {
             String query = "SELECT f.*," +
-                    "a.AirlineName" +
+                    "a.AirlineName, p.Price" +
                     " FROM dbo.Flights f " +
-                    "LEFT JOIN Dbo.Airlines a ON a.AirlineCode = f.AirlineCode";
+                    "LEFT JOIN Dbo.Airlines a ON a.AirlineCode = f.AirlineCode "+
+                    "LEFT JOIN dbo.Price p ON f.FlightNumber = p.FlightNumber AND f.DepartureTime >= p.StartDate AND f.DepartureTime <= p.EndDate";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet result = statement.executeQuery();
@@ -176,12 +177,16 @@ public class SearchBean implements Serializable{
                 String stopOverCode = result.getString(4);
                 String destinationCode = result.getString(5);
                 String airlineName = result.getString(13);
+                float mCost = Float.parseFloat(result.getString("Price")); //14
 
                 DestinationBean rDeparture = new DestinationBean(departureCode);
                 DestinationBean rStopOver = new DestinationBean(stopOverCode);
                 DestinationBean rDestination = new DestinationBean(destinationCode);
 
-                results.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
+//                results.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
+//                        rStopOver,
+//                        rDestination));
+                results.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, mCost, rDeparture,
                         rStopOver,
                         rDestination));
             }
