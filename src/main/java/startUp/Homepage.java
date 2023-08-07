@@ -22,6 +22,7 @@ public class Homepage extends HttpServlet {
 		// send the user to an unauthorised page if they try to access the homepage
 		// without being logged in.
 		if (session.getAttribute("userBean") == null) {
+			session.setAttribute("destinationCodes", new DestinationOptionsBean());
 			requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
 			requestDispatcher.forward(request, response);
 		} else {
@@ -38,6 +39,7 @@ public class Homepage extends HttpServlet {
 			// sends the user to the correct homepage depending on their role
 			if (role.equals("user")) {
 
+
 				// stuff to set and display groups for user.
 				// LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
 				if (!groupIDs.isEmpty()) {
@@ -53,10 +55,12 @@ public class Homepage extends HttpServlet {
 						requestDispatcher.forward(request, response);
 					}
 					else{
+						session.setAttribute("destinationCodes", new DestinationOptionsBean());
 						requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
 						requestDispatcher.forward(request, response);
 					}
 				} else {
+					session.setAttribute("destinationCodes", new DestinationOptionsBean());
 					requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
 					requestDispatcher.forward(request, response);
 				}

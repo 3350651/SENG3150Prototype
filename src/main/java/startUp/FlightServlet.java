@@ -28,16 +28,16 @@ public class FlightServlet extends HttpServlet {
 
             // getting parameters
             SearchBean search = (SearchBean) session.getAttribute("results");
-            LinkedList<FlightBean> flights = search.getResults();
+            LinkedList<FlightPathBean> flights = search.getResults();
             int index = Integer.valueOf(req.getParameter("viewFlightDetails").split(",")[1]);
 
             // retrieve flight
-            FlightBean flight = flights.get(index);
+            FlightPathBean flight = flights.get(index);
 
             session.setAttribute("flight", flight);
-            String flightDetails = flight.getAirline() + "," + flight.getFlightName() + ","
-                    + flight.getFlightTime();
-            session.setAttribute("flightDetails", flightDetails);
+//            String flightDetails = flight.getAirline() + "," + flight.getFlightName() + ","
+//                    + flight.getFlightTime();
+//            session.setAttribute("flightDetails", flightDetails);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(req, resp);
         } else if (req.getParameter("returnSearch") != null) {

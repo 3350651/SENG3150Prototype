@@ -860,6 +860,8 @@ p.summaryOfSearch{
       align-items: center;
       justify-content: right;
       font-family: Arial;
+      overflow-y: hidden;
+      overflow-x: auto;
   }
 
   div.FlightSearchResult1{

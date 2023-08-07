@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -58,23 +59,41 @@ public class FlightSearchServlet extends HttpServlet {
 
         else if (request.getParameter("searchResults") != null
                 && request.getParameter("searchResults").equalsIgnoreCase("simpleSearchResults")) {
-            SearchBean search = new SearchBean(null, null, null, null, true, 0, 0, 0);
+
+            String departure = request.getParameter("departureLocation");
+            String destination = request.getParameter("arrivalLocation");
+            String time = request.getParameter("departureDate");
+            time += " 00:00:00";
+            Timestamp departureTime = Timestamp.valueOf(time);
+            int adults = Integer.parseInt(request.getParameter("numberOfAdults"));
+            int children = Integer.parseInt(request.getParameter("numberOfChildren"));
+            if (adults < 0 || children < 0 || (adults == 0 && children == 0)) {
+                throw new IOException("Invalid input: Invalid combination of adult and children passengers.");
+            }
+            if (destination == null) {
+                throw new IOException("Invalid input: Select a destination.");
+            }
+            if (departure == null) {
+                throw new IOException("Invalid input: Select a departure location.");
+            }
+
+            SearchBean search = new SearchBean(departureTime, destination, departure, null, true, 0, adults, children);
+            search.searchFlights();
             session.setAttribute("flightResults", search);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/simpleSearchResults.jsp");
             requestDispatcher.forward(request, response);
         }
 
         else if (request.getParameter("viewFlight") != null) {
-            String airline = request.getParameter("airline");
-            String flightname = request.getParameter("flightName");
-            Timestamp flightTime = Timestamp.valueOf(request.getParameter("flightTime"));
+            LinkedList<FlightPathBean> flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResults");
 
-            FlightBean flight = FlightBean.getFlight(airline, flightname, flightTime);
+            FlightPathBean flight = flights.get(Integer.parseInt(request.getParameter("flightIndex")));
 
             session.setAttribute("flight", flight);
+            /* TODO: No longer valid
             String flightDetails = flight.getAirline() + "," + flight.getFlightName() + ","
                     + flight.getFlightTime();
-            session.setAttribute("flightDetails", flightDetails);
+            session.setAttribute("flightDetails", flightDetails);*/
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(request, response);
