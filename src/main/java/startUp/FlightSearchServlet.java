@@ -70,7 +70,6 @@ public class FlightSearchServlet extends HttpServlet {
             Timestamp flightTime = Timestamp.valueOf(request.getParameter("flightTime"));
 
             FlightBean flight = FlightBean.getFlight(airline, flightname, flightTime);
-
             session.setAttribute("flight", flight);
             String flightDetails = flight.getAirline() + "," + flight.getFlightName() + ","
                     + flight.getFlightTime();
