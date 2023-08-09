@@ -42,7 +42,6 @@ public class GroupBean implements Serializable {
         this.questionnaireCompleted = "";
         this.tagSet = new LinkedList<>();
 
-
         addGroupToDB();
     }
 
@@ -330,7 +329,7 @@ public class GroupBean implements Serializable {
     }
 
 
-    public static void addToTagSet(String groupID, String tagName) {
+    public static void addToTagSet(String groupID, String tagName) throws SQLException {
         String tagID = "-1"; // initialize tagID to an invalid value
         Connection connection = null;
         PreparedStatement statement = null;
@@ -382,6 +381,9 @@ public class GroupBean implements Serializable {
                         e.printStackTrace();
                     }
                 }
+                connection.close();
+                resultSet2.close();
+                resultSet2.close();
             }
             catch (SQLException e) {
                 e.printStackTrace();

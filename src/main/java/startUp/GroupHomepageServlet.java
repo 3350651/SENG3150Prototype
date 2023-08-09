@@ -50,8 +50,8 @@ public class GroupHomepageServlet extends HttpServlet {
             session.setAttribute("group", group);
             Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
             session.setAttribute("isAdmin", isAdmin);
-           boolean poolFinished = group.isPoolComplete(group.getPoolID());
-           session.setAttribute("poolFinished", poolFinished);
+            boolean poolFinished = group.isPoolComplete(group.getPoolID());
+            session.setAttribute("poolFinished", poolFinished);
 
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
             requestDispatcher.forward(request, response);

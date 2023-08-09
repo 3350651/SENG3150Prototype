@@ -32,6 +32,7 @@ public class Homepage extends HttpServlet {
 			// Get groups that the user is in.
 			LinkedList<String> groupIDs = user.getGroupIDs(user.getUserID());
 			LinkedList<GroupBean> groups = getGroups(groupIDs);
+			session.setAttribute("groups", groups);
 			// sends the user to the correct homepage depending on their role
 
 			// sends the user to the correct homepage depending on their role
