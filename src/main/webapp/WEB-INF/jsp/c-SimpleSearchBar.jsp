@@ -2,7 +2,7 @@
     <%@ page import="startUp.DestinationBean" %>
         <div class="simpleSearch">
             <%DestinationOptionsBean DestinationOps=(DestinationOptionsBean) session.getAttribute("destinationCodes");%>
-                <form method="POST" action="flightSearch" class="simpleSearchForm">
+                <form method="POST" action="flightSearch" class="simpleSearchForm" name="simpleSearchForm" onSubmit="return validateSearchForm()">
 
                     <div class="departureLocation"><label for="departureLocation">Leaving
                             From</label><br>
@@ -35,10 +35,10 @@
                         </div>
                     </div>
                     <div class="numberOfAdults"><label for="numberOfAdults"># Adults</label><br>
-                        <input type="number" id="numberOfAdults" size="2" name="numberOfAdults">
+                        <input type="number" id="numberOfAdults" size="2" name="numberOfAdults" value="0">
                     </div>
                     <div class="numberOfChildren"><label for="numberOfChildren"># Children</label><br>
-                        <input type="number" id="numberOfChildren" size="2" name="numberOfChildren">
+                        <input type="number" id="numberOfChildren" size="2" name="numberOfChildren" value="0">
                     </div>
                     <div style="clear:both;">&nbsp;</div>
                     <div style="clear:both;">&nbsp;</div>
