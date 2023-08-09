@@ -9,6 +9,7 @@ GroupBean group = (GroupBean) session.getAttribute("group");
 PoolBean pool = (PoolBean) session.getAttribute("pool");
 boolean hasDeposited = (boolean) session.getAttribute("hasDeposited");
 boolean lockedIn = (boolean) session.getAttribute("lockedIn");
+boolean poolFinished = (boolean) session.getAttribute("poolFinished");
 %>
 
 
@@ -35,7 +36,11 @@ boolean lockedIn = (boolean) session.getAttribute("lockedIn");
             </div>
         </header>
 
-        <% if(lockedIn) { %>
+        <% if(poolFinished) { %>
+            <div class="moneyPool">
+               <p>The Money Pool has been complete!</p>
+            </div>
+        <%} else if(lockedIn) { %>
         <div class="moneyPool">
             <div>
                 <p style="font-size: 20px;"><br style="line-height: 0px;">Total Amount of Pool:<br style="line-height: 0px;"><b> <%= pool.getTotalAmount()  %></b></p>

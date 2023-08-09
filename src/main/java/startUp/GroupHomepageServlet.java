@@ -45,8 +45,8 @@ public class GroupHomepageServlet extends HttpServlet {
         }
 
        if (request.getParameter("goGroup") != null) {
-            String groupName = request.getParameter("groupName");
-            GroupBean group = getGroup(groupName);
+            String groupID = request.getParameter("groupID");
+            GroupBean group = getGroup(groupID);
             session.setAttribute("group", group);
             Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
             session.setAttribute("isAdmin", isAdmin);
@@ -81,8 +81,8 @@ public class GroupHomepageServlet extends HttpServlet {
 
         if(request.getParameter("addToGroupFaveList") != null){
 
-            String groupName = request.getParameter("groupName");
-            group = getGroup(groupName);
+            String groupID = request.getParameter("groupID");
+            group = getGroup(groupID);
             String flightDetails = (String) session.getAttribute("flightDetails");
             String[] details = flightDetails.split(",", 0);
 
@@ -114,17 +114,17 @@ public class GroupHomepageServlet extends HttpServlet {
             requestDispatcher.forward(request, response);
         }
 
-        if(request.getParameter("cancel") != null && request.getParameter("toPool") != null){
+        else if(request.getParameter("cancel") != null && request.getParameter("toPool") != null){
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Pool.jsp");
             requestDispatcher.forward(request, response);
         }
 
-        if(request.getParameter("cancel") != null){
+        else if(request.getParameter("cancel") != null){
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
             requestDispatcher.forward(request, response);
         }
         //The admin wants to remove a flight from the fave list.
-        if(request.getParameter("getGroupFaveList") != null && request.getParameter("removeFlight") != null){
+        else if(request.getParameter("getGroupFaveList") != null && request.getParameter("removeFlight") != null){
             String faveFlightID = request.getParameter("faveFlightID");
             deleteGroupFaveFlight(group.getGroupID(), faveFlightID);
 
@@ -390,7 +390,7 @@ public class GroupHomepageServlet extends HttpServlet {
         }
 
         //Admin has requested to make a booking.
-        if(request.getParameter("makeBooking") != null){
+        else if(request.getParameter("makeBooking") != null){
             //Need number of members to automatically fill the booking info.
             //Will also have the flight path.
         }

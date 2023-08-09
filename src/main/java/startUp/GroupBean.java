@@ -118,14 +118,14 @@ public class GroupBean implements Serializable {
         return this.groupName;
     }
 
-    public static GroupBean getGroup(String name) {
-        String query = "SELECT * FROM GROUPS WHERE [groupName] = ?";
+    public static GroupBean getGroup(String groupID) {
+        String query = "SELECT * FROM GROUPS WHERE [groupID] = ?";
         String id = "", groupName = "", poolID = "";
         try {
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
 
-            statement.setString(1, name);
+            statement.setString(1, groupID);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {

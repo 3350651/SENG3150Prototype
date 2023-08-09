@@ -355,7 +355,8 @@ public class GroupFaveFlightBean implements Serializable {
         for(int i = 0; i < size; i++){
             GroupFaveFlightBean flight = faveFlights.removeFirst();
             double flightScore = getFaveFlightScore(flight.getGroupID(), flight.getGroupFaveFlightID());
-            flight.setScore(flightScore);
+            int members = getNumberOfMembers(groupID);
+            flight.setScore(flightScore/members);
             sortedFlights.addLast(flight);
         }
 
