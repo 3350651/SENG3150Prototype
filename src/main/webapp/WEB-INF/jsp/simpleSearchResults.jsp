@@ -13,7 +13,7 @@
 <%@ page import="startUp.UserBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <% UserBean user=(UserBean) session.getAttribute("userBean");%>
-
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -25,8 +25,6 @@
     <%request.setAttribute("simple", true);%>
 <jsp:include page='c-Sidebar-Homepage.jsp'></jsp:include>
 <jsp:include page='c-AccountAccess.jsp'></jsp:include>
-<% SearchBean search = (SearchBean) session.getAttribute("flightResults");
-    LinkedList<FlightBean> searchResults = search.getResults();%>
 <br>
 <br>
 <div class="centeringtext"> <h1>Search Results</h1> </div>

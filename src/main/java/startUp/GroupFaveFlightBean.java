@@ -265,7 +265,6 @@ public class GroupFaveFlightBean implements Serializable {
                 DestinationBean rDestination = new DestinationBean(destinationCode);
 
                 flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
-                        rStopOver,
                         rDestination);
             }
 
