@@ -16,6 +16,7 @@
                     int memberVote = (int) session.getAttribute("memberVote");
                     boolean lockedIn = (boolean) session.getAttribute("lockedIn");
                     boolean poolFinished = (boolean) session.getAttribute("poolFinished");
+                    boolean isAdmin = (boolean) session.getAttribute("isAdmin");
                     %>
 
                         <head>
@@ -108,9 +109,13 @@
                                 <table>
                                     <td class="filledSection">
                                         <% if(poolFinished) { %>
-                                            <form method="POST" action="GroupHomepage">
-                                                 <button class="groupButton"  type="submit" name="makeBooking" value="true">Make Booking</button>
-                                            </form>
+                                            <% if(isAdmin) { %>
+                                                <form method="POST" action="GroupHomepage">
+                                                     <button class="groupButton"  type="submit" name="makeBooking" value="true">Make Booking</button>
+                                                </form>
+                                            <% } else { %>
+                                                Booking will be made by Admin.
+                                            <% } %>
                                         <% } else if(lockedIn) { %>
                                             <p>Please finish group Money Pool to book trip!</p>
                                         <%

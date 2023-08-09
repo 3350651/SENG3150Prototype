@@ -13,6 +13,7 @@ boolean depositMade = (boolean) session.getAttribute("depositMade");
 if(!depositMade){
     depositMade = false;
 }
+boolean lockedIn = (boolean) session.getAttribute("lockedIn");
 %>
 
 <head>
@@ -39,6 +40,7 @@ if(!depositMade){
         </header>
 
         <div class="manageGroupContent">
+        <% if(!lockedIn) { %>
         <div>
            <form name="addMember" action="ManageGroup" method="POST">
                   <button class="groupButton"type="submit" name="addMember" value="addMember">Add Member</button>
@@ -49,7 +51,7 @@ if(!depositMade){
                  <button class="groupButton" type="submit" name="removeMember" value="removeMember">Remove Member</button>
            </form>
         </div>
-        <%if(!depositMade) {%>
+        <% }if(!depositMade) {%>
             <div>
                <form name="deleteGroup" action="ManageGroup" method="POST">
                      <button class="groupButton" type="submit" name="deleteGroup" value="deleteGroup">Delete Group</button>

@@ -38,6 +38,20 @@ public class ManageGroupServlet extends HttpServlet {
         boolean depositMade = poolDeposits(group.getPoolID());
         session.setAttribute("depositMade", depositMade);
 
+        LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(group.getGroupID());
+        int size = faveFlights.size();
+        boolean lockedIn = false;
+        if(faveFlights.size() != 0) {
+            for (int i = 0; i < size; i++) {
+                GroupFaveFlightBean temp = faveFlights.removeFirst();
+                if (lockedIn(group.getGroupID(), temp.getScore())) {
+                    lockedIn = true;
+                }
+            }
+        }
+        //Determine whether a flight has been locked in by all members.
+        session.setAttribute("lockedIn", lockedIn);
+
         // send the user to an unauthorised page if they try to access the homepage without being logged in.
 
         requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
@@ -163,7 +177,6 @@ public class ManageGroupServlet extends HttpServlet {
 
                 deleteGroup(group.getGroupID());
                 deletePool(group.getPoolID());
-
 
                 /*
                 TagBean

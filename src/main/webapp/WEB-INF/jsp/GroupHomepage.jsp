@@ -34,9 +34,9 @@ Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
 
                 <%
                 if(isAdmin){ %>
-                <form name="manageGroup" action="ManageGroup" method="GET">
-                   <button class="groupButton" type="submit" name="manageGroup" value="manageGroup">Manage Group</button>
-                </form>
+                    <form name="manageGroup" action="ManageGroup" method="GET">
+                       <button class="groupButton" type="submit" name="manageGroup" value="manageGroup">Manage Group</button>
+                    </form>
                 <%}%>
 
                 <div class = "GroupActions">
