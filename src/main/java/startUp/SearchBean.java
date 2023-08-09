@@ -166,7 +166,7 @@ public class SearchBean implements Serializable {
             //get all flights leaving within 24 hours of departure
             //add previous flight to each
             //add all to queue
-            flightList.addAll(getAllFlightsFrom(departure, departureDate, flight));
+            flightList.addAll(getAllFlightsFrom(departure, departureDate, flight, (this.adultPassengers + this.childPassengers)));
 
             //if queue empty return list of flight paths
             if (flightList.isEmpty()) {
@@ -197,7 +197,7 @@ public class SearchBean implements Serializable {
         results = flightPaths;
     }
 
-    public Queue<FlightBean> getAllFlightsFrom(String source, Timestamp time, FlightBean previous) {
+    public Queue<FlightBean> getAllFlightsFrom(String source, Timestamp time, FlightBean previous, int passengers) {
         Queue<FlightBean> flights = new LinkedList<>();
         Timestamp endtime = Timestamp.from(time.toInstant().plus(24, ChronoUnit.HOURS));
         String loopingDestinations = null;
@@ -213,7 +213,9 @@ public class SearchBean implements Serializable {
                     "F.DepartureTime, " +
                     "F.ArrivalTime, " +
                     "F.PlaneCode, " +
-                    "A.AirlineName " +
+                    "A.AirlineName, " +
+                    "0 AS leg, " +
+                    "F.DepartureTime AS originalDepartureTime " +
                     "FROM Flights F " +
                     "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
                     "WHERE StopOverCode IS NULL AND F.DepartureTime <= ? AND F.DepartureTime >= ? AND F.DepartureCode = ? " +
@@ -226,7 +228,9 @@ public class SearchBean implements Serializable {
                     "F.DepartureTime, " +
                     "F.ArrivalTimeStopOver AS ArrivalTime, " +
                     "F.PlaneCode, " +
-                    "A.AirlineName " +
+                    "A.AirlineName, " +
+                    "1 AS leg, " +
+                    "F.DepartureTime AS originalDepartureTime " +
                     "FROM Flights F " +
                     "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
                     "WHERE StopOverCode IS NOT NULL AND F.DepartureTime <= ? AND F.DepartureTime >= ? AND F.DepartureCode = ? " +
@@ -239,7 +243,9 @@ public class SearchBean implements Serializable {
                     "F.DepartureTimeStopOver AS DepartureTime, " +
                     "F.ArrivalTime, " +
                     "F.PlaneCode, " +
-                    "A.AirlineName " +
+                    "A.AirlineName, " +
+                    "2 AS leg, " +
+                    "F.DepartureTime AS originalDepartureTime " +
                     "FROM Flights F " +
                     "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
                     "WHERE StopOverCode IS NOT NULL AND F.DepartureTimeStopOver <= ? AND F.DepartureTimeStopOver >= ? AND F.StopOverCode = ? ";
@@ -253,7 +259,9 @@ public class SearchBean implements Serializable {
                         "F.DepartureTime, " +
                         "F.ArrivalTime, " +
                         "F.PlaneCode, " +
-                        "A.AirlineName " +
+                        "A.AirlineName, " +
+                        "0 AS leg, " +
+                        "F.DepartureTime AS originalDepartureTime " +
                         "FROM Flights F " +
                         "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
                         "WHERE StopOverCode IS NULL AND F.DepartureTime <= ? AND F.DepartureTime >= ? AND F.DepartureCode = ? AND F.DestinationCode NOT IN (" + loopingDestinations + ") " +
@@ -266,7 +274,9 @@ public class SearchBean implements Serializable {
                         "F.DepartureTime, " +
                         "F.ArrivalTimeStopOver AS ArrivalTime, " +
                         "F.PlaneCode, " +
-                        "A.AirlineName " +
+                        "A.AirlineName, " +
+                        "1 AS leg, " +
+                        "F.DepartureTime AS originalDepartureTime " +
                         "FROM Flights F " +
                         "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
                         "WHERE StopOverCode IS NOT NULL AND F.DepartureTime <= ? AND F.DepartureTime >= ? AND F.DepartureCode = ? AND F.StopOverCode NOT IN (" + loopingDestinations + ") " +
@@ -279,7 +289,9 @@ public class SearchBean implements Serializable {
                         "F.DepartureTimeStopOver AS DepartureTime, " +
                         "F.ArrivalTime, " +
                         "F.PlaneCode, " +
-                        "A.AirlineName " +
+                        "A.AirlineName, " +
+                        "2 AS leg, " +
+                        "F.DepartureTime AS originalDepartureTime " +
                         "FROM Flights F " +
                         "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
                         "WHERE StopOverCode IS NOT NULL AND F.DepartureTimeStopOver <= ? AND F.DepartureTimeStopOver >= ? AND F.StopOverCode = ? AND F.DestinationCode NOT IN (" + loopingDestinations + ") ";
@@ -312,12 +324,18 @@ public class SearchBean implements Serializable {
                 Timestamp arrivalTime = result.getTimestamp(6);
                 String plane = result.getString(7);
                 String airlineName = result.getString(8);
+                int leg = result.getInt(9);
+                Timestamp originalDepartTime = result.getTimestamp(10);
 
                 DestinationBean rDeparture = new DestinationBean(departureCode);
                 DestinationBean rDestination = new DestinationBean(destinationCode);
-
-                flights.add(new FlightBean(aCode, airlineName, departTime, arrivalTime, flightCode, plane, /* mCost, */ rDeparture,
-                        rDestination, previous));
+                FlightBean temp = new FlightBean(aCode, airlineName, departTime, arrivalTime, flightCode, plane, /* mCost, */ rDeparture,
+                        rDestination, previous, leg, originalDepartTime);
+                temp.getAvailabilities(passengers);
+                if (temp.getSeatAvailability().size() == 0) {
+                    continue;
+                }
+                flights.add(temp);
             }
 
             statement.close();

@@ -17,21 +17,21 @@ public class FlightBean implements Serializable {
     private String airlineName;
     private Timestamp flightDepartureTime;
     private Timestamp flightArrivalTime;
+    private Timestamp originalFlightDepartureTime;
     private String flightName;
     private String planeType;
     private float minCost;
     private DestinationBean departure;
-    private DestinationBean stopOver;
     private DestinationBean destination;
     private LinkedList<AvailabilityBean> seatAvailability;
     private FlightBean previousFlight;
+    private int leg;
 
     // constructor
 
     public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightTime, String newflightName,
                       String newPlaneType,
-            /* float newMinCost, */ DestinationBean newDeparture, DestinationBean newStopOver,
-                      DestinationBean newDestination) {
+            /* float newMinCost, */ DestinationBean newDeparture, DestinationBean newDestination) {
         airline = newAirline;
         airlineName = newAirlineName;
         flightDepartureTime = newFlightTime;
@@ -39,7 +39,6 @@ public class FlightBean implements Serializable {
         planeType = newPlaneType;
         /* minCost = newMinCost; */
         departure = newDeparture;
-        stopOver = newStopOver;
         destination = newDestination;
         seatAvailability = new LinkedList<>();
     }
@@ -49,7 +48,7 @@ public class FlightBean implements Serializable {
      */
     public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightDepartureTime, Timestamp newFlightArrivalTime, String newflightName,
                       String newPlaneType, /* float newMinCost, */ DestinationBean newDeparture,
-                      DestinationBean newDestination, FlightBean newPreviousFlight) {
+                      DestinationBean newDestination, FlightBean newPreviousFlight, int newLeg, Timestamp newOriginalFlightTime) {
         airline = newAirline;
         airlineName = newAirlineName;
         flightDepartureTime = newFlightDepartureTime;
@@ -58,17 +57,17 @@ public class FlightBean implements Serializable {
         planeType = newPlaneType;
         /* minCost = newMinCost; */
         departure = newDeparture;
-        stopOver = null;
         destination = newDestination;
         seatAvailability = new LinkedList<>();
         previousFlight = newPreviousFlight;
+        leg = newLeg;
+        originalFlightDepartureTime = newOriginalFlightTime;
     }
 
-    public FlightBean(String aline, String fname, DestinationBean dep, DestinationBean sover, DestinationBean arr, Timestamp ftime) {
+    public FlightBean(String aline, String fname, DestinationBean dep, DestinationBean arr, Timestamp ftime) {
         airline = aline;
         flightName = fname;
         departure = dep;
-        stopOver = sover;
         destination = arr;
         flightDepartureTime = ftime;
     }
@@ -83,16 +82,7 @@ public class FlightBean implements Serializable {
         this.planeType = infoToImport.getPlaneType();
         this.destination = infoToImport.getDestination();
         this.departure = infoToImport.getDeparture();
-        this.stopOver = infoToImport.getStopOver();
     }
-
-//    public FlightBean(String airline, String flightName, String departureCode, String stopOverCode, Timestamp flightTime){
-//        this.airline = airline;
-//        this.flightName = flightName;
-//        this.departure = new DestinationBean(departureCode);
-//        this.stopOver = new DestinationBean(stopOverCode);
-//        this.flightTime = flightTime;
-//    }
 
     // getters and setters
     public String getAirline() {
@@ -177,14 +167,6 @@ public class FlightBean implements Serializable {
         this.minCost = minCost;
     }
 
-    public DestinationBean getStopOver() {
-        return stopOver;
-    }
-
-    public void setStopOver(DestinationBean stopOver) {
-        this.stopOver = stopOver;
-    }
-
     public LinkedList<AvailabilityBean> getSeatAvailability() {
         return seatAvailability;
     }
@@ -199,6 +181,22 @@ public class FlightBean implements Serializable {
 
     public void setPreviousFlight(FlightBean previousFlight) {
         this.previousFlight = previousFlight;
+    }
+
+    public Timestamp getOriginalFlightDepartureTime() {
+        return originalFlightDepartureTime;
+    }
+
+    public void setOriginalFlightDepartureTime(Timestamp originalFlightDepartureTime) {
+        this.originalFlightDepartureTime = originalFlightDepartureTime;
+    }
+
+    public int getLeg() {
+        return leg;
+    }
+
+    public void setLeg(int leg) {
+        this.leg = leg;
     }
 
     // get flight
@@ -230,17 +228,13 @@ public class FlightBean implements Serializable {
                 String plane = result.getString(10);
                 Timestamp departTime = result.getTimestamp(6);
                 String departureCode = result.getString(3);
-                String stopOverCode = result.getString(4);
                 String destinationCode = result.getString(5);
                 String airlineName = result.getString(13);
 
                 DestinationBean rDeparture = new DestinationBean(departureCode);
-                DestinationBean rStopOver = new DestinationBean(stopOverCode);
                 DestinationBean rDestination = new DestinationBean(destinationCode);
 
-                flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
-                        rStopOver,
-                        rDestination);
+                flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture, rDestination);
             }
 
             statement.close();
@@ -254,8 +248,8 @@ public class FlightBean implements Serializable {
 
     // TODO: get min cost
 
-    public void getAvailabilities() {
-        seatAvailability = AvailabilityBean.getAvailability(this.airline, this.flightName, this.flightDepartureTime);
+    public void getAvailabilities(int passengers) {
+        seatAvailability = AvailabilityBean.getAvailability(this.airline, this.flightName, this.originalFlightDepartureTime, this.leg, passengers);
     }
 
 
