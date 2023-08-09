@@ -187,17 +187,20 @@ public class  FlightBean implements Serializable {
         FlightBean flight = null;
 
         try {
-            String query = "SELECT f.*," +
-                    "a.AirlineName" +
-                    " FROM dbo.Flights f " +
-                    "LEFT JOIN Dbo.Airlines a ON a.AirlineCode = f.AirlineCode" +
-                    " WHERE f.[AirlineCode] = ? AND f.[FlightNumber] = ? AND f.[DepartureTime] = ?";
+            String query = "SELECT f.*, " +
+                    "a.AirlineName, " +
+                    "min(p.Price) AS Price " +
+                    "FROM dbo.Flights f " +
+                    "LEFT JOIN Dbo.Airlines a ON a.AirlineCode = f.AirlineCode "+
+                    "FULL JOIN dbo.Price p ON f.FlightNumber = p.FlightNumber AND f.DepartureTime >= p.StartDate AND f.DepartureTime <= p.EndDate " +
+                    "WHERE f.[FlightNumber] = ? AND f.[DepartureTime] = ? " +
+                    "GROUP BY f.AirlineCode, f.FlightNumber, f.DepartureCode, f.StopOverCode, f.DestinationCode, f.DepartureTime, f.ArrivalTimeStopOver, f.DepartureTimeStopOver, f.ArrivalTime, f.PlaneCode, f.Duration, f.DurationSecondLeg, a.AirlineName";
+
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
 
-            statement.setString(1, airlineCode);
-            statement.setString(2, flightName);
-            statement.setTimestamp(3, flightDepartureTime);
+            statement.setString(1, flightName);
+            statement.setTimestamp(2, flightDepartureTime);
 
             ResultSet result = statement.executeQuery();
 
@@ -212,12 +215,13 @@ public class  FlightBean implements Serializable {
                 String stopOverCode = result.getString(4);
                 String destinationCode = result.getString(5);
                 String airlineName = result.getString(13);
+                float mCost = Float.parseFloat(result.getString("Price")); //14
 
                 DestinationBean rDeparture = new DestinationBean(departureCode);
                 DestinationBean rStopOver = new DestinationBean(stopOverCode);
                 DestinationBean rDestination = new DestinationBean(destinationCode);
 
-                flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
+                flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, mCost, rDeparture,
                         rStopOver,
                         rDestination);
             }
