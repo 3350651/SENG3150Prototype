@@ -160,7 +160,7 @@ public class FlightBean implements Serializable {
     }
 
     public float getMinCost() {
-        return minCost;
+        return seatAvailability.get(0).getPrice();
     }
 
     public void setMinCost(float minCost) {

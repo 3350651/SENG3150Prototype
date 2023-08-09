@@ -63,7 +63,7 @@ public class FlightSearchServlet extends HttpServlet {
             Timestamp departureTime = Timestamp.valueOf(time);
             boolean flexible = Boolean.getBoolean(request.getParameter("flexibleDate"));
             int flexibleDays = 0;
-            if (request.getParameter("flexibleDays") != null) {
+            if (!request.getParameter("flexibleDays").equals("")) {
                 flexibleDays = Integer.parseInt(request.getParameter("flexibleDays"));
             }
             int adults = Integer.parseInt(request.getParameter("numberOfAdults"));

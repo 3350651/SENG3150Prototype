@@ -138,7 +138,8 @@ public class AvailabilityBean {
                             "        LEFT JOIN Price p ON p.AirlineCode = a.AirlineCode AND p.ClassCode = a.ClassCode " +
                             "        AND p.FlightNumber = a.FlightNumber AND p.TicketCode = a.TicketCode AND " +
                             "        (a.DepartureTime >= p.StartDate AND a.DepartureTime <= p.EndDate) " +
-                            "        WHERE a.AirlineCode = ? AND a.FlightNumber = ? AND a.DepartureTime = ? AND NumberAvailableSeatsLeg1 >= ?";
+                            "        WHERE a.AirlineCode = ? AND a.FlightNumber = ? AND a.DepartureTime = ? AND NumberAvailableSeatsLeg1 >= ?" +
+                            "        ORDER BY [p].[Price]";
                     break;
                 case 1:
                     query = "SELECT  [a].[ClassCode], " +
@@ -152,7 +153,8 @@ public class AvailabilityBean {
                             "        LEFT JOIN Price p ON p.AirlineCode = a.AirlineCode AND p.ClassCode = a.ClassCode " +
                             "        AND p.FlightNumber = a.FlightNumber AND p.TicketCode = a.TicketCode AND " +
                             "        (a.DepartureTime >= p.StartDate AND a.DepartureTime <= p.EndDate) " +
-                            "        WHERE a.AirlineCode = ? AND a.FlightNumber = ? AND a.DepartureTime = ? AND NumberAvailableSeatsLeg1 >= ?";
+                            "        WHERE a.AirlineCode = ? AND a.FlightNumber = ? AND a.DepartureTime = ? AND NumberAvailableSeatsLeg1 >= ?" +
+                            "        ORDER BY [p].[PriceLeg1]";
                     break;
                 case 2:
                     query = "SELECT  [a].[ClassCode], " +
@@ -166,28 +168,11 @@ public class AvailabilityBean {
                             "        LEFT JOIN Price p ON p.AirlineCode = a.AirlineCode AND p.ClassCode = a.ClassCode " +
                             "        AND p.FlightNumber = a.FlightNumber AND p.TicketCode = a.TicketCode AND " +
                             "        (a.DepartureTime >= p.StartDate AND a.DepartureTime <= p.EndDate) " +
-                            "        WHERE a.AirlineCode = ? AND a.FlightNumber = ? AND a.DepartureTime = ? AND NumberAvailableSeatsLeg2 >= ?";
+                            "        WHERE a.AirlineCode = ? AND a.FlightNumber = ? AND a.DepartureTime = ? AND NumberAvailableSeatsLeg2 >= ?" +
+                            "        ORDER BY [p].[PriceLeg2]";
                     ;
                     break;
-                default:
-                    query =
-                            "[a].[ClassCode]," +
-                                    "[a].[TicketCode]," +
-                                    "[a].[NumberAvailableSeatsLeg1]," +
-                                    "[c].[Details]," +
-                                    "[t].[Name]," +
-                                    "[p].Price," +
-                                    "[p].[PriceLeg2] FROM Availability a " +
-                                    "LEFT JOIN TicketClass c ON c.ClassCode = a.ClassCode " +
-                                    "LEFT JOIN TicketType t ON t.TicketCode = a.TicketCode " +
-                                    "LEFT JOIN Price p ON p.AirlineCode = a.AirlineCode AND p.ClassCode = a.ClassCode " +
-                                    "AND p.FlightNumber = a.FlightNumber AND p.TicketCode = a.TicketCode AND " +
-                                    "(a.DepartureTime >= p.StartDate AND a.DepartureTime <= p.EndDate) " +
-                                    "WHERE a.AirlineCode = ? AND a.FlightNumber = ? AND a.DepartureTime = ?";
-                    break;
             }
-
-            //TODO: Change this query to grab only the availability for selected leg and number of passengers
 
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
