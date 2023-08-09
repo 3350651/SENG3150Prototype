@@ -1,4 +1,4 @@
-DROP DATABASE flightPub
+DROP DATABASE flightPub;
 go
 
 CREATE DATABASE flightPub;
@@ -22,7 +22,7 @@ FOR LOGIN fb1;
 go
 
 GRANT SELECT, INSERT, UPDATE, DELETE
-TO fb1;
+    TO fb1;
 go
 
 DROP TABLE IF EXISTS CALENDAR;
@@ -84,227 +84,227 @@ go
 
 CREATE TABLE USERS
 (
-	userID			  CHAR(8),
-	first_name			VARCHAR(20),
-	last_name			VARCHAR(20),
-	email				VARCHAR(30),
-	userPassword		VARCHAR(100),
-	phoneNo    			VARCHAR(15),
-	roles         		VARCHAR(20),
-	address				VARCHAR(50),
-	defaultSearch		VARCHAR(10),
-	defaultCurrency		VARCHAR(5),
-	defaultTimeZone		VARCHAR(5),
-	themePreference		VARCHAR(10),
-	questionnaireCompleted	VARCHAR(8),
-	dateOfBirth			DATE,
+    userID			  CHAR(8),
+    first_name			VARCHAR(20),
+    last_name			VARCHAR(20),
+    email				VARCHAR(30),
+    userPassword		VARCHAR(100),
+    phoneNo    			VARCHAR(15),
+    roles         		VARCHAR(20),
+    address				VARCHAR(50),
+    defaultSearch		VARCHAR(10),
+    defaultCurrency		VARCHAR(5),
+    defaultTimeZone		VARCHAR(5),
+    themePreference		VARCHAR(10),
+    questionnaireCompleted	VARCHAR(8),
+    dateOfBirth			DATE,
 
-	PRIMARY KEY (userID),
+    PRIMARY KEY (userID),
 )
-go
+    go
 
 CREATE TABLE Country
 (
-  countryCode2 CHAR(2) NOT NULL,
-  countryCode3 CHAR(3) NOT NULL,
-  countryName VARCHAR(80) NOT NULL DEFAULT '',
-  alternateName1 VARCHAR(80) NOT NULL DEFAULT '',
-  alternateName2 VARCHAR(80) NOT NULL DEFAULT '',
-  motherCountryCode3 CHAR(3) NOT NULL DEFAULT '',
-  motherCountryComment VARCHAR(80) NOT NULL DEFAULT '',
-  PRIMARY KEY (countryCode3)
+    countryCode2 CHAR(2) NOT NULL,
+    countryCode3 CHAR(3) NOT NULL,
+    countryName VARCHAR(80) NOT NULL DEFAULT '',
+    alternateName1 VARCHAR(80) NOT NULL DEFAULT '',
+    alternateName2 VARCHAR(80) NOT NULL DEFAULT '',
+    motherCountryCode3 CHAR(3) NOT NULL DEFAULT '',
+    motherCountryComment VARCHAR(80) NOT NULL DEFAULT '',
+    PRIMARY KEY (countryCode3)
 )
-go
+    go
 
 CREATE TABLE Airlines (
-  AirlineCode CHAR(2) NOT NULL,
-  AirlineName VARCHAR(30) NOT NULL,
-  CountryCode3 CHAR(3) NOT NULL,
-  PRIMARY KEY (AirlineCode),
-  CONSTRAINT AirlinesCountryCode3_FK FOREIGN KEY (CountryCode3) REFERENCES Country (countryCode3)
-  ON UPDATE CASCADE ON DELETE CASCADE
+                          AirlineCode CHAR(2) NOT NULL,
+                          AirlineName VARCHAR(30) NOT NULL,
+                          CountryCode3 CHAR(3) NOT NULL,
+                          PRIMARY KEY (AirlineCode),
+                          CONSTRAINT AirlinesCountryCode3_FK FOREIGN KEY (CountryCode3) REFERENCES Country (countryCode3)
+                              ON UPDATE CASCADE ON DELETE CASCADE
 )
-go
+    go
 
 CREATE TABLE PlaneType (
-  PlaneCode VARCHAR(20) NOT NULL,
-  Details VARCHAR(50) NOT NULL,
-  NumFirstClass INT NOT NULL,
-  NumBusiness INT NOT NULL,
-  NumPremiumEconomy INT NOT NULL,
-  Economy INT NOT NULL,
-  PRIMARY KEY (PlaneCode)
+                           PlaneCode VARCHAR(20) NOT NULL,
+                           Details VARCHAR(50) NOT NULL,
+                           NumFirstClass INT NOT NULL,
+                           NumBusiness INT NOT NULL,
+                           NumPremiumEconomy INT NOT NULL,
+                           Economy INT NOT NULL,
+                           PRIMARY KEY (PlaneCode)
 )
-go
+    go
 
 CREATE TABLE Destinations (
-  DestinationCode CHAR(3) NOT NULL,
-  Airport VARCHAR(30) NOT NULL,
-  CountryCode3 CHAR(3) NOT NULL,
-  PRIMARY KEY (DestinationCode),
-  CONSTRAINT DestinationCountryCode_FK FOREIGN KEY (CountryCode3) REFERENCES Country (countryCode3)
-  ON UPDATE CASCADE ON DELETE CASCADE
+                              DestinationCode CHAR(3) NOT NULL,
+                              Airport VARCHAR(30) NOT NULL,
+                              CountryCode3 CHAR(3) NOT NULL,
+                              PRIMARY KEY (DestinationCode),
+                              CONSTRAINT DestinationCountryCode_FK FOREIGN KEY (CountryCode3) REFERENCES Country (countryCode3)
+                                  ON UPDATE CASCADE ON DELETE CASCADE
 )
-go
+    go
 
 CREATE TABLE TicketClass (
-  ClassCode CHAR(3) NOT NULL,
-  Details VARCHAR(20) NOT NULL,
-  PRIMARY KEY (ClassCode)
+                             ClassCode CHAR(3) NOT NULL,
+                             Details VARCHAR(20) NOT NULL,
+                             PRIMARY KEY (ClassCode)
 )
-go
+    go
 
 CREATE TABLE TicketType (
-  TicketCode CHAR(1) NOT NULL,
-  Name VARCHAR(50) NOT NULL,
-  Transferrable BIT NOT NULL,
-  Refundable BIT NOT NULL,
-  Exchangeable BIT NOT NULL,
-  FrequentFlyerPoINTs BIT NOT NULL,
-  PRIMARY KEY (TicketCode)
+                            TicketCode CHAR(1) NOT NULL,
+                            Name VARCHAR(50) NOT NULL,
+                            Transferrable BIT NOT NULL,
+                            Refundable BIT NOT NULL,
+                            Exchangeable BIT NOT NULL,
+                            FrequentFlyerPoINTs BIT NOT NULL,
+                            PRIMARY KEY (TicketCode)
 )
-go
+    go
 
 CREATE TABLE Availability (
-  AirlineCode CHAR(2) NOT NULL,
-  FlightNumber VARCHAR(6) NOT NULL,
-  DepartureTime DATETIME NOT NULL,
-  ClassCode CHAR(3) NOT NULL,
-  TicketCode CHAR(1) NOT NULL,
-  NumberAvailableSeatsLeg1 INT NOT NULL,
-  NumberAvailableSeatsLeg2 INT DEFAULT NULL,
-  PRIMARY KEY (AirlineCode,FlightNumber,DepartureTime,ClassCode,TicketCode),
-  CONSTRAINT AvailabilityTicketCode_FK FOREIGN KEY (TicketCode) REFERENCES TicketType (TicketCode)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT AvailabilityAirlineCode_FK FOREIGN KEY (AirlineCode) REFERENCES Airlines (AirlineCode)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT AvailabilityClassCode_FK FOREIGN KEY (ClassCode) REFERENCES TicketClass (ClassCode)
-  ON UPDATE CASCADE ON DELETE CASCADE
+                              AirlineCode CHAR(2) NOT NULL,
+                              FlightNumber VARCHAR(6) NOT NULL,
+                              DepartureTime DATETIME NOT NULL,
+                              ClassCode CHAR(3) NOT NULL,
+                              TicketCode CHAR(1) NOT NULL,
+                              NumberAvailableSeatsLeg1 INT NOT NULL,
+                              NumberAvailableSeatsLeg2 INT DEFAULT NULL,
+                              PRIMARY KEY (AirlineCode,FlightNumber,DepartureTime,ClassCode,TicketCode),
+                              CONSTRAINT AvailabilityTicketCode_FK FOREIGN KEY (TicketCode) REFERENCES TicketType (TicketCode)
+                                  ON UPDATE CASCADE ON DELETE CASCADE,
+                              CONSTRAINT AvailabilityAirlineCode_FK FOREIGN KEY (AirlineCode) REFERENCES Airlines (AirlineCode)
+                                  ON UPDATE CASCADE ON DELETE CASCADE,
+                              CONSTRAINT AvailabilityClassCode_FK FOREIGN KEY (ClassCode) REFERENCES TicketClass (ClassCode)
+                                  ON UPDATE CASCADE ON DELETE CASCADE
 )
-go
+    go
 
 CREATE TABLE Distances (
-  DestinationCode1 CHAR(3) NOT NULL,
-  DestinationCode2 CHAR(3) NOT NULL,
-  DistancesInKms INT NOT NULL,
-  PRIMARY KEY (DestinationCode1,DestinationCode2),
-  CONSTRAINT DestinationCode2_FK FOREIGN KEY (DestinationCode2) REFERENCES Destinations (DestinationCode)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT DestinationCode1_FK FOREIGN KEY (DestinationCode1) REFERENCES Destinations (DestinationCode)
+                           DestinationCode1 CHAR(3) NOT NULL,
+                           DestinationCode2 CHAR(3) NOT NULL,
+                           DistancesInKms INT NOT NULL,
+                           PRIMARY KEY (DestinationCode1,DestinationCode2),
+                           CONSTRAINT DestinationCode2_FK FOREIGN KEY (DestinationCode2) REFERENCES Destinations (DestinationCode)
+                               ON UPDATE CASCADE ON DELETE CASCADE,
+                           CONSTRAINT DestinationCode1_FK FOREIGN KEY (DestinationCode1) REFERENCES Destinations (DestinationCode)
 )
-go
+    go
 
 CREATE TABLE Price (
-  AirlineCode CHAR(2) NOT NULL,
-  FlightNumber VARCHAR(6) NOT NULL,
-  ClassCode CHAR(3) NOT NULL,
-  TicketCode CHAR(1) NOT NULL,
-  StartDate DATETIME NOT NULL,
-  EndDate DATETIME NOT NULL,
-  Price DECIMAL(10,2) NOT NULL,
-  PriceLeg1 DECIMAL(10,2) DEFAULT NULL,
-  PriceLeg2 DECIMAL(10,2) DEFAULT NULL,
-  PRIMARY KEY (AirlineCode,FlightNumber,ClassCode,TicketCode,StartDate),
-  CONSTRAINT PriceAirlineCode_FK FOREIGN KEY (AirlineCode) REFERENCES Airlines (AirlineCode)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT PriceClassCode_FK FOREIGN KEY (ClassCode) REFERENCES TicketClass (ClassCode)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT PriceTicketCode_FK FOREIGN KEY (TicketCode) REFERENCES TicketType (TicketCode)
-  ON UPDATE CASCADE ON DELETE CASCADE
+                       AirlineCode CHAR(2) NOT NULL,
+                       FlightNumber VARCHAR(6) NOT NULL,
+                       ClassCode CHAR(3) NOT NULL,
+                       TicketCode CHAR(1) NOT NULL,
+                       StartDate DATETIME NOT NULL,
+                       EndDate DATETIME NOT NULL,
+                       Price DECIMAL(10,2) NOT NULL,
+                       PriceLeg1 DECIMAL(10,2) DEFAULT NULL,
+                       PriceLeg2 DECIMAL(10,2) DEFAULT NULL,
+                       PRIMARY KEY (AirlineCode,FlightNumber,ClassCode,TicketCode,StartDate),
+                       CONSTRAINT PriceAirlineCode_FK FOREIGN KEY (AirlineCode) REFERENCES Airlines (AirlineCode)
+                           ON UPDATE CASCADE ON DELETE CASCADE,
+                       CONSTRAINT PriceClassCode_FK FOREIGN KEY (ClassCode) REFERENCES TicketClass (ClassCode)
+                           ON UPDATE CASCADE ON DELETE CASCADE,
+                       CONSTRAINT PriceTicketCode_FK FOREIGN KEY (TicketCode) REFERENCES TicketType (TicketCode)
+                           ON UPDATE CASCADE ON DELETE CASCADE
 )
-go
+    go
 
 CREATE TABLE Flights (
-  AirlineCode CHAR(2) NOT NULL,
-  FlightNumber VARCHAR(6) NOT NULL,
-  DepartureCode CHAR(3) NOT NULL,
-  StopOverCode CHAR(3) DEFAULT NULL,
-  DestinationCode CHAR(3) NOT NULL,
-  DepartureTime DATETIME NOT NULL,
-  ArrivalTimeStopOver DATETIME DEFAULT NULL,
-  DepartureTimeStopOver DATETIME DEFAULT NULL,
-  ArrivalTime DATETIME NOT NULL,
-  PlaneCode VARCHAR(20) NOT NULL,
-  Duration INT NOT NULL,
-  DurationSecondLeg INT DEFAULT NULL,
-  PRIMARY KEY (AirlineCode,FlightNumber,DepartureTime),
-  CONSTRAINT FlightsPlaneCode_FK FOREIGN KEY (PlaneCode) REFERENCES PlaneType (PlaneCode)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT FlightsAirlineCode_FK FOREIGN KEY (AirlineCode) REFERENCES Airlines (AirlineCode)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT FlightsDepartureCode_FK FOREIGN KEY (DepartureCode) REFERENCES Destinations (DestinationCode),
-  CONSTRAINT FlightsDestinationCode_FK FOREIGN KEY (DestinationCode) REFERENCES Destinations (DestinationCode),
-  CONSTRAINT FlightsStopOverCode_FK FOREIGN KEY (StopOverCode) REFERENCES Destinations (DestinationCode)
+                         AirlineCode CHAR(2) NOT NULL,
+                         FlightNumber VARCHAR(6) NOT NULL,
+                         DepartureCode CHAR(3) NOT NULL,
+                         StopOverCode CHAR(3) DEFAULT NULL,
+                         DestinationCode CHAR(3) NOT NULL,
+                         DepartureTime DATETIME NOT NULL,
+                         ArrivalTimeStopOver DATETIME DEFAULT NULL,
+                         DepartureTimeStopOver DATETIME DEFAULT NULL,
+                         ArrivalTime DATETIME NOT NULL,
+                         PlaneCode VARCHAR(20) NOT NULL,
+                         Duration INT NOT NULL,
+                         DurationSecondLeg INT DEFAULT NULL,
+                         PRIMARY KEY (AirlineCode,FlightNumber,DepartureTime),
+                         CONSTRAINT FlightsPlaneCode_FK FOREIGN KEY (PlaneCode) REFERENCES PlaneType (PlaneCode)
+                             ON UPDATE CASCADE ON DELETE CASCADE,
+                         CONSTRAINT FlightsAirlineCode_FK FOREIGN KEY (AirlineCode) REFERENCES Airlines (AirlineCode)
+                             ON UPDATE CASCADE ON DELETE CASCADE,
+                         CONSTRAINT FlightsDepartureCode_FK FOREIGN KEY (DepartureCode) REFERENCES Destinations (DestinationCode),
+                         CONSTRAINT FlightsDestinationCode_FK FOREIGN KEY (DestinationCode) REFERENCES Destinations (DestinationCode),
+                         CONSTRAINT FlightsStopOverCode_FK FOREIGN KEY (StopOverCode) REFERENCES Destinations (DestinationCode)
 )
-go
+    go
 
 CREATE TABLE USERBOOKMARKEDFLIGHTS(
-  bookedmarkedFlightID CHAR(8) PRIMARY KEY,
-  userID CHAR(8) NOT NULL,
-  AirlineCode CHAR(2) NOT NULL,
-  FlightNumber VARCHAR(6) NOT NULL,
-  DepartureTime DATETIME NOT NULL,
-  FOREIGN KEY (userID) REFERENCES USERS(userID),
-  FOREIGN KEY (AirlineCode, FlightNumber, DepartureTime) REFERENCES Flights(AirlineCode, FlightNumber, DepartureTime)
-  ON UPDATE CASCADE ON DELETE CASCADE
+                                      bookedmarkedFlightID CHAR(8) PRIMARY KEY,
+                                      userID CHAR(8) NOT NULL,
+                                      AirlineCode CHAR(2) NOT NULL,
+                                      FlightNumber VARCHAR(6) NOT NULL,
+                                      DepartureTime DATETIME NOT NULL,
+                                      FOREIGN KEY (userID) REFERENCES USERS(userID),
+                                      FOREIGN KEY (AirlineCode, FlightNumber, DepartureTime) REFERENCES Flights(AirlineCode, FlightNumber, DepartureTime)
+                                          ON UPDATE CASCADE ON DELETE CASCADE
 )
-go
+    go
 
 CREATE TABLE CHAT
 (
-	chatID		CHAR(8) PRIMARY KEY,
+    chatID		CHAR(8) PRIMARY KEY,
 )
-go
+    go
 
 CREATE TABLE MESSAGE
 (
-	messageID CHAR(8) PRIMARY KEY,
-	chatID CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-	message VARCHAR(MAX),
+    messageID CHAR(8) PRIMARY KEY,
+    chatID CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    message VARCHAR(MAX),
 	messageTime VARCHAR(20),
 	userID CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
   ON UPDATE CASCADE ON DELETE CASCADE,
 )
-go
+    go
 
 CREATE TABLE POOL
 (
-	poolID CHAR(8) PRIMARY KEY,
-	totalAmount	FLOAT,
-	amountRemaining FLOAT,
+    poolID CHAR(8) PRIMARY KEY,
+    totalAmount	FLOAT,
+    amountRemaining FLOAT,
 )
-go
+    go
 
 CREATE TABLE POOLDEPOSIT
 (
-	poolDepositID CHAR(8) PRIMARY KEY,
-	poolID CHAR(8) FOREIGN KEY REFERENCES POOL(poolID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-	userID CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-	amount FLOAT,
+    poolDepositID CHAR(8) PRIMARY KEY,
+    poolID CHAR(8) FOREIGN KEY REFERENCES POOL(poolID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    userID CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    amount FLOAT,
 )
-go
+    go
 
 CREATE TABLE GROUPS
 (
-	groupID 	CHAR(8) PRIMARY KEY,
-	groupName		VARCHAR(20),
-	poolID 	CHAR(8) FOREIGN KEY REFERENCES POOL(poolID),
-	questionnaireCompleted	VARCHAR(8),
+    groupID 	CHAR(8) PRIMARY KEY,
+    groupName		VARCHAR(20),
+    poolID 	CHAR(8) FOREIGN KEY REFERENCES POOL(poolID),
+    questionnaireCompleted	VARCHAR(8),
 )
 
 CREATE TABLE USERGROUPS
 (
-	userGroupsID		CHAR(8) PRIMARY KEY,
-	userID	CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-	groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-	isAdmin		INT DEFAULT(0),
+    userGroupsID		CHAR(8) PRIMARY KEY,
+    userID	CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    isAdmin		INT DEFAULT(0),
 )
-go
+    go
 
 CREATE TABLE GROUPFAVEFLIGHT
 (
@@ -315,79 +315,79 @@ CREATE TABLE GROUPFAVEFLIGHT
     chatID  CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID),
     rank   DECIMAL(1,1),
     groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
+        ON UPDATE CASCADE ON DELETE CASCADE,
 )
-go
+    go
 
 CREATE TABLE MEMBERFLIGHTVOTE
 (
     memberFlightVoteID    CHAR(8) PRIMARY KEY,
     groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID),
     userID	CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
+        ON UPDATE CASCADE ON DELETE CASCADE,
     groupFaveFlightID   CHAR(8) FOREIGN KEY REFERENCES GROUPFAVEFLIGHT(groupFaveFlightID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
+        ON UPDATE CASCADE ON DELETE CASCADE,
     score DECIMAL(1,1)
 )
-go
+    go
 
 CREATE TABLE TAGS
 (
-	tagID		CHAR(8) PRIMARY KEY,
-	tagName		VARCHAR(30),
-	DESCRIPTION	VARCHAR(100)
+    tagID		CHAR(4) PRIMARY KEY,
+    tagName		VARCHAR(30),
+    DESCRIPTION	VARCHAR(100)
 )
-go
+    go
 
 CREATE TABLE USERTAGS
 (
-	userTagsID	CHAR(8) PRIMARY KEY,
-	tagID 		CHAR(8) FOREIGN KEY REFERENCES TAGS(tagID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-	userID		CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
-  ON UPDATE CASCADE ON DELETE CASCADE
+    userTagsID	CHAR(8) PRIMARY KEY,
+    tagID 		CHAR(4) FOREIGN KEY REFERENCES TAGS(tagID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    userID		CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
+        ON UPDATE CASCADE ON DELETE CASCADE
 )
-go
-
-CREATE TABLE USERFAVOURITEDDESTINATIONS(
-  userFavouritedDestinationID   CHAR(8) PRIMARY KEY,
-  DestinationCode 		          CHAR(3) FOREIGN KEY REFERENCES Destinations(DestinationCode)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-	userID		                    CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
-  ON UPDATE CASCADE ON DELETE CASCADE
-)
-go
+    go
 
 CREATE TABLE DESTINATIONTAGS(
-  DestinationTagID    CHAR(8) PRIMARY KEY,
-  DestinationCode     CHAR(3) FOREIGN KEY REFERENCES Destinations (DestinationCode)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-  tagID               CHAR(8) FOREIGN KEY REFERENCES TAGS (tagID)
-  ON UPDATE CASCADE ON DELETE CASCADE
+                                DestinationTagID    CHAR(4) PRIMARY KEY,
+                                DestinationCode     CHAR(3) FOREIGN KEY REFERENCES Destinations (DestinationCode)
+                                    ON UPDATE CASCADE ON DELETE CASCADE,
+                                tagID               CHAR(4) FOREIGN KEY REFERENCES TAGS (tagID)
+                                    ON UPDATE CASCADE ON DELETE CASCADE
 )
-go
+    go
+
+CREATE TABLE USERFAVOURITEDDESTINATIONS(
+                                           userFavouritedDestinationID   CHAR(8) PRIMARY KEY,
+                                           DestinationCode 		          CHAR(3) FOREIGN KEY REFERENCES Destinations(DestinationCode)
+                                               ON UPDATE CASCADE ON DELETE CASCADE,
+                                           userID		                    CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
+                                               ON UPDATE CASCADE ON DELETE CASCADE
+)
+    go
 
 CREATE TABLE BOOKINGS
 (
-  BookingId CHAR(8) NOT NULL PRIMARY KEY,
-  BookingUserId CHAR(8) NOT NULL FOREIGN KEY REFERENCES USERS(userID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-  DepartureAirlineCode CHAR(2) NOT NULL FOREIGN KEY REFERENCES Airlines(AirlineCode)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-  DepartureFlightNumber VARCHAR(6) NOT NULL,
-  DepartureTime DATETIME NOT NULL,
-  ReturnAirlineCode CHAR(2) NULL,
-  ReturnFlightNumber VARCHAR(6) NULL,
-  ReturnTime DATETIME NULL,
-  TotalAmount DECIMAL(10,2) NULL,
-  Progress BIT NOT NULL
+    BookingId CHAR(8) NOT NULL PRIMARY KEY,
+    BookingUserId CHAR(8) NOT NULL FOREIGN KEY REFERENCES USERS(userID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    DepartureAirlineCode CHAR(2) NOT NULL FOREIGN KEY REFERENCES Airlines(AirlineCode)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    DepartureFlightNumber VARCHAR(6) NOT NULL,
+    DepartureTime DATETIME NOT NULL,
+    ReturnAirlineCode CHAR(2) NULL,
+    ReturnFlightNumber VARCHAR(6) NULL,
+    ReturnTime DATETIME NULL,
+    TotalAmount DECIMAL(10,2) NULL,
+    Progress BIT NOT NULL
 )
-go
+    go
 
 CREATE TABLE PASSENGERS
 (
-  PassengerId CHAR(8) NOT NULL PRIMARY KEY,
-  LastName VARCHAR(MAX) NOT NULL,
+    PassengerId CHAR(8) NOT NULL PRIMARY KEY,
+    LastName VARCHAR(MAX) NOT NULL,
   GivenNames VARCHAR(MAX) NOT NULL,
   Email VARCHAR(MAX) NULL,
   PhoneNumber VARCHAR(20) NULL,
@@ -395,52 +395,74 @@ CREATE TABLE PASSENGERS
   BookingId CHAR(8) NOT NULL FOREIGN KEY REFERENCES BOOKINGS(BookingId)
   ON UPDATE CASCADE ON DELETE CASCADE
 )
-go
+    go
 
 CREATE TABLE TICKETS
 (
-  TicketId CHAR(8) NOT NULL PRIMARY KEY,
-  BookingId CHAR(8) NOT NULL FOREIGN KEY REFERENCES BOOKINGS(BookingId),
-  PassengerId CHAR(8) NOT NULL FOREIGN KEY REFERENCES PASSENGERS(PassengerId)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-  AirlineCode CHAR(2) NOT NULL FOREIGN KEY REFERENCES Airlines(AirlineCode),
-  FlightNumber VARCHAR(6) NOT NULL,
-  DepartureTime DATETIME NOT NULL,
-  TicketClass CHAR(3) NOT NULL FOREIGN KEY REFERENCES TicketClass(ClassCode)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-  TicketType CHAR(1) NOT NULL FOREIGN KEY REFERENCES TicketType(TicketCode)
-  ON UPDATE CASCADE ON DELETE CASCADE
+    TicketId CHAR(8) NOT NULL PRIMARY KEY,
+    BookingId CHAR(8) NOT NULL FOREIGN KEY REFERENCES BOOKINGS(BookingId),
+    PassengerId CHAR(8) NOT NULL FOREIGN KEY REFERENCES PASSENGERS(PassengerId)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    AirlineCode CHAR(2) NOT NULL FOREIGN KEY REFERENCES Airlines(AirlineCode),
+    FlightNumber VARCHAR(6) NOT NULL,
+    DepartureTime DATETIME NOT NULL,
+    TicketClass CHAR(3) NOT NULL FOREIGN KEY REFERENCES TicketClass(ClassCode)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    TicketType CHAR(1) NOT NULL FOREIGN KEY REFERENCES TicketType(TicketCode)
+        ON UPDATE CASCADE ON DELETE CASCADE
 )
-go
+    go
 
- CREATE TABLE CALENDAR
+CREATE TABLE CALENDAR
 (
-	calendarID 	CHAR(8) PRIMARY KEY,
-	startDate DATETIME,
-	endDate DATETIME,
-	userID 	CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-	groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID)
-  ON UPDATE CASCADE ON DELETE CASCADE
+    calendarID 	CHAR(8) PRIMARY KEY,
+    startDate DATETIME,
+    endDate DATETIME,
+    userID 	CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID)
+        ON UPDATE CASCADE ON DELETE CASCADE
 )
-go
-
-INSERT INTO TAGS VALUES('12341234', 'Tropical', 'Sunny, tropical location.')
-INSERT INTO TAGS VALUES('22222222', 'Mild Weather', 'Mild, comfortable climate.')
-INSERT INTO TAGS VALUES('33333333', 'Snowsports', 'Knows for great snowsports, very popular in winter.')
-INSERT INTO TAGS VALUES('44444444', 'Watersports', 'Surfing, jet skiiing and diving are very popular here, especially in summer')
-INSERT INTO TAGS VALUES('55555555', 'Sightseeing', 'Knows for its many great natural and built sights.')
-INSERT INTO TAGS VALUES('66666666', 'Famous For Landmarks', 'Incredible landmarks to visit at this location')
-INSERT INTO TAGS VALUES('77777777', 'Famous For Food & Drink', 'Diverse and excellent food and drink selections here, people from all over visit to try.')
-INSERT INTO TAGS VALUES('11111111', 'Snowy', 'Snowy, cold, mountains, good for skiing.')
-INSERT INTO TAGS VALUES('88888888', 'Budget', 'Cheap flights.')
-INSERT INTO TAGS VALUES('55511155', 'Family', 'Flight suitable for family groups.')
-go
+    go
 
 INSERT INTO USERS VALUES ('01010101', 'Lachlan', 'ONeill', 'lachlan@gmail.com', 'lo', '04 123 456', 'user', '12 Main St, Carrington, NSW, Australia', 'Simple', 'AUD', '+10', 'Light', 'No', '1997-08-29')
 INSERT INTO USERS VALUES ('11112222', 'Jordan', 'Eade', 'jordan@gmail.com', 'je', '04 454 678', 'user', '45 Smith St, Brisbane, QLD, Australia', 'Simple', 'AUD', '+10', 'Light', 'No', '2003-07-14');
 INSERT INTO USERS VALUES ('98765432', 'Lucy', 'Knight', 'lucy@gmail.com', 'lk', '04 474 235', 'user', '87 George St, Adelaide, SA, Australia', 'Stripe', 'AUD', '+10', 'Dark', 'No', '2004-03-21');
 INSERT INTO USERS VALUES ('12345678', 'Blake', 'Baldin', 'blake@gmail.com', 'bb', '04 123 456', 'user', '39 High St, Melbourne, VIC, Australia', 'Recommend', 'AUD', '+10', 'Dark', 'Yes', '2002-10-06')
+    go
+
+INSERT INTO TAGS (tagID, tagName, [DESCRIPTION])
+VALUES
+    ('0001', 'Tropical', 'This destination has sunny, hot weather.'),
+    ('0002', 'Snowy', 'This destinnation contains snowy weather.'),
+    ('0003', 'Northern Hemisphere',  'This destination is located in the Northern Hemisphere'),
+    ('0004', 'Southern Hemisphere',  'This destination is located in the Southern Hemisphere'),
+    ('0005', 'Family',  'This destination is great for family trips!'),
+    ('0006', 'Festivals',  'This destinantion has festivals.'),
+    ('0007', 'Sightseeing',  'This destination has great locations for sightseeing!'),
+    ('0008', 'Food & Drink',  'This destination is famous for resturants and dining.'),
+    ('0009', 'Landmarks',  'This destination has many unique landmarks.'),
+    ('0010', 'Snowsports',  'This destination is great for snowsports'),
+    ('0011', 'Watersports',  'This destination is great for watersports.'),
+    ('0012', 'Beaches',  'This destination has fantastic beaches.'),
+    ('0013', 'Summer',  'It is currently summer in this destination.'),
+    ('0014', 'Autumn',  'It is currently autumn in this destination.'),
+    ('0015', 'Winter',  'It is currently winter in this destination.'),
+    ('0016', 'Spring',  'It is currently spring in this destination.'),
+    ('0017', 'Camping',  'This destination is great for camping.'),
+    ('0018', 'Outdoors',  'This destination is great for bush-walking, parks and forests.'),
+    ('0019', 'Relaxation',  'This destination is great for rest and relaxation.'),
+    ('0020', 'City',  'This destination contains large city areas.'),
+    ('0021', 'Cruises',  'This destination contains boat cruises.'),
+    ('0022', 'Public Transport',  'This destination has great public transport.'),
+    ('0023', 'Tours',  'This destination is great for tourist tours.'),
+    ('0024', 'Attractions',  'This destination contains many attractions for tourists.'),
+    ('0025', 'Culture',  'This destination is great for exploring culture.'),
+    ('0026', 'Art',  'This destination contains many art museums.'),
+    ('0027', 'Shopping',  'This destination is great for shopping.'),
+    ('0028', 'Sports',  'This destination is great watching or playing sports.'),
+    ('0029', 'History',  'This destination is great for learning about history.'),
+    ('0030', 'Budget',  'This destination is great for budget flights.');
 go
 
 INSERT INTO Country (countryCode2, countryCode3, countryName, alternateName1, alternateName2, motherCountryCode3, motherCountryComment)
@@ -735,7 +757,199 @@ VALUES
 	('SYD','Sydney','AUS'),
 	('VIE','Vienna','AUT'),
 	('YYZ','Toronto','CAN');
-  go
+go
+
+INSERT INTO DESTINATIONTAGS (DestinationTagID, DestinationCode, tagID)
+VALUES
+    ('0001', 'ADL', '0020'),
+    ('0002', 'ADL', '0026'),
+    ('0003', 'ADL', '0008'),
+    ('0004', 'ADL', '0022'),
+    ('0005', 'ADL', '0026'),
+    ('0006', 'AMS', '0019'),
+    ('0007', 'AMS', '0023'),
+    ('0008', 'AMS', '0025'),
+    ('0009', 'AMS', '0008'),
+    ('0010', 'AMS', '0006'),
+    ('0012', 'ATL', '0028'),
+    ('0013', 'ATL', '0029'),
+    ('0014', 'ATL', '0009'),
+    ('0015', 'ATL', '0008'),
+    ('0016', 'BKK', '0025'),
+    ('0017', 'BKK', '0020'),
+    ('0018', 'BKK', '0006'),
+    ('0019', 'BKK', '0024'),
+    ('0020', 'BKK', '0008'),
+    ('0021', 'BNE', '0008'),
+    ('0022', 'BNE', '0009'),
+    ('0023', 'BNE', '0012'),
+    ('0024', 'BNE', '0019'),
+    ('0025', 'BNE', '0024'),
+    ('0026', 'CBR', '0007'),
+    ('0027', 'CBR', '0005'),
+    ('0028', 'CBR', '0010'),
+    ('0029', 'CBR', '0020'),
+    ('0030', 'CBR', '0009'),
+    ('0031', 'CDG', '0008'),
+    ('0032', 'CDG', '0007'),
+    ('0033', 'CDG', '0009'),
+    ('0034', 'CDG', '0020'),
+    ('0035', 'CDG', '0026'),
+    ('0036', 'CNS', '0001'),
+    ('0037', 'CNS', '0025'),
+    ('0038', 'CNS', '0012'),
+    ('0039', 'CNS', '0019'),
+    ('0040', 'CNS', '0020'),
+    ('0041', 'DOH', '0008'),
+    ('0042', 'DOH', '0020'),
+    ('0043', 'DOH', '0025'),
+    ('0045', 'DOH', '0023'),
+    ('0046', 'DRW', '0029'),
+    ('0047', 'DRW', '0017'),
+    ('0048', 'DRW', '0018'),
+    ('0049', 'DRW', '0019'),
+    ('0050', 'DRW', '0004'),
+    ('0051', 'DXB', '0027'),
+    ('0052', 'DXB', '0020'),
+    ('0053', 'DXB', '0001'),
+    ('0054', 'DXB', '0013'),
+    ('0055', 'DXB', '0024'),
+    ('0056', 'FCO', '0008'),
+    ('0057', 'FCO', '0029'),
+    ('0058', 'FCO', '0020'),
+    ('0059', 'FCO', '0009'),
+    ('0060', 'FCO', '0005'),
+    ('0061', 'GIG', '0025'),
+    ('0062', 'GIG', '0028'),
+    ('0063', 'GIG', '0009'),
+    ('0064', 'GIG', '0003'),
+    ('0065', 'GIG', '0020'),
+    ('0066', 'HBA', '0020'),
+    ('0067', 'HBA', '0008'),
+    ('0068', 'HBA', '0007'),
+    ('0069', 'HBA', '0017'),
+    ('0070', 'HBA', '0018'),
+    ('0071', 'HEL', '0018'),
+    ('0072', 'HEL', '0025'),
+    ('0073', 'HEL', '0029'),
+    ('0074', 'HEL', '0012'),
+    ('0075', 'HEL', '0008'),
+    ('0076', 'HKG', '0006'),
+    ('0077', 'HKG', '0027'),
+    ('0078', 'HKG', '0008'),
+    ('0079', 'HKG', '0005'),
+    ('0080', 'HKG', '0007'),
+    ('0081', 'HNL', '0001'),
+    ('0082', 'HNL', '0005'),
+    ('0083', 'HNL', '0011'),
+    ('0084', 'HNL', '0012'),
+    ('0085', 'HNL', '0019'),
+    ('0086', 'JFK', '0020'),
+    ('0087', 'JFK', '0021'),
+    ('0088', 'JFK', '0007'),
+    ('0089', 'JFK', '0008'),
+    ('0090', 'JFK', '0009'),
+    ('0091', 'JNB', '0029'),
+    ('0092', 'JNB', '0024'),
+    ('0093', 'JNB', '0009'),
+    ('0094', 'JNB', '0005'),
+    ('0095', 'JNB', '0004'),
+    ('0096', 'KUL', '0005'),
+    ('0097', 'KUL', '0009'),
+    ('0098', 'KUL', '0022'),
+    ('0099', 'KUL', '0027'),
+    ('0100', 'KUL', '0008'),
+    ('0101', 'LAX', '0020'),
+    ('0102', 'LAX', '0007'),
+    ('0103', 'LAX', '0010'),
+    ('0104', 'LAX', '0023'),
+    ('0105', 'LAX', '0024'),
+    ('0106', 'LGA', '0020'),
+    ('0107', 'LGA', '0021'),
+    ('0108', 'LGA', '0007'),
+    ('0109', 'LGA', '0008'),
+    ('0110', 'LGA', '0009'),
+    ('0111', 'LGW', '0029'),
+    ('0112', 'LGW', '0020'),
+    ('0113', 'LGW', '0022'),
+    ('0114', 'LGW', '0005'),
+    ('0115', 'LGW', '0023'),
+    ('0116', 'LHR', '0029'),
+    ('0117', 'LHR', '0020'),
+    ('0118', 'LHR', '0022'),
+    ('0119', 'LHR', '0005'),
+    ('0120', 'LHR', '0023'),
+    ('0121', 'MAD', '0029'),
+    ('0122', 'MAD', '0026'),
+    ('0123', 'MAD', '0008'),
+    ('0124', 'MAD', '0003'),
+    ('0125', 'MAD', '0025'),
+    ('0126', 'MEL', '0005'),
+    ('0127', 'MEL', '0008'),
+    ('0128', 'MEL', '0020'),
+    ('0129', 'MEL', '0027'),
+    ('0130', 'MEL', '0009'),
+    ('0131', 'MIA', '0001'),
+    ('0132', 'MIA', '0012'),
+    ('0133', 'MIA', '0020'),
+    ('0134', 'MIA', '0023'),
+    ('0135', 'MIA', '0007'),
+    ('0136', 'MUC', '0029'),
+    ('0137', 'MUC', '0008'),
+    ('0138', 'MUC', '0020'),
+    ('0139', 'MUC', '0023'),
+    ('0140', 'MUC', '0025'),
+    ('0141', 'NRT', '0029'),
+    ('0142', 'NRT', '0025'),
+    ('0143', 'NRT', '0007'),
+    ('0144', 'NRT', '0008'),
+    ('0145', 'NRT', '0019'),
+    ('0146', 'OOL', '0001'),
+    ('0147', 'OOL', '0011'),
+    ('0148', 'OOL', '0012'),
+    ('0149', 'OOL', '0005'),
+    ('0150', 'OOL', '0020'),
+    ('0151', 'ORD', '0008'),
+    ('0152', 'ORD', '0007'),
+    ('0153', 'ORD', '0023'),
+    ('0154', 'ORD', '0025'),
+    ('0155', 'ORD', '0027'),
+    ('0156', 'ORY', '0008'),
+    ('0157', 'ORY', '0029'),
+    ('0158', 'ORY', '0026'),
+    ('0159', 'ORY', '0009'),
+    ('0160', 'ORY', '0007'),
+    ('0161', 'PER', '0005'),
+    ('0162', 'PER', '0020'),
+    ('0163', 'PER', '0027'),
+    ('0164', 'PER', '0018'),
+    ('0165', 'PER', '0001'),
+    ('0166', 'SFO', '0020'),
+    ('0167', 'SFO', '0007'),
+    ('0168', 'SFO', '0009'),
+    ('0169', 'SFO', '0024'),
+    ('0170', 'SFO', '0029'),
+    ('0171', 'SIN', '0007'),
+    ('0172', 'SIN', '0022'),
+    ('0173', 'SIN', '0025'),
+    ('0174', 'SIN', '0009'),
+    ('0175', 'SIN', '0005'),
+    ('0176', 'SYD', '0012'),
+    ('0177', 'SYD', '0022'),
+    ('0178', 'SYD', '0027'),
+    ('0179', 'SYD', '0008'),
+    ('0180', 'SYD', '0005'),
+    ('0181', 'VIE', '0025'),
+    ('0182', 'VIE', '0009'),
+    ('0183', 'VIE', '0008'),
+    ('0184', 'VIE', '0005'),
+    ('0185', 'VIE', '0019'),
+    ('0186', 'YYZ', '0007'),
+    ('0187', 'YYZ', '0005'),
+    ('0188', 'YYZ', '0010'),
+    ('0189', 'YYZ', '0020'),
+    ('0190', 'YYZ', '0003');
+go
 
 INSERT INTO Airlines (AirlineCode, AirlineName, CountryCode3)
 VALUES
@@ -786,27 +1000,27 @@ VALUES
 
 INSERT INTO PlaneType (PlaneCode, Details, NumFirstClass, NumBusiness, NumPremiumEconomy, Economy)
 VALUES
-	('747-100','Boeing 747-100',55,58,100,210),
-	('757-200','Boeing 757-200',44,26,106,197),
-	('757-300','Boeing 757-300',44,28,106,197),
-	('767-200','Boeing 767-200',40,48,115,189),
-	('767-300','Boeing 767-300',42,33,132,211),
-	('767-400','Boeing 767-400',42,50,121,220),
-	('A330-200','Airbus A330-200',42,40,120,177),
-	('A330-300','Airbus A330-300',44,46,91,210),
-	('A340-200','Airbus A340-200',42,50,124,208),
-	('A340-300','Airbus A340-300',41,36,112,196),
-	('A340-500','Airbus A340-500',39,62,131,187),
-	('A340-600','Airbus A340-600',35,55,98,200),
-	('A380','Airbus A380',46,47,111,203);
+    ('747-100','Boeing 747-100',55,58,100,210),
+    ('757-200','Boeing 757-200',44,26,106,197),
+    ('757-300','Boeing 757-300',44,28,106,197),
+    ('767-200','Boeing 767-200',40,48,115,189),
+    ('767-300','Boeing 767-300',42,33,132,211),
+    ('767-400','Boeing 767-400',42,50,121,220),
+    ('A330-200','Airbus A330-200',42,40,120,177),
+    ('A330-300','Airbus A330-300',44,46,91,210),
+    ('A340-200','Airbus A340-200',42,50,124,208),
+    ('A340-300','Airbus A340-300',41,36,112,196),
+    ('A340-500','Airbus A340-500',39,62,131,187),
+    ('A340-600','Airbus A340-600',35,55,98,200),
+    ('A380','Airbus A380',46,47,111,203);
 
-  INSERT INTO TicketClass (ClassCode, Details)
+INSERT INTO TicketClass (ClassCode, Details)
 VALUES
-	('BUS','Business Class'),
-	('ECO','Economy'),
-	('FIR','First Class'),
-	('PME','Premium Economy');
-  go
+    ('BUS','Business Class'),
+    ('ECO','Economy'),
+    ('FIR','First Class'),
+    ('PME','Premium Economy');
+go
 
 INSERT INTO TicketType (TicketCode, Name, Transferrable, Refundable, Exchangeable, FrequentFlyerPoints)
 VALUES
@@ -817,7 +1031,7 @@ VALUES
 	('E','Premium','1','0','1','1'),
 	('F','ld','1','1','1','1'),
 	('G','Platinum','1','1','1','1');
-  go
+go
 
   INSERT INTO Availability (AirlineCode, FlightNumber, DepartureTime, ClassCode, TicketCode, NumberAvailableSeatsLeg1, NumberAvailableSeatsLeg2)
 VALUES
@@ -829,7 +1043,7 @@ VALUES
 	('AA','AA1735','2014-09-23 09:50:00','FIR','G',10,10),
 	('AA','AA1735','2014-09-23 09:50:00','PME','B',0,18),
 	('AA','AA1735','2014-09-23 09:50:00','PME','E',16,6);
-  go
+go
 
 	INSERT INTO Flights (AirlineCode, FlightNumber, DepartureCode, StopOverCode, DestinationCode, DepartureTime, ArrivalTimeStopOver, DepartureTimeStopOver, ArrivalTime, PlaneCode, Duration, DurationSecondLeg)
 VALUES
@@ -1119,13 +1333,4 @@ VALUES
 	('AA','AA1735','PME','G','2015-09-10 00:00:00','2015-11-19 00:00:00',2552.82,2204.65,915.31),
 	('AA','AA1735','PME','G','2015-11-20 00:00:00','2015-12-17 00:00:00',2878.35,2485.78,1032.03),
 	('AA','AA1735','PME','G','2015-12-18 00:00:00','2016-01-04 00:00:00',3101.08,2678.13,1111.89);
-  go
-
-INSERT INTO DESTINATIONTAGS VALUES('11112222', 'GIG', '12341234');
-INSERT INTO DESTINATIONTAGS VALUES('22222222', 'GIG', '55555555');
-INSERT INTO DESTINATIONTAGS VALUES('22221111', 'MEL', '66666666');
-INSERT INTO DESTINATIONTAGS VALUES('23231111', 'MEL', '77777777');
-INSERT INTO DESTINATIONTAGS VALUES('12341234', 'MEL', '55555555');
-INSERT INTO DESTINATIONTAGS VALUES('43121212', 'MEL', '55511155');
-GO
-
+go
