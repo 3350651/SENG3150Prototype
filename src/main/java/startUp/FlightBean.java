@@ -43,6 +43,20 @@ public class FlightBean implements Serializable {
         seatAvailability = new LinkedList<>();
     }
 
+    public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightTime, String newflightName,
+                      String newPlaneType,
+            float newMinCost, DestinationBean newDeparture, DestinationBean newDestination) {
+        airline = newAirline;
+        airlineName = newAirlineName;
+        flightDepartureTime = newFlightTime;
+        flightName = newflightName;
+        planeType = newPlaneType;
+        minCost = newMinCost;
+        departure = newDeparture;
+        destination = newDestination;
+        seatAvailability = new LinkedList<>();
+    }
+
     /**
      * Used in the search algorithm
      */

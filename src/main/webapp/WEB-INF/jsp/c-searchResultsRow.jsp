@@ -36,27 +36,28 @@
 
                         <div class="searchResultButtons">
                             <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
-                            <input type="hidden" name="userID" value="<%= user.getUserID() %>">
-                            <input type="hidden" name="flightIndex" value="<%= searchResults.indexOf(flightPath) %>">
-                                <div class="bookmarkFlight">
-                                    <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value="bookmark">
-                                </div>
-                                <div class="favouriteDestination">
-                                    <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/favouriteStar.png" alt="Favourite Destination Logo" name="favourite" value="favourite">
-                                </div>
+                                <input type="hidden" name="userID" value="<%= user.getUserID() %>">
+                                <input type="hidden" name="flightIndex" value="<%= searchResults.indexOf(flightPath) %>">
+                                    <div class="bookmarkFlight">
+                                        <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value="bookmark">
+                                    </div>
+                                    <div class="favouriteDestination">
+                                        <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/favouriteStar.png" alt="Favourite Destination Logo" name="favourite" value="favourite">
+                                    </div>
                             </form>
-                                <form name="groupFavourite" action="GroupHomepage" method="POST">
+
+                            <form name="groupFavourite" action="GroupHomepage" method="POST">
                                 <div class="addToGroupFavouriteList">
                                     <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="addToGroupFaveList" value=<%=searchResults.indexOf(flightPath)%>>
                                 </div>
-                                </form>
-                            
-                                <form method="POST" action="flightSearch">
+                            </form>
+
+                            <form method="POST" action="flightSearch">
                                 <input type="hidden" name="flightIndex" value="<%= searchResults.indexOf(flightPath) %>">
                                 <div class="viewFlightDetailsButton">
                                     <button type="submit" class="viewFlightDetailsButton" name="viewFlight" value="viewFlight">View Details</button>
                                 </div>
-                                </form>
+                            </form>
                            
                         </div>
 

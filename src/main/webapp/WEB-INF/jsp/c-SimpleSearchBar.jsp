@@ -9,7 +9,10 @@
                         <select id="departureLocation" name="departureLocation">
                             <option value="">Select Option</option>
                             <%for(DestinationBean destination: DestinationOps.getDestinations()){%>
-                                <option value=<%=destination.getDestinationCode()%>><%=destination.getDestinationName()%>
+                                <option value=<%=destination.getDestinationCode()%>
+<% if (destination.getDestinationName().equals("Adelaide"))  { %> selected <% } %>
+                                ><%=destination.getDestinationName()%>
+
                                 </option>
                                 <%}%>
                         </select>
@@ -18,14 +21,17 @@
                         <select id="arrivalLocation" name="arrivalLocation">
                             <option value="">Select Option</option>
                             <%for(DestinationBean destination: DestinationOps.getDestinations()){%>
-                                <option value=<%=destination.getDestinationCode()%>><%=destination.getDestinationName()%>
+                                <option value=<%=destination.getDestinationCode()%>
+<% if (destination.getDestinationName().equals("Bangkok"))  { %> selected <% } %>
+                                ><%=destination.getDestinationName()%>
+
                                 </option>
                                 <%}%>
                         </select>
                     </div>
                     <div style="clear:both;">&nbsp;</div>
                     <div class="departureDate"><label for="departureDate">Date</label><br>
-                        <input type="date" id="departureDate" name="departureDate">
+                        <input type="date" id="departureDate" name="departureDate" value="2015-08-11">
                     </div>
                     <div class="flexibleDateDiv" id="flexibleDateDiv"><label for="flexibleDate">Flexible?</label> <br>
                         <input type="checkbox" id="flexibleDate" name="flexibleDate">
@@ -35,7 +41,7 @@
                         </div>
                     </div>
                     <div class="numberOfAdults"><label for="numberOfAdults"># Adults</label><br>
-                        <input type="number" id="numberOfAdults" size="2" name="numberOfAdults" value="0">
+                        <input type="number" id="numberOfAdults" size="2" name="numberOfAdults" value="1">
                     </div>
                     <div class="numberOfChildren"><label for="numberOfChildren"># Children</label><br>
                         <input type="number" id="numberOfChildren" size="2" name="numberOfChildren" value="0">

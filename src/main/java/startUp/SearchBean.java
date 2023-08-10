@@ -29,6 +29,7 @@ public class SearchBean implements Serializable {
     int adultPassengers;
     int childPassengers;
     LinkedList<FlightPathBean> results;
+    LinkedList<FlightBean> flightResults;
     int searchID;
     //TODO: may need more for completed recommendation search
 
@@ -189,9 +190,7 @@ public class SearchBean implements Serializable {
 //                results.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
 //                        rStopOver,
 //                        rDestination));
-                results.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, mCost, rDeparture,
-                        rStopOver,
-                        rDestination));
+                flightResults.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, mCost, rDeparture, rDestination));
             }
 
             statement.close();
@@ -200,7 +199,7 @@ public class SearchBean implements Serializable {
             System.err.println(e.getMessage());
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
-    }*/
+    }
 
     public void searchFlights() {
         LinkedList<FlightPathBean> flightPaths = new LinkedList<>();

@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.LinkedList;
+import java.util.Stack;
 
 @WebServlet(urlPatterns = { "/flightSearch" })
 public class FlightSearchServlet extends HttpServlet {
@@ -92,11 +93,23 @@ public class FlightSearchServlet extends HttpServlet {
         }
 
         else if (request.getParameter("viewFlight") != null) {
+            System.out.println("FlightSearchServlet");
             LinkedList<FlightPathBean> flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResults");
-
             FlightPathBean flight = flights.get(Integer.parseInt(request.getParameter("flightIndex")));
 
+            System.out.println(flight.getFlightPath().size());
+
+            // Invert the flightBean stack and store in linked list. Easier to call with a FOR loop on a jsp page
+            LinkedList<FlightBean> flightList = new LinkedList<FlightBean>();
+            Stack<FlightBean> flightStack = flight.getFlightPath();
+            for ( int i = 1 ; i <= flightStack.size(); i++) {
+                flightList.addLast(flightStack.get(flightStack.size() - i));
+            }
+
             session.setAttribute("flight", flight);
+            session.setAttribute("flightList", flightList);
+            System.out.println(flight.getFlightPath().size());
+            System.out.println(flight.getInitialFlight().getDeparture().getDestinationName());
             /* TODO: No longer valid
             String flightDetails = flight.getAirline() + "," + flight.getFlightName() + ","
                     + flight.getFlightTime();
