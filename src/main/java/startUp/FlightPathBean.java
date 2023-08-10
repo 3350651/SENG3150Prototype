@@ -10,20 +10,26 @@ public class FlightPathBean {
     private LinkedList<String> destinations;
     private int id;
 
+    private float minPrice;
+
     public FlightPathBean() {
         flightPath = new Stack<>();
         destinations = new LinkedList<>();
         id = ThreadLocalRandom.current().nextInt(00000000, 99999999);
+        minPrice = 0;
     }
 
     public FlightPathBean(Stack<FlightBean> flights) {
         flightPath = flights;
         destinations = new LinkedList<>();
+        minPrice = 0;
         for (FlightBean flight : flights) {
             destinations.add(flight.getDeparture().getDestinationCode());
+            minPrice += flight.getMinCost();
         }
         id = ThreadLocalRandom.current().nextInt(00000000, 99999999);
     }
+
 
     public Stack<FlightBean> getFlightPath() {
         return flightPath;
@@ -50,6 +56,18 @@ public class FlightPathBean {
         this.id = id;
     }
 
+    public float getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(float minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public int getFlightPathStopOvers() {
+        return this.flightPath.size() - 1;
+    }
+
     public boolean isLoopingDestination(FlightBean flight) {
         if (this.destinations.contains(flight.getDestination().getDestinationCode())) {
             return true;
@@ -72,10 +90,10 @@ public class FlightPathBean {
     }
 
     public FlightBean getInitialFlight() {
-        return flightPath.get(0);
+        return flightPath.get(flightPath.size() - 1);
     }
 
     public FlightBean getLastFlight() {
-        return flightPath.get(flightPath.size() - 1);
+        return flightPath.get(0);
     }
 }
