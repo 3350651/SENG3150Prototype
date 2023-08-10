@@ -73,47 +73,9 @@ public class DestinationBean {
         }
     }
 
-    public DestinationBean(String destination, String a) {
-        destinationName = destination;
-
-        try {
-            String query = "SELECT *" +
-                    " FROM Destinations " +
-                    " WHERE Airport = ?";
-            Connection connection = ConfigBean.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
-
-            statement.setString(1, destination);
-
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                destinationCode = result.getString(1);
-                // TODO: Add destinationDescription, tags and reputationScore here
-                //tagSet t = new tagSet();
-                //t.setDestinationTag(this);
-                /*LinkedList<String> tlist = new LinkedList<>();
-                String tag1 = result.getString(4);
-                String tag2 = result.getString(5);
-                String tag3 = result.getString(6);
-                String tag4 = result.getString(7);
-                String tag5 = result.getString(8);
-
-                tlist.add(tag1);
-                tlist.add(tag2);
-                tlist.add(tag3);
-                tlist.add(tag4);
-                tlist.add(tag5);
-
-                tags = tlist;*/
-            }
-            result.close();
-            statement.close();
-            connection.close();
-
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            System.err.println(Arrays.toString(e.getStackTrace()));
-        }
+    public DestinationBean(String code, String name) {
+        destinationCode = code;
+        destinationName = name;
     }
 
     // getters

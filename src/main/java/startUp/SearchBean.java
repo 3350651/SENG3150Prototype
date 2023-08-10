@@ -10,16 +10,16 @@ import sun.security.krb5.internal.crypto.Des;
 
 import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedList;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
-public class SearchBean implements Serializable{
-    
+public class SearchBean implements Serializable {
+
     Timestamp departureDate;
     String destination;
     String departure;
@@ -28,12 +28,13 @@ public class SearchBean implements Serializable{
     int flexible;
     int adultPassengers;
     int childPassengers;
-    LinkedList<FlightBean> results;
+    LinkedList<FlightPathBean> results;
+    LinkedList<FlightBean> flightResults;
     int searchID;
     //TODO: may need more for completed recommendation search
 
     //constructors
-    public SearchBean(Timestamp newDepartureDate, String newDestination, String newDeparture, LinkedList<TagBean> newTags, boolean newSimple, int newflexible, int newAdults, int newChildren){
+    public SearchBean(Timestamp newDepartureDate, String newDestination, String newDeparture, LinkedList<TagBean> newTags, boolean newSimple, int newflexible, int newAdults, int newChildren) {
         departureDate = newDepartureDate;
         destination = newDestination;
         departure = newDeparture;
@@ -43,8 +44,6 @@ public class SearchBean implements Serializable{
         adultPassengers = newAdults;
         childPassengers = newChildren;
         results = new LinkedList<>();
-        //TODO: get rid of this for full implementation
-        getAllFlights();
     }
 
     // empty search bean instantiation
@@ -74,7 +73,7 @@ public class SearchBean implements Serializable{
 
 
     //getters and setters
-    public LinkedList<FlightBean> getResults(){
+    public LinkedList<FlightPathBean> getResults() {
         return this.results;
     }
 
@@ -142,7 +141,7 @@ public class SearchBean implements Serializable{
         this.childPassengers = childPassengers;
     }
 
-    public void setResults(LinkedList<FlightBean> results) {
+    public void setResults(LinkedList<FlightPathBean> results) {
         this.results = results;
     }
 
@@ -191,9 +190,7 @@ public class SearchBean implements Serializable{
 //                results.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
 //                        rStopOver,
 //                        rDestination));
-                results.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, mCost, rDeparture,
-                        rStopOver,
-                        rDestination));
+                flightResults.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, mCost, rDeparture, rDestination));
             }
 
             statement.close();
@@ -204,20 +201,206 @@ public class SearchBean implements Serializable{
         }
     }
 
-    public void SearchFlights(DestinationBean source, DestinationBean destination, Timestamp departure, FlightPathBean previousFlight) {
-        //get list of flights leaving destination on day
+    public void searchFlights() {
+        LinkedList<FlightPathBean> flightPaths = new LinkedList<>();
+        Queue<FlightBean> flightList = new LinkedList<>();
+        FlightBean flight = null;
 
-        //create Flight beans for each
+        do {
 
-        //add each to a new flight path that holds the previous flight info.
+            //get all flights leaving within 24 hours of departure
+            //add previous flight to each
+            //add all to queue
+            flightList.addAll(getAllFlightsFrom(departure, departureDate, flight, (this.adultPassengers + this.childPassengers)));
 
-        //add all flights to queue
+            //if queue empty return list of flight paths
+            if (flightList.isEmpty()) {
+                break;
+            }
+            //go to next in queue
+            flight = flightList.poll();
 
-        //take top flight from queue
 
-        //check if it reaches destination
+            //check if destination
+            while (Objects.equals(flight.getDestination().getDestinationCode(), destination)) {
+                //if destination, backtrack through previous flights to make complete flight path
+                //add to list of complete flight paths
+                flightPaths.add(getFlightPathFrom(flight));
+                //if 10 flights in list return
+                if (flightPaths.size() >= 10) {
+                    results = flightPaths;
+                }
+                if (flightList.isEmpty()) {
+                    results = flightPaths;
+                }
+                flight = flightList.poll();
 
-        //New flight path object
+            }
+            departure = flight.getDestination().getDestinationCode();
+            departureDate = flight.getFlightArrivalTime();
+        } while (flightPaths.size() < 10 && !flightList.isEmpty());
+        results = flightPaths;
+    }
+
+    public Queue<FlightBean> getAllFlightsFrom(String source, Timestamp time, FlightBean previous, int passengers) {
+        Queue<FlightBean> flights = new LinkedList<>();
+        Timestamp endtime = Timestamp.from(time.toInstant().plus(24, ChronoUnit.HOURS));
+        String loopingDestinations = null;
+        if (previous != null) {
+            loopingDestinations = getFlightPathFrom(previous).getAllDestinations();
+        }
+        try {
+            String query = "SELECT " +
+                    "F.AirlineCode, " +
+                    "F.FlightNumber, " +
+                    "F.DepartureCode, " +
+                    "F.DestinationCode, " +
+                    "F.DepartureTime, " +
+                    "F.ArrivalTime, " +
+                    "F.PlaneCode, " +
+                    "A.AirlineName, " +
+                    "0 AS leg, " +
+                    "F.DepartureTime AS originalDepartureTime " +
+                    "FROM Flights F " +
+                    "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                    "WHERE StopOverCode IS NULL AND F.DepartureTime <= ? AND F.DepartureTime >= ? AND F.DepartureCode = ? " +
+                    "UNION " +
+                    "SELECT " +
+                    "F.AirlineCode, " +
+                    "F.FlightNumber, " +
+                    "F.DepartureCode, " +
+                    "F.StopOverCode AS DestinationCode, " +
+                    "F.DepartureTime, " +
+                    "F.ArrivalTimeStopOver AS ArrivalTime, " +
+                    "F.PlaneCode, " +
+                    "A.AirlineName, " +
+                    "1 AS leg, " +
+                    "F.DepartureTime AS originalDepartureTime " +
+                    "FROM Flights F " +
+                    "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                    "WHERE StopOverCode IS NOT NULL AND F.DepartureTime <= ? AND F.DepartureTime >= ? AND F.DepartureCode = ? " +
+                    "UNION " +
+                    "SELECT " +
+                    "F.AirlineCode, " +
+                    "F.FlightNumber, " +
+                    "F.StopOverCode AS DepartureCode, " +
+                    "F.DestinationCode, " +
+                    "F.DepartureTimeStopOver AS DepartureTime, " +
+                    "F.ArrivalTime, " +
+                    "F.PlaneCode, " +
+                    "A.AirlineName, " +
+                    "2 AS leg, " +
+                    "F.DepartureTime AS originalDepartureTime " +
+                    "FROM Flights F " +
+                    "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                    "WHERE StopOverCode IS NOT NULL AND F.DepartureTimeStopOver <= ? AND F.DepartureTimeStopOver >= ? AND F.StopOverCode = ? ";
+
+            if (loopingDestinations != null) {
+                query = "SELECT " +
+                        "F.AirlineCode, " +
+                        "F.FlightNumber, " +
+                        "F.DepartureCode, " +
+                        "F.DestinationCode, " +
+                        "F.DepartureTime, " +
+                        "F.ArrivalTime, " +
+                        "F.PlaneCode, " +
+                        "A.AirlineName, " +
+                        "0 AS leg, " +
+                        "F.DepartureTime AS originalDepartureTime " +
+                        "FROM Flights F " +
+                        "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                        "WHERE StopOverCode IS NULL AND F.DepartureTime <= ? AND F.DepartureTime >= ? AND F.DepartureCode = ? AND F.DestinationCode NOT IN (" + loopingDestinations + ") " +
+                        "UNION " +
+                        "SELECT " +
+                        "F.AirlineCode, " +
+                        "F.FlightNumber, " +
+                        "F.DepartureCode, " +
+                        "F.StopOverCode AS DestinationCode, " +
+                        "F.DepartureTime, " +
+                        "F.ArrivalTimeStopOver AS ArrivalTime, " +
+                        "F.PlaneCode, " +
+                        "A.AirlineName, " +
+                        "1 AS leg, " +
+                        "F.DepartureTime AS originalDepartureTime " +
+                        "FROM Flights F " +
+                        "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                        "WHERE StopOverCode IS NOT NULL AND F.DepartureTime <= ? AND F.DepartureTime >= ? AND F.DepartureCode = ? AND F.StopOverCode NOT IN (" + loopingDestinations + ") " +
+                        "UNION " +
+                        "SELECT " +
+                        "F.AirlineCode, " +
+                        "F.FlightNumber, " +
+                        "F.StopOverCode AS DepartureCode, " +
+                        "F.DestinationCode, " +
+                        "F.DepartureTimeStopOver AS DepartureTime, " +
+                        "F.ArrivalTime, " +
+                        "F.PlaneCode, " +
+                        "A.AirlineName, " +
+                        "2 AS leg, " +
+                        "F.DepartureTime AS originalDepartureTime " +
+                        "FROM Flights F " +
+                        "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                        "WHERE StopOverCode IS NOT NULL AND F.DepartureTimeStopOver <= ? AND F.DepartureTimeStopOver >= ? AND F.StopOverCode = ? AND F.DestinationCode NOT IN (" + loopingDestinations + ") ";
+            }
+
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setTimestamp(1, endtime);
+            statement.setTimestamp(2, time);
+            statement.setString(3, source);
+            statement.setTimestamp(4, endtime);
+            statement.setTimestamp(5, time);
+            statement.setString(6, source);
+            statement.setTimestamp(7, endtime);
+            statement.setTimestamp(8, time);
+            statement.setString(9, source);
+
+
+            ResultSet result = statement.executeQuery();
+
+            // TODO:Retrieve min cost of flight...
+
+            while (result.next()) {
+                String aCode = result.getString(1);
+                String flightCode = result.getString(2);
+                String departureCode = result.getString(3);
+                String destinationCode = result.getString(4);
+                Timestamp departTime = result.getTimestamp(5);
+                Timestamp arrivalTime = result.getTimestamp(6);
+                String plane = result.getString(7);
+                String airlineName = result.getString(8);
+                int leg = result.getInt(9);
+                Timestamp originalDepartTime = result.getTimestamp(10);
+
+                DestinationBean rDeparture = new DestinationBean(departureCode);
+                DestinationBean rDestination = new DestinationBean(destinationCode);
+                FlightBean temp = new FlightBean(aCode, airlineName, departTime, arrivalTime, flightCode, plane, /* mCost, */ rDeparture,
+                        rDestination, previous, leg, originalDepartTime);
+                temp.getAvailabilities(passengers);
+                if (temp.getSeatAvailability().size() == 0) {
+                    continue;
+                }
+                flights.add(temp);
+            }
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(Arrays.toString(e.getStackTrace()));
+        }
+
+        return flights;
+    }
+
+    public FlightPathBean getFlightPathFrom(FlightBean destinationFlight) {
+        FlightBean temp = destinationFlight;
+        Stack<FlightBean> flights = new Stack<>();
+        while (temp != null) {
+            flights.add(temp);
+            temp = temp.getPreviousFlight();
+        }
+        return new FlightPathBean(flights);
     }
 
 
@@ -329,8 +512,6 @@ public class SearchBean implements Serializable{
     //         throw new RuntimeException(e);
     //     }
     // }
-
-    
 
 
 }
