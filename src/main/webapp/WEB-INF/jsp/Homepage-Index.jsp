@@ -3,9 +3,10 @@
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="startUp.FlightBean" %>
+<%@ page import="startUp.FlightPathBean" %>
 <%@ page import="startUp.SearchBean" %>
 <%@ page import="startUp.DestinationBean" %>
-<% UserBean user=(UserBean) session.getAttribute("userBean"); LinkedList<FlightBean> bookmarkedFlights = new LinkedList<>();
+<% UserBean user=(UserBean) session.getAttribute("userBean"); LinkedList<FlightPathBean> bookmarkedFlights = new LinkedList<>();
     if (user != null && user.getBookmarkedFlights() != null) {
         bookmarkedFlights = user.getBookmarkedFlights();
     }

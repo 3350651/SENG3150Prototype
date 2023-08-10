@@ -54,13 +54,15 @@ bookmarkedFlights = user.getBookmarkedFlights();
         </div>
         <div style="clear:both;">&nbsp;</div>
         <div style="clear:both;">&nbsp;</div>
-        <div class="saveParam">
-            <button name="saveParam" type="submit" value="saveParam" class="saveParam">Save
-                Search Parameters</button>
-        </div>
-        <div class="search">
-            <button name="searchResults" type="submit" value="simpleSearchResults" class="search">Search For
-                Flights</button>
+        <div class="containerSaveSearchAndSearch">
+            <div class="saveParam">
+                <button name="saveParam" type="submit" value="saveParam" class="saveParam">Save
+                    Search Parameters</button>
+            </div>
+            <div class="search">
+                <button name="searchResults" type="submit" value="simpleSearchResults" class="search">Search For
+                    Flights</button>
+            </div>
         </div>
     </form>
     </div>

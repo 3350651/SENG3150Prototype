@@ -995,24 +995,29 @@ public class UserBean implements Serializable {
 		}
 	}
 
-	public static void removeFromBookmarkedFlights(String userID, String bookmarkedFlightID) {
-		String deleteBookmarkedFlight = "DELETE FROM BOOKMARKEDFLIGHT WHERE bookmarkedFlightID = ? AND userID = ?";
-		String deleteFlightPaths = "DELETE FROM FLIGHTPATH WHERE bookmarkedFlightID = ?";
+	public static void removeFromBookmarkedFlights(String userID, String flightPathID) {
+		String deleteBookmarkedFlight = "DELETE FROM BOOKMARKEDFLIGHT WHERE flightPathID = ?";
+		String deleteFlightsAssociated = "DELETE FROM FLIGHTPATHFLIGHT WHERE flightPathID = ?";
+		String deleteFlightPaths = "DELETE FROM FLIGHTPATH WHERE flightPathID = ?";
 
 		try (Connection connection = ConfigBean.getConnection();
 			 PreparedStatement deleteBookmarked = connection.prepareStatement(deleteBookmarkedFlight);
-			 PreparedStatement deletePaths = connection.prepareStatement(deleteFlightPaths)) {
+			 PreparedStatement deleteFlights = connection.prepareStatement(deleteFlightsAssociated);
+			 PreparedStatement deletePath = connection.prepareStatement(deleteFlightPaths)) {
 
 			connection.setAutoCommit(false); // Begin a transaction
 
-			// Delete flight paths associated with the bookmarked flight
-			deletePaths.setString(1, bookmarkedFlightID);
-			deletePaths.executeUpdate();
-
 			// Delete the bookmarked flight
-			deleteBookmarked.setString(1, bookmarkedFlightID);
-			deleteBookmarked.setString(2, userID);
+			deleteBookmarked.setString(1, flightPathID);
 			deleteBookmarked.executeUpdate();
+
+			// Delete flights associated with the bookmarked flightpath
+			deleteFlights.setString(1, flightPathID);
+			deleteFlights.executeUpdate();
+
+			// Delete flight path associated with the bookmarked flightpath
+			deletePath.setString(1, flightPathID);
+			deletePath.executeUpdate();
 
 			connection.commit();
 
@@ -1074,39 +1079,20 @@ public class UserBean implements Serializable {
 		}
 	}
 
-	public static void addToSavedSearches(String userID, int searchID, String destination, String departure, int flexibleDays, int adultPassengers, int childPassengers, Timestamp departureTime) {
+	public static void addToSavedSearches(String userID, SearchBean savedSearch) {
 		String query = "INSERT INTO USERSAVEDSEARCHES VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try (Connection connection = ConfigBean.getConnection();
-			 PreparedStatement checkSearch = connection.prepareStatement(
-					 "SELECT * FROM USERSAVEDSEARCHES WHERE userID = ? AND DepartureTime = ? AND DepartureLocation = ? AND Destination = ? AND FlexibleDays = ? AND AdultPassengers = ? AND ChildPassengers = ?");
 			 PreparedStatement insertStatement = connection.prepareStatement(query)) {
 
-			checkSearch.setString(1, userID);
-			checkSearch.setTimestamp(2, departureTime);
-			checkSearch.setString(3, departure);
-			checkSearch.setString(4, destination);
-			checkSearch.setInt(5, flexibleDays);
-			checkSearch.setInt(6, adultPassengers);
-			checkSearch.setInt(7, childPassengers);
-
-			try (ResultSet resultSet1 = checkSearch.executeQuery()) {
-				if (resultSet1.next()) {
-					// Flight already exists
-					int test = 0;
-					return;
-				}
-			}
-
-			insertStatement.setInt(1, searchID);
-			insertStatement.setTimestamp(2, departureTime);
-			insertStatement.setString(3, departure);
-			insertStatement.setString(4, destination);
-			insertStatement.setInt(5, flexibleDays);
-			insertStatement.setInt(6, adultPassengers);
-			insertStatement.setInt(7, childPassengers);
+			insertStatement.setInt(1, savedSearch.getSearchID());
+			insertStatement.setTimestamp(2, savedSearch.getDepartureDate());
+			insertStatement.setString(3, savedSearch.getDeparture());
+			insertStatement.setString(4, savedSearch.getDestination());
+			insertStatement.setInt(5, savedSearch.getFlexible());
+			insertStatement.setInt(6, savedSearch.getAdultPassengers());
+			insertStatement.setInt(7, savedSearch.getChildPassengers());
 			insertStatement.setString(8, userID);
-
 			insertStatement.executeUpdate();
 
 		} catch (SQLException e) {
@@ -1115,7 +1101,7 @@ public class UserBean implements Serializable {
 	}
 
 	public static void removeFromSavedSearches(String userID, int searchID) {
-		String query = "DELETE FROM USERSAVEDSEARCHES WHERE searchID = ? AND userID = ?";
+		String query = "DELETE FROM USERSAVEDSEARCHES WHERE SearchID = ? AND userID = ?";
 
 		try {
 			Connection connection = ConfigBean.getConnection();

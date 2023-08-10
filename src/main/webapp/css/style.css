@@ -1003,7 +1003,7 @@ button.button#flightDetailsModifyBookmarked{
 }
 
 button.button#skipQuestionnaire{
-    background-color: red;
+    background-color: white;
     color: red;
     border: solid 1px red;
     width: 100%;
@@ -1011,7 +1011,7 @@ button.button#skipQuestionnaire{
 }
 
 button.button#skipQuestionnaire:hover{
-    background-color: white;
+    background-color: red;
     color: white;
     border: solid 1px red;
 }
@@ -1038,4 +1038,8 @@ div.savedSearch{
 
 form.flightSearchResultButtons, form.groupFavouritesForm{
     float: left;
+}
+
+div.containerSaveSearchAndSearch{
+    display: flex;
 }
