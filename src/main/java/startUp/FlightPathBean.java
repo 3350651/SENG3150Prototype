@@ -9,13 +9,12 @@ public class FlightPathBean {
     private Stack<FlightBean> flightPath;
     private LinkedList<String> destinations;
     private int id;
-
     private float minPrice;
 
     public FlightPathBean() {
         flightPath = new Stack<>();
         destinations = new LinkedList<>();
-        id = ThreadLocalRandom.current().nextInt(00000000, 99999999);
+        id = ThreadLocalRandom.current().nextInt(10000000, 99999999);
         minPrice = 0;
     }
 

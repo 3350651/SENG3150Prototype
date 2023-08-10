@@ -487,12 +487,14 @@ public class UserBean implements Serializable {
 
 	public void loadBookmarkedFlights(String userID) {
 		Queue<BookmarkedFlightBean> flightsToSort = null;
+		HashMap<Integer, Float> hm = new HashMap<>();
 		try {
-			String query = "SELECT fp.* " +
-					"FROM FLIGHTPATH fp " +
-					"JOIN BOOKMARKEDFLIGHT bf ON fp.bookmarkedFlightID = bf.bookmarkedFlightID " +
+			String query = "SELECT fpf.*, fp.minimumPrice " +
+					"FROM FLIGHTPATHFLIGHT fpf " +
+					"JOIN FLIGHTPATH fp ON fpf.flightPathID = fp.flightPathID " +
+					"JOIN BOOKMARKEDFLIGHT bf ON bf.flightPathID = fp.flightPathID " +
 					"WHERE bf.userID = ? " +
-					"ORDER BY fp.bookmarkedFlightID, fp.DepartureTime;";
+					"ORDER BY bf.flightPathID, fpf.DepartureTime DESC; ";
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, userID);
@@ -502,10 +504,13 @@ public class UserBean implements Serializable {
 				String airlineCodeToAdd = result.getString("AirlineCode");
 				String flightNumberToAdd = result.getString("FlightNumber");
 				Timestamp departureTimeToAdd = result.getTimestamp("DepartureTime");
-				int bookmarkedFlightID = Integer.parseInt(result.getString("bookmarkedFlightID"));
-
+				int flightPathID = Integer.parseInt(result.getString("flightPathID"));
+				float minimumCost = result.getFloat("minimumPrice");
+				hm.put(flightPathID, minimumCost);
+				int leg = result.getInt("Leg");
 				FlightBean flightToAdd = new FlightBean(airlineCodeToAdd, flightNumberToAdd, departureTimeToAdd);
-				BookmarkedFlightBean bfb = new BookmarkedFlightBean(flightToAdd, bookmarkedFlightID);
+				flightToAdd.setLeg(leg);
+				BookmarkedFlightBean bfb = new BookmarkedFlightBean(flightToAdd, flightPathID);
 				flightsToSort.add(bfb);
 			}
 
@@ -526,14 +531,15 @@ public class UserBean implements Serializable {
 			if (currentFlightPathID != tempFlightPathID) {
 				FlightPathBean fpb = new FlightPathBean();
 				Stack<FlightBean> flights = new Stack<FlightBean>();
-				fpb.setFlightPath(flights);
+				float minimumPrice = hm.get(currentFlightPathID);
+				fpb.setMinPrice(minimumPrice);
 
 				while (!flightsToSort.isEmpty() && flightsToSort.peek().getId() == currentFlightPathID) {
 					FlightBean flightToAddToPath = flightsToSort.poll().getFlight();
 					flights.add(flightToAddToPath);
 				}
-
-				flightPaths.add(fpb);
+				fpb.setFlightPath(flights);
+				this.addBookmarkedFlight(fpb);
 				tempFlightPathID = currentFlightPathID; // update tempFlightPathID
 			}
 		}
@@ -952,26 +958,37 @@ public class UserBean implements Serializable {
 	}
 
 	public static void addToBookmarkedFlights(String userID, FlightPathBean flight) {
+		String insertFlightPath = "INSERT INTO FLIGHTPATH VALUES(?, ?)";
+		String insertFlightPathFlight = "INSERT INTO FLIGHTPATHFLIGHT VALUES (?, ?, ?, ?, ?)";
 		String insertBookmarkedFlight = "INSERT INTO BOOKMARKEDFLIGHT VALUES (?, ?)";
-		String insertFlightPath = "INSERT INTO FLIGHTPATH VALUES(?, ?, ?, ?, ?)";
 
 		try (Connection connection = ConfigBean.getConnection();
-			 PreparedStatement insertBookmarked = connection.prepareStatement(insertBookmarkedFlight);
-			 PreparedStatement insertPath = connection.prepareStatement(insertFlightPath)) {
+			PreparedStatement insertPath = connection.prepareStatement(insertFlightPath);
+			PreparedStatement insertFlight = connection.prepareStatement(insertFlightPathFlight);
+			PreparedStatement insertBookmarked = connection.prepareStatement(insertBookmarkedFlight)) {
+
+			insertPath.setString(1, String.valueOf(flight.getId()));
+			insertPath.setFloat(2, flight.getMinPrice());
+			insertPath.executeUpdate();
+
+			for (FlightBean flightInFlightPath: flight.getFlightPath()){
+				insertFlight.setString(1, String.valueOf(flight.getId()));
+				insertFlight.setString(2, flightInFlightPath.getAirline());
+				insertFlight.setString(3, flightInFlightPath.getFlightName());
+				if (flightInFlightPath.getLeg() == 2){
+					insertFlight.setTimestamp(4, flightInFlightPath.getOriginalFlightDepartureTime());
+				}
+				else{
+					insertFlight.setTimestamp(4, flightInFlightPath.getFlightTime());
+				}
+				insertFlight.setInt(5, flightInFlightPath.getLeg());
+				insertFlight.executeUpdate();
+			}
 
 			insertBookmarked.setString(1, String.valueOf(flight.getId()));
 			insertBookmarked.setString(2, userID);
 			insertBookmarked.executeUpdate();
 
-			for (FlightBean flightInFlightPath: flight.getFlightPath()){
-				int fpID = ThreadLocalRandom.current().nextInt(00000000, 99999999);
-				insertPath.setString(1, String.valueOf(fpID));
-				insertPath.setString(2, flightInFlightPath.getAirline());
-				insertPath.setString(3, flightInFlightPath.getFlightName());
-				insertPath.setTimestamp(4, flightInFlightPath.getFlightTime());
-				insertPath.setString(5, String.valueOf(flight.getId()));
-				insertPath.executeUpdate();
-			}
 		} catch (SQLException e) {
 			// Handle or log the exception
 			e.printStackTrace();

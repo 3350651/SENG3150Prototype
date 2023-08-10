@@ -37,7 +37,7 @@ if (user != null && user.getBookmarkedFlights() != null) {
                                 <div class="DepartureLocationResult"><%=flightPath.getFlightPath().get(x).getDeparture().getDestinationName()%></div>
                                 <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
                             <%}%>
-                            <div class="DestinationLocationResult"><%=flightPath.getInitialFlight().getDestination().getDestinationName()%></div>
+                            <div class="DestinationLocationResult"><%=flightPath.getLastFlight().getDestination().getDestinationName()%></div>
                         </div>
                         <div class="searchResultRow2">
                             <div class="priceResult">$$$</div>

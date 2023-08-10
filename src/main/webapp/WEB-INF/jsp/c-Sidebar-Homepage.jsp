@@ -47,16 +47,10 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
 
     <!-- TODO: fix linking here -->
         <button type="submit" class="button" name="viewFlight" value="viewFlight">
-        <div class="searchResultRow1">
-        <div class="DepartureLocationResult"><%=flightPath.getFlightPath().get(flightPath.getFlightPath().size()-1).getDeparture().getDestinationName()%> &nbsp;</div>
-        <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
-        <div class="DestinationLocationResult">&nbsp;<%=flightPath.getInitialFlight().getDestination().getDestinationName()%> &nbsp; </div>
-        <% if(flightPath.getFlightPath().size() == 3){ %>
-        <div class="QuantityOfStops">  (1 stopover) </div>
-        <%}%>
-        <% if(flightPath.getFlightPath().size() > 3){ %>
-        <div class="QuantityOfStops">  (<%=flightPath.getFlightPath().size()-2 %> stopovers) </div>
-        <%}%>
+        <div class="searchResultRow1" id="sidebar">
+        <div class="DepartureLocationResult" id="sidebar"><%=flightPath.getFlightPath().get(flightPath.getFlightPath().size()-1).getDeparture().getDestinationName()%> &nbsp;</div>
+        <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" id="sidebar">
+        <div class="DestinationLocationResult" id="sidebar">&nbsp;<%=flightPath.getLastFlight().getDestination().getDestinationName()%> &nbsp; </div>
         </div>
         </button>
     <%

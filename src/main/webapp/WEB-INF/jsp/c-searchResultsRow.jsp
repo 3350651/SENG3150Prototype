@@ -17,14 +17,14 @@
                 <div class="simpleFlightCardColumn1">
                 <div class="flightInfo">
                     <div class="searchResultRow1">
-                        <div class="DepartureLocationResult"><%=flightPath.getFlightPath().get(flightPath.getFlightPath().size()-1).getDeparture().getDestinationName()%> &nbsp;</div>
+                        <div class="DepartureLocationResult"><%=flightPath.getInitialFlight().getDeparture().getDestinationName() %> &nbsp;</div>
                         <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
-                        <div class="DestinationLocationResult">&nbsp;<%=flightPath.getInitialFlight().getDestination().getDestinationName()%> &nbsp; </div>
-                        <% if(flightPath.getFlightPath().size() == 3){ %>
+                        <div class="DestinationLocationResult">&nbsp;<%=flightPath.getLastFlight().getDestination().getDestinationName() %> &nbsp; </div>
+                        <% if(flightPath.getFlightPath().size() == 2){ %>
                         <div class="QuantityOfStops">  (1 stopover) </div>
                         <%}%>
-                        <% if(flightPath.getFlightPath().size() > 3){ %>
-                        <div class="QuantityOfStops">  (<%=flightPath.getFlightPath().size()-2 %> stopovers) </div>
+                        <% if(flightPath.getFlightPath().size() > 2){ %>
+                        <div class="QuantityOfStops">  (<%=flightPath.getFlightPath().size()-1 %> stopovers) </div>
                         <%}%>
                     </div>
                     <div class="searchResultRow2">
