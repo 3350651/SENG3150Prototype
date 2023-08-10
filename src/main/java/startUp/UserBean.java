@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class UserBean implements Serializable {
 
@@ -29,7 +30,7 @@ public class UserBean implements Serializable {
 	private String questionnaireCompleted;
 	private LocalDate dateOfBirth;
 	private LinkedList<String> tagSet;
-	private LinkedList<FlightBean> bookmarkedFlights;
+	private LinkedList<FlightPathBean> bookmarkedFlights;
 	private LinkedList<SearchBean> savedSearches;
 	private LinkedList<DestinationBean> favouriteDestinations;
 
@@ -249,11 +250,11 @@ public class UserBean implements Serializable {
 		this.hasLogin = hasLogin;
 	}
 
-	public LinkedList<FlightBean> getBookmarkedFlights() {
+	public LinkedList<FlightPathBean> getBookmarkedFlights() {
 		return bookmarkedFlights;
 	}
 
-	public void setBookmarkedFlights(LinkedList<FlightBean> bookmarkedFlights) {
+	public void setBookmarkedFlights(LinkedList<FlightPathBean> bookmarkedFlights) {
 		this.bookmarkedFlights = bookmarkedFlights;
 	}
 
@@ -273,29 +274,22 @@ public class UserBean implements Serializable {
 		this.favouriteDestinations = favouriteDestinations;
 	}
 
-	public void addBookmarkedFlight(FlightBean flight) {
+	public void addBookmarkedFlight(FlightPathBean flightPath) {
 		boolean tagExists = false;
 		for (int i = 0; i < getBookmarkedFlights().size(); i++) {
-			if (getBookmarkedFlights().get(i).equals(flight)) {
+			if (getBookmarkedFlights().get(i).equals(flightPath)) { //TODO: error check this by booking same flight
 				tagExists = true;
 				break;
 			}
 		}
 		if (!tagExists) {
-			getBookmarkedFlights().add(flight);
+			getBookmarkedFlights().add(flightPath);
 		}
 	}
 
-	public void removeBookmarkedFlight(FlightBean flight) {
-		String airlineCodeToAdd = flight.getAirline();
-		String flightNumberToAdd = flight.getFlightName();
-		Timestamp departureTimeToAdd = flight.getFlightTime();
+	public void removeBookmarkedFlight(int bookmarkedFlightID) {
 		for (int i = 0; i < getBookmarkedFlights().size(); i++) {
-			String existingAirlineCode = getBookmarkedFlights().get(i).getAirline();
-			String existingFlightNumber = getBookmarkedFlights().get(i).getFlightName();
-			Timestamp existingDepartureTime = getBookmarkedFlights().get(i).getFlightTime();
-			if (airlineCodeToAdd.equals(existingAirlineCode) && flightNumberToAdd.equals(existingFlightNumber)
-					&& departureTimeToAdd.equals(existingDepartureTime)) {
+			if (bookmarkedFlightID == getBookmarkedFlights().get(i).getId()) {
 				getBookmarkedFlights().remove(i);
 				break;
 			}
@@ -387,7 +381,7 @@ public class UserBean implements Serializable {
 			String themePreference, String questionnaireCompleted, LocalDate dateOfBirth) {
 		try {
 			Random random = new Random();
-			userID = String.format("%08d", random.nextInt(100000000));
+			userID = String.format("%08d", random.nextInt(10000000));
 
 			String query = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			Connection connection = ConfigBean.getConnection();
@@ -492,28 +486,27 @@ public class UserBean implements Serializable {
 	}
 
 	public void loadBookmarkedFlights(String userID) {
+		Queue<BookmarkedFlightBean> flightsToSort = null;
 		try {
-			String query = "SELECT *\n" +
-					"FROM Flights\n" +
-					"INNER JOIN USERBOOKMARKEDFLIGHTS ON Flights.AirlineCode = USERBOOKMARKEDFLIGHTS.AirlineCode\n" +
-					"AND Flights.FlightNumber = USERBOOKMARKEDFLIGHTS.FlightNumber AND Flights.DepartureTime = USERBOOKMARKEDFLIGHTS.DepartureTime\n"
-					+
-					"WHERE USERBOOKMARKEDFLIGHTS.userID = ?;";
+			String query = "SELECT fp.* " +
+					"FROM FLIGHTPATH fp " +
+					"JOIN BOOKMARKEDFLIGHT bf ON fp.bookmarkedFlightID = bf.bookmarkedFlightID " +
+					"WHERE bf.userID = ? " +
+					"ORDER BY fp.bookmarkedFlightID, fp.DepartureTime;";
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, userID);
 			ResultSet result = statement.executeQuery();
-
+			flightsToSort = new LinkedList<>();
 			while (result.next()) {
 				String airlineCodeToAdd = result.getString("AirlineCode");
 				String flightNumberToAdd = result.getString("FlightNumber");
-				String departureCode = result.getString("DepartureCode");
-				if (result.getString("FlightNumber") != null) {
-					String stopOverCode = result.getString("StopOverCode");
-				}
 				Timestamp departureTimeToAdd = result.getTimestamp("DepartureTime");
+				int bookmarkedFlightID = Integer.parseInt(result.getString("bookmarkedFlightID"));
+
 				FlightBean flightToAdd = new FlightBean(airlineCodeToAdd, flightNumberToAdd, departureTimeToAdd);
-				this.addBookmarkedFlight(flightToAdd);
+				BookmarkedFlightBean bfb = new BookmarkedFlightBean(flightToAdd, bookmarkedFlightID);
+				flightsToSort.add(bfb);
 			}
 
 			result.close();
@@ -522,6 +515,27 @@ public class UserBean implements Serializable {
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 			System.err.println(Arrays.toString(e.getStackTrace()));
+		}
+
+		Stack<FlightPathBean> flightPaths = new Stack<FlightPathBean>();
+		int tempFlightPathID = -1; // Initialize to a value that doesn't match any ID
+
+		while (!flightsToSort.isEmpty()) {
+			int currentFlightPathID = flightsToSort.peek().getId();
+
+			if (currentFlightPathID != tempFlightPathID) {
+				FlightPathBean fpb = new FlightPathBean();
+				Stack<FlightBean> flights = new Stack<FlightBean>();
+				fpb.setFlightPath(flights);
+
+				while (!flightsToSort.isEmpty() && flightsToSort.peek().getId() == currentFlightPathID) {
+					FlightBean flightToAddToPath = flightsToSort.poll().getFlight();
+					flights.add(flightToAddToPath);
+				}
+
+				flightPaths.add(fpb);
+				tempFlightPathID = currentFlightPathID; // update tempFlightPathID
+			}
 		}
 	}
 
@@ -937,62 +951,56 @@ public class UserBean implements Serializable {
 		}
 	}
 
-	public static void addToBookmarkedFlights(String userID, String airlineCode, String flightNumber,
-			Timestamp departureTime) {
-		String query = "INSERT INTO USERBOOKMARKEDFLIGHTS VALUES (?, ?, ?, ?, ?)";
-		String tagID = "-1"; // initialize tagID to an invalid value
+	public static void addToBookmarkedFlights(String userID, FlightPathBean flight) {
+		String insertBookmarkedFlight = "INSERT INTO BOOKMARKEDFLIGHT VALUES (?, ?)";
+		String insertFlightPath = "INSERT INTO FLIGHTPATH VALUES(?, ?, ?, ?, ?)";
 
 		try (Connection connection = ConfigBean.getConnection();
-				PreparedStatement checkFlight = connection.prepareStatement(
-						"SELECT * FROM USERBOOKMARKEDFLIGHTS WHERE userID = ? AND airlineCode = ? AND flightNumber = ? AND departureTime = ?");
-				PreparedStatement insertStatement = connection.prepareStatement(query)) {
+			 PreparedStatement insertBookmarked = connection.prepareStatement(insertBookmarkedFlight);
+			 PreparedStatement insertPath = connection.prepareStatement(insertFlightPath)) {
 
-			checkFlight.setString(1, userID);
-			checkFlight.setString(2, airlineCode);
-			checkFlight.setString(3, flightNumber);
-			checkFlight.setTimestamp(4, departureTime);
+			insertBookmarked.setString(1, String.valueOf(flight.getId()));
+			insertBookmarked.setString(2, userID);
+			insertBookmarked.executeUpdate();
 
-			try (ResultSet resultSet1 = checkFlight.executeQuery()) {
-				if (resultSet1.next()) {
-					// Flight already exists
-					return;
-				}
+			for (FlightBean flightInFlightPath: flight.getFlightPath()){
+				int fpID = ThreadLocalRandom.current().nextInt(00000000, 99999999);
+				insertPath.setString(1, String.valueOf(fpID));
+				insertPath.setString(2, flightInFlightPath.getAirline());
+				insertPath.setString(3, flightInFlightPath.getFlightName());
+				insertPath.setTimestamp(4, flightInFlightPath.getFlightTime());
+				insertPath.setString(5, String.valueOf(flight.getId()));
+				insertPath.executeUpdate();
 			}
-
-			// Generate userBookmarkedFlightID
-			Random random = new Random();
-			String userBookmarkedFlightID = String.format("%08d", random.nextInt(100000000));
-
-			insertStatement.setString(1, userBookmarkedFlightID);
-			insertStatement.setString(2, userID);
-			insertStatement.setString(3, airlineCode);
-			insertStatement.setString(4, flightNumber);
-			insertStatement.setTimestamp(5, departureTime);
-
-			insertStatement.executeUpdate();
-
 		} catch (SQLException e) {
 			// Handle or log the exception
 			e.printStackTrace();
 		}
 	}
 
-	public static void removeFromBookmarkedFlights(String userID, String airlineCode, String flightNumber,
-			Timestamp departureTime) {
-		String query = "DELETE FROM USERBOOKMARKEDFLIGHTS WHERE userID = ? AND airlineCode = ? AND flightNumber = ? AND departureTime = ?";
+	public static void removeFromBookmarkedFlights(String userID, String bookmarkedFlightID) {
+		String deleteBookmarkedFlight = "DELETE FROM BOOKMARKEDFLIGHT WHERE bookmarkedFlightID = ? AND userID = ?";
+		String deleteFlightPaths = "DELETE FROM FLIGHTPATH WHERE bookmarkedFlightID = ?";
 
-		try {
-			Connection connection = ConfigBean.getConnection();
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, userID);
-			statement.setString(2, airlineCode);
-			statement.setString(3, flightNumber);
-			statement.setTimestamp(4, departureTime);
-			statement.executeUpdate();
-			statement.close();
+		try (Connection connection = ConfigBean.getConnection();
+			 PreparedStatement deleteBookmarked = connection.prepareStatement(deleteBookmarkedFlight);
+			 PreparedStatement deletePaths = connection.prepareStatement(deleteFlightPaths)) {
 
-			connection.close();
+			connection.setAutoCommit(false); // Begin a transaction
+
+			// Delete flight paths associated with the bookmarked flight
+			deletePaths.setString(1, bookmarkedFlightID);
+			deletePaths.executeUpdate();
+
+			// Delete the bookmarked flight
+			deleteBookmarked.setString(1, bookmarkedFlightID);
+			deleteBookmarked.setString(2, userID);
+			deleteBookmarked.executeUpdate();
+
+			connection.commit();
+
 		} catch (SQLException e) {
+			// Handle or log the exception
 			e.printStackTrace();
 		}
 	}

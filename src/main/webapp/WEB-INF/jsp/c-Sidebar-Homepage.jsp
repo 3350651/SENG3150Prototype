@@ -3,6 +3,7 @@
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="startUp.FlightBean" %>
+<%@ page import="startUp.FlightPathBean" %>
 <%@ page import="startUp.GroupBean" %>
 <%@ page import="java.util.List" %>
 <%@ page import="startUp.DestinationBean" %>
@@ -11,7 +12,7 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
 %>
 <%
   UserBean user = (UserBean) session.getAttribute("userBean");
-  LinkedList<FlightBean> bookmarkedFlights = new LinkedList<>();
+  LinkedList<FlightPathBean> bookmarkedFlights = new LinkedList<>();
   if (user != null && user.getBookmarkedFlights() != null) {
     bookmarkedFlights = user.getBookmarkedFlights();
 }
@@ -40,16 +41,23 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
     <%
       int j=0;
       if (bookmarkedFlights.size() > 0){
-      for(FlightBean flight : bookmarkedFlights) { ;
+      for(FlightPathBean flightPath : bookmarkedFlights) { ;
     %>
     <form name="goToBookmarkedFlight<%= j+1 %>" action="flightSearch" method="POST">
 
-        <input type="hidden" name="airline" value="<%= flight.getAirline() %>" >
-        <input type="hidden" name="flightName" value="<%= flight.getFlightName() %>" >
-        <input type="hidden" name="flightTime" value="<%= flight.getFlightTime() %>" >
-
+    <!-- TODO: fix linking here -->
         <button type="submit" class="button" name="viewFlight" value="viewFlight">
-          <%= flight.getDeparture().getDestinationName() %> > <%= flight.getDestination().getDestinationName() %>, <%= flight.getFlightTime() %>
+        <div class="searchResultRow1">
+        <div class="DepartureLocationResult"><%=flightPath.getFlightPath().get(flightPath.getFlightPath().size()-1).getDeparture().getDestinationName()%> &nbsp;</div>
+        <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
+        <div class="DestinationLocationResult">&nbsp;<%=flightPath.getInitialFlight().getDestination().getDestinationName()%> &nbsp; </div>
+        <% if(flightPath.getFlightPath().size() == 3){ %>
+        <div class="QuantityOfStops">  (1 stopover) </div>
+        <%}%>
+        <% if(flightPath.getFlightPath().size() > 3){ %>
+        <div class="QuantityOfStops">  (<%=flightPath.getFlightPath().size()-2 %> stopovers) </div>
+        <%}%>
+        </div>
         </button>
     <%
       j++;}}

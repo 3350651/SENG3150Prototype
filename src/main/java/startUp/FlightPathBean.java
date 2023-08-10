@@ -3,14 +3,17 @@ package startUp;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class FlightPathBean {
     private Stack<FlightBean> flightPath;
     private LinkedList<String> destinations;
+    private int id;
 
     public FlightPathBean() {
         flightPath = new Stack<>();
         destinations = new LinkedList<>();
+        id = ThreadLocalRandom.current().nextInt(00000000, 99999999);
     }
 
     public FlightPathBean(Stack<FlightBean> flights) {
@@ -19,8 +22,8 @@ public class FlightPathBean {
         for (FlightBean flight : flights) {
             destinations.add(flight.getDeparture().getDestinationCode());
         }
+        id = ThreadLocalRandom.current().nextInt(00000000, 99999999);
     }
-
 
     public Stack<FlightBean> getFlightPath() {
         return flightPath;
@@ -37,6 +40,14 @@ public class FlightPathBean {
 
     public void setDestinations(LinkedList<String> destinations) {
         this.destinations = destinations;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean isLoopingDestination(FlightBean flight) {
