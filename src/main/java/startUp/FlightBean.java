@@ -11,67 +11,78 @@ import java.sql.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-public class  FlightBean implements Serializable {
+public class FlightBean implements Serializable {
 
     private String airline;
     private String airlineName;
-    private Timestamp flightTime;
+    private Timestamp flightDepartureTime;
+    private Timestamp flightArrivalTime;
+    private Timestamp originalFlightDepartureTime;
     private String flightName;
     private String planeType;
     private float minCost;
     private DestinationBean departure;
-    private DestinationBean stopOver;
     private DestinationBean destination;
     private LinkedList<AvailabilityBean> seatAvailability;
+    private FlightBean previousFlight;
+    private int leg;
 
     // constructor
 
     public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightTime, String newflightName,
-            String newPlaneType,
-            /* float newMinCost, */ DestinationBean newDeparture, DestinationBean newStopOver,
-            DestinationBean newDestination) {
+                      String newPlaneType,
+            /* float newMinCost, */ DestinationBean newDeparture, DestinationBean newDestination) {
         airline = newAirline;
         airlineName = newAirlineName;
-        flightTime = newFlightTime;
+        flightDepartureTime = newFlightTime;
         flightName = newflightName;
         planeType = newPlaneType;
         /* minCost = newMinCost; */
         departure = newDeparture;
-        stopOver = newStopOver;
         destination = newDestination;
         seatAvailability = new LinkedList<>();
     }
 
-    public FlightBean(String aline, String fname, DestinationBean dep, DestinationBean sover, DestinationBean arr, Timestamp ftime)
-    {
+    /**
+     * Used in the search algorithm
+     */
+    public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightDepartureTime, Timestamp newFlightArrivalTime, String newflightName,
+                      String newPlaneType, /* float newMinCost, */ DestinationBean newDeparture,
+                      DestinationBean newDestination, FlightBean newPreviousFlight, int newLeg, Timestamp newOriginalFlightTime) {
+        airline = newAirline;
+        airlineName = newAirlineName;
+        flightDepartureTime = newFlightDepartureTime;
+        flightArrivalTime = newFlightArrivalTime;
+        flightName = newflightName;
+        planeType = newPlaneType;
+        /* minCost = newMinCost; */
+        departure = newDeparture;
+        destination = newDestination;
+        seatAvailability = new LinkedList<>();
+        previousFlight = newPreviousFlight;
+        leg = newLeg;
+        originalFlightDepartureTime = newOriginalFlightTime;
+    }
+
+    public FlightBean(String aline, String fname, DestinationBean dep, DestinationBean arr, Timestamp ftime) {
         airline = aline;
         flightName = fname;
         departure = dep;
-        stopOver = sover;
         destination = arr;
-        flightTime = ftime;
+        flightDepartureTime = ftime;
     }
 
     // FlightBean constructor with primary key elements of Flights table
-    public FlightBean(String airline, String flightName, Timestamp flightTime){
+    public FlightBean(String airline, String flightName, Timestamp flightTime) {
         this.airline = airline;
         this.flightName = flightName;
-        this.flightTime = flightTime;
+        this.flightDepartureTime = flightTime;
         FlightBean infoToImport = getFlight(airline, flightName, flightTime);
         this.airlineName = infoToImport.getAirlineName();
         this.planeType = infoToImport.getPlaneType();
         this.destination = infoToImport.getDestination();
         this.departure = infoToImport.getDeparture();
-        this.stopOver = infoToImport.getStopOver();
     }
-
-//    public FlightBean(String airline, String flightName, String departureCode, String stopOverCode, Timestamp flightTime){
-//        this.airline = airline;
-//        this.flightName = flightName;
-//        this.departure = new DestinationBean(departureCode);
-//        this.stopOver = new DestinationBean(stopOverCode);
-//        this.flightTime = flightTime;
-//    }
 
     // getters and setters
     public String getAirline() {
@@ -91,11 +102,19 @@ public class  FlightBean implements Serializable {
     }
 
     public Timestamp getFlightTime() {
-        return flightTime;
+        return flightDepartureTime;
     }
 
     public void setFlightTime(Timestamp flightTime) {
-        this.flightTime = flightTime;
+        this.flightDepartureTime = flightTime;
+    }
+
+    public Timestamp getFlightArrivalTime() {
+        return flightArrivalTime;
+    }
+
+    public void setFlightArrivalTime(Timestamp flightArrivalTime) {
+        this.flightArrivalTime = flightArrivalTime;
     }
 
     public String getFlightName() {
@@ -118,7 +137,7 @@ public class  FlightBean implements Serializable {
      * public float getMinCost() {
      * return minCost;
      * }
-     * 
+     *
      * public void setMinCost(float minCost) {
      * this.minCost = minCost;
      * }
@@ -141,19 +160,11 @@ public class  FlightBean implements Serializable {
     }
 
     public float getMinCost() {
-        return minCost;
+        return seatAvailability.get(0).getPrice();
     }
 
     public void setMinCost(float minCost) {
         this.minCost = minCost;
-    }
-
-    public DestinationBean getStopOver() {
-        return stopOver;
-    }
-
-    public void setStopOver(DestinationBean stopOver) {
-        this.stopOver = stopOver;
     }
 
     public LinkedList<AvailabilityBean> getSeatAvailability() {
@@ -162,6 +173,30 @@ public class  FlightBean implements Serializable {
 
     public void setSeatAvailability(LinkedList<AvailabilityBean> seatAvailability) {
         this.seatAvailability = seatAvailability;
+    }
+
+    public FlightBean getPreviousFlight() {
+        return previousFlight;
+    }
+
+    public void setPreviousFlight(FlightBean previousFlight) {
+        this.previousFlight = previousFlight;
+    }
+
+    public Timestamp getOriginalFlightDepartureTime() {
+        return originalFlightDepartureTime;
+    }
+
+    public void setOriginalFlightDepartureTime(Timestamp originalFlightDepartureTime) {
+        this.originalFlightDepartureTime = originalFlightDepartureTime;
+    }
+
+    public int getLeg() {
+        return leg;
+    }
+
+    public void setLeg(int leg) {
+        this.leg = leg;
     }
 
     // get flight
@@ -193,17 +228,13 @@ public class  FlightBean implements Serializable {
                 String plane = result.getString(10);
                 Timestamp departTime = result.getTimestamp(6);
                 String departureCode = result.getString(3);
-                String stopOverCode = result.getString(4);
                 String destinationCode = result.getString(5);
                 String airlineName = result.getString(13);
 
                 DestinationBean rDeparture = new DestinationBean(departureCode);
-                DestinationBean rStopOver = new DestinationBean(stopOverCode);
                 DestinationBean rDestination = new DestinationBean(destinationCode);
 
-                flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
-                        rStopOver,
-                        rDestination);
+                flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture, rDestination);
             }
 
             statement.close();
@@ -217,10 +248,9 @@ public class  FlightBean implements Serializable {
 
     // TODO: get min cost
 
-    public void getAvailabilities(){
-        seatAvailability = AvailabilityBean.getAvailability(this.airline, this.flightName, this.flightTime);
+    public void getAvailabilities(int passengers) {
+        seatAvailability = AvailabilityBean.getAvailability(this.airline, this.flightName, this.originalFlightDepartureTime, this.leg, passengers);
     }
-
 
 
 }

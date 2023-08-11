@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.LinkedList;
+
 import static java.sql.Timestamp.valueOf;
 
 
@@ -26,6 +28,8 @@ public class SearchServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("userBean");
+		LinkedList<FlightPathBean> flightPath = (LinkedList<FlightPathBean>) session.getAttribute("flightResults");
+
 		if (request.getParameter("saveParam") != null) {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/MockUp-Homepage-SimpleSearch-LoggedIn-SavedParam.jsp");
 			requestDispatcher.forward(request, response);
@@ -44,15 +48,12 @@ public class SearchServlet extends HttpServlet {
 		}
 		if(request.getParameter("bookmark.x") != null){
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
-			String airlineCode = request.getParameter("airlineCode");
-			String flightNumber = request.getParameter("flightNumber");
-			String timestampString = request.getParameter("departureTime");
-			Timestamp departureTime = Timestamp.valueOf(timestampString);
-			UserBean.addToBookmarkedFlights(id, airlineCode, flightNumber, departureTime); // adds to database with foreign keys, creates PK
-			FlightBean f = new FlightBean(airlineCode, flightNumber, departureTime); // constructor searches for the remainder of flight information upon instantiation
-			user.addBookmarkedFlight(f);
+			int index = Integer.parseInt(request.getParameter("flightIndex"));
+			FlightPathBean fpb = flightPath.get(index);
+			UserBean.addToBookmarkedFlights(id, fpb);
+			user.addBookmarkedFlight(fpb);
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("favourite.x") != null){

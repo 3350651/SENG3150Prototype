@@ -32,7 +32,7 @@ public class CreateBookingServlet extends HttpServlet {
 
             //get the flight from the session and update availabilities
             FlightBean flight = (FlightBean) session.getAttribute("flight");
-            flight.getAvailabilities();
+//            flight.getAvailabilities();
             session.setAttribute("flight", flight); // overwrite the flight attribute
             LinkedList<FlightBean> returnFlights = (LinkedList<FlightBean>) req.getAttribute("returnFlights");
             FlightBean returnFlight = null;

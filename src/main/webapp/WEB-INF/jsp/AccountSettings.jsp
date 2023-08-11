@@ -6,9 +6,10 @@
 <% DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
   String dateOfBirthFormatted = user.getDateOfBirth().format(formatter); %>
 <%@ page import="startUp.FlightBean" %>
+<%@ page import="startUp.FlightPathBean" %>
 <%@ page import="startUp.DestinationBean" %>
 <%
-LinkedList<FlightBean> bookmarkedFlights = new LinkedList<>();
+LinkedList<FlightPathBean> bookmarkedFlights = new LinkedList<>();
 if (user != null && user.getBookmarkedFlights() != null) {
   bookmarkedFlights = user.getBookmarkedFlights();
   favouritedDestionations = user.getFavouritedDestinations();
@@ -95,8 +96,20 @@ if (user != null && user.getBookmarkedFlights() != null) {
     <h2>Bookmarked Flights</h2>
     <div class="settingsCategory">
         <ul>
-        <% for(FlightBean flight : bookmarkedFlights) { ;%>
-            <li><p class="valueOfSetting">From <%= flight.getDeparture().getDestinationName() %> to <%= flight.getDestination().getDestinationName() %>, departing on <%= flight.getFlightTime() %></p> </li>
+        <% for(FlightPathBean flightPath : bookmarkedFlights) { ;%>
+            <li>
+                <div class="searchResultRow1">
+                    <div class="DepartureLocationResult"><%=flightPath.getFlightPath().get(flightPath.getFlightPath().size()-1).getDeparture().getDestinationName()%> &nbsp;</div>
+                    <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
+                    <div class="DestinationLocationResult">&nbsp;<%=flightPath.getInitialFlight().getDestination().getDestinationName()%> &nbsp; </div>
+                    <% if(flightPath.getFlightPath().size() == 2){ %>
+                    <div class="QuantityOfStops">  (1 stopover) </div>
+                    <%}%>
+                    <% if(flightPath.getFlightPath().size() > 2){ %>
+                    <div class="QuantityOfStops">  (<%=flightPath.getFlightPath().size()-1 %> stopovers) </div>
+                    <%}%>
+                </div>
+            </li>
         <% } %>
         </ul>
     </div>

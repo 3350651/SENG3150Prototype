@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="efsavage.jquery.maven" type="repository">
+    <properties maven-id="com.efsavage.jquery:jquery-maven:1.7.2" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jquery-maven-1.7.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
