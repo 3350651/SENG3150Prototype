@@ -211,6 +211,9 @@ public class SearchBean implements Serializable {
             //go to next in queue
             flight = flightList.poll();
 
+            if (getFlightPathFrom(flight).getFlightPath().size() > 6) {
+                break;
+            }
 
             //check if destination
             while (Objects.equals(flight.getDestination().getDestinationCode(), destination)) {
