@@ -10,7 +10,7 @@
                             <option value="">Select Option</option>
                             <%for(DestinationBean destination: DestinationOps.getDestinations()){%>
                                 <option value=<%=destination.getDestinationCode()%>
-<% if (destination.getDestinationName().equals("Adelaide"))  { %> selected <% } %>
+<% if (destination.getDestinationName().equals("Sydney"))  { %> selected <% } %>
                                 ><%=destination.getDestinationName()%>
 
                                 </option>
@@ -22,7 +22,7 @@
                             <option value="">Select Option</option>
                             <%for(DestinationBean destination: DestinationOps.getDestinations()){%>
                                 <option value=<%=destination.getDestinationCode()%>
-<% if (destination.getDestinationName().equals("Bangkok"))  { %> selected <% } %>
+<% if (destination.getDestinationName().equals("Melbourne"))  { %> selected <% } %>
                                 ><%=destination.getDestinationName()%>
 
                                 </option>

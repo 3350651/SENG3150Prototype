@@ -8,6 +8,8 @@
 <% FlightPathBean flightPath = (FlightPathBean) session.getAttribute("flight"); %>
 <% LinkedList<FlightBean> flightList = (LinkedList<FlightBean>) session.getAttribute("flightList"); %>
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
+<% boolean viewReturnFlightSearchResults = (Boolean) session.getAttribute("viewReturnFlightSearchResults"); %>
+<% boolean viewReturnFlightDetails = (Boolean) session.getAttribute("viewReturnFlightDetails"); %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,16 +24,15 @@
         <main>
             <header>
                 <form action="flightSearch" method="POST">
+                    <input type="hidden" name="departureLocation" value="<%= flightPath.getInitialFlight().getDestination().getDestinationCode() %>">
+                    <input type="hidden" name="arrivalLocation" value="<%= flightPath.getLastFlight().getDeparture().getDestinationCode() %>">
+                    <input type="hidden" name="departureDate" value="<%= flightPath.getInitialFlight().getFlightTime() %>">
                     <button class="button" name="searchResults" value="simpleSearchResults">Back</button>
                 </form>
 
                 <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
                     alt="FlightPub Logo" class="centreLogo">
-                <h1>
-                    <%= flightPath.getInitialFlight().getDeparture().getDestinationName() %>
-                    To
-                    <%= flightPath.getLastFlight().getDestination().getDestinationName()%>
-                </h1>
+                <br />
                 <br />
                 <label for="progress">
                     <h2>Progress</h2>
@@ -39,6 +40,12 @@
                 <div class="outerProgress">
                     <div class="innerProgress" id="progress" style="width:33%">33%</div>
                 </div>
+
+                <h1 style="margin-top: 50px;">
+                    <%= flightPath.getInitialFlight().getDeparture().getDestinationName() %>
+                    To
+                    <%= flightPath.getLastFlight().getDestination().getDestinationName()%>
+                </h1>
             </header>
 
 
@@ -54,36 +61,62 @@
                     <td class="filledSection">
                         <div class="mainFlightDetailCell">
                             <h3>Flight Details:</h3>
-                            <p class="flightDetails">
+                            <div class="flightDetailsRow">
+                                <div class="flightDetailsColumn2">
+                                    <p>
+                                        <strong>
+                                        <%=flight.getDeparture().getDestinationName().toUpperCase()%>
+                                         &#8212;
+                                        <%=flight.getDestination().getDestinationName().toUpperCase()%>
+                                        </strong>
+                                    </p>
+                                    <p>
+                                        <%=flight.getFlightTime().toLocalDateTime().getDayOfMonth()%>
+                                        <%=flight.getMonthName(flight.getFlightTime())%>
+                                        <%=flight.getFlightTime().toLocalDateTime().getYear()%>
+                                        <br />
+                                        <%=flight.getCivilianTime(flight.getFlightTime())%>
+                                        <br />
+                                    </p>
 
-                                <br />
-                                <strong>Departure: </strong>
-                                <%=flight.getDeparture().getDestinationName()%>
-
-                                <br />
-                                <strong>Destination: </strong>
-                                <%=flight.getDestination().getDestinationName()%>
-
-                                <br />
-                                <strong>Airline: </strong>
-                                <%=flight.getAirlineName()%>
-
-                                <br />
-                                <strong>Departure Time:</strong>
-                                <%=flight.getFlightTime()%>
-
-                                <br />
-                                <strong>Flight Name:</strong>
-                                <%=flight.getFlightName()%>
-
-                                <br />
-                                <strong>Plane Model:</strong>
-                                <%=flight.getPlaneType()%>
-
-                                <br />
-                                <h3>Minimum price: <%=flight.getMinCost()%>
-                                </h3>
-                            </p>
+                                    <p>
+                                        <%=flight.getFlightArrivalTime().toLocalDateTime().getDayOfMonth()%>
+                                        <%=flight.getMonthName(flight.getFlightArrivalTime())%>
+                                        <%=flight.getFlightArrivalTime().toLocalDateTime().getYear()%>
+                                        <br />
+                                        <%=flight.getCivilianTime(flight.getFlightArrivalTime())%>
+                                        <br />
+                                    </p>
+                                </div>
+                                <div class="flightDetailsColumn2">
+                                    <p>
+                                        <%=flight.getFlightName()%>
+                                    </p>
+                                    <p>
+                                        <strong>DEPARTURE</strong>
+                                        <br />
+                                        <%=flight.getDeparture().getDestinationName()%>
+                                    </p>
+                                    <p>
+                                        <strong>ARRIVAL</strong>
+                                        <br />
+                                        <%=flight.getDestination().getDestinationName()%>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flightDetailsRow">
+                                <div class="flightDetailsColumnLeft">
+                                    <p>Flight operated by: </p>
+                                    <p>Plane model: </p>
+                                </div>
+                                <div class="flightDetailsColumnLeft">
+                                    <p><%=flight.getAirlineName()%></p>
+                                    <p><%=flight.getPlaneType()%></p>
+                                </div>
+                                <div class="flightDetailsColumnRight">
+                                    <p>Minimum price: <%=flight.getMinCost()%></p>
+                                </div>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -132,13 +165,15 @@
                     </tr>
             </table>
 
+            <% if (!viewReturnFlightSearchResults && !viewReturnFlightDetails) { %>
                 <fieldset class="background">
-                    <form action="flight" method="POST">
+                    <form action="flightSearch" method="POST">
                         <label for="returnDate">Return Date:</label>
-                        <input type="date" id="returnDate" name="returnDate" value="2014-01-03">
-                        <input type="hidden" name="returnSearch" value="true">
+                        <input type="date" id="returnDate" name="returnDate" value="<%= flightPath.getLastFlight().getTomorrow() %>" min="<%= flightPath.getLastFlight().getTomorrow() %>">
+                        <input type="hidden" name="departureLocation" value="<%= flightPath.getLastFlight().getDestination().getDestinationCode() %>">
+                        <input type="hidden" name="arrivalLocation" value="<%= flightPath.getInitialFlight().getDeparture().getDestinationCode() %>">
                         <br />
-                        <button class="button" type="submit">Search</button>
+                        <button name="searchResults" type="submit" value="simpleReturnSearchResults" class="search">Search</button>
                     </form>
                     <br />
                     <form action="createBooking" method="POST">
@@ -165,38 +200,176 @@
                             Continue One Way
                         </button>
                         <br />
+            <% } %>
+            <% if (viewReturnFlightSearchResults) { %>
+                <div class="centeringtext"> <h1>Search Results</h1> </div>
+                <jsp:include page="c-searchResultsRow.jsp">
+                    <jsp:param name="isReturnResults" value="true" />
+                </jsp:include>
+            <% } %>
+            <%
+                if (viewReturnFlightDetails) {
+                FlightPathBean returnFlightPath = (FlightPathBean) session.getAttribute("returnFlight");
+                LinkedList<FlightBean> returnFlightList = (LinkedList<FlightBean>) session.getAttribute("returnFlightList");
+            %>
+                <h1 style="margin-top: 50px;">
+                    <%= returnFlightPath.getInitialFlight().getDeparture().getDestinationName() %>
+                    To
+                    <%= returnFlightPath.getLastFlight().getDestination().getDestinationName()%>
+                </h1>
+                <br />
 
-<!-- RETURN FLIGHTS
-                        <%LinkedList<FlightBean> returnFlights = (LinkedList<FlightBean>) request.getAttribute("returnFlights");
-                        if(returnFlights != null){
-                            request.setAttribute("returnFlights", returnFlights);
-                            int index = 0;
-                            for(FlightBean returnFlight : returnFlights){ %>
-                                <fieldset class="foreground">
-                                    <button class="selectFlight" type="submit" name="returnFlight"
-                                        value=<%=index%>>Select</button>
-                                    <p class="flightDetails">
-                                        <strong>Airline: </strong>
-                                        <%=returnFlight.getAirlineName()%>
+                </header>
+
+                <table>
+                    <% int j = 0; for (FlightBean flight : returnFlightList ) { %>
+                    <tr>
+                        <!-- TODO: figure out how to get images from the destination -->
+                        <td class="filledSection"><img
+                                src="${pageContext.request.contextPath}/images/brisbaneCity.jpg"
+                                alt="Destination Image" width="250px" height="auto"
+                                class="destinationImage">
+                        </td>
+                        <td class="filledSection">
+                            <div class="mainFlightDetailCell">
+                                <h3>Flight Details:</h3>
+                                <div class="flightDetailsRow">
+                                    <div class="flightDetailsColumn2">
+                                        <p>
+                                            <strong>
+                                                <%=flight.getDeparture().getDestinationName().toUpperCase()%>
+                                                &#8212;
+                                                <%=flight.getDestination().getDestinationName().toUpperCase()%>
+                                            </strong>
+                                        </p>
+                                        <p>
+                                            <%=flight.getFlightTime().toLocalDateTime().getDayOfMonth()%>
+                                            <%=flight.getMonthName(flight.getFlightTime())%>
+                                            <%=flight.getFlightTime().toLocalDateTime().getYear()%>
                                             <br />
-                                            <strong>Departure Time:</strong>
-                                            <%=returnFlight.getFlightTime()%>
-                                                <br />
-                                                <strong>Flight Name:</strong>
-                                                <%=returnFlight.getFlightName()%>
-                                                    <br />
-                                                    <strong>Plane Model:</strong>
-                                                    <%=returnFlight.getPlaneType()%>
-                                                        <br />
-                                                        <h3>Minimum price:
-                                                            <%=returnFlight.getMinCost()%>
-                                                        </h3>
-                                    </p>
-                                </fieldset>
-                                <% index++;
-                            }%>
-                        <%}%>
--->
+                                            <%=flight.getCivilianTime(flight.getFlightTime())%>
+                                            <br />
+                                        </p>
+
+                                        <p>
+                                            <%=flight.getFlightArrivalTime().toLocalDateTime().getDayOfMonth()%>
+                                            <%=flight.getMonthName(flight.getFlightArrivalTime())%>
+                                            <%=flight.getFlightArrivalTime().toLocalDateTime().getYear()%>
+                                            <br />
+                                            <%=flight.getCivilianTime(flight.getFlightArrivalTime())%>
+                                            <br />
+                                        </p>
+                                    </div>
+                                    <div class="flightDetailsColumn2">
+                                        <p>
+                                            <%=flight.getFlightName()%>
+                                        </p>
+                                        <p>
+                                            <strong>DEPARTURE</strong>
+                                            <br />
+                                            <%=flight.getDeparture().getDestinationName()%>
+                                        </p>
+                                        <p>
+                                            <strong>ARRIVAL</strong>
+                                            <br />
+                                            <%=flight.getDestination().getDestinationName()%>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flightDetailsRow">
+                                    <div class="flightDetailsColumnLeft">
+                                        <p>Flight operated by: </p>
+                                        <p>Plane model: </p>
+                                    </div>
+                                    <div class="flightDetailsColumnLeft">
+                                        <p><%=flight.getAirlineName()%></p>
+                                        <p><%=flight.getPlaneType()%></p>
+                                    </div>
+                                    <div class="flightDetailsColumnRight">
+                                        <p>Minimum price: <%=flight.getMinCost()%></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <% } %>
+                    <tr>
+                        <td class="filledSection">
+                            <p><strong>Tags:</strong>
+
+                                <%LinkedList<String> returnTags = returnFlightPath.getLastFlight().getDestination().getTags();
+                                    if(tags != null){
+                                        for(String tag: tags){
+                                            if(tag != tags.getLast()){ %>
+                                            <%=tag +", "%>
+                                            <% }
+                                            else { %>
+                                            <%=tag + " ."%>
+                                            <%}%>
+                                        <%}%>
+                                    <%}%>
+                            </p>
+                        </td>
+                        <td class="filledSection">
+                            <p>
+                                <%= flightPath.getLastFlight().getDestination().getDestinationDescription()%>
+                                <br />
+                                <strong>Reputation Score: </strong>
+                                <%= flightPath.getLastFlight().getDestination().getReputationScore()%>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <% if(user==null){%>
+                </table>
+                <% }else{ %>
+
+                    <tr>
+                        <td class="filledSection" colspan="2" style="text-align: center;">
+                            <div class="floatGroupFavButton">
+                                <form name="addToGroupFaveList" action="GroupHomepage" method="GET">
+                                    <button class="button" type="submit" class="addToGroupFaveList" name="addToGroupFaveList"
+                                            id="addToGroupFaveList" value="addToGroupFaveList">Add To Group Favourite List</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    </table>
+                <% } %>
+            <% } %>
+
+
+                        <!-- RETURN FLIGHTS
+                                                <%LinkedList<FlightBean> returnFlights = (LinkedList<FlightBean>) request.getAttribute("returnFlights");
+                                                if(returnFlights != null){
+                                                    request.setAttribute("returnFlights", returnFlights);
+                                                    int index = 0;
+                                                    for(FlightBean returnFlight : returnFlights){ %>
+                                                        <fieldset class="foreground">
+                                                            <button class="selectFlight" type="submit" name="returnFlight"
+                                                                value=<%=index%>>Select</button>
+                                                            <p class="flightDetails">
+                                                                <strong>Airline: </strong>
+                                                                <%=returnFlight.getAirlineName()%>
+                                                                    <br />
+                                                                    <strong>Departure Time:</strong>
+                                                                    <%=returnFlight.getFlightTime()%>
+                                                                        <br />
+                                                                        <strong>Flight Name:</strong>
+                                                                        <%=returnFlight.getFlightName()%>
+                                                                            <br />
+                                                                            <strong>Plane Model:</strong>
+                                                                            <%=returnFlight.getPlaneType()%>
+                                                                                <br />
+                                                                                <h3>Minimum price:
+                                                                                    <%=returnFlight.getMinCost()%>
+                                                                                </h3>
+                                                            </p>
+                                                        </fieldset>
+                                                        <% index++;
+                                                    }%>
+                                                <%}%>
+                        -->
                     </form>
                 </fieldset>
                 <%}%>

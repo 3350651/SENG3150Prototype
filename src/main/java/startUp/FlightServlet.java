@@ -35,9 +35,6 @@ public class FlightServlet extends HttpServlet {
             FlightPathBean flight = flights.get(index);
 
             session.setAttribute("flight", flight);
-//            String flightDetails = flight.getAirline() + "," + flight.getFlightName() + ","
-//                    + flight.getFlightTime();
-//            session.setAttribute("flightDetails", flightDetails);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(req, resp);
         } else if (req.getParameter("returnSearch") != null) {

@@ -375,6 +375,35 @@ div.loginDisplay{
     text-align: left;
   }
 
+  .flightDetailsColumn2 {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+    .flightDetailsColumnLeft {
+      float: left;
+      width: 20%;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .flightDetailsColumnRight {
+          float: right;
+          width: 40%;
+          padding: 10px;
+          box-sizing: border-box;
+    }
+
+  /* Clear floats after the columns */
+  .flightDetailsRow:after {
+    content: "";
+    display: table;
+    clear: both;
+
+  }
+
   #submit {
     margin-left: 225px;
   }

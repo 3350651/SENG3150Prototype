@@ -5,12 +5,28 @@
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="startUp.UserBean" %>
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
+<% String isReturnResults = (String) request.getParameter("isReturnResults"); %>
 
 <div class="gridParent">
-    <% SearchBean search = (SearchBean) session.getAttribute("flightResults"); 
-    LinkedList<FlightPathBean> searchResults = search.getResults();
-    session.setAttribute("flightResults", searchResults);
+    <%
+        SearchBean search;
+        if (isReturnResults.equalsIgnoreCase("false")) {
+            search = (SearchBean) session.getAttribute("flightResults");
+        }
+        else {
+            search = (SearchBean) session.getAttribute("returnFlightResults");
+        }
+        //SearchBean search = isReturnResults.equalsIgnoreCase("false") ? (SearchBean) session.getAttribute("flightResults") : (SearchBean) session.getAttribute("returnFlightResults");
+        LinkedList<FlightPathBean> searchResults = search.getResults();
+
+        if (isReturnResults.equalsIgnoreCase("false")) {
+            session.setAttribute("flightResultList", searchResults);
+        }
+        else {
+            session.setAttribute("returnFlightResultList", searchResults);
+        }
     %>
+
     <% int i = 0; for (FlightPathBean flightPath : searchResults ) { %>
             <div class="recResults">
                 <div class="FlightSearchResult1">
@@ -52,13 +68,19 @@
                                 </div>
                             </form>
 
+
                             <form method="POST" action="flightSearch">
-                                <input type="hidden" name="flightIndex" value="<%= searchResults.indexOf(flightPath) %>">
+                                <% if (isReturnResults.equalsIgnoreCase("false")) {%>
+                                    <input type="hidden" name="flightIndex" value="<%= searchResults.indexOf(flightPath) %>">
+                                <% } else { %>
+                                    <input type="hidden" name="returnFlightIndex" value="<%= searchResults.indexOf(flightPath) %>">
+                                <% } %>
+                                <input type="hidden" name="isReturnResults" value="<%= isReturnResults %>">
                                 <div class="viewFlightDetailsButton">
                                     <button type="submit" class="viewFlightDetailsButton" name="viewFlight" value="viewFlight">View Details</button>
                                 </div>
                             </form>
-                           
+
                         </div>
 
                     </div>

@@ -28,6 +28,8 @@
 <br>
 <br>
 <div class="centeringtext"> <h1>Search Results</h1> </div>
-<jsp:include page="c-searchResultsRow.jsp"></jsp:include>
+<jsp:include page="c-searchResultsRow.jsp">
+    <jsp:param name="isReturnResults" value="false" />
+</jsp:include>
 </body>
 </html>

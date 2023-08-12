@@ -8,6 +8,8 @@ package startUp;
 
 import java.io.Serializable;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -258,6 +260,69 @@ public class FlightBean implements Serializable {
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
         return flight;
+    }
+
+    // used to display the custom format of dates in flight details page
+    public String getMonthName(Timestamp stamp) {
+        int monthValue = stamp.toLocalDateTime().getMonthValue();
+        String month = "";
+
+        switch (monthValue) {
+            case 1 : month = "January";
+                break;
+            case 2 : month = "February";
+                break;
+            case 3 : month = "March";
+                break;
+            case 4 : month = "April";
+                break;
+            case 5 : month = "May";
+                break;
+            case 6 : month = "June";
+                break;
+            case 7 : month = "July";
+                break;
+            case 8 : month = "August";
+                break;
+            case 9 : month = "September";
+                break;
+            case 10 : month = "October";
+                break;
+            case 11 : month = "November";
+                break;
+            case 12 : month = "December";
+                break;
+        }
+
+        return month;
+    }
+
+    // used to display the custom format of time in flight details page
+    public String getCivilianTime(Timestamp stamp) {
+        int hour = stamp.toLocalDateTime().getHour();
+        int minute = stamp.toLocalDateTime().getMinute();
+        String suffix = "";
+        String zeroMinute = "00";
+
+        if (hour < 12) {
+            suffix = "am";
+        }
+        else suffix = "pm";
+
+        return hour % 12 + ":" + (minute == 0 ? zeroMinute : minute)  + " " + suffix;
+    }
+
+    // This will be used as the first value of the return date input field, which is tomorrow's date of the arrival to the final destination
+    public String getTomorrow() {
+        LocalDateTime arrival = getFlightArrivalTime().toLocalDateTime();
+        LocalDateTime tomorrow = arrival.plus(1, ChronoUnit.DAYS);
+
+        String year = String.valueOf(tomorrow.getYear());
+        String month = tomorrow.getMonthValue() > 10 ? String.valueOf(tomorrow.getMonthValue()) : "0" + tomorrow.getMonthValue();
+        String day = tomorrow.getDayOfMonth() > 10 ? String.valueOf(tomorrow.getDayOfMonth()) : "0" + tomorrow.getDayOfMonth();
+        System.out.println(year + "-" + month + "-" + day);
+
+        return year + "-" + month + "-" + day;
     }
 
     // TODO: get min cost
