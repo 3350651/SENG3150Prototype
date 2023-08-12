@@ -17,6 +17,7 @@ import java.util.Comparator;
 
 import static startUp.ChatBean.getChatMessages;
 import static startUp.FlightBean.getFlight;
+import static startUp.MemberFlightVoteBean.deleteMemberFlightVotes;
 import static startUp.MemberFlightVoteBean.getFaveFlightScore;
 import static startUp.UserGroupsBean.getNumberOfMembers;
 
@@ -41,7 +42,7 @@ public class GroupFaveFlightBean implements Serializable {
         this.flightTime = flightTime;
         ChatBean chat = new ChatBean();
         this.chatID = chat.getChatID();
-        this.score = 0.5;
+        this.score = 0;
         this.groupID = groupID;
 
         addGroupFaveFlightToDB();
@@ -105,6 +106,30 @@ public class GroupFaveFlightBean implements Serializable {
 
     }
 
+    public static void deleteGroupFaveFlight(String groupID, String groupFaveFlightID){
+
+        //Get rid of related MemberFlightVotes
+        deleteMemberFlightVotes(groupID, groupFaveFlightID);
+
+        String query = "DELETE FROM GROUPFAVEFLIGHT WHERE [groupID] = ? AND [groupFaveFlightID] = ?";
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, groupID);
+            statement.setString(2, groupFaveFlightID);
+
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+
+    }
+
     public static boolean isInGroupFaveList(String airlineCode, String flightName, Timestamp departureTime, String groupID){
         boolean isFavourited = false;
         String query = "SELECT * FROM GROUPFAVEFLIGHT WHERE [AirlineCode] = ? AND [FlightNumber] = ? AND" +
@@ -121,6 +146,8 @@ public class GroupFaveFlightBean implements Serializable {
             while (result.next()) {
                 isFavourited = true;
             }
+            statement.close();
+            connection.close();
         }
         catch(SQLException e){
             System.err.println(e.getMessage());
@@ -219,7 +246,8 @@ public class GroupFaveFlightBean implements Serializable {
 
                 faveFlight = new GroupFaveFlightBean(id, code, name, time, chatID, rank, group);
             }
-
+            statement.close();
+            connection.close();
         }
         catch(SQLException e){
             System.err.println(e.getMessage());
@@ -267,7 +295,6 @@ public class GroupFaveFlightBean implements Serializable {
                 flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
                         rDestination);
             }
-
             statement.close();
             connection.close();
         } catch (SQLException e) {
@@ -291,6 +318,27 @@ public class GroupFaveFlightBean implements Serializable {
 
     public void setScore(double score){
         this.score = score;
+
+        updateGroupFaveFlightScore();
+    }
+
+    public void updateGroupFaveFlightScore(){
+        String query = "UPDATE GROUPFAVEFLIGHT SET [rank] = ? WHERE [groupFaveFlightID] = ?";
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setDouble(1, this.score);
+            statement.setString(2, this.groupFaveFlightID);
+
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
     }
 
     public double getScore(){
@@ -306,7 +354,8 @@ public class GroupFaveFlightBean implements Serializable {
         for(int i = 0; i < size; i++){
             GroupFaveFlightBean flight = faveFlights.removeFirst();
             double flightScore = getFaveFlightScore(flight.getGroupID(), flight.getGroupFaveFlightID());
-            flight.setScore(flightScore);
+            int members = getNumberOfMembers(groupID);
+            flight.setScore(flightScore/members);
             sortedFlights.addLast(flight);
         }
 
@@ -315,4 +364,68 @@ public class GroupFaveFlightBean implements Serializable {
 
         return sortedFlights;
     }
+
+    //Determine if the flight has been lockedIn
+    public static boolean lockedIn(String groupID, double score){
+        float groupSize = getNumberOfMembers(groupID);
+        return score == (groupSize * 2) / groupSize;
+    }
+
+    //Determine if the flight has been blacklisted
+    public static boolean blacklisted(String groupID, double score){
+        float groupSize = getNumberOfMembers(groupID);
+        return score == (groupSize * -2) / groupSize;
+    }
+
+    public static GroupFaveFlightBean getLockedIn(){
+        GroupFaveFlightBean lockedInFlight = new GroupFaveFlightBean();
+
+        String query = "SELECT * FROM GROUPFAVEFLIGHT WHERE [rank] = 2";
+        try{
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String id = result.getString(1);
+                String code = result.getString(2);
+                String name = result.getString(3);
+                Timestamp time = result.getTimestamp(4);
+                String chatID = result.getString(5);
+                double rank = result.getFloat(6);
+                String group = result.getString(7);
+
+                lockedInFlight = new GroupFaveFlightBean(id, code, name, time, chatID, rank, group);
+            }
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+
+        //Delete all the other flights for that group.
+        deleteAllNotLockedIn();
+
+        return lockedInFlight;
+    }
+
+    public static void deleteAllNotLockedIn(){
+        String query = "DELETE FROM GROUPFAVEFLIGHT WHERE [rank] != 2";
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+    }
+
+
 }

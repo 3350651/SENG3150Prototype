@@ -13,7 +13,10 @@
                     FlightBean flight=(FlightBean) session.getAttribute("flight");
                     GroupFaveFlightBean faveFlight = (GroupFaveFlightBean) session.getAttribute("faveFlight");
                     LinkedList<MessageBean> chatMessages = (LinkedList<MessageBean>) session.getAttribute("chatMessages");
-                    double memberVote = (double) session.getAttribute("memberVote");
+                    int memberVote = (int) session.getAttribute("memberVote");
+                    boolean lockedIn = (boolean) session.getAttribute("lockedIn");
+                    boolean poolFinished = (boolean) session.getAttribute("poolFinished");
+                    boolean isAdmin = (boolean) session.getAttribute("isAdmin");
                     %>
 
                         <head>
@@ -28,7 +31,7 @@
                             <main>
                                 <header>
                                     <form method="POST" action="GroupHomepage">
-                                        <button class="groupButton" type="submit" name="backToFaveFlightList" value="backToFaveFlightList">Back</button>
+                                        <button class="groupButton" type="submit" name="getGroupFaveList" value="getGroupFaveList">Back</button>
                                     </form>
                                     <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
                                         alt="FlightPub Logo" class="centreLogo">
@@ -105,8 +108,18 @@
 
                                 <table>
                                     <td class="filledSection">
+                                        <% if(poolFinished) { %>
+                                            <% if(isAdmin) { %>
+                                                <form method="POST" action="GroupHomepage">
+                                                     <button class="groupButton"  type="submit" name="makeBooking" value="true">Make Booking</button>
+                                                </form>
+                                            <% } else { %>
+                                                Booking will be made by Admin.
+                                            <% } %>
+                                        <% } else if(lockedIn) { %>
+                                            <p>Please finish group Money Pool to book trip!</p>
                                         <%
-                                        if(memberVote == 0) { %>
+                                        } else if(memberVote == 0) { %>
                                         <form method="POST" action="GroupHomepage">
                                             <button class="groupButton"  type="submit" name="vote" value="2">Lock-in</button>
                                             <button class="groupButton"  type="submit" name="vote" value="1">Upvote</button>
@@ -159,6 +172,7 @@
                                         <%}
                                         %>
 
+                                        <% if(!lockedIn) { %>
                                         <div>
                                             <form method="POST" action="GroupHomepage" onsubmit="return sendMessageForm()">
                                                 <label for="newMessage">Post a message: </label>
@@ -168,6 +182,7 @@
                                                 <input type="hidden" name="viewFaveFlight" value="viewFaveFlight">
                                             </form>
                                         </div>
+                                        <%}%>
                                     </td>
                                 </table>
 

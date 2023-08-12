@@ -8,10 +8,12 @@ UserBean user = (UserBean) session.getAttribute("userBean");
 GroupBean group = (GroupBean) session.getAttribute("group");
 LinkedList<GroupFaveFlightBean> faveFlights = (LinkedList<GroupFaveFlightBean>) session.getAttribute("faveFlights");
 LinkedList<String> destinations = (LinkedList<String>) session.getAttribute("destinations");
+Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
 int size = 0;
 if(faveFlights != null && !faveFlights.isEmpty()){
     size = faveFlights.size();
 }
+boolean lockedIn = (boolean) session.getAttribute("lockedIn");
 %>
 
 
@@ -45,22 +47,39 @@ if(faveFlights != null && !faveFlights.isEmpty()){
                     GroupFaveFlightBean faveFlight = faveFlights.removeFirst();
                     String dest = destinations.removeFirst();
                 %>
-                    <%= faveFlight.getFlightName() %>:<br>
-                    To <%= dest %><br>
-                    <form method="POST" action="GroupHomepage">
-                        <button class="groupButton" type="submit" name="viewFaveFlight" value="viewFaveFlight">View Flight</button><br><br>
-                        <input type="hidden" id="airlineCode" name="airlineCode" value="<%= faveFlight.getAirlineCode() %>">
-                        <input type="hidden" id="flightName" name="flightName" value="<%= faveFlight.getFlightName() %>">
-                        <input type="hidden" id="flightTime" name="flightTime" value="<%= faveFlight.getFlightTime() %>">
-                        <input type="hidden" id="getFlight" name="getFlight" value="true">
-                    </form>
-                <% faveFlights.addLast(faveFlight);
-                   destinations.addLast(dest);
-                }
+                    <% if(isAdmin) { %>
+                        <%= faveFlight.getFlightName() %>:<br>
+                        To <%= dest %><br>
+                        <form method="POST" action="GroupHomepage">
+                            <button class="groupButton" type="submit" name="viewFaveFlight" value="viewFaveFlight">View Flight</button><br><br>
+                            <input type="hidden" id="airlineCode" name="airlineCode" value="<%= faveFlight.getAirlineCode() %>">
+                            <input type="hidden" id="flightName" name="flightName" value="<%= faveFlight.getFlightName() %>">
+                            <input type="hidden" id="flightTime" name="flightTime" value="<%= faveFlight.getFlightTime() %>">
+                            <input type="hidden" id="getFlight" name="getFlight" value="true">
+                        </form>
+                        <% if(!lockedIn) { %>
+                        <form method="POST" action="GroupHomepage">
+                            <button class="groupButton" type="submit" name="removeFlight" value="removeFlight">Remove Flight</button><br><br>
+                            <input type="hidden" id="getGroupFaveList" name="getGroupFaveList" value="getGroupFaveList">
+                            <input type="hidden" id="getGroupFaveList" name="faveFlightID" value="<%= faveFlight.getGroupFaveFlightID()%>">
+                        </form>
+                        <%}%>
+                    <% faveFlights.addLast(faveFlight);
+                       destinations.addLast(dest);
+                    } else { %>
+                        <%= faveFlight.getFlightName() %>:<br>
+                        To <%= dest %><br>
+                        <form method="POST" action="GroupHomepage">
+                            <button class="groupButton" type="submit" name="viewFaveFlight" value="viewFaveFlight">View Flight</button><br><br>
+                            <input type="hidden" id="airlineCode" name="airlineCode" value="<%= faveFlight.getAirlineCode() %>">
+                            <input type="hidden" id="flightName" name="flightName" value="<%= faveFlight.getFlightName() %>">
+                            <input type="hidden" id="flightTime" name="flightTime" value="<%= faveFlight.getFlightTime() %>">
+                            <input type="hidden" id="getFlight" name="getFlight" value="true">
+                        </form>
+                <% } }
             } else { %>
-                <p>There are currently no favourited flights for the group!</p>
-            <%}
-            %>
+              <p>There are currently no favourited flights for the group!</p>
+            <%}%>
         </div>
 
     </main>
