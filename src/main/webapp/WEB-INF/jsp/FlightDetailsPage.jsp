@@ -23,12 +23,7 @@
     <body>
         <main>
             <header>
-                <form action="flightSearch" method="POST">
-                    <input type="hidden" name="departureLocation" value="<%= flightPath.getInitialFlight().getDestination().getDestinationCode() %>">
-                    <input type="hidden" name="arrivalLocation" value="<%= flightPath.getLastFlight().getDeparture().getDestinationCode() %>">
-                    <input type="hidden" name="departureDate" value="<%= flightPath.getInitialFlight().getFlightTime() %>">
-                    <button class="button" name="searchResults" value="simpleSearchResults">Back</button>
-                </form>
+                <button class="button" type="button" name="back" onclick="history.back()">Back</button>
 
                 <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
                     alt="FlightPub Logo" class="centreLogo">

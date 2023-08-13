@@ -55,7 +55,7 @@ public class FlightSearchServlet extends HttpServlet {
         }
 
         else if (request.getParameter("searchResults") != null
-                && request.getParameter("searchResults").equalsIgnoreCase("simpleSearchResults")) {
+                && (request.getParameter("searchResults").equalsIgnoreCase("simpleSearchResults"))) {
 
             String departure = request.getParameter("departureLocation");
             String destination = request.getParameter("arrivalLocation");
