@@ -51,8 +51,17 @@ public class FlightSearchServlet extends HttpServlet {
         UserBean user = (UserBean) session.getAttribute("userBean");
         if (request.getParameter("searchResults") != null
                 && request.getParameter("searchResults").equalsIgnoreCase("recSearchResults")) {
-            SearchBean search = new SearchBean(null, null, null, null, false, 0, 0, 0);
-            session.setAttribute("flightResults", search);
+            //TODO: Add functionality to support rec search here
+
+            if (request.getParameter("selectedTags") != null) {
+                //TODO: selected tags search here
+            } else if (request.getParameter("randomDestination") != null) {
+                //TODO: random destination search here
+            } else {
+                //TODO: user tags search here
+            }
+
+
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/recSearchResults.jsp");
             requestDispatcher.forward(request, response);
         }
