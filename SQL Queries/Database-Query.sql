@@ -25,63 +25,69 @@ GRANT SELECT, INSERT, UPDATE, DELETE
 TO fb1;
 go
 
+DROP TABLE IF EXISTS USERBOOKMARKEDFLIGHTS
+GO
+DROP TABLE IF EXISTS USERSAVEDSEARCHES
+GO
 DROP TABLE IF EXISTS CALENDAR;
-go
-DROP TABLE IF EXISTS USERGROUPS;
-go
-DROP TABLE IF EXISTS USERTAGS;
-go
-DROP TABLE IF EXISTS FLIGHTPATH;
-go
-DROP TABLE IF EXISTS BOOKMARKEDFLIGHT;
-go
-DROP TABLE IF EXISTS USERFAVOURITEDDESTINATIONS;
-go
-DROP TABLE IF EXISTS DESTINATIONTAGS;
-go
-DROP TABLE IF EXISTS TAGS;
-go
-DROP TABLE IF EXISTS MESSAGE;
-go
-DROP TABLE IF EXISTS POOLDEPOSIT;
-go
-DROP TABLE IF EXISTS Flights;
-go
-DROP TABLE IF EXISTS Price;
-go
-DROP TABLE IF EXISTS Distances;
-go
-DROP TABLE IF EXISTS Availability;
-go
-DROP TABLE IF EXISTS Destinations;
-go
-DROP TABLE IF EXISTS PlaneType;
 go
 DROP TABLE IF EXISTS TICKETS;
 go
 DROP TABLE IF EXISTS PASSENGERS;
-go
+GO
 DROP TABLE IF EXISTS BOOKINGS;
+go
+DROP TABLE IF EXISTS DESTINATIONTAGS;
+go
+DROP TABLE IF EXISTS USERFAVOURITEDDESTINATIONS;
+go
+DROP TABLE IF EXISTS BOOKMARKEDFLIGHT;
+go
+DROP TABLE IF EXISTS FLIGHTPATHFLIGHT
+GO
+DROP TABLE IF EXISTS MEMBERFLIGHTVOTE;
+go
+DROP TABLE IF EXISTS GROUPFAVEFLIGHT;
+go
+DROP TABLE IF EXISTS FLIGHTPATH;
+go
+DROP TABLE IF EXISTS USERTAGS;
+go
+DROP TABLE IF EXISTS TAGS;
+go
+DROP TABLE IF EXISTS USERGROUPS;
+go
+DROP TABLE IF EXISTS GROUPS;
+go
+DROP TABLE IF EXISTS POOLDEPOSIT;
+go
+DROP TABLE IF EXISTS POOL;
+go
+DROP TABLE IF EXISTS MESSAGE;
+go
+DROP TABLE IF EXISTS CHAT;
+go
+DROP TABLE IF EXISTS Price;
+go
+DROP TABLE IF EXISTS Availability;
+go
+DROP TABLE IF EXISTS Flights;
+go
+DROP TABLE IF EXISTS Distances;
 go
 DROP TABLE IF EXISTS TicketType;
 go
 DROP TABLE IF EXISTS TicketClass;
 go
+DROP TABLE IF EXISTS Destinations;
+go
+DROP TABLE IF EXISTS PlaneType;
+go
 DROP TABLE IF EXISTS Airlines;
 go
 DROP TABLE IF EXISTS Country;
 go
-DROP TABLE IF EXISTS MEMBERFLIGHTVOTE;
-go
 DROP TABLE IF EXISTS USERS;
-go
-DROP TABLE IF EXISTS GROUPFAVEFLIGHT;
-go
-DROP TABLE IF EXISTS CHAT;
-go
-DROP TABLE IF EXISTS GROUPS;
-go
-DROP TABLE IF EXISTS POOL;
 go
 
 CREATE TABLE USERS
@@ -296,30 +302,6 @@ CREATE TABLE USERGROUPS
 )
 go
 
-CREATE TABLE GROUPFAVEFLIGHT
-(
-	groupFaveFlightID CHAR(8) PRIMARY KEY,
-	rank   DECIMAL(1,1),
-	flightPathID CHAR(8) FOREIGN KEY (flightPathID) REFERENCES FLIGHTPATH (flightPathID),
-    chatID  CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID),
-    groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID)
-  	ON UPDATE CASCADE ON DELETE CASCADE,
-
-)
-go
-
-CREATE TABLE MEMBERFLIGHTVOTE
-(
-    memberFlightVoteID    CHAR(8) PRIMARY KEY,
-    groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID),
-    userID	CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-    groupFaveFlightID   CHAR(8) FOREIGN KEY REFERENCES GROUPFAVEFLIGHT(groupFaveFlightID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-    score DECIMAL(1,1)
-)
-go
-
 CREATE TABLE TAGS
 (
 	tagID		CHAR(8) PRIMARY KEY,
@@ -355,6 +337,29 @@ CREATE TABLE FLIGHTPATHFLIGHT(
 )
 GO
 
+CREATE TABLE GROUPFAVEFLIGHT
+(
+	groupFaveFlightID CHAR(8) PRIMARY KEY,
+	rank   DECIMAL(1,1),
+	flightPathID CHAR(8) FOREIGN KEY (flightPathID) REFERENCES FLIGHTPATH (flightPathID),
+    chatID  CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID),
+    groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID)
+  	ON UPDATE CASCADE ON DELETE CASCADE,
+
+)
+go
+
+CREATE TABLE MEMBERFLIGHTVOTE
+(
+    memberFlightVoteID    CHAR(8) PRIMARY KEY,
+    groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID),
+    userID	CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
+  ON UPDATE CASCADE ON DELETE CASCADE,
+    groupFaveFlightID   CHAR(8) FOREIGN KEY REFERENCES GROUPFAVEFLIGHT(groupFaveFlightID)
+  ON UPDATE CASCADE ON DELETE CASCADE,
+    score DECIMAL(1,1)
+)
+go
 
 CREATE TABLE BOOKMARKEDFLIGHT(
 	flightPathID CHAR(8) NOT NULL,
@@ -472,6 +477,8 @@ INSERT INTO TAGS VALUES('11111117', 'Remote', 'Locations rarely holidayed in or 
 INSERT INTO TAGS VALUES('11111118', 'Snowy', 'Locations known for often being heavily covered in snow, e.g. Ontario, Nepal, etc.')
 INSERT INTO TAGS VALUES('11111119', 'City', 'Locations know for skyscrapers, being a population center, a wide variety of things to do')
 INSERT INTO TAGS VALUES('11111120', 'Popular', 'Popular travel destination - e.g. Sydney, Los Angeles, Greece etc.')
+INSERT INTO TAGS VALUES('00000000', 'Cold', 'Cold climate.')
+INSERT INTO TAGS VALUES('00000001', 'Desert', 'Hot and Dry climate.')
 go
 
 INSERT INTO USERS VALUES ('01010101', 'Lachlan', 'ONeill', 'lachlan@gmail.com', 'lo', '04 123 456', 'user', '12 Main St, Carrington, NSW, Australia', 'Simple', 'AUD', '+10', 'Light', 'No', '1997-08-29')
@@ -883,28 +890,6 @@ VALUES
 	);
 	GO
 
-	INSERT INTO TAGS VALUES('12341234', 'Tropical', 'Sunny, tropical location.')
-INSERT INTO TAGS VALUES('00000000', 'Cold', 'Cold climate.')
-INSERT INTO TAGS VALUES('00000001', 'Desert', 'Hot and Dry climate.')
-INSERT INTO TAGS VALUES('22222222', 'Mild Weather', 'Mild, comfortable climate.')
-INSERT INTO TAGS VALUES('33333333', 'Snowsports', 'Knows for great snowsports, very popular in winter.')
-INSERT INTO TAGS VALUES('44444444', 'Watersports', 'Surfing, jet skiiing and diving are very popular here, especially in summer')
-INSERT INTO TAGS VALUES('55555555', 'Sightseeing', 'Knows for its many great natural and built sights.')
-INSERT INTO TAGS VALUES('66666666', 'Famous For Landmarks', 'Incredible landmarks to visit at this location')
-INSERT INTO TAGS VALUES('77777777', 'Famous For Food & Drink', 'Diverse and excellent food and drink selections here, people from all over visit to try.')
-INSERT INTO TAGS VALUES('11111111', 'Snowy', 'Snowy, cold, mountains, good for skiing.')
-INSERT INTO TAGS VALUES('88888888', 'Budget', 'Cheap flights.')
-INSERT INTO TAGS VALUES('55511155', 'Family', 'Flight suitable for family groups.')
-INSERT INTO TAGS VALUES('11111112', 'Exploration', 'Great for people wishing to experience new things, travel to new locations - hiking, culture etc.')
-INSERT INTO TAGS VALUES('11111113', 'Outdoor Adventures', 'Hiking, mountain climbing, 4WD & ATVing, absailing')
-INSERT INTO TAGS VALUES('11111114', 'Relaxing', 'Resorts, calm, quiet')
-INSERT INTO TAGS VALUES('11111115', 'Experiencing New Cultures', 'Multicultural or a cultural city hub')
-INSERT INTO TAGS VALUES('11111116', 'Tourist', 'Frequent tourist type locations - e.g. New York, Paris, Rome, Tokyo etc.')
-INSERT INTO TAGS VALUES('11111117', 'Remote', 'Locations rarely holidayed in or with small populations - e.g. Alice Springs, Nova Scotia, Ohio')
-INSERT INTO TAGS VALUES('11111119', 'City', 'Locations know for skyscrapers, being a population center, a wide variety of things to do')
-INSERT INTO TAGS VALUES('11111120', 'Popular', 'Popular travel destination - e.g. Sydney, Los Angeles, Greece etc.')
-go
-
 	INSERT INTO DESTINATIONTAGS (DestinationCode, DestinationTagID, tagID)
 	VALUES
 		('ADL','00000000','88888888'),
@@ -977,7 +962,7 @@ go
 		('GIG','00000067','11111116'),
 		('GIG','00000068','11111120'),
 		('HBA','00000069','00000000'),
-		('HBA','00000069','88888888'),
+		('HBA','00000225','88888888'),
 		('HEL','00000070','11111111'),
 		('HEL','00000071','00000000'),
 		('HEL','00000072','33333333'),
