@@ -120,6 +120,16 @@ public class DestinationBean {
         this.reputationScore = reputationScore;
     }
 
+    public LinkedList<DestinationBean> getDestinationsWith(LinkedList<TagBean> tags) {
+        String query = "SELECT * FROM Destinations d " +
+                "WHERE  (SELECT COUNT(t.tagName) " +
+                "FROM DESTINATIONTAGS dt " +
+                "LEFT JOIN TAGS t ON t.tagID = dt.tagID " +
+                "WHERE dt.DestinationCode = d.DestinationCode " +
+                "AND t.tagName IN (?)) >=?";
+        //TODO: first ? is list of tag names separated by commas. Second is the size of the list
+    }
+
 
     // TODO: increment/decrement reputation score
 
