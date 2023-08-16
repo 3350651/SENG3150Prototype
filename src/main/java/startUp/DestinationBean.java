@@ -14,7 +14,7 @@ public class DestinationBean {
 
     private String destinationCode;
     private String destinationName;
-    private String destinationDescription;
+    private String destinationCountry;
     private LinkedList<String> tags;
     private int reputationScore;
 
@@ -22,7 +22,7 @@ public class DestinationBean {
     {
         destinationCode = null;
         destinationName = null;
-        destinationDescription = null;
+        destinationCountry = null;
         tags = null;
         reputationScore = 0;
     }
@@ -78,6 +78,12 @@ public class DestinationBean {
         destinationName = name;
     }
 
+    public DestinationBean(String code, String name, String country) {
+        destinationCode = code;
+        destinationName = name;
+        destinationCountry = country;
+    }
+
     // getters
 
     public String getDestinationCode() {
@@ -96,12 +102,12 @@ public class DestinationBean {
         this.destinationName = destinationName;
     }
 
-    public String getDestinationDescription() {
-        return destinationDescription;
+    public String getDestinationCountry() {
+        return destinationCountry;
     }
 
-    public void setDestinationDescription(String destinationDescription) {
-        this.destinationDescription = destinationDescription;
+    public void setDestinationCountry(String destinationCountry) {
+        this.destinationCountry = destinationCountry;
     }
 
     public LinkedList<String> getTags() {
@@ -121,13 +127,46 @@ public class DestinationBean {
     }
 
     public LinkedList<DestinationBean> getDestinationsWith(LinkedList<TagBean> tags) {
-        String query = "SELECT * FROM Destinations d " +
-                "WHERE  (SELECT COUNT(t.tagName) " +
-                "FROM DESTINATIONTAGS dt " +
-                "LEFT JOIN TAGS t ON t.tagID = dt.tagID " +
-                "WHERE dt.DestinationCode = d.DestinationCode " +
-                "AND t.tagName IN (?)) >=?";
-        //TODO: first ? is list of tag names separated by commas. Second is the size of the list
+        LinkedList<DestinationBean> destinations = new LinkedList<>();
+        try {
+            String query = "SELECT * FROM Destinations d " +
+                    "WHERE  (SELECT COUNT(t.tagName) " +
+                    "FROM DESTINATIONTAGS dt " +
+                    "LEFT JOIN TAGS t ON t.tagID = dt.tagID " +
+                    "WHERE dt.DestinationCode = d.DestinationCode " +
+                    "AND t.tagName IN (?)) >=?";
+            //TODO: first ? is list of tag names separated by commas. Second is the size of the list
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, getTagNames(tags));
+            statement.setInt(2, tags.size());
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String code = result.getString(1);
+                String name = result.getString(2);
+                String country = result.getString(3);
+                destinations.add(new DestinationBean(code, name, country));
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return destinations;
+    }
+
+    private String getTagNames(LinkedList<TagBean> tags) {
+        String result = "";
+        for (int i = 0; i < tags.size(); i++) {
+            if (i == tags.size() - 1) {
+                result += tags.get(i).getTagName();
+            } else {
+                result += tags.get(i).getTagName() + ", ";
+            }
+        }
+        return result;
     }
 
 
