@@ -1043,3 +1043,17 @@ form.flightSearchResultButtons, form.groupFavouritesForm{
 div.containerSaveSearchAndSearch{
     display: flex;
 }
+
+button.tagSearch{
+     background-color: #156283;
+     color: white;
+     border-radius: 8px;
+     font-size: 15px;
+     margin-top: 10px;
+     border: none;
+     border-radius: 5px;
+     display: inline-block;
+     transition-duration: 0.25s;
+     height: 50px;
+     width: 50px;
+}

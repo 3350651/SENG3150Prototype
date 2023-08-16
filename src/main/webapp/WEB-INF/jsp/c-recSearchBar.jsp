@@ -32,13 +32,14 @@ LinkedList<String> tagSet = TagBean.getAllTags();
         <div style="clear:both;">&nbsp;</div>
         <div>
              <div style="float: right">
-                  <button name="searchResults" type="submit" value="selectedTags"
+                  <button name="selectedTags" type="submit" value="selectedTags"
                           class="tagSearch">GO</button>
              </div>
             <div style="float: left">
-              <button name="searchResults" class="search" type="submit" value="userTags">Use My Profile Tags</button>
+              <button name="userTags" class="search" type="submit" value="userTags">Use My Profile Tags</button>
             </div>
         </div>
+        <input type="hidden" name="searchResults" value="recSearchResults"/>
   </form>
 </div>
 
@@ -47,7 +48,7 @@ LinkedList<String> tagSet = TagBean.getAllTags();
     <h2>Random Flight</h2>
       <div class="departureLocation"><label for="departureLocation">Leaving
                         From</label><br>
-                    <select id="departureLocation" name="departureLocation">
+                    <select id="departureLocation" name="departure">
                         <option value="">Select Option</option>
                         <%for(DestinationBean destination: DestinationOps.getDestinations()){%>
                             <option value=<%=destination.getDestinationCode()%>><%=destination.getDestinationName()%>
@@ -72,9 +73,10 @@ LinkedList<String> tagSet = TagBean.getAllTags();
           <div style="clear:both;">&nbsp;</div>
         <div class="containerSaveSearchAndSearch">
             <div class="search">
-              <button name="searchResults" type="submit" value="recSearchResults"
+              <button name="randomDestination" type="submit" value="randomDestination"
                       class="search">Go Anywhere</button>
             </div>
         </div>
+        <input type="hidden" name="searchResults" value="recSearchResults"/>
   </form>
 </div>
