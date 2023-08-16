@@ -134,7 +134,7 @@ public class DestinationBean {
                     "FROM DESTINATIONTAGS dt " +
                     "LEFT JOIN TAGS t ON t.tagID = dt.tagID " +
                     "WHERE dt.DestinationCode = d.DestinationCode " +
-                    "AND t.tagName IN (?)) >=?";
+                    "AND t.tagName IN (?)) =?";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
 

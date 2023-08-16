@@ -65,16 +65,16 @@ public class FlightSearchServlet extends HttpServlet {
                 //if date is not included in the request or is empty, assign a date a random set of months from the beginning of all records
                 if (request.getParameter("date") == null || request.getParameter("date").equalsIgnoreCase("")) {
                     Random rand = new Random();
-                    time = Timestamp.from(time.toInstant().plus(rand.nextInt(12), ChronoUnit.MONTHS));
+                    time = Timestamp.from(time.toInstant().plus(rand.nextInt(365), ChronoUnit.DAYS));
                 } else {
                     time = Timestamp.valueOf(request.getParameter("date"));
                 }
                 int adults = 1;
                 int children = 0;
-                if (request.getParameter("numberOfAdults") == null || request.getParameter("numberOfAdults").equalsIgnoreCase("")) {
+                if (request.getParameter("numberOfAdults") != null && !request.getParameter("numberOfAdults").equalsIgnoreCase("")) {
                     adults = Integer.parseInt(request.getParameter("numberOfAdults"));
                 }
-                if (request.getParameter("numberOfChildren") == null || request.getParameter("numberOfChildren").equalsIgnoreCase("")) {
+                if (request.getParameter("numberOfChildren") != null && !request.getParameter("numberOfChildren").equalsIgnoreCase("")) {
                     children = Integer.parseInt(request.getParameter("numberOfChildren"));
                 }
                 //search 1 random destination
@@ -94,15 +94,24 @@ public class FlightSearchServlet extends HttpServlet {
                 search = new SearchBean(time, randDestination.getDestinationCode(), leaving.getDestinationCode(), null, true, 0, adults, children);
                 search.searchFlights(3);
                 session.setAttribute("flightResults3", search.getResults());
-
+                session.setAttribute("isFlights", "true");
             } else {
+                //TODO: User has no tags edge
                 LinkedList<String> tags = user.getTagSet();
                 LinkedList<DestinationBean> matchingDestinations = DestinationBean.getDestinationsWith(tags, tags.size());
-                if (tags.size() > 1) {
-                    LinkedList<DestinationBean> almostMatchingDestinations = DestinationBean.getDestinationsWith(tags, (tags.size() > 2 ? tags.size() - 2 : tags.size() - 1));
-                    session.setAttribute("almostMatchingDestinations", almostMatchingDestinations);
+                int requiredMatching = tags.size() - 1;
+                while (requiredMatching > 0) {
+                    LinkedList<DestinationBean> almostMatchingDestinations = DestinationBean.getDestinationsWith(tags, requiredMatching);
+                    if (almostMatchingDestinations.size() >= 3) {
+                        session.setAttribute("almostMatchingDestinations", almostMatchingDestinations);
+                        break;
+                    } else {
+                        requiredMatching--;
+
+                    }
                 }
                 session.setAttribute("matchingDestinations", matchingDestinations);
+                session.setAttribute("isDestinations", "true");
             }
 
 
