@@ -135,7 +135,6 @@ public class DestinationBean {
                     "LEFT JOIN TAGS t ON t.tagID = dt.tagID " +
                     "WHERE dt.DestinationCode = d.DestinationCode " +
                     "AND t.tagName IN (?)) >=?";
-            //TODO: first ? is list of tag names separated by commas. Second is the size of the list
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
 
@@ -169,6 +168,27 @@ public class DestinationBean {
         return result;
     }
 
+    public static DestinationBean getRandomDestination() {
+        DestinationBean destination = null;
+        try {
+            String query = "SELECT TOP 1 * FROM Destinations " +
+                    "ORDER BY NEWID()";
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String code = result.getString(1);
+                String name = result.getString(2);
+                String country = result.getString(3);
+                destination = new DestinationBean(code, name, country);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return destination;
+    }
 
     // TODO: increment/decrement reputation score
 

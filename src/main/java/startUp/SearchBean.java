@@ -192,7 +192,7 @@ public class SearchBean implements Serializable {
         }
     }*/
 
-    public void searchFlights() {
+    public void searchFlights(int numFlights) {
         LinkedList<FlightPathBean> flightPaths = new LinkedList<>();
         Queue<FlightBean> flightList = new LinkedList<>();
         FlightBean flight = null;
@@ -221,7 +221,7 @@ public class SearchBean implements Serializable {
                 //add to list of complete flight paths
                 flightPaths.add(getFlightPathFrom(flight));
                 //if 10 flights in list return
-                if (flightPaths.size() >= 10) {
+                if (flightPaths.size() >= numFlights) {
                     results = flightPaths;
                 }
                 if (flightList.isEmpty()) {
@@ -232,7 +232,7 @@ public class SearchBean implements Serializable {
             }
             departure = flight.getDestination().getDestinationCode();
             departureDate = flight.getFlightArrivalTime();
-        } while (flightPaths.size() < 10 && !flightList.isEmpty());
+        } while (flightPaths.size() < numFlights && !flightList.isEmpty());
         results = flightPaths;
     }
 
