@@ -126,7 +126,7 @@ public class DestinationBean {
         this.reputationScore = reputationScore;
     }
 
-    public LinkedList<DestinationBean> getDestinationsWith(LinkedList<TagBean> tags) {
+    public static LinkedList<DestinationBean> getDestinationsWith(LinkedList<String> tags, int numMatching) {
         LinkedList<DestinationBean> destinations = new LinkedList<>();
         try {
             String query = "SELECT * FROM Destinations d " +
@@ -140,7 +140,7 @@ public class DestinationBean {
             PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setString(1, getTagNames(tags));
-            statement.setInt(2, tags.size());
+            statement.setInt(2, numMatching);
 
             ResultSet result = statement.executeQuery();
 
@@ -157,13 +157,13 @@ public class DestinationBean {
         return destinations;
     }
 
-    private String getTagNames(LinkedList<TagBean> tags) {
+    private static String getTagNames(LinkedList<String> tags) {
         String result = "";
         for (int i = 0; i < tags.size(); i++) {
             if (i == tags.size() - 1) {
-                result += tags.get(i).getTagName();
+                result += tags.get(i);
             } else {
-                result += tags.get(i).getTagName() + ", ";
+                result += tags.get(i) + ", ";
             }
         }
         return result;

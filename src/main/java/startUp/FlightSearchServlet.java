@@ -51,14 +51,22 @@ public class FlightSearchServlet extends HttpServlet {
         UserBean user = (UserBean) session.getAttribute("userBean");
         if (request.getParameter("searchResults") != null
                 && request.getParameter("searchResults").equalsIgnoreCase("recSearchResults")) {
-            //TODO: Add functionality to support rec search here
 
             if (request.getParameter("selectedTags") != null) {
                 //TODO: selected tags search here
+
+
             } else if (request.getParameter("randomDestination") != null) {
                 //TODO: random destination search here
             } else {
                 //TODO: user tags search here
+                LinkedList<String> tags = user.getTagSet();
+                LinkedList<DestinationBean> matchingDestinations = DestinationBean.getDestinationsWith(tags, tags.size());
+                if (tags.size() > 1) {
+                    LinkedList<DestinationBean> almostMatchingDestinations = DestinationBean.getDestinationsWith(tags, (tags.size() > 2 ? tags.size() - 2 : tags.size() - 1));
+                    session.setAttribute("almostMatchingDestinations", almostMatchingDestinations);
+                }
+                session.setAttribute("matchingDestinations", matchingDestinations);
             }
 
 
