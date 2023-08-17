@@ -2,7 +2,7 @@
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="startUp.DestinationBean" %>
 <%@ page import="startUp.FlightPathBean" %>
-
+<%@ page import="startUp.UserTagSearchBean" %>
 <%
 LinkedList<DestinationBean> matchingDestinations = (LinkedList<DestinationBean>) session.getAttribute("matchingDestinations");
 LinkedList<DestinationBean> almostMatchingDestinations = (LinkedList<DestinationBean>) session.getAttribute("almostMatchingDestinations");
@@ -10,7 +10,7 @@ LinkedList<FlightPathBean> flightResults1 = (LinkedList<FlightPathBean>) session
 LinkedList<FlightPathBean> flightResults2 = (LinkedList<FlightPathBean>) session.getAttribute("flightResults2");
 LinkedList<FlightPathBean> flightResults3 = (LinkedList<FlightPathBean>) session.getAttribute("flightResults3");
 
-String userTags = (String) session.getAttribute("userTags");
+LinkedList<UserTagSearchBean> userTags = (LinkedList<UserTagSearchBean>) session.getAttribute("userTags");
 String selectedTags = (String) session.getAttribute("selectedTags");
 String isFlights = (String) session.getAttribute("isFlights");
 boolean destinations = false;
