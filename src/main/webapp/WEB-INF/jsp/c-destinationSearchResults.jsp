@@ -9,7 +9,7 @@ LinkedList<DestinationBean> matchingDestinations = (LinkedList<DestinationBean>)
 LinkedList<DestinationBean> almostMatchingDestinations = (LinkedList<DestinationBean>) session.getAttribute("almostMatchingDestinations");
 UserBean user = (UserBean) session.getAttribute("userBean");
 
-LinkedList<UserTagSearchBean> userTags = (UserTagSearchBean) session.getAttribute("userTags");
+LinkedList<UserTagSearchBean> userTags = (LinkedList<UserTagSearchBean>) session.getAttribute("userTags");
 String selectedTags = (String) session.getAttribute("selectedTags");
 boolean isUserTags = false;
 boolean isSelectedTags = false;
