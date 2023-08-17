@@ -134,10 +134,10 @@ public class FlightSearchServlet extends HttpServlet {
             }
             int adults = 0;
             int children = 0;
-            if (request.getParameter("numberOfAdults") == null || request.getParameter("numberOfAdults").equalsIgnoreCase("")) {
+            if (request.getParameter("numberOfAdults") != null && !request.getParameter("numberOfAdults").equalsIgnoreCase("")) {
                 adults = Integer.parseInt(request.getParameter("numberOfAdults"));
             }
-            if (request.getParameter("numberOfChildren") == null || request.getParameter("numberOfChildren").equalsIgnoreCase("")) {
+            if (request.getParameter("numberOfChildren") != null && !request.getParameter("numberOfChildren").equalsIgnoreCase("")) {
                 children = Integer.parseInt(request.getParameter("numberOfChildren"));
             }
 
