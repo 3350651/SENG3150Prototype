@@ -14,7 +14,7 @@ String selectedTags = (String) session.getAttribute("selectedTags");
 boolean isUserTags = false;
 boolean isSelectedTags = false;
 
-if(userTags.size() != 0){
+if(userTags != null){
     isUserTags = true;
 }
 else {
@@ -93,6 +93,9 @@ else {
                     </div>
                 </div>
             <% } }
+            if(matchingDestinations.size() == 0 && almostMatchingDestinations.size() == 0){ %>
+                    <div>Sorry! There were no results found with those exact tags!</div>
+                <%}
     }
     else if(isUserTags){
     for(UserTagSearchBean result: userTags) {%>
@@ -123,10 +126,10 @@ else {
             </div>
         </div>
      <% } }
-     } else if(matchingDestinations.size() == 0 && almostMatchingDestinations.size() == 0 && isSelectedTags){ %>
-        <div>Sorry! There were no results found with those exact tags!</div>
-    <%}
-    else if(matchingDestinations.size() == 0 && almostMatchingDestinations.size() == 0 && isUserTags){%>
-        <div>Sorry! You need to select tags on your user profile to use this feature! Add tags through your profile and then try again!</div>
-    <%}%>
+     if(userTags.size() ==0){
+     %>
+     <div>Sorry! You need to select tags on your user profile to use this feature! Add tags through your profile and then try again!</div>
+     <%
+     }
+     }%>
 </div>

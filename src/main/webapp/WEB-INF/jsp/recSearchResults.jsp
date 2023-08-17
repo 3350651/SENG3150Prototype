@@ -44,7 +44,7 @@ else if(isFlights != null){
     <% } else if(flights) { %>
     <div>
             <h1>Flights For You</h1>
-                <jsp:include page="c-searchResultsRow.jsp"></jsp:include>
+                <jsp:include page="c-flightSearchResults.jsp"></jsp:include>
         </div>
     <% } else { %>
         <div>Sorry! Something went wrong.</div>

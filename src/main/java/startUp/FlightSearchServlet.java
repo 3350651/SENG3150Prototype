@@ -53,6 +53,9 @@ public class FlightSearchServlet extends HttpServlet {
         UserBean user = (UserBean) session.getAttribute("userBean");
         if (request.getParameter("searchResults") != null
                 && request.getParameter("searchResults").equalsIgnoreCase("recSearchResults")) {
+            session.removeAttribute("userTags");
+            session.removeAttribute("selectedTags");
+            session.removeAttribute("isFlights");
 
             if (request.getParameter("selectedTags") != null) {
                 //TODO: selected tags search here
@@ -69,9 +72,8 @@ public class FlightSearchServlet extends HttpServlet {
                     }
                 }
                 session.setAttribute("matchingDestinations", matchingDestinations);
-                session.setAttribute("isDestinations", "true");
+                session.setAttribute("selectedTags", Arrays.toString(selectedTags));
             } else if (request.getParameter("randomDestination") != null) {
-                //TODO: random destination search here
                 DestinationBean leaving = new DestinationBean(request.getParameter("departure"));
                 Timestamp time = Timestamp.valueOf("2014-09-23 00:15:00.000");
                 int passengers = 1;
@@ -109,23 +111,14 @@ public class FlightSearchServlet extends HttpServlet {
                 session.setAttribute("flightResults3", search.getResults());
                 session.setAttribute("isFlights", "true");
             } else {
-                //TODO: User has no tags edge
-                LinkedList<String> tags = user.getTagSet();
-                Object[] temp = tags.toArray();
-                String[] selectedTags = Arrays.copyOf(temp, temp.length, String[].class);
-                LinkedList<DestinationBean> matchingDestinations = DestinationBean.getDestinationsWith(selectedTags, selectedTags.length);
-                int requiredMatching = tags.size() - 1;
-                while (requiredMatching > 0) {
-                    LinkedList<DestinationBean> almostMatchingDestinations = DestinationBean.getDestinationsWith(selectedTags, requiredMatching);
-                    if (almostMatchingDestinations.size() >= 3) {
-                        session.setAttribute("almostMatchingDestinations", almostMatchingDestinations);
-                        break;
-                    } else {
-                        requiredMatching--;
-                    }
+                LinkedList<String> tags = user.getRandomTags();
+                LinkedList<UserTagSearchBean> results = new LinkedList<>();
+                for (String tag : tags) {
+                    LinkedList<DestinationBean> matchingDestinations = DestinationBean.getDestinationsWith(new String[]{tag}, 1);
+
+                    results.add(new UserTagSearchBean(tag, matchingDestinations));
                 }
-                session.setAttribute("matchingDestinations", matchingDestinations);
-                session.setAttribute("isDestinations", "true");
+                session.setAttribute("userTags", results);
             }
 
 
