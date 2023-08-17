@@ -126,20 +126,19 @@ public class DestinationBean {
         this.reputationScore = reputationScore;
     }
 
-    public static LinkedList<DestinationBean> getDestinationsWith(LinkedList<String> tags, int numMatching) {
+    public static LinkedList<DestinationBean> getDestinationsWith(String[] tags, int numMatching) {
         LinkedList<DestinationBean> destinations = new LinkedList<>();
         try {
-            String query = "SELECT * FROM Destinations d " +
-                    "WHERE  (SELECT COUNT(t.tagName) " +
-                    "FROM DESTINATIONTAGS dt " +
-                    "LEFT JOIN TAGS t ON t.tagID = dt.tagID " +
-                    "WHERE dt.DestinationCode = d.DestinationCode " +
-                    "AND t.tagName IN (?)) =?";
+            String query = "SELECT * FROM Destinations d \n" +
+                    "                    WHERE  (SELECT COUNT(t.tagName) \n" +
+                    "                    FROM DESTINATIONTAGS dt \n" +
+                    "                    LEFT JOIN TAGS t ON t.tagID = dt.tagID\n" +
+                    "                    WHERE dt.DestinationCode = d.DestinationCode \n" +
+                    "                    AND t.tagName IN (" + getTagNames(tags) + ")) =?";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
 
-            statement.setString(1, getTagNames(tags));
-            statement.setInt(2, numMatching);
+            statement.setInt(1, numMatching);
 
             ResultSet result = statement.executeQuery();
 
@@ -149,6 +148,8 @@ public class DestinationBean {
                 String country = result.getString(3);
                 destinations.add(new DestinationBean(code, name, country));
             }
+            statement.close();
+            connection.close();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
@@ -156,13 +157,13 @@ public class DestinationBean {
         return destinations;
     }
 
-    private static String getTagNames(LinkedList<String> tags) {
+    private static String getTagNames(String[] tags) {
         String result = "";
-        for (int i = 0; i < tags.size(); i++) {
-            if (i == tags.size() - 1) {
-                result += tags.get(i);
+        for (int i = 0; i < tags.length; i++) {
+            if (i == tags.length - 1) {
+                result += "'" + tags[i] + "'";
             } else {
-                result += tags.get(i) + ", ";
+                result += "'" + tags[i] + "', ";
             }
         }
         return result;

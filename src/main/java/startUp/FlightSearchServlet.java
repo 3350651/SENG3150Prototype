@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -55,8 +56,20 @@ public class FlightSearchServlet extends HttpServlet {
 
             if (request.getParameter("selectedTags") != null) {
                 //TODO: selected tags search here
-
-
+                String[] selectedTags = request.getParameterValues("tags");
+                LinkedList<DestinationBean> matchingDestinations = DestinationBean.getDestinationsWith(selectedTags, selectedTags.length);
+                int requiredMatching = selectedTags.length - 1;
+                while (requiredMatching > 0) {
+                    LinkedList<DestinationBean> almostMatchingDestinations = DestinationBean.getDestinationsWith(selectedTags, requiredMatching);
+                    if (almostMatchingDestinations.size() >= 3) {
+                        session.setAttribute("almostMatchingDestinations", almostMatchingDestinations);
+                        break;
+                    } else {
+                        requiredMatching--;
+                    }
+                }
+                session.setAttribute("matchingDestinations", matchingDestinations);
+                session.setAttribute("isDestinations", "true");
             } else if (request.getParameter("randomDestination") != null) {
                 //TODO: random destination search here
                 DestinationBean leaving = new DestinationBean(request.getParameter("departure"));
@@ -98,16 +111,17 @@ public class FlightSearchServlet extends HttpServlet {
             } else {
                 //TODO: User has no tags edge
                 LinkedList<String> tags = user.getTagSet();
-                LinkedList<DestinationBean> matchingDestinations = DestinationBean.getDestinationsWith(tags, tags.size());
+                Object[] temp = tags.toArray();
+                String[] selectedTags = Arrays.copyOf(temp, temp.length, String[].class);
+                LinkedList<DestinationBean> matchingDestinations = DestinationBean.getDestinationsWith(selectedTags, selectedTags.length);
                 int requiredMatching = tags.size() - 1;
                 while (requiredMatching > 0) {
-                    LinkedList<DestinationBean> almostMatchingDestinations = DestinationBean.getDestinationsWith(tags, requiredMatching);
+                    LinkedList<DestinationBean> almostMatchingDestinations = DestinationBean.getDestinationsWith(selectedTags, requiredMatching);
                     if (almostMatchingDestinations.size() >= 3) {
                         session.setAttribute("almostMatchingDestinations", almostMatchingDestinations);
                         break;
                     } else {
                         requiredMatching--;
-
                     }
                 }
                 session.setAttribute("matchingDestinations", matchingDestinations);
