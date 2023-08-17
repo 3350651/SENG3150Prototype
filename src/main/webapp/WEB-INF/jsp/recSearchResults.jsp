@@ -10,12 +10,13 @@ LinkedList<FlightPathBean> flightResults1 = (LinkedList<FlightPathBean>) session
 LinkedList<FlightPathBean> flightResults2 = (LinkedList<FlightPathBean>) session.getAttribute("flightResults2");
 LinkedList<FlightPathBean> flightResults3 = (LinkedList<FlightPathBean>) session.getAttribute("flightResults3");
 
-String isDestinations = (String) session.getAttribute("isDestinations");
+String userTags = (String) session.getAttribute("userTags");
+String selectedTags = (String) session.getAttribute("selectedTags");
 String isFlights = (String) session.getAttribute("isFlights");
 boolean destinations = false;
 boolean flights = false;
 
-if(isDestinations != null){
+if(userTags != null || selectedTags != null){
     destinations = true;
 }
 else if(isFlights != null){
