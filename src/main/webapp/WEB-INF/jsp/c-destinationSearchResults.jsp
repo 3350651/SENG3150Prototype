@@ -21,10 +21,13 @@ else {
 }
 %>
 
-<div class="gridParent" id="simple">
+<div class="recGridResults">
 
     <%
         if(matchingDestinations.size() > 0) {
+          %>
+            <div><h2>Destinations Matching ()</h2></div>
+          <%
         int i = 0; for (DestinationBean destination : matchingDestinations ) {
 
         %>
@@ -52,9 +55,15 @@ else {
                     </div>
                 </div>
             </div>
-        <% i++; }
+        <% i++; }}
+        else{
+        %><div>Sorry, there were no destinations that matched this exact tag combination.</div><%
+        }
             if(almostMatchingDestinations.size() > 0) {
-            int i = 0; for (DestinationBean destination : almostMatchingDestinations ) {
+            %>
+            <div><h2>You May Also Like:</h2></div>
+            <%
+            int j = 0; for (DestinationBean destination : almostMatchingDestinations ) {
 
             %>
                 <div class="recResults">
@@ -81,11 +90,11 @@ else {
                         </div>
                     </div>
                 </div>
-            <% i++; } }
-        } else if(matchingDestinations.size() == 0 && almostMatchingDestinations.size() == 0 && isSelectedTags){ %>
+            <% j++; } }
+         else if(matchingDestinations.size() == 0 && almostMatchingDestinations.size() == 0 && isSelectedTags){ %>
             <div>Sorry! There were no results found with those exact tags!</div>
         <%}
-        else if(matchingDestinations.size() == 0 && almostMatchingDestinations.size() == 0 && isUserTags)%{>
+        else if(matchingDestinations.size() == 0 && almostMatchingDestinations.size() == 0 && isUserTags){%>
             <div>Sorry! You need to select tags on your user profile to use this feature! Add tags through your profile and then try again!</div>
         <%}%>
 </div>

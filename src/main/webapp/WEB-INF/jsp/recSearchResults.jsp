@@ -37,17 +37,17 @@ else if(isFlights != null){
 <div class="centeringtext">
     <h1>Recommendation Search Results</h1>
     <% if(destinations) { %>
-    <div class="centeringtext">
-        <h2>Destinations For You</h2>
+    <div>
+        <h1>Destinations For You</h1>
             <jsp:include page="c-destinationSearchResults.jsp"></jsp:include>
     </div>
     <% } else if(flights) { %>
-    <div class="centeringtext">
-            <h2>Flights For You</h2>
+    <div>
+            <h1>Flights For You</h1>
                 <jsp:include page="c-searchResultsRow.jsp"></jsp:include>
         </div>
     <% } else { %>
-        <div class="centeringtext">Sorry! Something went wrong.</div>
+        <div>Sorry! Something went wrong.</div>
     <%}%>
 </div>
 </body>
