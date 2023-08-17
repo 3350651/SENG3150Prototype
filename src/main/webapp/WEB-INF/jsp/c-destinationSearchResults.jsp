@@ -22,7 +22,7 @@ else if(almostMatchingDestinations != null){
 <div class="gridParent" id="simple">
 
     <%
-    if(destinations.length() > 0) {
+    if(destinations.size() > 0) {
     int i = 0; for (DestinationBean destination : destinations ) {
 
     %>
@@ -32,6 +32,7 @@ else if(almostMatchingDestinations != null){
                 <div class="flightInfo">
                     <div class="searchResultRow1">
                         <div class="DepartureLocationResult"><%= destination.getDestinationName() %></div>
+                        <br>
                         <div class="DepartureLocationResult">In <%= destination.getDestinationCountry() %> &nbsp;</div>
                     </div>
                 </div>

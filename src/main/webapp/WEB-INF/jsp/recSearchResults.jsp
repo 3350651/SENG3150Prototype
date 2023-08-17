@@ -35,7 +35,7 @@ else if(isFlights != null){
 <body>
 <div class="centeringtext">
     <h1>Recommendation Search Results</h1>
-    <% if(destination) { %>
+    <% if(destinations) { %>
     <div class="centeringtext">
         <h2>Destinations For You</h2>
             <jsp:include page="c-destinationSearchResults.jsp"></jsp:include>
