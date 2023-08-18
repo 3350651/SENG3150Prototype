@@ -1015,7 +1015,6 @@ public class UserBean implements Serializable {
 			insertBookmarked.setString(1, String.valueOf(flight.getId()));
 			insertBookmarked.setString(2, userID);
 			insertBookmarked.executeUpdate();
-
 		} catch (SQLException e) {
 			// Handle or log the exception
 			e.printStackTrace();

@@ -7,13 +7,17 @@
 
 <%
 UserBean user = (UserBean) session.getAttribute("userBean");
-LinkedList<FlightPathBean> flightResults1 = (LinkedList<FlightPathBean>) session.getAttribute("flightResults1");
-LinkedList<FlightPathBean> flightResults2 = (LinkedList<FlightPathBean>) session.getAttribute("flightResults2");
-LinkedList<FlightPathBean> flightResults3 = (LinkedList<FlightPathBean>) session.getAttribute("flightResults3");
+SearchBean search1 = (SearchBean) session.getAttribute("flightResults1");
+SearchBean search2 = (SearchBean) session.getAttribute("flightResults2");
+SearchBean search3 = (SearchBean) session.getAttribute("flightResults3");
+LinkedList<FlightPathBean> flightResults1 = search1.getResults();
+LinkedList<FlightPathBean> flightResults2 = search2.getResults();
+LinkedList<FlightPathBean> flightResults3 = search3.getResults();
 %>
 
 <div class="gridParent" id="simple">
-
+<fieldset>
+    <div><h3><%=flightResults1.get(0).getLastFlight().getDestination().getDestinationName()%></h3>
     <% for (FlightPathBean flightPath : flightResults1 ) { %>
         <div class="recResults">
             <div class="FlightSearchResult">
@@ -32,9 +36,9 @@ LinkedList<FlightPathBean> flightResults3 = (LinkedList<FlightPathBean>) session
                         <%}%>
                     </div>
                     <div class="searchResultRow2">
-                        <div class="priceResult">$$</div>
+                        <div class="priceResult">$<%=flightPath.getMinPrice()%></div>
                         <div class="dateResult"><%=flightPath.getInitialFlight().getFlightTime()%></div>
-                        <div class="numPassengersResult">#Psngrs</div>
+                        <div class="numPassengersResult">Adults: <%=search1.getAdultPassengers()%>, Children: <%=search1.getChildPassengers()%></div>
                     </div>
                 </div>
                 <div class="searchResultButtons">
@@ -72,10 +76,12 @@ LinkedList<FlightPathBean> flightResults3 = (LinkedList<FlightPathBean>) session
             </div>
         </div>
     <% }%>
+    </fieldset>
+    <fieldset>
+    <div><h3><%=flightResults2.get(0).getLastFlight().getDestination().getDestinationName()%></h3>
      <% for (FlightPathBean flightPath : flightResults2 ) { %>
             <div class="recResults">
                 <div class="FlightSearchResult">
-                    <h2></h2>
                     <div class="simpleFlightCardColumn1">
                     <div class="flightInfo">
                         <div class="searchResultRow1">
@@ -90,9 +96,9 @@ LinkedList<FlightPathBean> flightResults3 = (LinkedList<FlightPathBean>) session
                             <%}%>
                         </div>
                         <div class="searchResultRow2">
-                            <div class="priceResult">$$</div>
+                            <div class="priceResult">$<%=flightPath.getMinPrice()%></div>
                             <div class="dateResult"><%=flightPath.getInitialFlight().getFlightTime()%></div>
-                            <div class="numPassengersResult">#Psngrs</div>
+                            <div class="numPassengersResult">Adults: <%=search2.getAdultPassengers()%>, Children: <%=search2.getChildPassengers()%></div>
                         </div>
                     </div>
                     <div class="searchResultButtons">
@@ -130,6 +136,9 @@ LinkedList<FlightPathBean> flightResults3 = (LinkedList<FlightPathBean>) session
                 </div>
             </div>
         <% }%>
+        </fieldset>
+        <fieldset>
+        <div><h3><%=flightResults3.get(0).getLastFlight().getDestination().getDestinationName()%></h3>
          <% for (FlightPathBean flightPath : flightResults3 ) { %>
                 <div class="recResults">
                     <div class="FlightSearchResult">
@@ -148,9 +157,9 @@ LinkedList<FlightPathBean> flightResults3 = (LinkedList<FlightPathBean>) session
                                 <%}%>
                             </div>
                             <div class="searchResultRow2">
-                                <div class="priceResult">$$</div>
+                                <div class="priceResult">$<%=flightPath.getMinPrice()%></div>
                                 <div class="dateResult"><%=flightPath.getInitialFlight().getFlightTime()%></div>
-                                <div class="numPassengersResult">#Psngrs</div>
+                                <div class="numPassengersResult">Adults: <%=search3.getAdultPassengers()%>, Children: <%=search3.getChildPassengers()%></div>
                             </div>
                         </div>
                         <div class="searchResultButtons">
@@ -188,4 +197,5 @@ LinkedList<FlightPathBean> flightResults3 = (LinkedList<FlightPathBean>) session
                     </div>
                 </div>
             <% }%>
+            </fieldset>
 </div>

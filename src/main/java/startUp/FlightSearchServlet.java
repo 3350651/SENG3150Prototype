@@ -58,7 +58,6 @@ public class FlightSearchServlet extends HttpServlet {
             session.removeAttribute("isFlights");
 
             if (request.getParameter("selectedTags") != null) {
-                //TODO: selected tags search here
                 String[] selectedTags = request.getParameterValues("tags");
                 LinkedList<DestinationBean> matchingDestinations = DestinationBean.getDestinationsWith(selectedTags, selectedTags.length);
                 int requiredMatching = selectedTags.length - 1;
@@ -80,7 +79,7 @@ public class FlightSearchServlet extends HttpServlet {
                 //if date is not included in the request or is empty, assign a date a random set of months from the beginning of all records
                 if (request.getParameter("date") == null || request.getParameter("date").equalsIgnoreCase("")) {
                     Random rand = new Random();
-                    time = Timestamp.from(time.toInstant().plus(rand.nextInt(365), ChronoUnit.DAYS));
+                    time = Timestamp.from(time.toInstant().plus(rand.nextInt(182), ChronoUnit.DAYS));
                 } else {
                     time = Timestamp.valueOf(request.getParameter("date"));
                 }
@@ -92,29 +91,43 @@ public class FlightSearchServlet extends HttpServlet {
                 if (request.getParameter("numberOfChildren") != null && !request.getParameter("numberOfChildren").equalsIgnoreCase("")) {
                     children = Integer.parseInt(request.getParameter("numberOfChildren"));
                 }
-                //search 1 random destination
-                DestinationBean randDestination = DestinationBean.getRandomDestination();
-                SearchBean search = new SearchBean(time, randDestination.getDestinationCode(), leaving.getDestinationCode(), null, true, 0, adults, children);
-                search.searchFlights(3);
-                session.setAttribute("flightResults1", search.getResults());
 
-                //search again
-                randDestination = DestinationBean.getRandomDestination();
-                search = new SearchBean(time, randDestination.getDestinationCode(), leaving.getDestinationCode(), null, true, 0, adults, children);
-                search.searchFlights(3);
-                session.setAttribute("flightResults2", search.getResults());
+                SearchBean search = null;
+                DestinationBean randDestination = null;
 
-                //search again
-                randDestination = DestinationBean.getRandomDestination();
-                search = new SearchBean(time, randDestination.getDestinationCode(), leaving.getDestinationCode(), null, true, 0, adults, children);
-                search.searchFlights(3);
-                session.setAttribute("flightResults3", search.getResults());
-                session.setAttribute("isFlights", "true");
+                String leavingCodes = "'" + leaving.getDestinationCode() + "'";
+                while (search == null || search.getResults().size() == 0) {
+                    //search 1 random destination
+                    randDestination = DestinationBean.getRandomDestination(leavingCodes);
+                    search = new SearchBean(time, randDestination.getDestinationCode(), leaving.getDestinationCode(), null, true, 0, adults, children);
+                    search.searchFlights(2, 4);
+                    session.setAttribute("flightResults1", search);
+                    leavingCodes += ", '" + randDestination.getDestinationCode() + "'";
+                }
+                search = null;
+                while (search == null || search.getResults().size() == 0) {
+                    //search again
+                    randDestination = DestinationBean.getRandomDestination(leavingCodes);
+                    search = new SearchBean(time, randDestination.getDestinationCode(), leaving.getDestinationCode(), null, true, 0, adults, children);
+                    search.searchFlights(2, 4);
+                    session.setAttribute("flightResults2", search);
+                    leavingCodes += ", '" + randDestination.getDestinationCode() + "'";
+                }
+                search = null;
+                while (search == null || search.getResults().size() == 0) {
+                    //search again
+                    randDestination = DestinationBean.getRandomDestination(leavingCodes);
+                    search = new SearchBean(time, randDestination.getDestinationCode(), leaving.getDestinationCode(), null, true, 0, adults, children);
+                    search.searchFlights(2, 4);
+                    session.setAttribute("flightResults3", search);
+                    session.setAttribute("isFlights", "true");
+                    leavingCodes += ", '" + randDestination.getDestinationCode() + "'";
+                }
             } else {
                 LinkedList<String> tags = user.getRandomTags();
                 LinkedList<UserTagSearchBean> results = new LinkedList<>();
                 for (String tag : tags) {
-                    LinkedList<DestinationBean> matchingDestinations = DestinationBean.getDestinationsWith(new String[]{tag}, 1);
+                    LinkedList<DestinationBean> matchingDestinations = DestinationBean.getNDestinationsWith(new String[]{tag}, 1, 3);
 
                     results.add(new UserTagSearchBean(tag, matchingDestinations));
                 }
@@ -165,7 +178,7 @@ public class FlightSearchServlet extends HttpServlet {
             }
 
             SearchBean search = new SearchBean(departureTime, destination, departure, null, true, 0, adults, children);
-            search.searchFlights(10);
+            search.searchFlights(10, 5);
             session.setAttribute("flightResults", search);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/simpleSearchResults.jsp");
             requestDispatcher.forward(request, response);

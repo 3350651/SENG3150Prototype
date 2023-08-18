@@ -28,7 +28,12 @@ public class DestinationBean {
     }
 
     // constructors
+
     public DestinationBean(String newDestinationCode) {
+        destinationCode = newDestinationCode;
+    }
+
+    public DestinationBean(String newDestinationCode, boolean data) {
         destinationCode = newDestinationCode;
 
         try {
@@ -129,16 +134,50 @@ public class DestinationBean {
     public static LinkedList<DestinationBean> getDestinationsWith(String[] tags, int numMatching) {
         LinkedList<DestinationBean> destinations = new LinkedList<>();
         try {
-            String query = "SELECT * FROM Destinations d \n" +
-                    "                    WHERE  (SELECT COUNT(t.tagName) \n" +
-                    "                    FROM DESTINATIONTAGS dt \n" +
-                    "                    LEFT JOIN TAGS t ON t.tagID = dt.tagID\n" +
-                    "                    WHERE dt.DestinationCode = d.DestinationCode \n" +
-                    "                    AND t.tagName IN (" + getTagNames(tags) + ")) =?";
+            String query = "SELECT d.DestinationCode, d.Airport, c.countryName FROM Destinations d \n" +
+                    "LEFT JOIN Country c ON c.countryCode3 = d.CountryCode3\n" +
+                    "WHERE  (SELECT COUNT(t.tagName) \n" +
+                    "FROM DESTINATIONTAGS dt \n" +
+                    "LEFT JOIN TAGS t ON t.tagID = dt.tagID\n" +
+                    "WHERE dt.DestinationCode = d.DestinationCode \n" +
+                    "AND t.tagName IN (" + getTagNames(tags) + ")) =?";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setInt(1, numMatching);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String code = result.getString(1);
+                String name = result.getString(2);
+                String country = result.getString(3);
+                destinations.add(new DestinationBean(code, name, country));
+            }
+            statement.close();
+            connection.close();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return destinations;
+    }
+
+    public static LinkedList<DestinationBean> getNDestinationsWith(String[] tags, int numMatching, int numReturn) {
+        LinkedList<DestinationBean> destinations = new LinkedList<>();
+        try {
+            String query = "SELECT TOP(?) d.DestinationCode, d.Airport, c.countryName FROM Destinations d \n" +
+                    "LEFT JOIN Country c ON c.countryCode3 = d.CountryCode3\n" +
+                    "WHERE  (SELECT COUNT(t.tagName) \n" +
+                    "FROM DESTINATIONTAGS dt \n" +
+                    "LEFT JOIN TAGS t ON t.tagID = dt.tagID\n" +
+                    "WHERE dt.DestinationCode = d.DestinationCode \n" +
+                    "AND t.tagName IN (" + getTagNames(tags) + ")) =?";
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setInt(1, numReturn);
+            statement.setInt(2, numMatching);
 
             ResultSet result = statement.executeQuery();
 
@@ -169,10 +208,11 @@ public class DestinationBean {
         return result;
     }
 
-    public static DestinationBean getRandomDestination() {
+    public static DestinationBean getRandomDestination(String leavingCodes) {
         DestinationBean destination = null;
         try {
             String query = "SELECT TOP 1 * FROM Destinations " +
+                    "WHERE destinationCode NOT IN  (" + leavingCodes + ") " +
                     "ORDER BY NEWID()";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
@@ -184,6 +224,8 @@ public class DestinationBean {
                 String country = result.getString(3);
                 destination = new DestinationBean(code, name, country);
             }
+            statement.close();
+            connection.close();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
