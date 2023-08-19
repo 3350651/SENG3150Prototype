@@ -44,7 +44,7 @@ else {
                         <div class="searchResultRow2"> <%= destination.getDestinationCountry() %> &nbsp;</div>
                     </div>
                     <div class="searchResultButtons">
-                            <form method="POST" action="flightSearch">
+                            <form method="POST" action="destinationSearch">
                                 <input type="hidden" name="destinationCode" value="<%= destination.getDestinationCode() %>">
                                 <div class="viewFlightDetailsButton">
                                     <button type="submit" class="viewFlightDetailsButton" name="destinationToFlight" value="true">Find Flights</button>
@@ -82,7 +82,7 @@ else {
                             <div class="searchResultRow2"> <%= destination.getDestinationCountry() %> &nbsp;</div>
                         </div>
                         <div class="searchResultButtons">
-                                <form method="POST" action="flightSearch">
+                                <form method="POST" action="destinationSearch">
                                     <input type="hidden" name="destinationCode" value="<%= destination.getDestinationCode() %>">
                                     <div class="viewFlightDetailsButton">
                                         <button type="submit" class="viewFlightDetailsButton" name="destinationToFlight" value="true">Find Flights</button>
@@ -117,7 +117,7 @@ else {
                     <div class="searchResultRow2"> <%= destination.getDestinationCountry() %> &nbsp;</div>
                 </div>
                 <div class="searchResultButtons">
-                        <form method="POST" action="flightSearch">
+                        <form method="POST" action="destinationSearch">
                             <input type="hidden" name="destinationCode" value="<%= destination.getDestinationCode() %>">
                             <div class="viewFlightDetailsButton">
                                 <button type="submit" class="viewFlightDetailsButton" name="destinationToFlight" value="true">Find Flights</button>

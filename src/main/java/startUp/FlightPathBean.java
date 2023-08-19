@@ -1,5 +1,7 @@
 package startUp;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -26,6 +28,7 @@ public class FlightPathBean {
             destinations.add(flight.getDeparture().getDestinationCode());
             minPrice += flight.getMinCost();
         }
+        minPrice = BigDecimal.valueOf(minPrice).setScale(2, RoundingMode.HALF_UP).floatValue();
         id = ThreadLocalRandom.current().nextInt(00000000, 99999999);
     }
 

@@ -185,7 +185,27 @@ public class FlightSearchServlet extends HttpServlet {
         }
 
         else if (request.getParameter("viewFlight") != null) {
-            LinkedList<FlightPathBean> flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResults");
+            LinkedList<FlightPathBean> flights = null;
+            if (request.getParameter("dataStructure") != null) {
+                switch (Integer.parseInt(request.getParameter("dataStructure"))) {
+                    case 1:
+                        SearchBean searchBean1 = (SearchBean) session.getAttribute("flightResults1");
+                        flights = searchBean1.getResults();
+                        break;
+
+                    case 2:
+                        SearchBean searchBean2 = (SearchBean) session.getAttribute("flightResults2");
+                        flights = searchBean2.getResults();
+                        break;
+
+                    case 3:
+                        SearchBean searchBean3 = (SearchBean) session.getAttribute("flightResults3");
+                        flights = searchBean3.getResults();
+                        break;
+                }
+            } else {
+                flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResults");
+            }
 
             FlightPathBean flight = flights.get(Integer.parseInt(request.getParameter("flightIndex")));
 

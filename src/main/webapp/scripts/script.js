@@ -37,6 +37,16 @@ function validateSearchForm(){
         alert("A number of passengers needs to be provided.");
         return false;
     }
+    else if(document.forms["simpleSearchForm"]["numberOfAdults"].value === "0" &&
+            document.forms["simpleSearchForm"]["numberOfChildren"].value === "0"){
+                alert("A number of passengers needs to be provided.");
+                return false;
+    }
+    else if(isNaN(document.forms["simpleSearchForm"]["numberOfAdults"].value) || document.forms["simpleSearchForm"]["numberOfAdults"].value < 0
+    || isNaN(document.forms["simpleSearchForm"]["numberOfChildren"].value) || document.forms["simpleSearchForm"]["numberOfChildren"].value < 0){
+        alert("A positive number of passengers needs to be provided.");
+        return false;
+    }
 
         return true;
 }

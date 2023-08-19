@@ -28,9 +28,9 @@
                         <%}%>
                     </div>
                     <div class="searchResultRow2">
-                        <div class="priceResult">$$</div>
+                        <div class="priceResult">$<%=flightPath.getMinPrice()%></div>
                         <div class="dateResult"><%=flightPath.getInitialFlight().getFlightTime()%></div>
-                        <div class="numPassengersResult">#Psngrs</div>
+                        <div class="numPassengersResult">Adult: <%=search.getAdultPassengers()%>, Children: <%=search.getChildPassengers()%></div>
                     </div>
                 </div>
                 <div class="searchResultButtons">

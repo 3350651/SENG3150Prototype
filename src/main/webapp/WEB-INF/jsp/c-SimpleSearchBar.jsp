@@ -6,7 +6,7 @@
 <%@ page import="startUp.FlightPathBean" %>
 <%@ page import="startUp.DestinationBean" %>
 <%@ page import="startUp.DestinationOptionsBean" %>
-<% DestinationOptionsBean DestinationOps=(DestinationOptionsBean) session.getAttribute("destinationCodes");%>
+<% DestinationOptionsBean destinationOps=(DestinationOptionsBean) session.getAttribute("destinationCodes");%>
 <% UserBean user = (UserBean) session.getAttribute("userBean");
 LinkedList<FlightPathBean> bookmarkedFlights = new LinkedList<>();
 if (user != null && user.getBookmarkedFlights() != null) {
@@ -15,24 +15,31 @@ bookmarkedFlights = user.getBookmarkedFlights();
 %>
 
 <div class="simpleSearch">
-    <form method="POST" action="flightSearch" class="simpleSearchForm">
+    <form method="POST" action="flightSearch" class="simpleSearchForm" name="simpleSearchForm" onsubmit="return validateSearchForm()">
         <div class="departureLocation"><label for="departureLocation">Leaving
                 From</label><br>
             <select id="departureLocation" name="departureLocation">
                 <option value="">Select Option</option>
-                <%for(DestinationBean destination: DestinationOps.getDestinations()){%>
+                <%for(DestinationBean destination: destinationOps.getDestinations()){%>
                     <option value=<%=destination.getDestinationCode()%>><%=destination.getDestinationName()%>
                     </option>
-                    <%}%>
+                <%}%>
             </select>
         </div>
         <div class="arrivalLocation"><label for="arrivalLocation">Going To</label><br>
             <select id="arrivalLocation" name="arrivalLocation">
                 <option value="">Select Option</option>
-                <%for(DestinationBean destination: DestinationOps.getDestinations()){%>
+                <%for(DestinationBean destination: destinationOps.getDestinations()){
+                    if(destinationOps.getSelected() != null && destination.getDestinationCode().equalsIgnoreCase(destinationOps.getSelected())){%>
+                        <option value=<%=destination.getDestinationCode()%> selected="selected"><%=destination.getDestinationName()%>
+                        </option>
+                        <%}
+                        else{%>
+                    
                     <option value=<%=destination.getDestinationCode()%>><%=destination.getDestinationName()%>
                     </option>
-                    <%}%>
+                    <%}
+                }%>
             </select>
         </div>
         <div style="clear:both;">&nbsp;</div>
@@ -47,10 +54,10 @@ bookmarkedFlights = user.getBookmarkedFlights();
             </div>
         </div>
         <div class="numberOfAdults"><label for="numberOfAdults"># Adults</label><br>
-            <input type="number" id="numberOfAdults" size="2" name="numberOfAdults">
+            <input type="number" id="numberOfAdults" size="2" name="numberOfAdults" value="0">
         </div>
         <div class="numberOfChildren"><label for="numberOfChildren"># Children</label><br>
-            <input type="number" id="numberOfChildren" size="2" name="numberOfChildren">
+            <input type="number" id="numberOfChildren" size="2" name="numberOfChildren" value="0">
         </div>
         <div style="clear:both;">&nbsp;</div>
         <div style="clear:both;">&nbsp;</div>
