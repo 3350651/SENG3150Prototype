@@ -59,6 +59,9 @@ public class FlightSearchServlet extends HttpServlet {
 
             if (request.getParameter("selectedTags") != null) {
                 String[] selectedTags = request.getParameterValues("tags");
+                if (selectedTags == null) {
+                    throw new IOException("Invalid Input: Need to supply at least 1 tag to search by");
+                }
                 LinkedList<DestinationBean> matchingDestinations = DestinationBean.getDestinationsWith(selectedTags, selectedTags.length);
                 int requiredMatching = selectedTags.length - 1;
                 while (requiredMatching > 0) {
@@ -81,7 +84,9 @@ public class FlightSearchServlet extends HttpServlet {
                     Random rand = new Random();
                     time = Timestamp.from(time.toInstant().plus(rand.nextInt(182), ChronoUnit.DAYS));
                 } else {
-                    time = Timestamp.valueOf(request.getParameter("date"));
+                    String timeString = request.getParameter("date");
+                    timeString += " 00:00:00";
+                    time = Timestamp.valueOf(timeString);
                 }
                 int adults = 1;
                 int children = 0;
@@ -90,6 +95,10 @@ public class FlightSearchServlet extends HttpServlet {
                 }
                 if (request.getParameter("numberOfChildren") != null && !request.getParameter("numberOfChildren").equalsIgnoreCase("")) {
                     children = Integer.parseInt(request.getParameter("numberOfChildren"));
+                }
+
+                if ((adults == 0 && children == 0) || adults < 0 || children < 0) {
+                    throw new IOException("Invalid passenger numbers");
                 }
 
                 SearchBean search = null;

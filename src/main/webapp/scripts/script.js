@@ -50,3 +50,23 @@ function validateSearchForm(){
 
         return true;
 }
+
+function validateRandomDestForm(){
+    if(document.forms["randomDestinationForm"]["departureLocation"].value === ""){
+        alert("Please select a departure destination.");
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+function validateTagSearch(){
+    if(document.forms["tagSearch"]["tags"].value === null || document.forms["tagSearch"]["tags"].value === ""){
+        alert("Please select at least 1 tag for to search by.");
+        return false;
+    }
+    else{
+        return true;
+    }
+}

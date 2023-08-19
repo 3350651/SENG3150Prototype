@@ -44,7 +44,7 @@ bookmarkedFlights = user.getBookmarkedFlights();
         </div>
         <div style="clear:both;">&nbsp;</div>
         <div class="departureDate"><label for="departureDate">Date</label><br>
-            <input type="date" id="departureDate" name="departureDate">
+            <input type="date" id="departureDate" name="departureDate" min="2014-09-22" max="2016-01-07">
         </div>
         <div class="flexibleDateDiv" id="flexibleDateDiv"><label for="flexibleDate">Flexible?</label> <br>
             <input type="checkbox" id="flexibleDate" name="flexibleDate">
