@@ -152,50 +152,12 @@ public class SearchBean implements Serializable {
         this.searchID = searchID;
     }
 
-    //gets all flights from the database. Only used for examples for prototype
-/*    public void getAllFlights() {
-        try {
-            String query = "SELECT f.*," +
-                    "a.AirlineName" +
-                    " FROM dbo.Flights f " +
-                    "LEFT JOIN Dbo.Airlines a ON a.AirlineCode = f.AirlineCode";
-            Connection connection = ConfigBean.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet result = statement.executeQuery();
-
-            // TODO:Retrieve min cost of flight...
-
-            while (result.next()) {
-                String aCode = result.getString(1);
-                String flightCode = result.getString(2);
-                String plane = result.getString(10);
-                Timestamp departTime = result.getTimestamp(6);
-                String departureCode = result.getString(3);
-                String stopOverCode = result.getString(4);
-                String destinationCode = result.getString(5);
-                String airlineName = result.getString(13);
-
-                DestinationBean rDeparture = new DestinationBean(departureCode);
-                DestinationBean rStopOver = new DestinationBean(stopOverCode);
-                DestinationBean rDestination = new DestinationBean(destinationCode);
-
-                results.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, *//* mCost, *//* rDeparture,
-                        rStopOver,
-                        rDestination));
-            }
-
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            System.err.println(Arrays.toString(e.getStackTrace()));
-        }
-    }*/
-
     public void searchFlights(int numFlights, int maxStopovers) {
         LinkedList<FlightPathBean> flightPaths = new LinkedList<>();
         Queue<FlightBean> flightList = new LinkedList<>();
         FlightBean flight = null;
+        Timestamp start = this.departureDate;
+        Timestamp end = Timestamp.from(this.departureDate.toInstant().plus(24, ChronoUnit.HOURS));
         int i = 0;
 
         if (!isFlightsTo(destination, departureDate, (this.adultPassengers + this.childPassengers))) {
@@ -203,12 +165,17 @@ public class SearchBean implements Serializable {
             return;
         }
 
+        if (this.flexible > 0) {
+            start = Timestamp.from(this.departureDate.toInstant().minus(this.flexible * 24, ChronoUnit.HOURS));
+            end = Timestamp.from(this.departureDate.toInstant().plus(this.flexible * 24, ChronoUnit.HOURS));
+        }
+
         do {
             System.out.println(i++);
             //get all flights leaving within 24 hours of departure
             //add previous flight to each
             //add all to queue
-            flightList.addAll(getAllFlightsFrom(departure, departureDate, flight, (this.adultPassengers + this.childPassengers)));
+            flightList.addAll(getAllFlightsFrom(departure, start, end, flight, (this.adultPassengers + this.childPassengers)));
 
 
             //go to next in queue
@@ -231,9 +198,11 @@ public class SearchBean implements Serializable {
                 //if 10 flights in list return
                 if (flightPaths.size() >= numFlights) {
                     results = flightPaths;
+                    return;
                 }
                 if (flightList.isEmpty()) {
                     results = flightPaths;
+                    return;
                 }
                 flight = flightList.poll();
                 if (flight == null) {
@@ -243,14 +212,14 @@ public class SearchBean implements Serializable {
 
             }
             departure = flight.getDestination().getDestinationCode();
-            departureDate = flight.getFlightArrivalTime();
+            start = flight.getFlightArrivalTime();
+            end = Timestamp.from(start.toInstant().plus(24, ChronoUnit.HOURS));
         } while (flightPaths.size() < numFlights);
         results = flightPaths;
     }
 
-    public Queue<FlightBean> getAllFlightsFrom(String source, Timestamp time, FlightBean previous, int passengers) {
+    public Queue<FlightBean> getAllFlightsFrom(String source, Timestamp startTime, Timestamp endTime, FlightBean previous, int passengers) {
         Queue<FlightBean> flights = new LinkedList<>();
-        Timestamp endtime = Timestamp.from(time.toInstant().plus(24, ChronoUnit.HOURS));
         String loopingDestinations = null;
         if (previous != null) {
             loopingDestinations = getFlightPathFrom(previous).getAllDestinations();
@@ -363,16 +332,16 @@ public class SearchBean implements Serializable {
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
 
-            statement.setTimestamp(1, endtime);
-            statement.setTimestamp(2, time);
+            statement.setTimestamp(1, endTime);
+            statement.setTimestamp(2, startTime);
             statement.setString(3, source);
             statement.setInt(4, passengers);
-            statement.setTimestamp(5, endtime);
-            statement.setTimestamp(6, time);
+            statement.setTimestamp(5, endTime);
+            statement.setTimestamp(6, startTime);
             statement.setString(7, source);
             statement.setInt(8, passengers);
-            statement.setTimestamp(9, endtime);
-            statement.setTimestamp(10, time);
+            statement.setTimestamp(9, endTime);
+            statement.setTimestamp(10, startTime);
             statement.setString(11, source);
             statement.setInt(12, passengers);
 
@@ -391,6 +360,7 @@ public class SearchBean implements Serializable {
                 String plane = result.getString(7);
                 String airlineName = result.getString(8);
                 int leg = result.getInt(9);
+                String test = result.getString(10);
                 Timestamp originalDepartTime = result.getTimestamp(10);
 
                 DestinationBean rDeparture = new DestinationBean(departureCode);

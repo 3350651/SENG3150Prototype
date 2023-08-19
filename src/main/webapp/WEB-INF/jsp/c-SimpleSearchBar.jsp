@@ -46,12 +46,9 @@ bookmarkedFlights = user.getBookmarkedFlights();
         <div class="departureDate"><label for="departureDate">Date</label><br>
             <input type="date" id="departureDate" name="departureDate" min="2014-09-22" max="2016-01-07">
         </div>
-        <div class="flexibleDateDiv" id="flexibleDateDiv"><label for="flexibleDate">Flexible?</label> <br>
-            <input type="checkbox" id="flexibleDate" name="flexibleDate">
-            <div class="flexibleDaysGroup" id="flexibleDaysGroup" style="display:none;">
-                <label for="flexibleDays">Days flexible?</label><br>
-                <input type="number" min="0" max="30" step="1" id="flexibleDays" name="flexibleDays">
-            </div>
+        <div class="flexibleDateDiv" id="flexibleDateDiv">
+                <label for="flexibleDays">Days flexible</label><br>
+                <input type="number" min="0" max="30" step="1" id="flexibleDays" name="flexibleDays" value="0">
         </div>
         <div class="numberOfAdults"><label for="numberOfAdults"># Adults</label><br>
             <input type="number" id="numberOfAdults" size="2" name="numberOfAdults" value="0">
