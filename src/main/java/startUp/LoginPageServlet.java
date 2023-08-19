@@ -25,6 +25,7 @@ public class LoginPageServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		session.setAttribute("destinationCodes", new DestinationOptionsBean());
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
 		requestDispatcher.forward(request, response);
 	}

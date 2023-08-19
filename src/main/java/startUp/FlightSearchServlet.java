@@ -35,7 +35,7 @@ public class FlightSearchServlet extends HttpServlet {
 
             SearchBean search = new SearchBean(null, null, null, null, false, 0, 0, 0);
 
-            session.setAttribute("flightResults", search);
+            session.setAttribute("searchResults", search);
             request.setAttribute("goToRecommend", true);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-RecommendedSearch.jsp");
             requestDispatcher.forward(request, response);
@@ -186,7 +186,7 @@ public class FlightSearchServlet extends HttpServlet {
 
             SearchBean search = new SearchBean(departureTime, destination, departure, null, true, flexibleDays, adults, children);
             search.searchFlights(10, 5);
-            session.setAttribute("flightResults", search);
+            session.setAttribute("searchResults", search);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/simpleSearchResults.jsp");
             requestDispatcher.forward(request, response);
         }

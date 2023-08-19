@@ -7,7 +7,7 @@
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
 
 <div class="gridParent" id="simple">
-    <% SearchBean search = (SearchBean) session.getAttribute("flightResults"); 
+    <% SearchBean search = (SearchBean) session.getAttribute("searchResults"); 
     LinkedList<FlightPathBean> searchResults = search.getResults();
     session.setAttribute("flightResults", searchResults);
     if(searchResults.size() !=0 ){
