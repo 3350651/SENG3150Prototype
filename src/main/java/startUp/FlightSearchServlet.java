@@ -103,35 +103,35 @@ public class FlightSearchServlet extends HttpServlet {
 
                 SearchBean search = null;
                 DestinationBean randDestination = null;
-
                 String leavingCodes = "'" + leaving.getDestinationCode() + "'";
-                while (search == null || search.getResults().size() == 0) {
+                randDestination = DestinationBean.getRandomDestination(leavingCodes);
+                while ((search == null || search.getResults().size() == 0) && randDestination != null) {
                     //search 1 random destination
-                    randDestination = DestinationBean.getRandomDestination(leavingCodes);
                     search = new SearchBean(time, randDestination.getDestinationCode(), leaving.getDestinationCode(), null, true, 0, adults, children);
                     search.searchFlights(2, 4);
                     session.setAttribute("flightResults1", search);
                     leavingCodes += ", '" + randDestination.getDestinationCode() + "'";
+                    randDestination = DestinationBean.getRandomDestination(leavingCodes);
                 }
                 search = null;
-                while (search == null || search.getResults().size() == 0) {
+                while ((search == null || search.getResults().size() == 0) && randDestination != null) {
                     //search again
-                    randDestination = DestinationBean.getRandomDestination(leavingCodes);
                     search = new SearchBean(time, randDestination.getDestinationCode(), leaving.getDestinationCode(), null, true, 0, adults, children);
                     search.searchFlights(2, 4);
                     session.setAttribute("flightResults2", search);
                     leavingCodes += ", '" + randDestination.getDestinationCode() + "'";
+                    randDestination = DestinationBean.getRandomDestination(leavingCodes);
                 }
                 search = null;
-                while (search == null || search.getResults().size() == 0) {
+                while ((search == null || search.getResults().size() == 0) && randDestination != null) {
                     //search again
-                    randDestination = DestinationBean.getRandomDestination(leavingCodes);
                     search = new SearchBean(time, randDestination.getDestinationCode(), leaving.getDestinationCode(), null, true, 0, adults, children);
                     search.searchFlights(2, 4);
                     session.setAttribute("flightResults3", search);
-                    session.setAttribute("isFlights", "true");
                     leavingCodes += ", '" + randDestination.getDestinationCode() + "'";
+                    randDestination = DestinationBean.getRandomDestination(leavingCodes);
                 }
+                session.setAttribute("isFlights", "true");
             } else {
                 LinkedList<String> tags = user.getRandomTags();
                 LinkedList<UserTagSearchBean> results = new LinkedList<>();

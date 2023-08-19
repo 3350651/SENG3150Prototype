@@ -26,7 +26,7 @@ else {
 
     <%
     if(isSelectedTags) {
-        if(matchingDestinations.size() > 0) {
+        if(matchingDestinations != null && matchingDestinations.size() > 0) {
           %>
           <fieldset>
             <div><h2>Destinations Matching (<%= selectedTags %>)</h2></div>
@@ -63,7 +63,7 @@ else {
         %><div>Sorry, there were no destinations that matched this exact tag combination.</div>
         </fieldset><%
         }
-            if(almostMatchingDestinations.size() > 0) {
+            if(almostMatchingDestinations!= null && almostMatchingDestinations.size() > 0) {
             %>
             <fieldset>
             <div><h2>You May Also Like:</h2></div>

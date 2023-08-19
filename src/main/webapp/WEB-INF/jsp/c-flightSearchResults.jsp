@@ -15,12 +15,13 @@
 %>
 
 <div class="gridParent" id="simple">
+    <%if(flightResults1.size() > 0){%>
     <fieldset>
         <div>
             <h3>
                 <%=flightResults1.get(0).getLastFlight().getDestination().getDestinationName()%>
             </h3>
-            <% for (FlightPathBean flightPath : flightResults1 ) { %>
+            <%for (FlightPathBean flightPath : flightResults1 ) { %>
                 <div class="recResults">
                     <div class="FlightSearchResult">
                         <h2></h2>
@@ -130,6 +131,8 @@
                 </div>
                 <% }%>
     </fieldset>
+    <%}%>
+    <%if(flightResults2.size() > 0){%>
     <fieldset>
         <div>
             <h3>
@@ -244,6 +247,8 @@
                 </div>
                 <% }%>
     </fieldset>
+    <%}
+    if(flightResults3.size() > 0){ %>
     <fieldset>
         <div>
             <h3>
@@ -359,4 +364,8 @@
                 </div>
                 <% }%>
     </fieldset>
+    <%}
+    if(flightResults1.size() == 0 && flightResults2.size() == 0 && flightResults3.size() == 0){%>
+        <div>Sorry, we could not find any flights for this input. Please try again.</div>
+    <%}%>
 </div>

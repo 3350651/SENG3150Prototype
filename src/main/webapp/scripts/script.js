@@ -56,6 +56,11 @@ function validateRandomDestForm(){
         alert("Please select a departure destination.");
         return false;
     }
+    else if(document.forms["randomDestinationForm"]["numberOfAdults"].value <= 0 ||
+    document.forms["randomDestinationForm"]["numberOfChildren"].value <= 0){
+        alert("Only positive values are allowed for passengers");
+        return false;
+    }
     else{
         return true;
     }

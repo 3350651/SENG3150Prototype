@@ -215,8 +215,8 @@ public class SearchBean implements Serializable {
             flight = flightList.poll();
             //if queue empty return list of flight paths
             if (flight == null) {
-                System.out.println("flight == null");
-                break;
+                results = flightPaths;
+                return;
             }
             if (getFlightPathFrom(flight).getFlightPath().size() > maxStopovers) {
                 System.out.println("Max stopovers");
@@ -236,11 +236,15 @@ public class SearchBean implements Serializable {
                     results = flightPaths;
                 }
                 flight = flightList.poll();
+                if (flight == null) {
+                    results = flightPaths;
+                    return;
+                }
 
             }
             departure = flight.getDestination().getDestinationCode();
             departureDate = flight.getFlightArrivalTime();
-        } while (flightPaths.size() < numFlights && !flightList.isEmpty());
+        } while (flightPaths.size() < numFlights);
         results = flightPaths;
     }
 

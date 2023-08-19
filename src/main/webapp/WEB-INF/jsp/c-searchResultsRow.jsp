@@ -10,8 +10,8 @@
     <% SearchBean search = (SearchBean) session.getAttribute("flightResults"); 
     LinkedList<FlightPathBean> searchResults = search.getResults();
     session.setAttribute("flightResults", searchResults);
-    %>
-    <% int i = 0; for (FlightPathBean flightPath : searchResults ) { %>
+    if(searchResults.size() !=0 ){
+     int i = 0; for (FlightPathBean flightPath : searchResults ) { %>
         <div class="recResults">
             <div class="FlightSearchResult">
                 <div class="simpleFlightCardColumn1">
@@ -67,5 +67,8 @@
                 </div>
             </div>
         </div>
-    <% i++; }%>
+    <% i++; }
+    } else{%>
+        <div>Sorry, there were no flights found for this search. Please try again.</div>
+    <%}%>
 </div>
