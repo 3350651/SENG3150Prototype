@@ -198,9 +198,11 @@ public class SearchBean implements Serializable {
                 //if 10 flights in list return
                 if (flightPaths.size() >= numFlights) {
                     results = flightPaths;
+                    return;
                 }
                 if (flightList.isEmpty()) {
                     results = flightPaths;
+                    return;
                 }
                 flight = flightList.poll();
                 if (flight == null) {
@@ -359,7 +361,7 @@ public class SearchBean implements Serializable {
                 String airlineName = result.getString(8);
                 int leg = result.getInt(9);
                 String test = result.getString(10);
-                Timestamp originalDepartTime = Timestamp.valueOf(result.getString(10));
+                Timestamp originalDepartTime = result.getTimestamp(10);
 
                 DestinationBean rDeparture = new DestinationBean(departureCode);
                 DestinationBean rDestination = new DestinationBean(destinationCode);

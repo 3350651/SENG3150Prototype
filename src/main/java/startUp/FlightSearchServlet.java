@@ -116,7 +116,7 @@ public class FlightSearchServlet extends HttpServlet {
                 search = null;
                 while ((search == null || search.getResults().size() == 0) && randDestination != null) {
                     //search again
-                    search = new SearchBean(time, randDestination.getDestinationCode(), leaving.getDestinationCode(), null, true, 0, adults, children);
+                    search = new SearchBean(time, "MEL", leaving.getDestinationCode(), null, true, 0, adults, children);
                     search.searchFlights(2, 4);
                     session.setAttribute("flightResults2", search);
                     leavingCodes += ", '" + randDestination.getDestinationCode() + "'";

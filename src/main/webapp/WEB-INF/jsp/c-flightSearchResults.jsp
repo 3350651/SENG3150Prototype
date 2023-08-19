@@ -9,13 +9,13 @@
     SearchBean search1= (SearchBean) session.getAttribute("flightResults1"); 
     SearchBean search2= (SearchBean) session.getAttribute("flightResults2"); 
     SearchBean search3= (SearchBean) session.getAttribute("flightResults3"); 
-    LinkedList<FlightPathBean> flightResults1 = search1.getResults();
-    LinkedList<FlightPathBean> flightResults2 = search2.getResults();
-    LinkedList<FlightPathBean> flightResults3 = search3.getResults();
+    LinkedList<FlightPathBean> flightResults1 = search1 != null ? search1.getResults(): null;
+    LinkedList<FlightPathBean> flightResults2 = search2 != null ? search2.getResults(): null;
+    LinkedList<FlightPathBean> flightResults3 = search3 != null ? search3.getResults(): null;
 %>
 
 <div class="gridParent" id="simple">
-    <%if(flightResults1.size() > 0){%>
+    <%if(flightResults1 != null && flightResults1.size() > 0){%>
     <fieldset>
         <div>
             <h3>
@@ -132,7 +132,7 @@
                 <% }%>
     </fieldset>
     <%}%>
-    <%if(flightResults2.size() > 0){%>
+    <%if(flightResults2 != null && flightResults2.size() > 0){%>
     <fieldset>
         <div>
             <h3>
@@ -248,7 +248,7 @@
                 <% }%>
     </fieldset>
     <%}
-    if(flightResults3.size() > 0){ %>
+    if(flightResults3 != null && flightResults3.size() > 0){ %>
     <fieldset>
         <div>
             <h3>
@@ -365,7 +365,7 @@
                 <% }%>
     </fieldset>
     <%}
-    if(flightResults1.size() == 0 && flightResults2.size() == 0 && flightResults3.size() == 0){%>
+    if((flightResults1 == null || flightResults1.size() == 0) && (flightResults2 == null || flightResults2.size() == 0) && (flightResults3 == null || flightResults3.size() == 0)){%>
         <div>Sorry, we could not find any flights for this input. Please try again.</div>
     <%}%>
 </div>
