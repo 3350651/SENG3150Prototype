@@ -28,8 +28,8 @@
                         <%}%>
                     </div>
                     <div class="searchResultRow2">
-                        <div class="priceResult">$<%=flightPath.getMinPrice()%></div>
-                        <div class="dateResult"><%=flightPath.getInitialFlight().getFlightTime()%></div>
+                        <div class="priceResult">$<%=flightPath.getMinPrice()%> &nbsp;</div>
+                        <div class="dateResult"><%=flightPath.getInitialFlight().getFlightTime()%> &nbsp;</div>
                         <div class="numPassengersResult">Adult: <%=search.getAdultPassengers()%>, Children: <%=search.getChildPassengers()%></div>
                     </div>
                 </div>

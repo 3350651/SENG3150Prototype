@@ -31,13 +31,15 @@ LinkedList<String> tagSet = TagBean.getAllTags();
         <div style="clear:both;">&nbsp;</div>
         <div style="clear:both;">&nbsp;</div>
         <div>
-             <div style="float: right">
+             <div style="float: left">
                   <button name="selectedTags" type="submit" value="selectedTags"
                           class="tagSearch">GO</button>
              </div>
-            <div style="float: left">
+             <%if(user != null){%>
+            <div style="float: right">
               <button name="userTags" class="search" type="submit" value="userTags">Use My Profile Tags</button>
             </div>
+            <%}%>
         </div>
         <input type="hidden" name="searchResults" value="recSearchResults"/>
   </form>
