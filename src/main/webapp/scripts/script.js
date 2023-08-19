@@ -22,11 +22,11 @@ function validateSearchForm(){
         return false;
     }
 
-    else if(document.forms["simpleSearchForm"]["flexibleDate"].value === true
-            && (document.forms["simpleSearchForm"]["flexibleDays"].value === ""
-            || document.forms["simpleSearchForm"]["flexibleDays"].value == null)
+    else if((document.forms["simpleSearchForm"]["flexibleDays"].value === ""
+            || document.forms["simpleSearchForm"]["flexibleDays"].value == null
+            || document.forms["simpleSearchForm"]["flexibleDays"].value < 0)
     ){
-        alert("A number of days this search should be flexible by needs to be provided.");
+        alert("A positive number of days this search should be flexible by needs to be provided.");
         return false;
     }
 

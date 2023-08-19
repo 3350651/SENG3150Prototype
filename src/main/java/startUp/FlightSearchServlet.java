@@ -156,11 +156,9 @@ public class FlightSearchServlet extends HttpServlet {
             String time = request.getParameter("departureDate");
             time += " 00:00:00";
             Timestamp departureTime = Timestamp.valueOf(time);
-            boolean flexible = Boolean.getBoolean(request.getParameter("flexibleDate"));
-            int flexibleDays = 0;
-            if (flexible) {
-                flexibleDays = Integer.parseInt(request.getParameter("flexibleDays"));
-            }
+
+            int flexibleDays = Integer.parseInt(request.getParameter("flexibleDays"));
+
             int adults = 0;
             int children = 0;
             if (request.getParameter("numberOfAdults") != null && !request.getParameter("numberOfAdults").equalsIgnoreCase("")) {
@@ -182,11 +180,11 @@ public class FlightSearchServlet extends HttpServlet {
             if (departure.equals(destination)) {
                 throw new IOException("Invalid input: Cannot leave from and arrive at the same destination.");
             }
-            if (flexible && flexibleDays == 0) {
+            if (flexibleDays < 0) {
                 throw new IOException("Invalid input: Provide a number of days that the search should be flexible by");
             }
 
-            SearchBean search = new SearchBean(departureTime, destination, departure, null, true, 0, adults, children);
+            SearchBean search = new SearchBean(departureTime, destination, departure, null, true, flexibleDays, adults, children);
             search.searchFlights(10, 5);
             session.setAttribute("flightResults", search);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/simpleSearchResults.jsp");
