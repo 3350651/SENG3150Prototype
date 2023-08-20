@@ -1,8 +1,12 @@
 <%@ page import="startUp.FlightBean" %>
-    <%@ page import="startUp.BookingBean" %>
-        <%@ page import="startUp.PassengerBean" %>
-            <%@ page import="startUp.TicketBean" %>
-            <% BookingBean booking= (BookingBean) session.getAttribute("booking"); %>
+<%@ page import="startUp.BookingBean" %>
+<%@ page import="startUp.PassengerBean" %>
+<%@ page import="startUp.TicketBean" %>
+<%@ page import="java.util.ArrayList" %>
+<% //BookingBean booking= (BookingBean) session.getAttribute("booking"); %>
+<% ArrayList<BookingBean> bookingsList = (ArrayList<BookingBean>) session.getAttribute("bookingsList"); %>
+
+<% for (int i = 0; i < bookingsList.size() - 1; i++){ %>
 
 <fieldset class="background">
     <h2>Flight Details:</h2>
@@ -11,40 +15,40 @@
 
         <p class="reviewDetails">
             <strong>Airline: </strong>
-            <%=booking.getDepartureFlight().getAirlineName()%>
+            <%=bookingsList.get(i).getDepartureFlight().getAirlineName()%>
 
                 <br />
                 <strong>Departure Time:</strong>
-                <%=booking.getDepartureFlight().getFlightTime()%>
+                <%=bookingsList.get(i).getDepartureFlight().getFlightTime()%>
 
                     <br />
                     <strong>Flight Name:</strong>
-                    <%=booking.getDepartureFlight().getFlightName()%>
+                    <%=bookingsList.get(i).getDepartureFlight().getFlightName()%>
 
                         <br />
                         <strong>Plane Model:</strong>
-                        <%=booking.getDepartureFlight().getPlaneType()%>
+                        <%=bookingsList.get(i).getDepartureFlight().getPlaneType()%>
         </p>
     </fieldset>
-    <%if(booking.getReturnFlight() !=null){%>
+    <%if(bookingsList.get(i).getReturnFlight() !=null){%>
         <fieldset class="foreground">
             <h3>Return Flight Details</h3>
 
             <p class="reviewDetails">
                 <strong>Airline: </strong>
-                <%=booking.getReturnFlight().getAirlineName()%>
+                <%=bookingsList.get(i).getReturnFlight().getAirlineName()%>
 
                     <br />
                     <strong>Departure Time:</strong>
-                    <%=booking.getReturnFlight().getFlightTime()%>
+                    <%=bookingsList.get(i).getReturnFlight().getFlightTime()%>
 
                         <br />
                         <strong>Flight Name:</strong>
-                        <%=booking.getReturnFlight().getFlightName()%>
+                        <%=bookingsList.get(i).getReturnFlight().getFlightName()%>
 
                             <br />
                             <strong>Plane Model:</strong>
-                            <%=booking.getReturnFlight().getPlaneType()%>
+                            <%=bookingsList.get(i).getReturnFlight().getPlaneType()%>
             </p>
 
         </fieldset>
@@ -56,7 +60,7 @@
 <fieldset class="background">
     <h2>Passenger Details:</h2>
 
-    <%for(PassengerBean passenger : booking.getPassengers()){%>
+    <%for(PassengerBean passenger : bookingsList.get(i).getPassengers()){%>
         <fieldset class="foreground">
             <p class="reviewDetails">
                 <strong>Name: </strong>
@@ -86,4 +90,5 @@
             <%}%>
         </fieldset>
         <%}%>
+    <% } %>
 </fieldset>
