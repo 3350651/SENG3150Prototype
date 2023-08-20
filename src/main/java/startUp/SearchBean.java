@@ -29,7 +29,6 @@ public class SearchBean implements Serializable {
     int adultPassengers;
     int childPassengers;
     LinkedList<FlightPathBean> results;
-    LinkedList<FlightBean> flightResults;
     int searchID;
     //TODO: may need more for completed recommendation search
 
@@ -154,18 +153,12 @@ public class SearchBean implements Serializable {
     }
 
     //gets all flights from the database. Only used for examples for prototype
-    public void getAllFlights() {
+/*    public void getAllFlights() {
         try {
-            String query = "SELECT TOP 5 f.*, " +
-                    "a.AirlineName, " +
-                    "min(p.Price) AS Price, " +
-                    "av.TicketCode, av.NumberAvailableSeatsLeg1, av.NumberAvailableSeatsLeg2 " +
-                    "FROM dbo.Flights f " +
-                    "LEFT JOIN Dbo.Airlines a ON a.AirlineCode = f.AirlineCode "+
-                    "LEFT JOIN dbo.Price p ON f.FlightNumber = p.FlightNumber AND f.DepartureTime >= p.StartDate AND f.DepartureTime <= p.EndDate " +
-                    "LEFT JOIN dbo.Availability av ON f.FlightNumber = av.FlightNumber AND f.DepartureTime = av.DepartureTime " +
-                    "WHERE av.NumberAvailableSeatsLeg1 > 0 AND ((f.StopOverCode IS NOT NULL AND av.NumberAvailableSeatsLeg2 > 0) OR (f.StopOverCode IS NULL)) " +
-                    "GROUP BY f.AirlineCode, f.FlightNumber, f.DepartureCode, f.StopOverCode, f.DestinationCode, f.DepartureTime, f.ArrivalTimeStopOver, f.DepartureTimeStopOver, f.ArrivalTime, f.PlaneCode, f.Duration, f.DurationSecondLeg, a.AirlineName, av.ClassCode, av.TicketCode, av.NumberAvailableSeatsLeg1, av.NumberAvailableSeatsLeg2";
+            String query = "SELECT f.*," +
+                    "a.AirlineName" +
+                    " FROM dbo.Flights f " +
+                    "LEFT JOIN Dbo.Airlines a ON a.AirlineCode = f.AirlineCode";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet result = statement.executeQuery();
@@ -181,16 +174,14 @@ public class SearchBean implements Serializable {
                 String stopOverCode = result.getString(4);
                 String destinationCode = result.getString(5);
                 String airlineName = result.getString(13);
-                float mCost = Float.parseFloat(result.getString("Price")); //14
 
                 DestinationBean rDeparture = new DestinationBean(departureCode);
                 DestinationBean rStopOver = new DestinationBean(stopOverCode);
                 DestinationBean rDestination = new DestinationBean(destinationCode);
 
-//                results.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
-//                        rStopOver,
-//                        rDestination));
-                flightResults.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, mCost, rDeparture, rDestination));
+                results.add(new FlightBean(aCode, airlineName, departTime, flightCode, plane, *//* mCost, *//* rDeparture,
+                        rStopOver,
+                        rDestination));
             }
 
             statement.close();
@@ -199,7 +190,7 @@ public class SearchBean implements Serializable {
             System.err.println(e.getMessage());
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
-    }
+    }*/
 
     public void searchFlights() {
         LinkedList<FlightPathBean> flightPaths = new LinkedList<>();
@@ -220,6 +211,9 @@ public class SearchBean implements Serializable {
             //go to next in queue
             flight = flightList.poll();
 
+            if (getFlightPathFrom(flight).getFlightPath().size() > 6) {
+                break;
+            }
 
             //check if destination
             while (Objects.equals(flight.getDestination().getDestinationCode(), destination)) {

@@ -290,10 +290,10 @@ div.loggedInAccountAccess{
     align-items: center;
     /*border-style: solid;*/
     /*border-color: white;*/
-    height: 100px;
+    height: 5em;
     position: fixed;
-    top: 10px;
-    right: 25em;
+    top: 1em;
+    right: 5em;
 }
 
 div.loggedOutAccountAccess{
@@ -301,10 +301,10 @@ div.loggedOutAccountAccess{
     align-items: center;
     /*border-style: solid;*/
     /*border-color: white;*/
-    height: 100px;
+    height: 5em;
     position: fixed;
-    top: 10px;
-    right: 25em;
+    top: 1em;
+    right: 5em;
 }
 
 div.loginDisplay{
@@ -656,8 +656,6 @@ button.saveParam:hover {
      background-color: dodgerblue;
   }
 
-
-
   h2.homepageHeader{
     text-align: center;
     font-family: Arial;
@@ -718,7 +716,7 @@ div.FlightSearchResult{
     padding: 10px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    flex-direction: row;
 }
 
 div.travelHistoryRecommendation{
@@ -743,8 +741,17 @@ div.DepartureLocationResult{
     font-size: 25;
 }
 
+div#sidebar.DepartureLocationResult {
+    font: 14;
+}
 
-div.DestinationLocationResult{
+img#sidebar.smallPlaneLogo {
+    width: 1.5em;
+    height: auto;
+}
+
+
+div.QuantityOfStops{
     font-size: 25;
 }
 
@@ -759,10 +766,6 @@ div.DestinationLocationResult{
 }
 
 .priceResult, .dateResult, .numPassengersResult {
-  display: inline-block;
-  vertical-align: middle;
-  padding-left: 15px;
-  padding-right: 15px;
 }
 
 div.floatGroupFavButton{
@@ -770,11 +773,11 @@ div.floatGroupFavButton{
 }
 
 .destinationImage {
-  margin-left: 10px;
+      margin-left: 0.4em
 }
 
 .destinationImage img {
-  width: 200px;
+  width: 250px;
   height: auto;
 }
 
@@ -784,7 +787,7 @@ div.floatGroupFavButton{
 }
 
 .destinationImageTravelHistory {
-  margin-left: 10px;
+  margin-left: 0.4em
 }
 
 .flight-info {
@@ -890,13 +893,28 @@ form.flightSearchResultButtons{
     margin-block-end: 0em;
 }
 
+div#sidebar.searchResultRow1 {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: space-between;
+    margin-bottom: 0;
+}
+
 .searchResultRow1{
-    padding-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5em;
 }
 
 .searchResultRow2{
-    padding-left: 10px;
-    padding-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 0.5em;
 }
 
 .searchResultRow1TravelHistory{
@@ -966,6 +984,8 @@ p.summaryOfSearch{
       border-color: black;
       padding: 5px;
       border-width: 2px;
+      border-radius: 2px;
+      margin-right: 1px;
   }
 
   .tag2
@@ -1000,15 +1020,30 @@ p.summaryOfSearch{
   button.recsearch:hover {
       background-color: dodgerblue;
   }
+
   .gridParent
   {
       display: grid;
-      margin-left: 20%;
+      column-gap: 50px;
+      display: flex;
+      /*margin-left: 250px;
       align-items: center;
-      justify-content: center;
+      justify-content: center;*/
+      margin-left: 5em;
+      align-items: center;
+      justify-content: right;
       font-family: Arial;
-      overflow-y: hidden;
-      overflow-x: auto;
+  }
+
+.gridParent#simple
+  {
+      row-gap: 1em;
+      display: flex;
+      justify-content: flex-start;
+      margin-left: 5em;
+      align-items: center;
+      font-family: Arial;
+      flex-direction: column;
   }
 
   div.FlightSearchResult1{
@@ -1063,3 +1098,98 @@ p.summaryOfSearch{
   {
       color: green;
   }
+
+  div.LoginFailedMessage{
+    text-align: right;
+    font-size: large;
+    color: red;
+    font-weight: 600;
+  }
+
+      .add-tags-form,
+      .remove-tags-form {
+          margin-bottom: 20px; /* Adjust this value to increase or decrease the spacing between the forms */
+      }
+
+    .tag-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 100px); /* Five columns of 100px each */
+        grid-gap: 10px; /* Adjust the gap between items */
+        justify-content: center; /* Center the grid horizontally */
+    }
+
+    .tag-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center the content vertically */
+        align-items: center; /* Center the content horizontally */
+        text-align: center; /* Center the text horizontally */
+        width: 100px; /* Fixed width for each .tag-item */
+        height: 100px; /* Fixed height for each .tag-item */
+        border: 1px solid #ccc; /* Add borders for better visualization */
+    }
+
+    .tag-item input[type="checkbox"] {
+        display: block; /* Hide the default checkbox */
+    }
+
+button.button#removeBookmarkedFlight{
+    background-color: white;
+    color: red;
+    border: solid 1px red;
+    width: 100%;
+    font-size: medium;
+}
+
+button.button#removeBookmarkedFlight:hover{
+    background-color: red;
+    color: white;
+    border: solid 1px red;
+}
+
+button.button#flightDetailsModifyBookmarked{
+    width: 100%;
+    font-size: medium;
+}
+
+button.button#skipQuestionnaire{
+    background-color: white;
+    color: red;
+    border: solid 1px red;
+    width: 100%;
+    font-size: medium;
+}
+
+button.button#skipQuestionnaire:hover{
+    background-color: red;
+    color: white;
+    border: solid 1px red;
+}
+
+img#imageModifyBookmarkedFlight{
+    width: 20em;
+    height: auto;
+}
+
+div.bookmarkFavouriteAddToGroup{
+    float: left;
+}
+
+div.bookmarkFavouriteAddToGroup form{
+    display: inline-block;
+}
+
+div.savedSearch{
+    border: black solid 1px;
+    border-radius: 1em;
+    padding: 1em;
+    margin: 1em
+}
+
+form.flightSearchResultButtons, form.groupFavouritesForm{
+    float: left;
+}
+
+div.containerSaveSearchAndSearch{
+    display: flex;
+}

@@ -3,16 +3,18 @@ package startUp;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class FlightPathBean {
     private Stack<FlightBean> flightPath;
     private LinkedList<String> destinations;
-
+    private int id;
     private float minPrice;
 
     public FlightPathBean() {
         flightPath = new Stack<>();
         destinations = new LinkedList<>();
+        id = ThreadLocalRandom.current().nextInt(10000000, 99999999);
         minPrice = 0;
     }
 
@@ -24,6 +26,7 @@ public class FlightPathBean {
             destinations.add(flight.getDeparture().getDestinationCode());
             minPrice += flight.getMinCost();
         }
+        id = ThreadLocalRandom.current().nextInt(00000000, 99999999);
     }
 
 
@@ -42,6 +45,14 @@ public class FlightPathBean {
 
     public void setDestinations(LinkedList<String> destinations) {
         this.destinations = destinations;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public float getMinPrice() {

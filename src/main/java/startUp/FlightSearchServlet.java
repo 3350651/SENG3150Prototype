@@ -15,9 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Instant;
 import java.util.LinkedList;
 import java.util.Stack;
+import java.util.concurrent.ThreadLocalRandom;
 
 @WebServlet(urlPatterns = { "/flightSearch" })
 public class FlightSearchServlet extends HttpServlet {
@@ -32,11 +35,11 @@ public class FlightSearchServlet extends HttpServlet {
 
             session.setAttribute("flightResults", search);
             request.setAttribute("goToRecommend", true);
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-RecommendedSearch.jsp");
             requestDispatcher.forward(request, response);
         } else {
             request.setAttribute("goToSimple", true);
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
             requestDispatcher.forward(request, response);
         }
     }
@@ -55,7 +58,7 @@ public class FlightSearchServlet extends HttpServlet {
         }
 
         else if (request.getParameter("searchResults") != null
-                && (request.getParameter("searchResults").equalsIgnoreCase("simpleSearchResults"))) {
+                && request.getParameter("searchResults").equalsIgnoreCase("simpleSearchResults")) {
 
             String departure = request.getParameter("departureLocation");
             String destination = request.getParameter("arrivalLocation");
@@ -64,7 +67,7 @@ public class FlightSearchServlet extends HttpServlet {
             Timestamp departureTime = Timestamp.valueOf(time);
             boolean flexible = Boolean.getBoolean(request.getParameter("flexibleDate"));
             int flexibleDays = 0;
-            if (!request.getParameter("flexibleDays").equals("")) {
+            if (flexible) {
                 flexibleDays = Integer.parseInt(request.getParameter("flexibleDays"));
             }
             int adults = Integer.parseInt(request.getParameter("numberOfAdults"));
@@ -84,13 +87,6 @@ public class FlightSearchServlet extends HttpServlet {
             if (flexible && flexibleDays == 0) {
                 throw new IOException("Invalid input: Provide a number of days that the search should be flexible by");
             }
-
-            System.out.println(departure);
-            System.out.println(destination);
-            System.out.println("FlightSearchServlet.simpleSearchResults.departureTime " + departureTime);
-            System.out.println("adults: " + adults);
-            System.out.println("children: " + children);
-
 
             SearchBean search = new SearchBean(departureTime, destination, departure, null, true, 0, adults, children);
             search.searchFlights();
@@ -150,7 +146,6 @@ public class FlightSearchServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(request, response);
         }
-
         else if (request.getParameter("searchResults") != null
                 && request.getParameter("searchResults").equalsIgnoreCase("simpleReturnSearchResults")) {
 
@@ -194,6 +189,44 @@ public class FlightSearchServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(request, response);
         }
+        else if(request.getParameter("saveParam") != null){
+            String userID = user.getUserID();
+            String departure = request.getParameter("departureLocation");
+            String destination = request.getParameter("arrivalLocation");
+            String time = request.getParameter("departureDate");
+            time += " 00:00:00";
+            Timestamp departureTime = Timestamp.valueOf(time);
+            boolean flexible = Boolean.getBoolean(request.getParameter("flexibleDate"));
+            int flexibleDays = 0;
+            if (!request.getParameter("flexibleDays").equals("")) {
+                flexibleDays = Integer.parseInt(request.getParameter("flexibleDays"));
+            }
+            int adults = Integer.parseInt(request.getParameter("numberOfAdults"));
+            int children = Integer.parseInt(request.getParameter("numberOfChildren"));
+            if (adults < 0 || children < 0 || (adults == 0 && children == 0)) {
+                throw new IOException("Invalid input: Invalid combination of adult and children passengers.");
+            }
+            if (destination == null) {
+                throw new IOException("Invalid input: Select a destination.");
+            }
+            if (departure == null) {
+                throw new IOException("Invalid input: Select a departure location.");
+            }
+            if (departure.equals(destination)) {
+                throw new IOException("Invalid input: Cannot leave from and arrive at the same destination.");
+            }
+            if (flexible && flexibleDays == 0) {
+                throw new IOException("Invalid input: Provide a number of days that the search should be flexible by");
+            }
 
+            SearchBean savedSearchParam = new SearchBean(departureTime, destination, departure, null, true, 0, adults, children);
+            int searchID = ThreadLocalRandom.current().nextInt(00000000, 99999999);
+            savedSearchParam.setSearchID(searchID);
+            UserBean.addToSavedSearches(userID, savedSearchParam);
+            user.addSavedSearch(savedSearchParam);
+            session.setAttribute("userBean", user);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
+            requestDispatcher.forward(request, response);
+        }
     }
 }

@@ -1,14 +1,11 @@
 <%@ page import="startUp.UserBean" %>
-<%@ page import="startUp.FlightBean" %>
 <%@ page import="startUp.DestinationBean" %>
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="java.util.Iterator" %>
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
 <%
-LinkedList<FlightBean> bookmarkedFlights = new LinkedList<>();
 LinkedList<DestinationBean> favouritedDestinations = new LinkedList<>();
-if (user != null && user.getBookmarkedFlights() != null) {
-  bookmarkedFlights = user.getBookmarkedFlights();
+if (user != null && user.getFavouritedDestinations() != null) {
   favouritedDestinations = user.getFavouritedDestinations();
 }
 %>
@@ -24,7 +21,6 @@ if (user != null && user.getBookmarkedFlights() != null) {
 <jsp:include page='c-Sidebar-Account.jsp'></jsp:include>
 
 <div class="main-content">
-<%--            Edit user bookmarked flights form                 --%>
     <h1>Modify Favourited Destinations</h1>
     <form name="removeBookmarkedFlight" action="AccountSettings" method="POST">
     <ul>

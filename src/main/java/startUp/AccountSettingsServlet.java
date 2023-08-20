@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.LinkedList;
 
 @WebServlet(urlPatterns = { "/AccountSettings" })
 public class AccountSettingsServlet extends HttpServlet {
@@ -47,6 +48,8 @@ public class AccountSettingsServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("userBean");
+		LinkedList<FlightPathBean> flightPath = (LinkedList<FlightPathBean>) session.getAttribute("flightResults");
+
 		if (request.getParameter("submitQuestionnaire") != null) {
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
 			String[] travelGoals = request.getParameterValues("travelGoals[]");
@@ -135,24 +138,20 @@ public class AccountSettingsServlet extends HttpServlet {
 		}
 		if(request.getParameter("addBookmarkedFlight") != null){
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
-			String airlineCode = request.getParameter("airlineCode");
-			String flightNumber = request.getParameter("flightNumber");
-			Timestamp departureTime = Timestamp.valueOf(request.getParameter("departureTime"));
-			UserBean.addToBookmarkedFlights(id, airlineCode, flightNumber, departureTime);
-			FlightBean f = new FlightBean(airlineCode, flightNumber, departureTime); // make this constructor search for the remainder of flight information upon instantiation
-			user.addBookmarkedFlight(f);
+			int index = Integer.parseInt(request.getParameter("flightIndex"));
+			FlightPathBean fpb = flightPath.get(index);
+			UserBean.addToBookmarkedFlights(id, fpb);
+			user.addBookmarkedFlight(fpb);
 			session.setAttribute("userBean", user);
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("removeBookmarkedFlight") != null){
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
-			String airlineCode = request.getParameter("airlineCode");
-			String flightNumber = request.getParameter("flightNumber");
-			Timestamp departureTime = Timestamp.valueOf(request.getParameter("departureTime"));// adds to database with foreign keys, creates PK
-			FlightBean f = new FlightBean(airlineCode, flightNumber, departureTime); // constructor searches for the remainder of flight information upon instantiation
-			user.removeBookmarkedFlight(f);
-			UserBean.removeFromBookmarkedFlights(id, airlineCode, flightNumber, departureTime);
+			String bookmarkedFlightID = request.getParameter("bookmarkedFlightID");
+			UserBean.removeFromBookmarkedFlights(id, bookmarkedFlightID);
+			int intBookmarkedFlightID = Integer.parseInt(bookmarkedFlightID);
+			user.removeBookmarkedFlight(intBookmarkedFlightID);
 			session.setAttribute("userBean", user);
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyBookmarkedFlights.jsp");
 			requestDispatcher.forward(request, response);
