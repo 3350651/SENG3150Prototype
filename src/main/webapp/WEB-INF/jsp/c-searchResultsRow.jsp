@@ -8,7 +8,8 @@
 <% String isReturnResults = (String) request.getParameter("isReturnResults"); %>
 
 <div class="gridParent" id="simple">
-    <% SearchBean search = (SearchBean) session.getAttribute("flightResults"); 
+    <% SearchBean search = (SearchBean) session.getAttribute("flightResults");
+    // <% SearchBean search = (SearchBean) session.getAttribute("searchResults");
     LinkedList<FlightPathBean> searchResults = search.getResults();
     session.setAttribute("flightResults", searchResults);
 <div class="gridParent">
@@ -31,6 +32,7 @@
         }
     %>
 
+    if(searchResults.size() !=0 ){
     <% int i = 0; for (FlightPathBean flightPath : searchResults ) { %>
         <div class="recResults">
             <div class="FlightSearchResult">
@@ -48,9 +50,9 @@
                         <%}%>
                     </div>
                     <div class="searchResultRow2">
-                        <div class="priceResult">$$</div>
-                        <div class="dateResult"><%=flightPath.getInitialFlight().getFlightTime()%></div>
-                        <div class="numPassengersResult">#Psngrs</div>
+                        <div class="priceResult">$<%=flightPath.getMinPrice()%> &nbsp;</div>
+                        <div class="dateResult"><%=flightPath.getInitialFlight().getFlightTime()%> &nbsp;</div>
+                        <div class="numPassengersResult">Adult: <%=search.getAdultPassengers()%>, Children: <%=search.getChildPassengers()%></div>
                     </div>
                 </div>
                 <div class="searchResultButtons">
@@ -87,66 +89,8 @@
                 </div>
             </div>
         </div>
-            <div class="recResults">
-                <div class="FlightSearchResult1">
-                    <div class="flightInfo">
-                        <div class="searchResultRow1">
-                            <div class="DepartureLocationResult"><%=flightPath.getInitialFlight().getDeparture().getDestinationName()%></div>
-                            <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
-                            <div class="DestinationLocationResult"><%=flightPath.getLastFlight().getDestination().getDestinationName()%></div>
-                        </div>
-                        <div class="searchResultRow2">
-                            <div class="priceResult">Stopovers: <%=flightPath.getFlightPathStopOvers()%></div>
-                            <div class="priceResult">$<%=flightPath.getMinPrice()%></div>
-                            <div class="dateResult"><%=flightPath.getInitialFlight().getFlightTime()%></div>
-                            <div class="numPassengersResult"><%="Adults: " + search.getAdultPassengers() + ", Children: " + search.getChildPassengers()%></div>
-                        </div>
-
-                        <div class="tagsParent">
-                            <div class="tag1">Mild</div>
-                            <div class="tag2">Family</div>
-                            <div class="tag2"> Reputation: <input type="range" min="1" max="100" value="95" class="slider">95%</div>
-                        </div>
-                        <span class="brmedium"></span>
-
-                        <div class="searchResultButtons">
-                            <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
-                                <input type="hidden" name="userID" value="<%= user.getUserID() %>">
-                                <input type="hidden" name="flightIndex" value="<%= searchResults.indexOf(flightPath) %>">
-                                    <div class="bookmarkFlight">
-                                        <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value="bookmark">
-                                    </div>
-                                    <div class="favouriteDestination">
-                                        <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/favouriteStar.png" alt="Favourite Destination Logo" name="favourite" value="favourite">
-                                    </div>
-                            </form>
-
-                            <form name="groupFavourite" action="GroupHomepage" method="POST">
-                                <div class="addToGroupFavouriteList">
-                                    <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="addToGroupFaveList" value=<%=searchResults.indexOf(flightPath)%>>
-                                </div>
-                            </form>
-
-
-                            <form method="POST" action="flightSearch">
-                                <% if (isReturnResults.equalsIgnoreCase("false")) {%>
-                                    <input type="hidden" name="flightIndex" value="<%= searchResults.indexOf(flightPath) %>">
-                                <% } else { %>
-                                    <input type="hidden" name="returnFlightIndex" value="<%= searchResults.indexOf(flightPath) %>">
-                                <% } %>
-                                <input type="hidden" name="isReturnResults" value="<%= isReturnResults %>">
-                                <div class="viewFlightDetailsButton">
-                                    <button type="submit" class="viewFlightDetailsButton" name="viewFlight" value="viewFlight">View Details</button>
-                                </div>
-                            </form>
-
-                        </div>
-
-                    </div>
-                    <div class="destinationImage">
-                        <img src="${pageContext.request.contextPath}/images/brisbaneCity.jpg" alt="Brisbane Logo" class="smallBrisbaneLogo" >
-                    </div>
-                </div>
-            </div>
-    <% i++; }%>
+    <% i++; }
+    } else{%>
+        <div>Sorry, there were no flights found for this search. Please try again.</div>
+    <%}%>
 </div>

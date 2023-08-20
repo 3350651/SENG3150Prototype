@@ -47,20 +47,6 @@ public class FlightBean implements Serializable {
         seatAvailability = new LinkedList<>();
     }
 
-    public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightTime, String newflightName,
-                      String newPlaneType,
-            float newMinCost, DestinationBean newDeparture, DestinationBean newDestination) {
-        airline = newAirline;
-        airlineName = newAirlineName;
-        flightDepartureTime = newFlightTime;
-        flightName = newflightName;
-        planeType = newPlaneType;
-        minCost = newMinCost;
-        departure = newDeparture;
-        destination = newDestination;
-        seatAvailability = new LinkedList<>();
-    }
-
     /**
      * Used in the search algorithm
      */
@@ -337,6 +323,10 @@ public class FlightBean implements Serializable {
         seatAvailability = AvailabilityBean.getAvailability(this.airline, this.flightName, this.originalFlightDepartureTime, this.leg, passengers);
     }
 
+    public void loadDestinationBeans() {
+        this.destination = new DestinationBean(destination.getDestinationCode(), true);
+        this.departure = new DestinationBean(departure.getDestinationCode(), true);
+    }
     public float getPriceOfAvailability(String classCode, String typeCode) {
         for (AvailabilityBean availability : seatAvailability) {
             if (availability.getClassCode().equals(classCode) && availability.getTicketCode().equals(typeCode)) {

@@ -6,7 +6,7 @@
 <%@ page import="startUp.FlightPathBean" %>
 <%@ page import="startUp.DestinationBean" %>
 <%@ page import="startUp.DestinationOptionsBean" %>
-<% DestinationOptionsBean DestinationOps=(DestinationOptionsBean) session.getAttribute("destinationCodes");%>
+<% DestinationOptionsBean destinationOps=(DestinationOptionsBean) session.getAttribute("destinationCodes");%>
 <% UserBean user = (UserBean) session.getAttribute("userBean");
 LinkedList<FlightPathBean> bookmarkedFlights = new LinkedList<>();
 if (user != null && user.getBookmarkedFlights() != null) {
@@ -15,7 +15,7 @@ bookmarkedFlights = user.getBookmarkedFlights();
 %>
 
 <div class="simpleSearch">
-    <form method="POST" action="flightSearch" class="simpleSearchForm">
+    <form method="POST" action="flightSearch" class="simpleSearchForm" name="simpleSearchForm" onsubmit="return validateSearchForm()">
         <div class="departureLocation"><label for="departureLocation">Leaving
                 From</label><br>
             <select id="departureLocation" name="departureLocation">
@@ -45,12 +45,9 @@ bookmarkedFlights = user.getBookmarkedFlights();
         <div class="departureDate"><label for="departureDate">Date</label><br>
             <input type="date" id="departureDate" name="departureDate" value="2015-08-11">
         </div>
-        <div class="flexibleDateDiv" id="flexibleDateDiv"><label for="flexibleDate">Flexible?</label> <br>
-            <input type="checkbox" id="flexibleDate" name="flexibleDate">
-            <div class="flexibleDaysGroup" id="flexibleDaysGroup" style="display:none;">
-                <label for="flexibleDays">Days flexible?</label><br>
-                <input type="number" min="0" max="30" step="1" id="flexibleDays" name="flexibleDays">
-            </div>
+        <div class="flexibleDateDiv" id="flexibleDateDiv">
+                <label for="flexibleDays">Days flexible</label><br>
+                <input type="number" min="0" max="30" step="1" id="flexibleDays" name="flexibleDays" value="0">
         </div>
         <div class="numberOfAdults"><label for="numberOfAdults"># Adults</label><br>
             <input type="number" id="numberOfAdults" size="2" name="numberOfAdults" value="1">
