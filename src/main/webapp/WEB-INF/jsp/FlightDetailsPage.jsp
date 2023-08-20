@@ -232,14 +232,6 @@
                                                 <p class="classOptions">-</p>
                                             </div>
                                             <div class="flightDetailsColumn6">
-                                                <form action="flightSearch" method="POST">
-                                                    <label for="returnDate">Return Date:</label>
-                                                    <input type="date" id="returnDate" name="returnDate" value="<%= flightPath.getLastFlight().getTomorrow() %>" min="<%= flightPath.getLastFlight().getTomorrow() %>">
-                                                    <input type="hidden" name="departureLocation" value="<%= flightPath.getLastFlight().getDestination().getDestinationCode() %>">
-                                                    <input type="hidden" name="arrivalLocation" value="<%= flightPath.getInitialFlight().getDeparture().getDestinationCode() %>">
-                                                    <br />
-                                                    <button name="searchResults" type="submit" value="simpleReturnSearchResults" class="search">Search</button>
-                                                </form>
                                                 <form class="classOptions" action="flight" method="POST">
                                                     <input type="hidden" name="isReturn" value="false" />
                                                     <input type="hidden" name="departureLocation" value="<%= flight.getDeparture().getDestinationName() %>" />
