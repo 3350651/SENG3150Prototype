@@ -46,6 +46,10 @@ public class FlightServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(req, resp);
         }
+        else if (req.getParameter("") != null) {
 
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
+            requestDispatcher.forward(req, resp);
+        }
     }
 }

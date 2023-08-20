@@ -18,6 +18,48 @@
         <meta charset="UTF-8">
         <title>startUp.FlightDetailsPage</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+        <script>
+            function toggleVisibility(id) {
+                closeTicketSelection(id);
+
+                var x = document.getElementById(id);
+                 if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+
+            function toggleVisibility2(id, type) {
+                closeTicketSelection(id);
+
+                var newID = id + '' + type;
+                var x = document.getElementById(newID);
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+
+            function closeTicketSelection(id) {
+                varEco = id + 'ECO';
+                varEcoDiv = document.getElementById(varEco)
+                varEcoDiv.style.display = "none";
+
+                varPme = id + 'PME';
+                varPmeDiv = document.getElementById(varPme)
+                varPmeDiv.style.display = "none";
+
+                varBus = id + 'BUS';
+                varBusDiv = document.getElementById(varBus)
+                varBusDiv.style.display = "none";
+
+                varFir = id + 'FIR';
+                varFirDiv = document.getElementById(varFir)
+                varFirDiv.style.display = "none";
+            }
+        </script>
     </head>
 
     <body>
@@ -112,6 +154,253 @@
                                     <p>Minimum price: <%=flight.getMinCost()%></p>
                                 </div>
                             </div>
+                            <div class="flightDetailsRow">
+                                <div class="flightDetailsColumnLeft">
+                                    <button class="button" onclick="toggleVisibility('<%= flight.getFlightTime() %>')">Select Ticket</button>
+                                </div>
+                            </div>
+        <!--TICKET SELECTION-->
+                            <% String[] classCodes = {"ECO", "PME", "BUS", "FIR"}; %>
+                            <% String[] ticketTypes = {"A", "B", "C", "D", "E", "F", "G"}; %>
+                            <div class="ticketSelection" id="<%= flight.getFlightTime() %>" style="display:none;">
+                                <div class="flightDetailsRow">
+
+                                <% for (String classCode : classCodes) {%>
+                                    <div class="flightDetailsColumn4">
+                                        <% if (classCode.equals("ECO")) {%>
+                                            <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">Economy</button>
+                                        <% } %>
+                                        <% if (classCode.equals("PME")) {%>
+                                        <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">Premium Economy</button>
+                                        <% } %>
+                                        <% if (classCode.equals("BUS")) {%>
+                                        <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">Business</button>
+                                        <% } %>
+                                        <% if (classCode.equals("FIR")) {%>
+                                        <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">First Class</button>
+                                        <% } %>
+                                    </div>
+                                <% } %>
+                <!--TICKET TYPE SELECTION -->
+                                <% for (String classCode : classCodes) {%>
+                                    <div id="<%= flight.getFlightTime() %><%= classCode %>" style="display:none">
+                                        <div class="flightDetailsRow">
+                                            <div class="flightDetailsColumn6Header">
+                                                <% if (classCode.equals("ECO")) {%>
+                                                    <p class="classView"><strong>ECONOMY</strong></p>
+                                                <% } %>
+                                                <% if (classCode.equals("PME")) {%>
+                                                    <p class="classView"><strong>PREMIUM ECONOMY</strong></p>
+                                                <% } %>
+                                                <% if (classCode.equals("BUS")) {%>
+                                                    <p class="classView"><strong>BUSINESS</strong></p>
+                                                <% } %>
+                                                <% if (classCode.equals("FIR")) {%>
+                                                    <p class="classView"><strong>FIRST CLASS</strong></p>
+                                                <% } %>
+                                            </div>
+                                            <div class="flightDetailsColumn6Header">
+                                                <p class="classOptions">Transferable</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6Header">
+                                                <p class="classOptions">Refundable</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6Header">
+                                                <p class="classOptions">Exchangeable</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6Header">
+                                                <p class="classOptions">FrequentFlyerPoints</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6Header">
+                                                <p class="classOptions">Price</p>
+                                            </div>
+                                        </div>
+                                        <div class="flightDetailsRow">
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">Standby</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <form action="flightSearch" method="POST">
+                                                    <label for="returnDate">Return Date:</label>
+                                                    <input type="date" id="returnDate" name="returnDate" value="<%= flightPath.getLastFlight().getTomorrow() %>" min="<%= flightPath.getLastFlight().getTomorrow() %>">
+                                                    <input type="hidden" name="departureLocation" value="<%= flightPath.getLastFlight().getDestination().getDestinationCode() %>">
+                                                    <input type="hidden" name="arrivalLocation" value="<%= flightPath.getInitialFlight().getDeparture().getDestinationCode() %>">
+                                                    <br />
+                                                    <button name="searchResults" type="submit" value="simpleReturnSearchResults" class="search">Search</button>
+                                                </form>
+                                                <form class="classOptions" action="flight" method="POST">
+                                                    <input type="hidden" name="isReturn" value="false" />
+                                                    <input type="hidden" name="departureLocation" value="<%= flight.getDeparture().getDestinationName() %>" />
+                                                    <input type="hidden" name="flightNumber" value="<%= flight.getFlightName() %>" />
+                                                    <input type="hidden" name="selectedPrice" value="<%= flight.getFlightName() %>" />
+                                                    <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "A") != -1.0 ? "" : "disabled") %> >
+                                                    <%= (flight.getPriceOfAvailability(classCode, "A") != -1.0 ? flight.getPriceOfAvailability(classCode, "A") : "SOLD OUT")%>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="flightDetailsRow">
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">Premium Discounted</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">
+                                                    <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "B") != -1.0 ? "" : "disabled") %> >
+                                                    <%= (flight.getPriceOfAvailability(classCode, "B") != -1.0 ? flight.getPriceOfAvailability(classCode, "B") : "SOLD OUT")%>
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="flightDetailsRow">
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">Discounted</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">&#10003</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">
+                                                    <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "C") != -1.0 ? "" : "disabled") %> >
+                                                    <%= (flight.getPriceOfAvailability(classCode, "C") != -1.0 ? flight.getPriceOfAvailability(classCode, "C") : "SOLD OUT")%>
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="flightDetailsRow">
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">Standard</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">&#10003</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">
+                                                    <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "D") != -1.0 ? "" : "disabled") %> >
+                                                    <%= (flight.getPriceOfAvailability(classCode, "D") != -1.0 ? flight.getPriceOfAvailability(classCode, "D") : "SOLD OUT")%>
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="flightDetailsRow">
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">Premium</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">&#10003</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">-</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">&#10003</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">&#10003</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">
+                                                    <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "E") != -1.0 ? "" : "disabled") %> >
+                                                    <%= (flight.getPriceOfAvailability(classCode, "E") != -1.0 ? flight.getPriceOfAvailability(classCode, "E") : "SOLD OUT")%>
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="flightDetailsRow">
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">ld</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">&#10003</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">&#10003</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">&#10003</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">&#10003</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">
+                                                    <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "F") != -1.0 ? "" : "disabled") %> >
+                                                    <%= (flight.getPriceOfAvailability(classCode, "F") != -1.0 ? flight.getPriceOfAvailability(classCode, "F") : "SOLD OUT")%>
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="flightDetailsRow">
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">Platinum</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">&#10003</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">&#10003</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">&#10003</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">&#10003</p>
+                                            </div>
+                                            <div class="flightDetailsColumn6">
+                                                <p class="classOptions">
+                                                    <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "G") != -1.0 ? "" : "disabled") %> >
+                                                    <%= (flight.getPriceOfAvailability(classCode, "G") != -1.0 ? flight.getPriceOfAvailability(classCode, "G") : "SOLD OUT")%>
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                                </div>
+                <!--END TICKET TYPE SELECTION -->
+                            </div>
+        <!--END TICKET SELECTION-->
                         </div>
                     </td>
                 </tr>
@@ -284,6 +573,241 @@
                                         <p>Minimum price: <%=flight.getMinCost()%></p>
                                     </div>
                                 </div>
+                                <div class="flightDetailsRow">
+                                    <div class="flightDetailsColumnLeft">
+                                        <button class="button" onclick="toggleVisibility('<%= flight.getFlightTime() %>')">Select Ticket</button>
+                                    </div>
+                                </div>
+        <!--TICKET SELECTION-->
+                                <% String[] classCodes = {"ECO", "PME", "BUS", "FIR"}; %>
+                                <% String[] ticketTypes = {"A", "B", "C", "D", "E", "F", "G"}; %>
+                                <div class="ticketSelection" id="<%= flight.getFlightTime() %>" style="display:none;">
+                                    <div class="flightDetailsRow">
+
+                                        <% for (String classCode : classCodes) {%>
+                                        <div class="flightDetailsColumn4">
+                                            <% if (classCode.equals("ECO")) {%>
+                                            <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">Economy</button>
+                                            <% } %>
+                                            <% if (classCode.equals("PME")) {%>
+                                            <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">Premium Economy</button>
+                                            <% } %>
+                                            <% if (classCode.equals("BUS")) {%>
+                                            <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">Business</button>
+                                            <% } %>
+                                            <% if (classCode.equals("FIR")) {%>
+                                            <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">First Class</button>
+                                            <% } %>
+                                        </div>
+                                        <% } %>
+                <!--TICKET TYPE SELECTION -->
+                                        <% for (String classCode : classCodes) {%>
+                                        <div id="<%= flight.getFlightTime() %><%= classCode %>" style="display:none">
+                                            <div class="flightDetailsRow">
+                                                <div class="flightDetailsColumn6Header">
+                                                    <% if (classCode.equals("ECO")) {%>
+                                                    <p class="classView"><strong>ECONOMY</strong></p>
+                                                    <% } %>
+                                                    <% if (classCode.equals("PME")) {%>
+                                                    <p class="classView"><strong>PREMIUM ECONOMY</strong></p>
+                                                    <% } %>
+                                                    <% if (classCode.equals("BUS")) {%>
+                                                    <p class="classView"><strong>BUSINESS</strong></p>
+                                                    <% } %>
+                                                    <% if (classCode.equals("FIR")) {%>
+                                                    <p class="classView"><strong>FIRST CLASS</strong></p>
+                                                    <% } %>
+                                                </div>
+                                                <div class="flightDetailsColumn6Header">
+                                                    <p class="classOptions">Transferable</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6Header">
+                                                    <p class="classOptions">Refundable</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6Header">
+                                                    <p class="classOptions">Exchangeable</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6Header">
+                                                    <p class="classOptions">FrequentFlyerPoints</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6Header">
+                                                    <p class="classOptions">Price</p>
+                                                </div>
+                                            </div>
+                                            <div class="flightDetailsRow">
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">Standby</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">
+                                                        <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "A") != -1.0 ? "" : "disabled") %> >
+                                                        <%= (flight.getPriceOfAvailability(classCode, "A") != -1.0 ? flight.getPriceOfAvailability(classCode, "A") : "SOLD OUT")%>
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="flightDetailsRow">
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">Premium Discounted</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">
+                                                        <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "B") != -1.0 ? "" : "disabled") %> >
+                                                        <%= (flight.getPriceOfAvailability(classCode, "B") != -1.0 ? flight.getPriceOfAvailability(classCode, "B") : "SOLD OUT")%>
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="flightDetailsRow">
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">Discounted</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">&#10003</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">
+                                                        <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "C") != -1.0 ? "" : "disabled") %> >
+                                                        <%= (flight.getPriceOfAvailability(classCode, "C") != -1.0 ? flight.getPriceOfAvailability(classCode, "C") : "SOLD OUT")%>
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="flightDetailsRow">
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">Standard</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">&#10003</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">
+                                                        <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "D") != -1.0 ? "" : "disabled") %> >
+                                                        <%= (flight.getPriceOfAvailability(classCode, "D") != -1.0 ? flight.getPriceOfAvailability(classCode, "D") : "SOLD OUT")%>
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="flightDetailsRow">
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">Premium</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">&#10003</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">-</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">&#10003</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">&#10003</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">
+                                                        <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "E") != -1.0 ? "" : "disabled") %> >
+                                                        <%= (flight.getPriceOfAvailability(classCode, "E") != -1.0 ? flight.getPriceOfAvailability(classCode, "E") : "SOLD OUT")%>
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="flightDetailsRow">
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">ld</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">&#10003</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">&#10003</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">&#10003</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">&#10003</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">
+                                                        <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "F") != -1.0 ? "" : "disabled") %> >
+                                                        <%= (flight.getPriceOfAvailability(classCode, "F") != -1.0 ? flight.getPriceOfAvailability(classCode, "F") : "SOLD OUT")%>
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="flightDetailsRow">
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">Platinum</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">&#10003</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">&#10003</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">&#10003</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">&#10003</p>
+                                                </div>
+                                                <div class="flightDetailsColumn6">
+                                                    <p class="classOptions">
+                                                        <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "G") != -1.0 ? "" : "disabled") %> >
+                                                        <%= (flight.getPriceOfAvailability(classCode, "G") != -1.0 ? flight.getPriceOfAvailability(classCode, "G") : "SOLD OUT")%>
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                    </div>
+                <!--END TICKET TYPE SELECTION -->
+                                </div>
+        <!--END TICKET SELECTION-->
                             </div>
                         </td>
                     </tr>

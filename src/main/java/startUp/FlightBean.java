@@ -29,6 +29,8 @@ public class FlightBean implements Serializable {
     private FlightBean previousFlight;
     private int leg;
 
+    private float selectedPrice;
+
     // constructor
 
     public FlightBean(String newAirline, String newAirlineName, Timestamp newFlightTime, String newflightName,
@@ -215,6 +217,10 @@ public class FlightBean implements Serializable {
         this.leg = leg;
     }
 
+    public float getSelectedPrice() { return selectedPrice; }
+
+    public  void setSelectedPrice(float selectedPrice) { this.selectedPrice = selectedPrice; }
+
     // get flight
     public static FlightBean getFlight(String airlineCode, String flightName, Timestamp flightDepartureTime) {
 
@@ -331,5 +337,13 @@ public class FlightBean implements Serializable {
         seatAvailability = AvailabilityBean.getAvailability(this.airline, this.flightName, this.originalFlightDepartureTime, this.leg, passengers);
     }
 
+    public float getPriceOfAvailability(String classCode, String typeCode) {
+        for (AvailabilityBean availability : seatAvailability) {
+            if (availability.getClassCode().equals(classCode) && availability.getTicketCode().equals(typeCode)) {
+                return availability.getPrice();
+            }
+        }
+        return -1;
+    }
 
 }

@@ -377,10 +377,46 @@ div.loginDisplay{
 
   .flightDetailsColumn2 {
     float: left;
-    width: 50%;
+    width: 40%;
     padding: 10px;
     box-sizing: border-box;
+    margin: 0;
+    border: 0;
   }
+
+    .flightDetailsColumn4 {
+      float: left;
+      width: 25%;
+      padding: 10px;
+      box-sizing: border-box;
+      margin: 0;
+      border: 0;
+    }
+
+    .flightDetailsColumn6Header {
+      float: left;
+      width: 16%;
+      padding: 0px 10px;
+      box-sizing: border-box;
+      margin: 0;
+      border: 0;
+    }
+
+    .flightDetailsColumn6 {
+      float: left;
+      width: 16%;
+      padding: 0px 10px;
+      box-sizing: border-box;
+      margin: 0;
+      border: 0;
+    }
+
+    .flightDetailsColumn6 p {
+      padding: 5px 10px;
+      box-sizing: border-box;
+      margin: 10px;
+      border: 0;
+    }
 
     .flightDetailsColumnLeft {
       float: left;
@@ -391,17 +427,73 @@ div.loginDisplay{
 
     .flightDetailsColumnRight {
           float: right;
-          width: 40%;
+          width: 60%;
           padding: 10px;
           box-sizing: border-box;
     }
 
-  /* Clear floats after the columns */
+    .ticketSelection {
+        display: none;
+    }
+
+    .classView {
+        box-sizing: border-box;
+        background-color: cornflowerblue;
+        border-radius: 8px;
+        border: none;
+        text-align: center;
+    }
+
+    .ticketType {
+            box-sizing: border-box;
+            background-color: cornflowerblue;
+            border-radius: 8px;
+            border: none;
+            text-align: center;
+    }
+
+    .classOptions {
+            box-sizing: border-box;
+            background-color: cornflowerblue;
+            border-radius: 8px;
+            font-size: 18px;
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            text-align: center;
+        }
+
+    .priceButton {
+        background-color: #156283;
+        box-sizing: border-box;
+        color: white;
+        margin: none;
+        border-radius: 8px;
+        padding: 5px 0px;
+        border: none;
+        border-radius: 5px;
+        transition-duration: 0.25s;
+        width: 100px;
+    }
+
+
+
+   .priceButton:hover {
+     background-color: white;
+     color: #156283;
+   }
+
+   .priceButton:disabled,
+   .priceButton[disabled]{
+     border: 1px solid #999999;
+     background-color: #cccccc;
+     color: white;
+   }
+
   .flightDetailsRow:after {
     content: "";
     display: table;
     clear: both;
-
   }
 
   #submit {
@@ -534,6 +626,8 @@ button.saveParam:hover {
  button.search:hover {
      background-color: dodgerblue;
   }
+
+
 
   h2.homepageHeader{
     text-align: center;
