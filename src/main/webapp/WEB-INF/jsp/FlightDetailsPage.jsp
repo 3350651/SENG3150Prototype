@@ -30,7 +30,21 @@
                 }
             }
 
-            function toggleVisibility2(id, type) {
+
+
+
+            function toggleVisibility2(id, type, button) {
+                var headerID = id + 'classDiv';
+                var header = document.getElementById(headerID);
+                var btns = header.getElementsByClassName("classButton");
+                for (var i = 0; i < btns.length; i++) {
+                    var current = document.getElementsByClassName("classButtonActive");
+                    if (btns[i].classList.contains("classButtonActive")) {
+                        btns[i].className = btns[i].className.replace(" classButtonActive", "");
+                    }
+                }
+                button.className += " classButtonActive";
+
                 closeTicketSelection(id);
 
                 var newID = id + '' + type;
@@ -163,21 +177,21 @@
                             <% String[] classCodes = {"ECO", "PME", "BUS", "FIR"}; %>
                             <% String[] ticketTypes = {"A", "B", "C", "D", "E", "F", "G"}; %>
                             <div class="ticketSelection" id="<%= flight.getFlightTime() %>" style="display:none;">
-                                <div class="flightDetailsRow">
+                                <div class="flightDetailsRow" id="<%= flight.getFlightTime() %>classDiv">
 
                                 <% for (String classCode : classCodes) {%>
                                     <div class="flightDetailsColumn4">
                                         <% if (classCode.equals("ECO")) {%>
-                                            <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">Economy</button>
+                                        <button class="classButton" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>', this)">Economy</button>
                                         <% } %>
                                         <% if (classCode.equals("PME")) {%>
-                                        <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">Premium Economy</button>
+                                        <button class="classButton" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>', this)">Premium Economy</button>
                                         <% } %>
                                         <% if (classCode.equals("BUS")) {%>
-                                        <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">Business</button>
+                                        <button class="classButton" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>', this)">Business</button>
                                         <% } %>
                                         <% if (classCode.equals("FIR")) {%>
-                                        <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">First Class</button>
+                                        <button class="classButton" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>', this)">First Class</button>
                                         <% } %>
                                     </div>
                                 <% } %>

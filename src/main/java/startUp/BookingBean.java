@@ -19,7 +19,7 @@ public class BookingBean implements Serializable {
 
     private String bookingId;
     private String bookingUserId;
-    private FlightPathBean departureFlight;
+    private FlightBean departureFlight;
     private FlightBean returnFlight;
     private LinkedList<TicketBean> tickets;
     private LinkedList<PassengerBean> passengers;
