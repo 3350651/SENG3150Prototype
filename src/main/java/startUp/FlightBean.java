@@ -29,7 +29,7 @@ public class FlightBean implements Serializable {
     private FlightBean previousFlight;
     private int leg;
 
-    private float selectedPrice;
+    private float selectedPrice = -1;
 
     // constructor
 
@@ -324,8 +324,8 @@ public class FlightBean implements Serializable {
     }
 
     public void loadDestinationBeans() {
-        this.destination = new DestinationBean(destination.getDestinationCode(), true);
-        this.departure = new DestinationBean(departure.getDestinationCode(), true);
+        this.destination = new DestinationBean(destination.getDestinationCode());
+        this.departure = new DestinationBean(departure.getDestinationCode());
     }
     public float getPriceOfAvailability(String classCode, String typeCode) {
         for (AvailabilityBean availability : seatAvailability) {
@@ -334,6 +334,24 @@ public class FlightBean implements Serializable {
             }
         }
         return -1;
+    }
+
+    public String getTicketTypeOfAvailability(float price) {
+        for (AvailabilityBean availability : seatAvailability) {
+            if (availability.getPrice() == price) {
+                return availability.getTicketTypeName();
+            }
+        }
+        return "";
+    }
+
+    public String getClassCodeOfAvailability(float price) {
+        for (AvailabilityBean availability : seatAvailability) {
+            if (availability.getPrice() == price) {
+                return availability.getClassName();
+            }
+        }
+        return "";
     }
 
 }

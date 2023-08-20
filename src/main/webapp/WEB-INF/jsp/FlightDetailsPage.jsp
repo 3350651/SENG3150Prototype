@@ -165,11 +165,26 @@
                                     <p><%=flight.getPlaneType()%></p>
                                 </div>
                                 <div class="flightDetailsColumnRight">
-                                    <p>Minimum price: <%=flight.getMinCost()%></p>
+                                    <% if (flight.getSelectedPrice() == -1) { %>
+                                        <p>Minimum price: <%=flight.getMinCost()%></p>
+                                    <% }
+                                    else { %>
+                                        <p>SELECTED PRICE: <strong>$<%=flight.getSelectedPrice()%></strong></p>
+                                        <div class="flightDetailsRow">
+                                            <div class="flightDetailsColumn4">
+                                                <p>Class: </p>
+                                                <p>Ticket type:</p>
+                                            </div>
+                                            <div class="flightDetailsColumn2">
+                                                <p><%= flight.getClassCodeOfAvailability(flight.getSelectedPrice()) %></p>
+                                                <p><%= flight.getTicketTypeOfAvailability(flight.getSelectedPrice()) %></p>
+                                            </div>
+                                        </div>
+                                    <% } %>
                                 </div>
                             </div>
                             <div class="flightDetailsRow">
-                                <div class="flightDetailsColumnLeft">
+                                <div class="flightDetailsColumnRight">
                                     <button class="button" onclick="toggleVisibility('<%= flight.getFlightTime() %>')">Select Ticket</button>
                                 </div>
                             </div>
@@ -247,11 +262,10 @@
                                             </div>
                                             <div class="flightDetailsColumn6">
                                                 <form class="classOptions" action="flight" method="POST">
-                                                    <input type="hidden" name="isReturn" value="false" />
-                                                    <input type="hidden" name="departureLocation" value="<%= flight.getDeparture().getDestinationName() %>" />
-                                                    <input type="hidden" name="flightNumber" value="<%= flight.getFlightName() %>" />
-                                                    <input type="hidden" name="selectedPrice" value="<%= flight.getFlightName() %>" />
-                                                    <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "A") != -1.0 ? "" : "disabled") %> >
+                                                    <input type="hidden" name="isReturnResults" value="false" />
+                                                    <input type="hidden" name="flightIndex" value="<%= i %>" />
+                                                    <input type="hidden" name="selectedPrice" value='<%= flight.getPriceOfAvailability(classCode, "A") %>' />
+                                                    <button type="submit" name="updatePrice" class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "A") != -1.0 ? "" : "disabled") %> >
                                                     <%= (flight.getPriceOfAvailability(classCode, "A") != -1.0 ? flight.getPriceOfAvailability(classCode, "A") : "SOLD OUT")%>
                                                     </button>
                                                 </form>
@@ -274,11 +288,14 @@
                                                 <p class="classOptions">-</p>
                                             </div>
                                             <div class="flightDetailsColumn6">
-                                                <p class="classOptions">
-                                                    <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "B") != -1.0 ? "" : "disabled") %> >
+                                                <form class="classOptions" action="flight" method="POST">
+                                                    <input type="hidden" name="isReturnResults" value="false" />
+                                                    <input type="hidden" name="flightIndex" value="<%= i %>" />
+                                                    <input type="hidden" name="selectedPrice" value='<%= flight.getPriceOfAvailability(classCode, "B") %>' />
+                                                    <button type="submit" name="updatePrice" class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "B") != -1.0 ? "" : "disabled") %> >
                                                     <%= (flight.getPriceOfAvailability(classCode, "B") != -1.0 ? flight.getPriceOfAvailability(classCode, "B") : "SOLD OUT")%>
                                                     </button>
-                                                </p>
+                                                </form>
                                             </div>
                                         </div>
                                         <div class="flightDetailsRow">
@@ -298,11 +315,14 @@
                                                 <p class="classOptions">&#10003</p>
                                             </div>
                                             <div class="flightDetailsColumn6">
-                                                <p class="classOptions">
-                                                    <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "C") != -1.0 ? "" : "disabled") %> >
+                                                <form class="classOptions" action="flight" method="POST">
+                                                    <input type="hidden" name="isReturnResults" value="false" />
+                                                    <input type="hidden" name="flightIndex" value="<%= i %>" />
+                                                    <input type="hidden" name="selectedPrice" value='<%= flight.getPriceOfAvailability(classCode, "C") %>' />
+                                                    <button type="submit" name="updatePrice" class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "C") != -1.0 ? "" : "disabled") %> >
                                                     <%= (flight.getPriceOfAvailability(classCode, "C") != -1.0 ? flight.getPriceOfAvailability(classCode, "C") : "SOLD OUT")%>
                                                     </button>
-                                                </p>
+                                                </form>
                                             </div>
                                         </div>
                                         <div class="flightDetailsRow">
@@ -322,11 +342,14 @@
                                                 <p class="classOptions">&#10003</p>
                                             </div>
                                             <div class="flightDetailsColumn6">
-                                                <p class="classOptions">
-                                                    <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "D") != -1.0 ? "" : "disabled") %> >
+                                                <form class="classOptions" action="flight" method="POST">
+                                                    <input type="hidden" name="isReturnResults" value="false" />
+                                                    <input type="hidden" name="flightIndex" value="<%= i %>" />
+                                                    <input type="hidden" name="selectedPrice" value='<%= flight.getPriceOfAvailability(classCode, "D") %>' />
+                                                    <button type="submit" name="updatePrice" class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "D") != -1.0 ? "" : "disabled") %> >
                                                     <%= (flight.getPriceOfAvailability(classCode, "D") != -1.0 ? flight.getPriceOfAvailability(classCode, "D") : "SOLD OUT")%>
                                                     </button>
-                                                </p>
+                                                </form>
                                             </div>
                                         </div>
                                         <div class="flightDetailsRow">
@@ -346,11 +369,14 @@
                                                 <p class="classOptions">&#10003</p>
                                             </div>
                                             <div class="flightDetailsColumn6">
-                                                <p class="classOptions">
-                                                    <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "E") != -1.0 ? "" : "disabled") %> >
+                                                <form class="classOptions" action="flight" method="POST">
+                                                    <input type="hidden" name="isReturnResults" value="false" />
+                                                    <input type="hidden" name="flightIndex" value="<%= i %>" />
+                                                    <input type="hidden" name="selectedPrice" value='<%= flight.getPriceOfAvailability(classCode, "E") %>' />
+                                                    <button type="submit" name="updatePrice" class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "E") != -1.0 ? "" : "disabled") %> >
                                                     <%= (flight.getPriceOfAvailability(classCode, "E") != -1.0 ? flight.getPriceOfAvailability(classCode, "E") : "SOLD OUT")%>
                                                     </button>
-                                                </p>
+                                                </form>
                                             </div>
                                         </div>
                                         <div class="flightDetailsRow">
@@ -370,11 +396,14 @@
                                                 <p class="classOptions">&#10003</p>
                                             </div>
                                             <div class="flightDetailsColumn6">
-                                                <p class="classOptions">
-                                                    <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "F") != -1.0 ? "" : "disabled") %> >
+                                                <form class="classOptions" action="flight" method="POST">
+                                                    <input type="hidden" name="isReturnResults" value="false" />
+                                                    <input type="hidden" name="flightIndex" value="<%= i %>" />
+                                                    <input type="hidden" name="selectedPrice" value='<%= flight.getPriceOfAvailability(classCode, "F") %>' />
+                                                    <button type="submit" name="updatePrice" class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "F") != -1.0 ? "" : "disabled") %> >
                                                     <%= (flight.getPriceOfAvailability(classCode, "F") != -1.0 ? flight.getPriceOfAvailability(classCode, "F") : "SOLD OUT")%>
                                                     </button>
-                                                </p>
+                                                </form>
                                             </div>
                                         </div>
                                         <div class="flightDetailsRow">
@@ -394,11 +423,14 @@
                                                 <p class="classOptions">&#10003</p>
                                             </div>
                                             <div class="flightDetailsColumn6">
-                                                <p class="classOptions">
-                                                    <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "G") != -1.0 ? "" : "disabled") %> >
+                                                <form class="classOptions" action="flight" method="POST">
+                                                    <input type="hidden" name="isReturnResults" value="false" />
+                                                    <input type="hidden" name="flightIndex" value="<%= i %>" />
+                                                    <input type="hidden" name="selectedPrice" value='<%= flight.getPriceOfAvailability(classCode, "G") %>' />
+                                                    <button type="submit" name="updatePrice" class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "G") != -1.0 ? "" : "disabled") %> >
                                                     <%= (flight.getPriceOfAvailability(classCode, "G") != -1.0 ? flight.getPriceOfAvailability(classCode, "G") : "SOLD OUT")%>
                                                     </button>
-                                                </p>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -576,7 +608,22 @@
                                         <p><%=flight.getPlaneType()%></p>
                                     </div>
                                     <div class="flightDetailsColumnRight">
+                                        <% if (flight.getSelectedPrice() == -1) { %>
                                         <p>Minimum price: <%=flight.getMinCost()%></p>
+                                        <% }
+                                        else { %>
+                                        <p>SELECTED PRICE: <strong>$<%=flight.getSelectedPrice()%></strong></p>
+                                        <div class="flightDetailsRow">
+                                            <div class="flightDetailsColumn4">
+                                                <p>Class: </p>
+                                                <p>Ticket type:</p>
+                                            </div>
+                                            <div class="flightDetailsColumn2">
+                                                <p><%= flight.getClassCodeOfAvailability(flight.getSelectedPrice()) %></p>
+                                                <p><%= flight.getTicketTypeOfAvailability(flight.getSelectedPrice()) %></p>
+                                            </div>
+                                        </div>
+                                        <% } %>
                                     </div>
                                 </div>
                                 <div class="flightDetailsRow">
@@ -588,25 +635,25 @@
                                 <% String[] classCodes = {"ECO", "PME", "BUS", "FIR"}; %>
                                 <% String[] ticketTypes = {"A", "B", "C", "D", "E", "F", "G"}; %>
                                 <div class="ticketSelection" id="<%= flight.getFlightTime() %>" style="display:none;">
-                                    <div class="flightDetailsRow">
+                                    <div class="flightDetailsRow" id="<%= flight.getFlightTime() %>classDiv">
 
                                         <% for (String classCode : classCodes) {%>
                                         <div class="flightDetailsColumn4">
                                             <% if (classCode.equals("ECO")) {%>
-                                            <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">Economy</button>
+                                            <button class="classButton" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>', this)">Economy</button>
                                             <% } %>
                                             <% if (classCode.equals("PME")) {%>
-                                            <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">Premium Economy</button>
+                                            <button class="classButton" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>', this)">Premium Economy</button>
                                             <% } %>
                                             <% if (classCode.equals("BUS")) {%>
-                                            <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">Business</button>
+                                            <button class="classButton" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>', this)">Business</button>
                                             <% } %>
                                             <% if (classCode.equals("FIR")) {%>
-                                            <button class="button" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>')">First Class</button>
+                                            <button class="classButton" onclick="toggleVisibility2('<%= flight.getFlightTime() %>', '<%= classCode %>', this)">First Class</button>
                                             <% } %>
                                         </div>
                                         <% } %>
-                <!--TICKET TYPE SELECTION -->
+                                        <!--TICKET TYPE SELECTION -->
                                         <% for (String classCode : classCodes) {%>
                                         <div id="<%= flight.getFlightTime() %><%= classCode %>" style="display:none">
                                             <div class="flightDetailsRow">
@@ -657,11 +704,14 @@
                                                     <p class="classOptions">-</p>
                                                 </div>
                                                 <div class="flightDetailsColumn6">
-                                                    <p class="classOptions">
-                                                        <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "A") != -1.0 ? "" : "disabled") %> >
+                                                    <form class="classOptions" action="flight" method="POST">
+                                                        <input type="hidden" name="isReturnResults" value="true" />
+                                                        <input type="hidden" name="flightIndex" value="<%= j %>" />
+                                                        <input type="hidden" name="selectedPrice" value='<%= flight.getPriceOfAvailability(classCode, "A") %>' />
+                                                        <button type="submit" name="updatePrice" class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "A") != -1.0 ? "" : "disabled") %> >
                                                         <%= (flight.getPriceOfAvailability(classCode, "A") != -1.0 ? flight.getPriceOfAvailability(classCode, "A") : "SOLD OUT")%>
                                                         </button>
-                                                    </p>
+                                                    </form>
                                                 </div>
                                             </div>
                                             <div class="flightDetailsRow">
@@ -681,11 +731,14 @@
                                                     <p class="classOptions">-</p>
                                                 </div>
                                                 <div class="flightDetailsColumn6">
-                                                    <p class="classOptions">
-                                                        <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "B") != -1.0 ? "" : "disabled") %> >
+                                                    <form class="classOptions" action="flight" method="POST">
+                                                        <input type="hidden" name="isReturnResults" value="true" />
+                                                        <input type="hidden" name="flightIndex" value="<%= j %>" />
+                                                        <input type="hidden" name="selectedPrice" value='<%= flight.getPriceOfAvailability(classCode, "B") %>' />
+                                                        <button type="submit" name="updatePrice" class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "B") != -1.0 ? "" : "disabled") %> >
                                                         <%= (flight.getPriceOfAvailability(classCode, "B") != -1.0 ? flight.getPriceOfAvailability(classCode, "B") : "SOLD OUT")%>
                                                         </button>
-                                                    </p>
+                                                    </form>
                                                 </div>
                                             </div>
                                             <div class="flightDetailsRow">
@@ -705,11 +758,14 @@
                                                     <p class="classOptions">&#10003</p>
                                                 </div>
                                                 <div class="flightDetailsColumn6">
-                                                    <p class="classOptions">
-                                                        <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "C") != -1.0 ? "" : "disabled") %> >
+                                                    <form class="classOptions" action="flight" method="POST">
+                                                        <input type="hidden" name="isReturnResults" value="true" />
+                                                        <input type="hidden" name="flightIndex" value="<%= j %>" />
+                                                        <input type="hidden" name="selectedPrice" value='<%= flight.getPriceOfAvailability(classCode, "C") %>' />
+                                                        <button type="submit" name="updatePrice" class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "C") != -1.0 ? "" : "disabled") %> >
                                                         <%= (flight.getPriceOfAvailability(classCode, "C") != -1.0 ? flight.getPriceOfAvailability(classCode, "C") : "SOLD OUT")%>
                                                         </button>
-                                                    </p>
+                                                    </form>
                                                 </div>
                                             </div>
                                             <div class="flightDetailsRow">
@@ -729,11 +785,14 @@
                                                     <p class="classOptions">&#10003</p>
                                                 </div>
                                                 <div class="flightDetailsColumn6">
-                                                    <p class="classOptions">
-                                                        <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "D") != -1.0 ? "" : "disabled") %> >
+                                                    <form class="classOptions" action="flight" method="POST">
+                                                        <input type="hidden" name="isReturnResults" value="true" />
+                                                        <input type="hidden" name="flightIndex" value="<%= j %>" />
+                                                        <input type="hidden" name="selectedPrice" value='<%= flight.getPriceOfAvailability(classCode, "D") %>' />
+                                                        <button type="submit" name="updatePrice" class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "D") != -1.0 ? "" : "disabled") %> >
                                                         <%= (flight.getPriceOfAvailability(classCode, "D") != -1.0 ? flight.getPriceOfAvailability(classCode, "D") : "SOLD OUT")%>
                                                         </button>
-                                                    </p>
+                                                    </form>
                                                 </div>
                                             </div>
                                             <div class="flightDetailsRow">
@@ -753,11 +812,14 @@
                                                     <p class="classOptions">&#10003</p>
                                                 </div>
                                                 <div class="flightDetailsColumn6">
-                                                    <p class="classOptions">
-                                                        <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "E") != -1.0 ? "" : "disabled") %> >
+                                                    <form class="classOptions" action="flight" method="POST">
+                                                        <input type="hidden" name="isReturnResults" value="true" />
+                                                        <input type="hidden" name="flightIndex" value="<%= j %>" />
+                                                        <input type="hidden" name="selectedPrice" value='<%= flight.getPriceOfAvailability(classCode, "E") %>' />
+                                                        <button type="submit" name="updatePrice" class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "E") != -1.0 ? "" : "disabled") %> >
                                                         <%= (flight.getPriceOfAvailability(classCode, "E") != -1.0 ? flight.getPriceOfAvailability(classCode, "E") : "SOLD OUT")%>
                                                         </button>
-                                                    </p>
+                                                    </form>
                                                 </div>
                                             </div>
                                             <div class="flightDetailsRow">
@@ -777,11 +839,14 @@
                                                     <p class="classOptions">&#10003</p>
                                                 </div>
                                                 <div class="flightDetailsColumn6">
-                                                    <p class="classOptions">
-                                                        <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "F") != -1.0 ? "" : "disabled") %> >
+                                                    <form class="classOptions" action="flight" method="POST">
+                                                        <input type="hidden" name="isReturnResults" value="true" />
+                                                        <input type="hidden" name="flightIndex" value="<%= j %>" />
+                                                        <input type="hidden" name="selectedPrice" value='<%= flight.getPriceOfAvailability(classCode, "F") %>' />
+                                                        <button type="submit" name="updatePrice" class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "F") != -1.0 ? "" : "disabled") %> >
                                                         <%= (flight.getPriceOfAvailability(classCode, "F") != -1.0 ? flight.getPriceOfAvailability(classCode, "F") : "SOLD OUT")%>
                                                         </button>
-                                                    </p>
+                                                    </form>
                                                 </div>
                                             </div>
                                             <div class="flightDetailsRow">
@@ -801,17 +866,20 @@
                                                     <p class="classOptions">&#10003</p>
                                                 </div>
                                                 <div class="flightDetailsColumn6">
-                                                    <p class="classOptions">
-                                                        <button class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "G") != -1.0 ? "" : "disabled") %> >
+                                                    <form class="classOptions" action="flight" method="POST">
+                                                        <input type="hidden" name="isReturnResults" value="true" />
+                                                        <input type="hidden" name="flightIndex" value="<%= j %>" />
+                                                        <input type="hidden" name="selectedPrice" value='<%= flight.getPriceOfAvailability(classCode, "G") %>' />
+                                                        <button type="submit" name="updatePrice" class="priceButton" <%= (flight.getPriceOfAvailability(classCode, "G") != -1.0 ? "" : "disabled") %> >
                                                         <%= (flight.getPriceOfAvailability(classCode, "G") != -1.0 ? flight.getPriceOfAvailability(classCode, "G") : "SOLD OUT")%>
                                                         </button>
-                                                    </p>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
                                         <% } %>
                                     </div>
-                <!--END TICKET TYPE SELECTION -->
+                                    <!--END TICKET TYPE SELECTION -->
                                 </div>
         <!--END TICKET SELECTION-->
                             </div>

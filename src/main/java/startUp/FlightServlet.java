@@ -21,6 +21,7 @@ public class FlightServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("FlightServlet");
 
         HttpSession session = req.getSession();
 
@@ -46,8 +47,21 @@ public class FlightServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(req, resp);
         }
-        else if (req.getParameter("") != null) {
+        else if (req.getParameter("updatePrice") != null) {
+            String isReturnResults = req.getParameter("isReturnResults");
+            LinkedList<FlightBean> flights;
+            if (isReturnResults.equals("false")) {
+                flights = (LinkedList<FlightBean>) session.getAttribute("flightList");
+            }
+            else {
+                flights = (LinkedList<FlightBean>) session.getAttribute("returnFlightList");
+            }
 
+            int flightIndex = Integer.parseInt(req.getParameter("flightIndex"));
+            float selectedPrice = Float.parseFloat(req.getParameter("selectedPrice"));
+
+            flights.get(flightIndex).setSelectedPrice(selectedPrice);
+            System.out.println("updated");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(req, resp);
         }

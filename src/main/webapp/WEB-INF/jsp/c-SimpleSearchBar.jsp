@@ -20,7 +20,7 @@ bookmarkedFlights = user.getBookmarkedFlights();
                 From</label><br>
             <select id="departureLocation" name="departureLocation">
                 <option value="">Select Option</option>
-                <%for(DestinationBean destination: DestinationOps.getDestinations()){%>
+                <%for(DestinationBean destination: destinationOps.getDestinations()){%>
                 <option value=<%=destination.getDestinationCode()%>
                     <% if (destination.getDestinationName().equals("Sydney"))  { %> selected <% } %>
                     ><%=destination.getDestinationName()%>
@@ -32,7 +32,7 @@ bookmarkedFlights = user.getBookmarkedFlights();
         <div class="arrivalLocation"><label for="arrivalLocation">Going To</label><br>
             <select id="arrivalLocation" name="arrivalLocation">
                 <option value="">Select Option</option>
-                <%for(DestinationBean destination: DestinationOps.getDestinations()){%>
+                <%for(DestinationBean destination: destinationOps.getDestinations()){%>
                 <option value=<%=destination.getDestinationCode()%>
                     <% if (destination.getDestinationName().equals("Melbourne"))  { %> selected <% } %>
                     ><%=destination.getDestinationName()%>
@@ -68,4 +68,4 @@ bookmarkedFlights = user.getBookmarkedFlights();
             </div>
         </div>
     </form>
-    </div>
+</div>

@@ -36,8 +36,8 @@ public class FlightSearchServlet extends HttpServlet {
 
             SearchBean search = new SearchBean(null, null, null, null, false, 0, 0, 0);
 
-            session.setAttribute("flightResults", search);
-            //session.setAttribute("searchResults", search);
+            //session.setAttribute("flightResults", search);
+            session.setAttribute("searchResults", search);
             request.setAttribute("goToRecommend", true);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-RecommendedSearch.jsp");
             requestDispatcher.forward(request, response);
@@ -186,15 +186,13 @@ public class FlightSearchServlet extends HttpServlet {
                 throw new IOException("Invalid input: Provide a number of days that the search should be flexible by");
             }
 
-            SearchBean search = new SearchBean(departureTime, destination, departure, null, true, 0, adults, children);
-            search.searchFlights();
-            session.setAttribute("flightResults", search);
-            session.setAttribute("numAdultsForReturn", adults); //save values on session for return search
-            session.setAttribute("numChildrenForReturn", children); //save values on session for return search
-            session.setAttribute("flightResults", search);
             SearchBean search = new SearchBean(departureTime, destination, departure, null, true, flexibleDays, adults, children);
             search.searchFlights(10, 5);
             session.setAttribute("searchResults", search);
+            //session.setAttribute("flightResults", search);
+            session.setAttribute("numAdultsForReturn", adults); //save values on session for return search
+            session.setAttribute("numChildrenForReturn", children); //save values on session for return search
+
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/simpleSearchResults.jsp");
             requestDispatcher.forward(request, response);
         }
@@ -224,7 +222,7 @@ public class FlightSearchServlet extends HttpServlet {
             System.out.println("isReturnResults = " + request.getParameter("isReturnResults"));
             if (request.getParameter("isReturnResults").equalsIgnoreCase("true")) {
                 System.out.println("FlightSearchServlet.viewFlight.Return");
-                LinkedList<FlightPathBean> flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResultList");
+                flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResultList");
                 LinkedList<FlightPathBean> returnFlights = (LinkedList<FlightPathBean>) session.getAttribute("returnFlightResultList");
 
                 FlightPathBean returnFlight = returnFlights.get(Integer.parseInt(request.getParameter("returnFlightIndex")));
@@ -245,7 +243,7 @@ public class FlightSearchServlet extends HttpServlet {
                 requestDispatcher.forward(request, response);
             }
 
-            LinkedList<FlightPathBean> flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResultList");
+            flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResultList");
             FlightPathBean flight = flights.get(Integer.parseInt(request.getParameter("flightIndex")));
 
             // Invert the flightBean stack and store in linked list. Easier to call with a FOR loop on a jsp page
@@ -300,7 +298,7 @@ public class FlightSearchServlet extends HttpServlet {
             System.out.println("children: " + children);
 
             SearchBean search = new SearchBean(departureTime, destination, departure, null, true, 0, adults, children);
-            search.searchFlights();
+            search.searchFlights(10, 5);
 
             LinkedList<FlightPathBean> searchResults = search.getResults();
             System.out.println(searchResults.size());
@@ -312,6 +310,7 @@ public class FlightSearchServlet extends HttpServlet {
             requestDispatcher.forward(request, response);
         }
         else if(request.getParameter("saveParam") != null){
+            user = (UserBean) session.getAttribute("userBean");
             String userID = user.getUserID();
             String departure = request.getParameter("departureLocation");
             String destination = request.getParameter("arrivalLocation");

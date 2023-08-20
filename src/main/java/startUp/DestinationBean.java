@@ -14,6 +14,7 @@ public class DestinationBean {
 
     private String destinationCode;
     private String destinationName;
+    private String destinationDescription;
     private String destinationCountry;
     private LinkedList<String> tags;
     private int reputationScore;
@@ -22,18 +23,13 @@ public class DestinationBean {
     {
         destinationCode = null;
         destinationName = null;
-        destinationCountry = null;
+        destinationDescription = null;
         tags = null;
         reputationScore = 0;
     }
 
     // constructors
-
     public DestinationBean(String newDestinationCode) {
-        destinationCode = newDestinationCode;
-    }
-
-    public DestinationBean(String newDestinationCode, boolean data) {
         destinationCode = newDestinationCode;
 
         try {
@@ -82,13 +78,11 @@ public class DestinationBean {
         destinationCode = code;
         destinationName = name;
     }
-
     public DestinationBean(String code, String name, String country) {
         destinationCode = code;
         destinationName = name;
         destinationCountry = country;
     }
-
     // getters
 
     public String getDestinationCode() {
@@ -107,12 +101,12 @@ public class DestinationBean {
         this.destinationName = destinationName;
     }
 
-    public String getDestinationCountry() {
-        return destinationCountry;
+    public String getDestinationDescription() {
+        return destinationDescription;
     }
 
-    public void setDestinationCountry(String destinationCountry) {
-        this.destinationCountry = destinationCountry;
+    public void setDestinationDescription(String destinationDescription) {
+        this.destinationDescription = destinationDescription;
     }
 
     public LinkedList<String> getTags() {
@@ -232,7 +226,6 @@ public class DestinationBean {
         }
         return destination;
     }
-
     // TODO: increment/decrement reputation score
 
 }
