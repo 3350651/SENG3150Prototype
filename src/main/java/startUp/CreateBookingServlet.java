@@ -115,10 +115,11 @@ public class CreateBookingServlet extends HttpServlet {
             int passengers = Integer.parseInt(req.getParameter("passengers"));
             PassengerBean passengerBean = null;
             LinkedList<PassengerBean> passengerBeans = new LinkedList<>();
+            System.out.println("bookingsize=" + bookings.size());
 
             // creating all passengers related to the booking
             if (bookings.size() > 1) {
-                for (int k = 0; k < bookings.size() - 1; k++) {
+                for (int k = 0; k < bookings.size(); k++) {
                     for (int i = 1; i <= passengers; i++) {
                         String lastName = req.getParameter("lName" + i);
                         String givenNames = req.getParameter("title" + i) + " " + req.getParameter("fName" + i);
@@ -135,6 +136,7 @@ public class CreateBookingServlet extends HttpServlet {
                         String returnTicketClass = req.getParameter("ticketClassReturn" + i);
                         String returnTicketType = req.getParameter("ticketTypeReturn" + i);
 
+                        System.out.println("Flight " + k + " = " + bookings.get(k).getDepartureFlight().getFlightName());
                         TicketBean departureTicket = new TicketBean(bookings.get(k).getBookingId(), passengerBean.getPassengerId(),
                                 bookings.get(k).getDepartureFlight().getFlightName(),
                                 bookings.get(k).getDepartureFlight().getAirline(),
