@@ -26,7 +26,7 @@ public class FlightPathBean {
             destinations.add(flight.getDeparture().getDestinationCode());
             minPrice += flight.getMinCost();
         }
-        id = ThreadLocalRandom.current().nextInt(00000000, 99999999);
+        id = ThreadLocalRandom.current().nextInt(10000000, 99999999);
     }
 
 

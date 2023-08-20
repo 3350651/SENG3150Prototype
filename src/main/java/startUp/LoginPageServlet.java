@@ -43,7 +43,7 @@ public class LoginPageServlet extends HttpServlet {
 		String buttonValue = request.getParameter("logOutButton");
 		if(buttonValue != null){
 			request.getSession().invalidate();
-			response.sendRedirect("login");
+			response.sendRedirect("Homepage");
 		}
 		else {
 			String email = request.getParameter("email");

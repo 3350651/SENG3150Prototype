@@ -600,6 +600,11 @@ img#sidebar.smallPlaneLogo {
     height: auto;
 }
 
+img#groupFavouriteList.smallPlaneLogo{
+    width: 1em;
+    height: auto;
+}
+
 
 div.QuantityOfStops{
     font-size: 25;

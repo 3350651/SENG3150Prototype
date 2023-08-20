@@ -121,7 +121,7 @@ public class GroupHomepageServlet extends HttpServlet {
         }
         //user has been presented with a message after attempting to add a flight to a Group Favourite List
         else if(request.getParameter("addFlightContinue") != null){
-            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupFavouriteList.jsp");
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
             requestDispatcher.forward(request, response);
         }
 
@@ -171,11 +171,11 @@ public class GroupHomepageServlet extends HttpServlet {
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupFavouriteList.jsp");
             requestDispatcher.forward(request, response);
         }
-        else if(request.getParameter("getGroupFaveList") != null){
+        else if(request.getParameter("getGroupFaveList") != null && request.getParameter("removeFlight") == null){
             //get all the Flights that are added to the group Fave list.
             LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(group.getGroupID());
             int size = faveFlights.size();
-            session.setAttribute("faveFlights", faveFlights);
+//            session.setAttribute("faveFlights", faveFlights);
 
             Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
             session.setAttribute("isAdmin", isAdmin);
@@ -209,10 +209,10 @@ public class GroupHomepageServlet extends HttpServlet {
                 }
                 else{
                     sortedFaveFlights = getSortedList(faveFlights, faveFlights.peek().getGroupID());
-                    destinations = getDestinations(sortedFaveFlights);
+//                    destinations = getDestinations(sortedFaveFlights);
                 }
                 session.setAttribute("faveFlights", sortedFaveFlights);
-                session.setAttribute("destinations", destinations);
+//                session.setAttribute("destinations", destinations);
             }
 
             session.setAttribute("group", group);
@@ -221,11 +221,11 @@ public class GroupHomepageServlet extends HttpServlet {
             requestDispatcher.forward(request, response);
         }
         //The user wishes to view a fave flight.
-        else if(request.getParameter("viewFaveFlight") != null && request.getParameter("getFlight") != null) {
+        else if(request.getParameter("viewFaveFlight") != null) {
             String indexOfFlightPath = request.getParameter("flightIndex");
-            LinkedList<FlightPathBean> groupFaveFlights = (LinkedList<FlightPathBean>) session.getAttribute("faveFlights");
-            FlightPathBean flightPathBean = groupFaveFlights.get(Integer.parseInt(indexOfFlightPath));
-            GroupFaveFlightBean groupFaveFlightToView = new GroupFaveFlightBean(flightPathBean, group.getGroupID());
+            LinkedList<GroupFaveFlightBean> groupFaveFlights = (LinkedList<GroupFaveFlightBean>) session.getAttribute("faveFlights");
+            GroupFaveFlightBean groupFaveFlightToView = groupFaveFlights.get(Integer.parseInt(indexOfFlightPath));
+//            GroupFaveFlightBean groupFaveFlightToView = new GroupFaveFlightBean(flightPathBean, group.getGroupID());
 //            GroupFaveFlightBean faveFlight = getFaveFlight(airlineCode, flightName, flightTime, group.getGroupID());
 //            FlightBean flightBean = getFlight(airlineCode, flightName, flightTime);
             session.setAttribute("faveFlightToView", groupFaveFlightToView);
@@ -239,7 +239,7 @@ public class GroupHomepageServlet extends HttpServlet {
             session.setAttribute("lockedIn", lockedIn);
 
             //Score is 0 if the member has not voted.
-            int memberVote = getMembersVote(group.getGroupID(), user.getUserID(), groupFaveFlightToView.getGroupFaveFlightID());
+            double memberVote = getMembersVote(group.getGroupID(), user.getUserID(), groupFaveFlightToView.getGroupFaveFlightID());
             session.setAttribute("memberVote", memberVote);
 
             int groupSize = getNumberOfMembers(group.getGroupID());
@@ -256,7 +256,7 @@ public class GroupHomepageServlet extends HttpServlet {
             requestDispatcher.forward(request, response);
         }
         //The user has posted a comment to a favourite flight.
-        else if(request.getParameter("viewFaveFlight") != null && request.getParameter("newMessage") != null){
+        else if(request.getParameter("newMessage") != null){
             //Chat functionality
             GroupFaveFlightBean faveFlight = (GroupFaveFlightBean) session.getAttribute("faveFlight");
             String chatID = faveFlight.getChatID();
@@ -275,7 +275,7 @@ public class GroupHomepageServlet extends HttpServlet {
             requestDispatcher.forward(request, response);
         }
         //the user has voted on the flight.
-        else if(request.getParameter("viewFaveFlight") != null && request.getParameter("vote") != null){
+        else if(request.getParameter("vote") != null){
             GroupFaveFlightBean faveFlight = (GroupFaveFlightBean) session.getAttribute("faveFlight");
             String chatID = faveFlight.getChatID();
             session.setAttribute("lockedIn", false);
@@ -284,7 +284,7 @@ public class GroupHomepageServlet extends HttpServlet {
             session.setAttribute("chatMessages", chatMessages);
 
             //Get the vote that the user has selected, and change the session attribute.
-            int memberVote = Integer.parseInt(request.getParameter("vote"));
+            double memberVote = Double.parseDouble(request.getParameter("vote"));
             session.setAttribute("memberVote", memberVote);
 
             //check if the member has already voted. If they have, then update the db accordingly.
@@ -305,7 +305,39 @@ public class GroupHomepageServlet extends HttpServlet {
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ViewFaveFlight.jsp");
             requestDispatcher.forward(request, response);
         }
+        //the user has voted on the flight.
+        else if(request.getParameter("quickVote") != null){
+            String indexOfFlightPath = request.getParameter("flightIndex");
+            LinkedList<GroupFaveFlightBean> groupFaveFlights = (LinkedList<GroupFaveFlightBean>) session.getAttribute("faveFlights");
+            GroupFaveFlightBean faveFlight = groupFaveFlights.get(Integer.parseInt(indexOfFlightPath));
+            String chatID = faveFlight.getChatID();
+            session.setAttribute("lockedIn", false);
 
+            LinkedList<MessageBean> chatMessages = faveFlight.getChat(chatID);
+            session.setAttribute("chatMessages", chatMessages);
+
+            //Get the vote that the user has selected, and change the session attribute.
+            double memberVote = Double.parseDouble(request.getParameter("quickVote"));
+            session.setAttribute("memberVote", memberVote);
+
+            //check if the member has already voted. If they have, then update the db accordingly.
+            if(hasVoted(faveFlight.getGroupFaveFlightID(), group.getGroupID(), user.getUserID())){
+                updateMemberScore(group.getGroupID(), faveFlight.getGroupFaveFlightID(), user.getUserID(), memberVote);
+            }
+            else {
+                //If they haven't, then add the new vote to the db.
+                MemberFlightVoteBean vote = new MemberFlightVoteBean(group.getGroupID(), user.getUserID(), faveFlight.getGroupFaveFlightID(), memberVote);
+            }
+            //Everytime a user votes on a favourite flight, the score for that flight needs to be updated.
+            //Need the number of members in the group.
+            int groupSize = getNumberOfMembers(group.getGroupID());
+            double membersScore = getFaveFlightScore(group.getGroupID(), faveFlight.getGroupFaveFlightID());
+            faveFlight.setScore(membersScore/groupSize);
+            session.setAttribute("faveFlight", faveFlight);
+
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupFavouriteList.jsp");
+            requestDispatcher.forward(request, response);
+        }
         else if(request.getParameter("backToFaveFlightList") != null){
             LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(group.getGroupID());
             session.setAttribute("faveFlights", faveFlights);

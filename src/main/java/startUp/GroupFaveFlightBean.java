@@ -257,12 +257,12 @@ public class GroupFaveFlightBean implements Serializable{
 //        return flights;
 //    }
 
-    public static LinkedList<String> getDestinations(LinkedList<GroupFaveFlightBean> faveFlights){
+    public static LinkedList<String> getDestinations(LinkedList<GroupFaveFlightBean> flightPath){
         LinkedList<String> destinations = new LinkedList<>();
 
-        int size = faveFlights.size();
+        int size = flightPath.size();
         for(int i = 0; i < size; i++){
-            GroupFaveFlightBean fave = faveFlights.removeFirst();
+            GroupFaveFlightBean fave = flightPath.removeFirst();
             String destination = fave.getFlightPath().getLastFlight().getDestination().getDestinationName();
             destinations.add(destination);
         }
@@ -395,13 +395,13 @@ public class GroupFaveFlightBean implements Serializable{
     }
 
     //Sort the fave flights.
-    public static LinkedList<GroupFaveFlightBean> getSortedList(LinkedList<GroupFaveFlightBean> faveFlights, String groupID){
+    public static LinkedList<GroupFaveFlightBean> getSortedList(LinkedList<GroupFaveFlightBean> unsortedFlights, String groupID){
         LinkedList<GroupFaveFlightBean> sortedFlights = new LinkedList<>();
-        int size = faveFlights.size();
+        int size = unsortedFlights.size();
 
         //Get the score for each flight, in order to rank them.
         for(int i = 0; i < size; i++){
-            GroupFaveFlightBean flight = faveFlights.removeFirst();
+            GroupFaveFlightBean flight = unsortedFlights.removeFirst();
             double flightScore = getFaveFlightScore(flight.getGroupID(), flight.getGroupFaveFlightID());
             int members = getNumberOfMembers(groupID);
             flight.setScore(flightScore/members);
