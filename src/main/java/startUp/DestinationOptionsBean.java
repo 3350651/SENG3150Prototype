@@ -7,17 +7,9 @@ import java.util.Arrays;
 public class DestinationOptionsBean {
 
     private ArrayList<DestinationBean> destinations;
-    private String selected;
 
     public DestinationOptionsBean() {
         destinations = new ArrayList<>();
-        selected = null;
-        getDBDestinations();
-    }
-
-    public DestinationOptionsBean(String selected) {
-        destinations = new ArrayList<>();
-        this.selected = selected;
         getDBDestinations();
     }
 
@@ -27,14 +19,6 @@ public class DestinationOptionsBean {
 
     public void setDestinations(ArrayList<DestinationBean> destinationCodes) {
         this.destinations = destinationCodes;
-    }
-
-    public String getSelected() {
-        return selected;
-    }
-
-    public void setSelected(String selected) {
-        this.selected = selected;
     }
 
     public void getDBDestinations() {

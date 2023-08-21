@@ -18,8 +18,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -35,7 +33,7 @@ public class FlightSearchServlet extends HttpServlet {
 
             SearchBean search = new SearchBean(null, null, null, null, false, 0, 0, 0);
 
-            session.setAttribute("searchResults", search);
+            session.setAttribute("flightResults", search);
             request.setAttribute("goToRecommend", true);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-RecommendedSearch.jsp");
             requestDispatcher.forward(request, response);
@@ -53,97 +51,8 @@ public class FlightSearchServlet extends HttpServlet {
         UserBean user = (UserBean) session.getAttribute("userBean");
         if (request.getParameter("searchResults") != null
                 && request.getParameter("searchResults").equalsIgnoreCase("recSearchResults")) {
-            session.removeAttribute("userTags");
-            session.removeAttribute("selectedTags");
-            session.removeAttribute("isFlights");
-
-            if (request.getParameter("selectedTags") != null) {
-                String[] selectedTags = request.getParameterValues("tags");
-                if (selectedTags == null) {
-                    throw new IOException("Invalid Input: Need to supply at least 1 tag to search by");
-                }
-                LinkedList<DestinationBean> matchingDestinations = DestinationBean.getDestinationsWith(selectedTags, selectedTags.length);
-                int requiredMatching = selectedTags.length - 1;
-                while (requiredMatching > 0) {
-                    LinkedList<DestinationBean> almostMatchingDestinations = DestinationBean.getDestinationsWith(selectedTags, requiredMatching);
-                    if (almostMatchingDestinations.size() >= 3) {
-                        session.setAttribute("almostMatchingDestinations", almostMatchingDestinations);
-                        break;
-                    } else {
-                        requiredMatching--;
-                    }
-                }
-                session.setAttribute("matchingDestinations", matchingDestinations);
-                session.setAttribute("selectedTags", Arrays.toString(selectedTags));
-            } else if (request.getParameter("randomDestination") != null) {
-                DestinationBean leaving = new DestinationBean(request.getParameter("departure"));
-                Timestamp time = Timestamp.valueOf("2014-09-23 00:15:00.000");
-                int passengers = 1;
-                //if date is not included in the request or is empty, assign a date a random set of months from the beginning of all records
-                if (request.getParameter("date") == null || request.getParameter("date").equalsIgnoreCase("")) {
-                    Random rand = new Random();
-                    time = Timestamp.from(time.toInstant().plus(rand.nextInt(182), ChronoUnit.DAYS));
-                } else {
-                    String timeString = request.getParameter("date");
-                    timeString += " 00:00:00";
-                    time = Timestamp.valueOf(timeString);
-                }
-                int adults = 1;
-                int children = 0;
-                if (request.getParameter("numberOfAdults") != null && !request.getParameter("numberOfAdults").equalsIgnoreCase("")) {
-                    adults = Integer.parseInt(request.getParameter("numberOfAdults"));
-                }
-                if (request.getParameter("numberOfChildren") != null && !request.getParameter("numberOfChildren").equalsIgnoreCase("")) {
-                    children = Integer.parseInt(request.getParameter("numberOfChildren"));
-                }
-
-                if ((adults == 0 && children == 0) || adults < 0 || children < 0) {
-                    throw new IOException("Invalid passenger numbers");
-                }
-
-                SearchBean search = null;
-                DestinationBean randDestination = null;
-                String leavingCodes = "'" + leaving.getDestinationCode() + "'";
-                randDestination = DestinationBean.getRandomDestination(leavingCodes);
-                while ((search == null || search.getResults().size() == 0) && randDestination != null) {
-                    //search 1 random destination
-                    search = new SearchBean(time, randDestination.getDestinationCode(), leaving.getDestinationCode(), null, true, 0, adults, children);
-                    search.searchFlights(2, 4);
-                    session.setAttribute("flightResults1", search);
-                    leavingCodes += ", '" + randDestination.getDestinationCode() + "'";
-                    randDestination = DestinationBean.getRandomDestination(leavingCodes);
-                }
-                search = null;
-                while ((search == null || search.getResults().size() == 0) && randDestination != null) {
-                    //search again
-                    search = new SearchBean(time, "MEL", leaving.getDestinationCode(), null, true, 0, adults, children);
-                    search.searchFlights(2, 4);
-                    session.setAttribute("flightResults2", search);
-                    leavingCodes += ", '" + randDestination.getDestinationCode() + "'";
-                    randDestination = DestinationBean.getRandomDestination(leavingCodes);
-                }
-                search = null;
-                while ((search == null || search.getResults().size() == 0) && randDestination != null) {
-                    //search again
-                    search = new SearchBean(time, randDestination.getDestinationCode(), leaving.getDestinationCode(), null, true, 0, adults, children);
-                    search.searchFlights(2, 4);
-                    session.setAttribute("flightResults3", search);
-                    leavingCodes += ", '" + randDestination.getDestinationCode() + "'";
-                    randDestination = DestinationBean.getRandomDestination(leavingCodes);
-                }
-                session.setAttribute("isFlights", "true");
-            } else {
-                LinkedList<String> tags = user.getRandomTags();
-                LinkedList<UserTagSearchBean> results = new LinkedList<>();
-                for (String tag : tags) {
-                    LinkedList<DestinationBean> matchingDestinations = DestinationBean.getNDestinationsWith(new String[]{tag}, 1, 3);
-
-                    results.add(new UserTagSearchBean(tag, matchingDestinations));
-                }
-                session.setAttribute("userTags", results);
-            }
-
-
+            SearchBean search = new SearchBean(null, null, null, null, false, 0, 0, 0);
+            session.setAttribute("flightResults", search);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/recSearchResults.jsp");
             requestDispatcher.forward(request, response);
         }
@@ -156,18 +65,13 @@ public class FlightSearchServlet extends HttpServlet {
             String time = request.getParameter("departureDate");
             time += " 00:00:00";
             Timestamp departureTime = Timestamp.valueOf(time);
-
-            int flexibleDays = Integer.parseInt(request.getParameter("flexibleDays"));
-
-            int adults = 0;
-            int children = 0;
-            if (request.getParameter("numberOfAdults") != null && !request.getParameter("numberOfAdults").equalsIgnoreCase("")) {
-                adults = Integer.parseInt(request.getParameter("numberOfAdults"));
+            boolean flexible = Boolean.getBoolean(request.getParameter("flexibleDate"));
+            int flexibleDays = 0;
+            if (flexible) {
+                flexibleDays = Integer.parseInt(request.getParameter("flexibleDays"));
             }
-            if (request.getParameter("numberOfChildren") != null && !request.getParameter("numberOfChildren").equalsIgnoreCase("")) {
-                children = Integer.parseInt(request.getParameter("numberOfChildren"));
-            }
-
+            int adults = Integer.parseInt(request.getParameter("numberOfAdults"));
+            int children = Integer.parseInt(request.getParameter("numberOfChildren"));
             if (adults < 0 || children < 0 || (adults == 0 && children == 0)) {
                 throw new IOException("Invalid input: Invalid combination of adult and children passengers.");
             }
@@ -180,39 +84,19 @@ public class FlightSearchServlet extends HttpServlet {
             if (departure.equals(destination)) {
                 throw new IOException("Invalid input: Cannot leave from and arrive at the same destination.");
             }
-            if (flexibleDays < 0) {
+            if (flexible && flexibleDays == 0) {
                 throw new IOException("Invalid input: Provide a number of days that the search should be flexible by");
             }
 
-            SearchBean search = new SearchBean(departureTime, destination, departure, null, true, flexibleDays, adults, children);
-            search.searchFlights(10, 5);
-            session.setAttribute("searchResults", search);
+            SearchBean search = new SearchBean(departureTime, destination, departure, null, true, 0, adults, children);
+            search.searchFlights();
+            session.setAttribute("flightResults", search);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/simpleSearchResults.jsp");
             requestDispatcher.forward(request, response);
         }
 
         else if (request.getParameter("viewFlight") != null) {
-            LinkedList<FlightPathBean> flights = null;
-            if (request.getParameter("dataStructure") != null) {
-                switch (Integer.parseInt(request.getParameter("dataStructure"))) {
-                    case 1:
-                        SearchBean searchBean1 = (SearchBean) session.getAttribute("flightResults1");
-                        flights = searchBean1.getResults();
-                        break;
-
-                    case 2:
-                        SearchBean searchBean2 = (SearchBean) session.getAttribute("flightResults2");
-                        flights = searchBean2.getResults();
-                        break;
-
-                    case 3:
-                        SearchBean searchBean3 = (SearchBean) session.getAttribute("flightResults3");
-                        flights = searchBean3.getResults();
-                        break;
-                }
-            } else {
-                flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResults");
-            }
+            LinkedList<FlightPathBean> flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResults");
 
             FlightPathBean flight = flights.get(Integer.parseInt(request.getParameter("flightIndex")));
 

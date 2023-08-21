@@ -173,8 +173,6 @@ public class GroupFaveFlightBean implements Serializable{
                 flightPathID = Integer.parseInt(result.getString("flightPathID"));
             }
             statement.close();
-            connection.close();
-            statement.close();
             statement = connection.prepareStatement(deleteGroupFaveFlight);
 
             statement.setString(1, String.valueOf(flightPathID));
@@ -239,42 +237,6 @@ public class GroupFaveFlightBean implements Serializable{
         }
 
         return destinations;
-    }
-
-    public static GroupFaveFlightBean getFaveFlight(String airlineCode, String flightName, Timestamp departureTime, String groupID){
-        GroupFaveFlightBean faveFlight = new GroupFaveFlightBean();
-
-        String query = "SELECT * FROM GROUPFAVEFLIGHT WHERE [AirlineCode] = ? AND [FlightNumber] = ? AND" +
-                " [DepartureTime] = ? AND [groupID] = ?";
-        try{
-            Connection connection = ConfigBean.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, airlineCode);
-            statement.setString(2, flightName);
-            statement.setTimestamp(3, departureTime);
-            statement.setString(4, groupID);
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                String id = result.getString(1);
-                String code = result.getString(2);
-                String name = result.getString(3);
-                Timestamp time = result.getTimestamp(4);
-                String chatID = result.getString(5);
-                double rank = result.getFloat(6);
-                String group = result.getString(7);
-
-                faveFlight = new GroupFaveFlightBean(id, code, name, time, chatID, rank, group);
-            }
-            statement.close();
-            connection.close();
-        }
-        catch(SQLException e){
-            System.err.println(e.getMessage());
-            System.err.println(e.getStackTrace());
-        }
-
-        return faveFlight;
     }
 
     public static FlightBean getFlight(String airline, String flightName, Timestamp flightTime){

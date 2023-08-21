@@ -4,10 +4,9 @@
 <%@ page import="java.util.Iterator" %>
 <%@ page import="startUp.FlightBean" %>
 <%@ page import="startUp.DestinationBean" %>
-<%@ page import="startUp.FlightPathBean" %>
 <%
     UserBean user = (UserBean) session.getAttribute("userBean");
-    LinkedList<FlightPathBean> bookmarkedFlights = new LinkedList<>();
+    LinkedList<FlightBean> bookmarkedFlights = new LinkedList<>();
     if (user != null && user.getBookmarkedFlights() != null) {
         bookmarkedFlights = user.getBookmarkedFlights();
     }
@@ -21,28 +20,6 @@
     <meta charset="UTF-8">
     <title>FlightPub - Recommended Search</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-     <script src="${pageContext.request.contextPath}/scripts/script.js"></script>
-     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-     <script>$(document).ready(function(){
-        $('.selectTags').select2();
-        });
-     </script>
-      <script>
-           $(function(){
-           if($("#departureLocation") !== null){
-           $("#departureLocation").select2();
-           }
-           });
-       </script>
-       <script>
-             $(function(){
-            if($("#arrivalLocation") !== null){
-                  $("#arrivalLocation").select2();
-                  }
-             });
-         </script>
 </head>
 
 <body class="hompage-simplesearch-loggedin">
@@ -52,6 +29,12 @@
     <br><br>
     <jsp:include page='c-recSearchBar.jsp'></jsp:include>
 </div>
+    <div class="centeringtext"> <h1>Recommended Flights for You</h1> </div>
+    <jsp:include page="c-searchResultsRow.jsp"></jsp:include>
+<div class="centeringtext"> <h1>Most Popular Flights for You</h1> </div>
+<jsp:include page="c-searchResultsRow.jsp"></jsp:include>
+<div class="centeringtext"> <h1>Budget Flights for You</h1> </div>
+<jsp:include page="c-searchResultsRow.jsp"></jsp:include>
 </body>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/javascript/script.js"></script>
