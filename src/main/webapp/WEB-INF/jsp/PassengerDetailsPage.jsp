@@ -25,8 +25,8 @@
 <body>
     <main>
         <header>
-            <form class="backButton">
-                <button>Back</button>
+            <form name="BackToHome" action="login" method="GET">
+                <button type="submit" class="button" name="home" value="backToHome">Home</button>
             </form>
             <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo"
                 class="centreLogo">

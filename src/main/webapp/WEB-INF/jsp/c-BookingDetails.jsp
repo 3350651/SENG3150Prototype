@@ -6,7 +6,7 @@
 <% //BookingBean booking= (BookingBean) session.getAttribute("booking"); %>
 <% ArrayList<BookingBean> bookingsList = (ArrayList<BookingBean>) session.getAttribute("bookingsList"); %>
 
-<% for (int i = 0; i < bookingsList.size() - 1; i++){ %>
+<% for (int i = 0; i < bookingsList.size(); i++){ %>
 
 <fieldset class="background">
     <h2>Flight Details:</h2>
@@ -14,6 +14,8 @@
         <h3>Departure Flight Details</h3>
 
         <p class="reviewDetails">
+        <h3><%=bookingsList.get(i).getDepartureFlight().getDeparture().getDestinationName()%> <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
+        <%=bookingsList.get(i).getDepartureFlight().getDestination().getDestinationName()%></h3>
             <strong>Airline: </strong>
             <%=bookingsList.get(i).getDepartureFlight().getAirlineName()%>
 
@@ -60,7 +62,9 @@
 <fieldset class="background">
     <h2>Passenger Details:</h2>
 
-    <%for(PassengerBean passenger : bookingsList.get(i).getPassengers()){%>
+    <%//for(PassengerBean passenger : bookingsList.get(i).getPassengers()){%>
+    <% for (int k = 0; k < bookingsList.get(i).getPassengers().size(); k++) { %>
+    <% PassengerBean passenger = bookingsList.get(i).getPassengers().get(k); %>
         <fieldset class="foreground">
             <p class="reviewDetails">
                 <strong>Name: </strong>
@@ -90,5 +94,6 @@
             <%}%>
         </fieldset>
         <%}%>
-    <% } %>
 </fieldset>
+<br />
+<% } %>

@@ -80,18 +80,33 @@ public class CreateBookingServlet extends HttpServlet {
 
             //if there are availabilities, save booking
             ArrayList<BookingBean> bookings = new ArrayList<>();
+            float price = 0;
+
             if (avail)
             {
                 if (flight.getFlightPath().size() > 1)
                 {
-                    BookingBean a = new BookingBean(user.getUserID(), flight.getInitialFlight(), returnFlight);
-                    BookingBean b = new BookingBean(user.getUserID(), flight.getLastFlight(), returnFlight);
+                    System.out.println("size = " + flight.getFlightPath().size());
+                    while (!flight.getFlightPath().isEmpty())
+                    {
+                        BookingBean a = new BookingBean(user.getUserID(), flight.getFlightPath().pop(), returnFlight);
 
-                    a.addBooking();
-                    b.addBooking();
+                        if (returnFlight != null)
+                        {
+                            a.setTotalAmount(a.getDepartureFlight().getMinCost() + a.getReturnFlight().getMinCost());
+                            price = price + a.getDepartureFlight().getMinCost() + a.getReturnFlight().getMinCost();
+                        }
+                        else
+                        {
+                            a.setTotalAmount(a.getDepartureFlight().getMinCost());
+                            price = price + a.getDepartureFlight().getMinCost();
+                        }
 
-                    bookings.add(a);
-                    bookings.add(b);
+                        a.addBooking();
+
+                        bookings.add(a);
+
+                    }
                 }
             }
             System.out.println(bookings.get(0).getDepartureFlight().getFlightName());
@@ -99,9 +114,7 @@ public class CreateBookingServlet extends HttpServlet {
             System.out.println(bookings.get(0).getDepartureFlight().getDeparture().getDestinationCode());
             session.setAttribute("isAvail", avail);
             session.setAttribute("bookingsList", bookings);
-            //BookingBean booking = new BookingBean(user.getUserID(), flight, returnFlight);
-            //session.setAttribute("booking", booking);
-            //booking.addBooking(); // saving progress of booking
+            session.setAttribute("price", price);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/PassengerDetailsPage.jsp");
             requestDispatcher.forward(req, resp);
         }
@@ -110,16 +123,19 @@ public class CreateBookingServlet extends HttpServlet {
         else if (req.getParameter("options") != null) {
 
             ArrayList<BookingBean> bookings = (ArrayList<BookingBean>) session.getAttribute("bookingsList");
-            //BookingBean booking = (BookingBean) session.getAttribute("booking");
+
+            float price = (float) session.getAttribute("price");
 
             int passengers = Integer.parseInt(req.getParameter("passengers"));
             PassengerBean passengerBean = null;
             LinkedList<PassengerBean> passengerBeans = new LinkedList<>();
-            System.out.println("bookingsize=" + bookings.size());
+
 
             // creating all passengers related to the booking
+            //if there are multiple flights, make multiple tickets
             if (bookings.size() > 1) {
                 for (int k = 0; k < bookings.size(); k++) {
+                    passengerBeans = new LinkedList<>();
                     for (int i = 1; i <= passengers; i++) {
                         String lastName = req.getParameter("lName" + i);
                         String givenNames = req.getParameter("title" + i) + " " + req.getParameter("fName" + i);
@@ -132,7 +148,37 @@ public class CreateBookingServlet extends HttpServlet {
 
                         // getting ticket information for departure and return flight
                         String ticketClass = req.getParameter("ticketClass" + i);
+
+                        if  (req.getParameter("ticketClass" + i).equals("FIR"))
+                        {
+                            price = price + 1000;
+                        }
+                        else if (req.getParameter("ticketClass" + i).equals("BUS"))
+                        {
+                            price = price + 800;
+                        }
+                        else if (req.getParameter("ticketClass" + i).equals("PME"))
+                        {
+                            price = price + 600;
+                        }
+                        else if (req.getParameter("ticketClass" + i).equals("ECO"))
+                        {
+                            price = price + 500;
+                        }
+
                         String ticketType = req.getParameter("ticketType" + i);
+
+                        if (req.getParameter("ticketType" + i).equals("D"))
+                        {
+                            price = price + 50;
+                        }
+                        else if (req.getParameter("ticketType" + i).equals("G"))
+                        {
+                            price = price + 100;
+                        }
+
+                        System.out.println("PRICE = " + price);
+
                         String returnTicketClass = req.getParameter("ticketClassReturn" + i);
                         String returnTicketType = req.getParameter("ticketTypeReturn" + i);
 
@@ -144,6 +190,7 @@ public class CreateBookingServlet extends HttpServlet {
                         departureTicket.addTicket();    //add ticket to database
 
                         TicketBean returnTicket = null;
+
                         //if there is a return flight to add a ticket for
                         if (returnTicketClass != null) {
                             returnTicket = new TicketBean(bookings.get(k).getBookingId(), passengerBean.getPassengerId(),
@@ -156,6 +203,9 @@ public class CreateBookingServlet extends HttpServlet {
                         passengerBean.setReturnTicket(returnTicket);
                         passengerBeans.add(passengerBean);
                         bookings.get(k).setPassengers(passengerBeans);
+                        int test = 1;
+                        System.out.println("Ticket " + test + "made");
+                        test = test + 1;
                     }
                 }
             } else {
@@ -171,7 +221,34 @@ public class CreateBookingServlet extends HttpServlet {
 
                     // getting ticket information for departure and return flight
                     String ticketClass = req.getParameter("ticketClass" + i);
+                    if  (req.getParameter("ticketClass" + i).equals("FIR"))
+                    {
+                        price = price + 1000;
+                    }
+                    else if (req.getParameter("ticketClass" + i).equals("BUS"))
+                    {
+                        price = price + 800;
+                    }
+                    else if (req.getParameter("ticketClass" + i).equals("PME"))
+                    {
+                        price = price + 600;
+                    }
+                    else if (req.getParameter("ticketClass" + i).equals("ECO"))
+                    {
+                        price = price + 500;
+                    }
+
                     String ticketType = req.getParameter("ticketType" + i);
+
+                    if (req.getParameter("ticketType" + i).equals("D"))
+                    {
+                        price = price + 50;
+                    }
+                    else if (req.getParameter("ticketType" + i).equals("G"))
+                    {
+                        price = price + 100;
+                    }
+                    
                     String returnTicketClass = req.getParameter("ticketClassReturn" + i);
                     String returnTicketType = req.getParameter("ticketTypeReturn" + i);
 
@@ -200,6 +277,7 @@ public class CreateBookingServlet extends HttpServlet {
                 //set details to display on next page
                 //booking.setPassengers(passengerBeans);
                 session.setAttribute("bookings", bookings);
+                session.setAttribute("price", price);
                 RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/ReviewDetailsPage.jsp");
                 requestDispatcher.forward(req, resp);
 
