@@ -1,4 +1,22 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.LinkedList" %>
+<%@ page import="startUp.DestinationBean" %>
+<%@ page import="startUp.FlightPathBean" %>
+<%@ page import="startUp.UserTagSearchBean" %>
+<%
+LinkedList<UserTagSearchBean> userTags = (LinkedList<UserTagSearchBean>) session.getAttribute("userTags");
+String selectedTags = (String) session.getAttribute("selectedTags");
+String isFlights = (String) session.getAttribute("isFlights");
+boolean destinations = false;
+boolean flights = false;
+
+if(userTags != null || selectedTags != null){
+    destinations = true;
+}
+else if(isFlights != null){
+    flights = true;
+}
+%>
 <html lang="en">
 
 <head>
@@ -10,11 +28,21 @@
 <jsp:include page='c-AccountAccess.jsp'></jsp:include>
 <br><br>
 <body>
-<div class="centeringtext"> <h1>Recommended Flights based on your Search Terms</h1> </div>
-<jsp:include page="c-searchResultsRow.jsp"></jsp:include>
-    <div class="centeringtext"> <h1>Most Popular Flights based on your Search Terms</h1> </div>
-    <jsp:include page="c-searchResultsRow.jsp"></jsp:include>
-<div class="centeringtext"> <h1>Budget Flights based on your Search Terms</h1> </div>
-<jsp:include page="c-searchResultsRow.jsp"></jsp:include>
+<div class="centeringtext">
+    <h1>Recommendation Search Results</h1>
+    <% if(destinations) { %>
+    <div>
+        <h1>Destinations For You</h1>
+            <jsp:include page="c-destinationSearchResults.jsp"></jsp:include>
+    </div>
+    <% } else if(flights) { %>
+    <div>
+            <h1>Flights For You</h1>
+                <jsp:include page="c-flightSearchResults.jsp"></jsp:include>
+        </div>
+    <% } else { %>
+        <div>Sorry! Something went wrong.</div>
+    <%}%>
+</div>
 </body>
 </html>

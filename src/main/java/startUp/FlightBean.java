@@ -352,5 +352,9 @@ public class FlightBean implements Serializable {
         seatAvailability = AvailabilityBean.getAvailability(this.airline, this.flightName, this.originalFlightDepartureTime, this.leg, passengers);
     }
 
+    public void loadDestinationBeans() {
+        this.destination = new DestinationBean(destination.getDestinationCode(), true);
+        this.departure = new DestinationBean(departure.getDestinationCode(), true);
+    }
 
 }

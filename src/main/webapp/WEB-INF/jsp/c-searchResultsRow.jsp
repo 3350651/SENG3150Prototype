@@ -7,11 +7,11 @@
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
 
 <div class="gridParent" id="simple">
-    <% SearchBean search = (SearchBean) session.getAttribute("flightResults"); 
+    <% SearchBean search = (SearchBean) session.getAttribute("searchResults"); 
     LinkedList<FlightPathBean> searchResults = search.getResults();
     session.setAttribute("flightResults", searchResults);
-    %>
-    <% int i = 0; for (FlightPathBean flightPath : searchResults ) { %>
+    if(searchResults.size() !=0 ){
+     int i = 0; for (FlightPathBean flightPath : searchResults ) { %>
         <div class="recResults">
             <div class="FlightSearchResult">
                 <div class="simpleFlightCardColumn1">
@@ -28,9 +28,9 @@
                         <%}%>
                     </div>
                     <div class="searchResultRow2">
-                        <div class="priceResult">$$</div>
-                        <div class="dateResult"><%=flightPath.getInitialFlight().getFlightTime()%></div>
-                        <div class="numPassengersResult">#Psngrs</div>
+                        <div class="priceResult">$<%=flightPath.getMinPrice()%> &nbsp;</div>
+                        <div class="dateResult"><%=flightPath.getInitialFlight().getFlightTime()%> &nbsp;</div>
+                        <div class="numPassengersResult">Adult: <%=search.getAdultPassengers()%>, Children: <%=search.getChildPassengers()%></div>
                     </div>
                 </div>
                 <div class="searchResultButtons">
@@ -68,5 +68,8 @@
                 </div>
             </div>
         </div>
-    <% i++; }%>
+    <% i++; }
+    } else{%>
+        <div>Sorry, there were no flights found for this search. Please try again.</div>
+    <%}%>
 </div>

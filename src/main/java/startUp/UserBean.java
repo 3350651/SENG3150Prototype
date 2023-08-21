@@ -485,6 +485,33 @@ public class UserBean implements Serializable {
 		}
 	}
 
+	public LinkedList<String> getRandomTags() {
+		LinkedList<String> tags = new LinkedList<>();
+		try {
+			String query = "SELECT TOP(3) tagName\n" +
+					"FROM TAGS\n" +
+					"INNER JOIN USERTAGS ON TAGS.tagID = USERTAGS.tagID\n" +
+					"WHERE USERTAGS.userID = ?\n" +
+					"ORDER BY NEWID();";
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, this.userID);
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				tags.add(result.getString("tagName"));
+			}
+
+			result.close();
+			statement.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			System.err.println(Arrays.toString(e.getStackTrace()));
+		}
+		return tags;
+	}
+
 	public void loadBookmarkedFlights(String userID) {
 		Queue<BookmarkedFlightBean> flightsToSort = new LinkedList<>();
 		HashMap<Integer, Float> hm = new HashMap<>();
@@ -991,7 +1018,6 @@ public class UserBean implements Serializable {
 			insertBookmarked.setString(1, String.valueOf(flight.getId()));
 			insertBookmarked.setString(2, userID);
 			insertBookmarked.executeUpdate();
-
 		} catch (SQLException e) {
 			// Handle or log the exception
 			e.printStackTrace();
