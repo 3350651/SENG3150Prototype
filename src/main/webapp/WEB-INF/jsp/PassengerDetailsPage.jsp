@@ -52,7 +52,7 @@
                         <h3>Passenger <%=i%></h3>
                         <h3>Personal Details</h3>
                         <label for=<%="title" +i%>>Title: </label>
-                        <select name=<%="title" +i%> id=<%="title"+i%>>
+                        <select name=<%="title" +i%> id=<%="title"+i%> required="true">
                                 <option value="">Please Select---</option>
                                 <option value="Mr">Mr</option>
                                 <option value="Mrs">Mrs</option>
@@ -61,22 +61,22 @@
                         </select>
 
                         <label for=<%="fName" +i%>>Given Name(s): </label>
-                        <input type="text" name=<%="fName" +i%> id=<%="fName"+i%> />
+                        <input type="text" name=<%="fName" +i%> id=<%="fName"+i%> required="true"/>
 
                         <label for=<%="lName" +i%>>Family Name: </label>
-                        <input type="text" name=<%="lName" +i%> id=<%="lName"+i%> />
+                        <input type="text" name=<%="lName" +i%> id=<%="lName"+i%> required="true"/>
                         <br />
 
                         <label for=<%="email" +i%>>Email: </label>
-                        <input type="email" name=<%="email"+i%> id=<%="email"+i%> />
+                        <input type="email" name=<%="email"+i%> id=<%="email"+i%> required="true"/>
                         <br />
 
                         <label for=<%="mobile" +i%>>Mobile Number: </label>
-                        <input type="text" name=<%="mobile" +i%> id=<%="mobile"+i%> />
+                        <input type="text" name=<%="mobile" +i%> id=<%="mobile"+i%> required="true"/>
                         <br />
 
                         <label for=<%="dob" +i%>>Date of Birth: </label>
-                        <input type="date" name=<%="dob" +i%> id=<%="dob"+i%> />
+                        <input type="date" name=<%="dob" +i%> id=<%="dob"+i%> required="true"/>
                         <br />
 
                         <h3>Ticket Details</h3>
