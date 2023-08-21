@@ -50,6 +50,7 @@ public class GroupBean implements Serializable {
         this.groupID = id;
         this.groupName = name;
         this.poolID = poolID;
+        this.tagSet = new LinkedList<>();
     }
 
     public void addGroupToDB(){
@@ -139,7 +140,9 @@ public class GroupBean implements Serializable {
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
         }
-        return new GroupBean(id, groupName, poolID);
+        GroupBean group = new GroupBean(id, groupName, poolID);
+        group.setTagSet(getTags(id));
+        return group;
     }
 
     public static void deleteGroup(String id){
@@ -357,7 +360,7 @@ public class GroupBean implements Serializable {
             try {
                 connection = ConfigBean.getConnection();
                 // check if user already has that tag saved
-                PreparedStatement checkTag = connection.prepareStatement("SELECT * FROM USERTAGS WHERE userID = ? AND tagID = ?");
+                PreparedStatement checkTag = connection.prepareStatement("SELECT * FROM GROUPTAGS WHERE groupID = ? AND tagID = ?");
                 checkTag.setString(1, groupID);
                 checkTag.setString(2, tagID);
                 resultSet2 = checkTag.executeQuery();
@@ -367,10 +370,10 @@ public class GroupBean implements Serializable {
                 }
                 else {
                     try {
-                        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO USERTAGS VALUES (?, ?, ?)");
+                        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO GROUPTAGS VALUES (?, ?, ?)");
                         Random random = new Random();
-                        String userTagsID = String.format("%08d", random.nextInt(100000000));
-                        insertStatement.setString(1, userTagsID);
+                        String groupTagsID = String.format("%08d", random.nextInt(100000000));
+                        insertStatement.setString(1, groupTagsID);
                         insertStatement.setString(2, tagID);
                         insertStatement.setString(3, groupID);
                         insertStatement.executeUpdate();
@@ -392,7 +395,7 @@ public class GroupBean implements Serializable {
     }
 
     public static void removeFromTagSet(String groupID, String tagName) {
-        String query = "DELETE FROM USERTAGS WHERE userID = ? AND tagID = ?";
+        String query = "DELETE FROM GROUPTAGS WHERE groupID = ? AND tagID = ?";
 
         try {
             Connection connection = ConfigBean.getConnection();
@@ -418,20 +421,24 @@ public class GroupBean implements Serializable {
     }
 
 
-    public LinkedList<String> getTags(String groupID) {
+    public static LinkedList<String> getTags(String groupID) {
         LinkedList<String> tagSet = new LinkedList<>();
 
-        String query = "SELECT * FROM USERTAGS WHERE [userID] = ?";
         try {
+            String query = "SELECT tagName\n" +
+                    "FROM TAGS\n" +
+                    "INNER JOIN GROUPTAGS ON TAGS.tagID = GROUPTAGS.tagID\n" +
+                    "WHERE GROUPTAGS.groupID = ?;";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, groupID);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                String id = result.getString(1);
-                tagSet.add(id);
+                tagSet.add(result.getString("tagName"));
             }
+
+            result.close();
             statement.close();
             connection.close();
         } catch (SQLException e) {

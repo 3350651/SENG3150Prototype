@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.LinkedList;
 
 import static startUp.ChatBean.deleteChat;
@@ -203,6 +204,72 @@ public class ManageGroupServlet extends HttpServlet {
         //goes to homepage in cases where user is not added to group
         else if(request.getParameter("continue") != null){
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        if(request.getParameter("modifyGroupTags") != null){
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyGroupTags.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        if(request.getParameter("addTags") != null){
+            String[] tagValues = request.getParameterValues("tagsToAdd[]");
+            for (String tagValue : tagValues) {
+                try {
+                    GroupBean.addToTagSet(groupID, tagValue);
+                    group.addTag(tagValue);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            session.setAttribute("group", group);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        if(request.getParameter("removeTags") != null){
+            String[] tagValues = request.getParameterValues("tagsToRemove[]");
+            for (String tagValue : tagValues) {
+                GroupBean.removeFromTagSet(groupID, tagValue);
+                group.removeTag(tagValue);
+            }
+            session.setAttribute("group", group);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        if (request.getParameter("submitQuestionnaire") != null) {
+            String[] travelGoals = request.getParameterValues("travelGoals[]");
+            String[] locations = request.getParameterValues("locations[]");
+            String[] valueAdds = request.getParameterValues("valueAdds[]");
+            for (String tagValue : travelGoals) {
+                try {
+                    GroupBean.addToTagSet(groupID, tagValue);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                group.addTag(tagValue);
+            }
+            for (String tagValue : locations) {
+                try {
+                    GroupBean.addToTagSet(groupID, tagValue);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                group.addTag(tagValue);
+            }
+            for (String tagValue : valueAdds) {
+                try {
+                    GroupBean.addToTagSet(groupID, tagValue);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                group.addTag(tagValue);
+            }
+            session.setAttribute("group", group);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        if(request.getParameter("completeGroupQuestionnaire") != null){
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupQuestionnaire.jsp");
             requestDispatcher.forward(request, response);
         }
 
