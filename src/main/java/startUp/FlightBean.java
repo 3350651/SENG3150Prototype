@@ -86,14 +86,16 @@ public class FlightBean implements Serializable {
 
     public FlightBean(String airline, String flightName, Timestamp flightTime, int leg) {
         FlightBean infoToImport = getFlightDetails(airline, flightName, flightTime, leg);
-        this.airline = infoToImport.getAirline();
-        this.flightName = infoToImport.getFlightName();
-        this.flightDepartureTime = infoToImport.getFlightTime();
-        this.airlineName = infoToImport.getAirlineName();
-        this.planeType = infoToImport.getPlaneType();
-        this.destination = infoToImport.getDestination();
-        this.departure = infoToImport.getDeparture();
-        this.seatAvailability = new LinkedList<>();
+        if (infoToImport != null){
+            this.airline = infoToImport.getAirline();
+            this.flightName = infoToImport.getFlightName();
+            this.flightDepartureTime = infoToImport.getFlightTime();
+            this.airlineName = infoToImport.getAirlineName();
+            this.planeType = infoToImport.getPlaneType();
+            this.destination = infoToImport.getDestination();
+            this.departure = infoToImport.getDeparture();
+            this.seatAvailability = infoToImport.getSeatAvailability();
+        }
     }
 
     // getters and setters
@@ -228,7 +230,7 @@ public class FlightBean implements Serializable {
                         "JOIN BOOKMARKEDFLIGHT bf ON bf.flightPathID = fp.flightPathID " +
                         "LEFT JOIN Airlines A ON A.AirlineCode = F.AirlineCode " +
                         "WHERE StopOverCode IS NULL " +
-                        "AND F.AirlineCode = ? AND F.FlightNumber = ? AND originalDepartureTime = ?;";
+                        "AND F.AirlineCode = ? AND F.FlightNumber = ? AND F.DepartureTime = ?;";
             } else if(leg == 1){
                 query = "SELECT " +
                         "F.AirlineCode, " +
@@ -244,7 +246,7 @@ public class FlightBean implements Serializable {
                         "FROM Flights F " +
                         "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
                         "WHERE StopOverCode IS NOT NULL  " +
-                        "AND F.AirlineCode = ? AND F.FlightNumber = ? AND originalDepartureTime = ?;";
+                        "AND F.AirlineCode = ? AND F.FlightNumber = ? AND F.DepartureTime = ?;";
             } else if(leg == 2){
                 query = "SELECT " +
                         "F.AirlineCode, " +
@@ -260,7 +262,7 @@ public class FlightBean implements Serializable {
                         "FROM Flights F " +
                         "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
                         "WHERE StopOverCode IS NOT NULL  " +
-                        "AND F.AirlineCode = ? AND F.FlightNumber = ? AND DepartureTime = ?;";
+                        "AND F.AirlineCode = ? AND F.FlightNumber = ? AND F.DepartureTime = ?;";
             }
 
             Connection connection = ConfigBean.getConnection();
@@ -268,14 +270,13 @@ public class FlightBean implements Serializable {
             statement.setString(1, airlineCode);
             statement.setString(2, flightName);
             statement.setTimestamp(3, flightDepartureTime);
-//            statement.setInt(4, leg);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
                 String aCode = result.getString("AirlineCode");
                 String flightCode = result.getString("FlightNumber");
                 String plane = result.getString("PlaneCode");
-                Timestamp departTime = result.getTimestamp("originalDepartureTime");
+                Timestamp departTime = result.getTimestamp("DepartureTime");
                 String departureCode = result.getString("DepartureCode");
                 String destinationCode = result.getString("DestinationCode");
                 String airlineName = result.getString("AirlineName");
@@ -286,7 +287,7 @@ public class FlightBean implements Serializable {
 
                 flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture, rDestination);
                 flight.setOriginalFlightDepartureTime(originalDepartureTime);
-                flight.getAvailabilities(1);
+                flight.getAvailabilities(1); // This assumes solo passenger until user clicks to view the flight details
             }
 
             statement.close();

@@ -135,14 +135,15 @@ public class GroupHomepageServlet extends HttpServlet {
             requestDispatcher.forward(request, response);
         }
         //The admin wants to remove a flight from the fave list.
-        else if(request.getParameter("getGroupFaveList") != null && request.getParameter("removeFlight") != null){
-            String faveFlightID = request.getParameter("faveFlightID");
+        else if(request.getParameter("removeFlight") != null){
+            String indexOfFlightPath = request.getParameter("flightIndex");
+            LinkedList<GroupFaveFlightBean> groupFaveFlights = (LinkedList<GroupFaveFlightBean>) session.getAttribute("faveFlights");
+            GroupFaveFlightBean groupFaveFlightToView = groupFaveFlights.get(Integer.parseInt(indexOfFlightPath));
+            String faveFlightID = groupFaveFlightToView.getGroupFaveFlightID();
             deleteGroupFaveFlight(group.getGroupID(), faveFlightID);
 
             LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(group.getGroupID());
             int size = faveFlights.size();
-
-            session.setAttribute("faveFlights", faveFlights);
 
             Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
             session.setAttribute("isAdmin", isAdmin);
@@ -175,7 +176,6 @@ public class GroupHomepageServlet extends HttpServlet {
             //get all the Flights that are added to the group Fave list.
             LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(group.getGroupID());
             int size = faveFlights.size();
-//            session.setAttribute("faveFlights", faveFlights);
 
             Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
             session.setAttribute("isAdmin", isAdmin);
@@ -209,10 +209,8 @@ public class GroupHomepageServlet extends HttpServlet {
                 }
                 else{
                     sortedFaveFlights = getSortedList(faveFlights, faveFlights.peek().getGroupID());
-//                    destinations = getDestinations(sortedFaveFlights);
                 }
                 session.setAttribute("faveFlights", sortedFaveFlights);
-//                session.setAttribute("destinations", destinations);
             }
 
             session.setAttribute("group", group);
@@ -225,9 +223,6 @@ public class GroupHomepageServlet extends HttpServlet {
             String indexOfFlightPath = request.getParameter("flightIndex");
             LinkedList<GroupFaveFlightBean> groupFaveFlights = (LinkedList<GroupFaveFlightBean>) session.getAttribute("faveFlights");
             GroupFaveFlightBean groupFaveFlightToView = groupFaveFlights.get(Integer.parseInt(indexOfFlightPath));
-//            GroupFaveFlightBean groupFaveFlightToView = new GroupFaveFlightBean(flightPathBean, group.getGroupID());
-//            GroupFaveFlightBean faveFlight = getFaveFlight(airlineCode, flightName, flightTime, group.getGroupID());
-//            FlightBean flightBean = getFlight(airlineCode, flightName, flightTime);
             session.setAttribute("faveFlightToView", groupFaveFlightToView);
             session.setAttribute("userBean", user);
             boolean poolFinished = group.isPoolComplete(group.getPoolID());

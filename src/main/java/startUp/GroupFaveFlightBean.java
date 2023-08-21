@@ -225,38 +225,6 @@ public class GroupFaveFlightBean implements Serializable{
         return isFavourited;
     }
 
-//    public static LinkedList<GroupFaveFlightBean> getGroupFaveFlights(String groupID){
-//        LinkedList<GroupFaveFlightBean> flights = new LinkedList<>();
-//        String query = "SELECT * FROM GROUPFAVEFLIGHT WHERE [groupID] = ?";
-//        try {
-//            Connection connection = ConfigBean.getConnection();
-//            PreparedStatement statement = connection.prepareStatement(query);
-//
-//            statement.setString(1, groupID);
-//            ResultSet result = statement.executeQuery();
-//
-//            while (result.next()){
-//                String id = result.getString(1);
-//                String airlineCode = result.getString(2);
-//                String flightName = result.getString(3);
-//                Timestamp flightTime = result.getTimestamp(4);
-//                String chatID = result.getString(5);
-//                float rank = result.getFloat(6);
-//
-//                GroupFaveFlightBean flight = new GroupFaveFlightBean(id, airlineCode, flightName, flightTime, chatID, rank, groupID);
-//                flights.add(flight);
-//            }
-//            statement.close();
-//            connection.close();
-//        }
-//        catch(SQLException e){
-//            System.err.println(e.getMessage());
-//            System.err.println(e.getStackTrace());
-//        }
-//
-//        return flights;
-//    }
-
     public static LinkedList<String> getDestinations(LinkedList<GroupFaveFlightBean> flightPath){
         LinkedList<String> destinations = new LinkedList<>();
 
@@ -265,46 +233,11 @@ public class GroupFaveFlightBean implements Serializable{
             GroupFaveFlightBean fave = flightPath.removeFirst();
             String destination = fave.getFlightPath().getLastFlight().getDestination().getDestinationName();
             destinations.add(destination);
+            flightPath.addLast(fave);
         }
 
         return destinations;
     }
-
-//    public static GroupFaveFlightBean getFaveFlight(String airlineCode, String flightName, Timestamp departureTime, String groupID){
-//        GroupFaveFlightBean faveFlight = new GroupFaveFlightBean();
-//
-//        String query = "SELECT * FROM GROUPFAVEFLIGHT WHERE [AirlineCode] = ? AND [FlightNumber] = ? AND" +
-//                " [DepartureTime] = ? AND [groupID] = ?";
-//        try{
-//            Connection connection = ConfigBean.getConnection();
-//            PreparedStatement statement = connection.prepareStatement(query);
-//            statement.setString(1, airlineCode);
-//            statement.setString(2, flightName);
-//            statement.setTimestamp(3, departureTime);
-//            statement.setString(4, groupID);
-//            ResultSet result = statement.executeQuery();
-//
-//            while (result.next()) {
-//                String id = result.getString(1);
-//                String code = result.getString(2);
-//                String name = result.getString(3);
-//                Timestamp time = result.getTimestamp(4);
-//                String chatID = result.getString(5);
-//                double rank = result.getFloat(6);
-//                String group = result.getString(7);
-//
-//                faveFlight = new GroupFaveFlightBean(id, code, name, time, chatID, rank, group);
-//            }
-//            statement.close();
-//            connection.close();
-//        }
-//        catch(SQLException e){
-//            System.err.println(e.getMessage());
-//            System.err.println(e.getStackTrace());
-//        }
-//
-//        return faveFlight;
-//    }
 
     public static FlightBean getFlight(String airline, String flightName, Timestamp flightTime){
         int available = 0;
@@ -502,9 +435,7 @@ public class GroupFaveFlightBean implements Serializable{
                 float minimumCost = result.getFloat("minimumPrice");
                 hm.put(flightPathID, minimumCost);
                 int leg = result.getInt("Leg");
-                FlightBean flightToAdd = new FlightBean(airlineCodeToAdd, flightNumberToAdd, departureTimeToAdd);
-                flightToAdd.setLeg(leg);
-
+                FlightBean flightToAdd = new FlightBean(airlineCodeToAdd, flightNumberToAdd, departureTimeToAdd, leg);
                 BookmarkedFlightBean bfb = new BookmarkedFlightBean(flightPathID, flightToAdd, groupFaveFlightID, chatID, score, groupID);
                 flightsToSort.add(bfb);
             }
@@ -528,16 +459,18 @@ public class GroupFaveFlightBean implements Serializable{
             int currentFlightPathID = flightsToSort.peek().getId();
 
             if (currentFlightPathID != tempFlightPathID) {
-                FlightPathBean fpb = new FlightPathBean();
+
                 Stack<FlightBean> flights = new Stack<FlightBean>();
                 float minimumPrice = hm.get(currentFlightPathID);
-                fpb.setMinPrice(minimumPrice);
+
                 FlightBean flightToAddToPath;
                 while (!flightsToSort.isEmpty() && flightsToSort.peek().getId() == currentFlightPathID) {
                     flightToAddToPath = flightsToSort.poll().getFlight();
                     flights.add(flightToAddToPath);
                 }
-                fpb.setFlightPath(flights);
+                FlightPathBean fpb = new FlightPathBean(flights);
+                fpb.setId(currentFlightPathID);
+                fpb.setMinPrice(minimumPrice);
                 ;
                 gf.setFlightPath(fpb);
                 groupFaveFlightList.add(gf);
