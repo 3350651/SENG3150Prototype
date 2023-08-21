@@ -510,6 +510,7 @@ public class UserBean implements Serializable {
 				hm.put(flightPathID, minimumCost);
 				int leg = result.getInt("Leg");
 				FlightBean flightToAdd = new FlightBean(airlineCodeToAdd, flightNumberToAdd, departureTimeToAdd, leg);
+				flightToAdd.loadDestinationBeans();
 				BookmarkedFlightBean bfb = new BookmarkedFlightBean(flightToAdd, flightPathID);
 				flightsToSort.add(bfb);
 			}

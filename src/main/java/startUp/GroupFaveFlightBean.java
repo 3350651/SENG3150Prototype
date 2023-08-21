@@ -276,6 +276,7 @@ public class GroupFaveFlightBean implements Serializable{
 
                 flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture,
                         rDestination);
+                flight.loadDestinationBeans();
             }
             statement.close();
             connection.close();
@@ -436,6 +437,7 @@ public class GroupFaveFlightBean implements Serializable{
                 hm.put(flightPathID, minimumCost);
                 int leg = result.getInt("Leg");
                 FlightBean flightToAdd = new FlightBean(airlineCodeToAdd, flightNumberToAdd, departureTimeToAdd, leg);
+                flightToAdd.loadDestinationBeans();
                 BookmarkedFlightBean bfb = new BookmarkedFlightBean(flightPathID, flightToAdd, groupFaveFlightID, chatID, score, groupID);
                 flightsToSort.add(bfb);
             }
