@@ -18,3 +18,7 @@ build/classes/java/main/startUp/recSearch.class
 .gradle/7.4/executionHistory/executionHistory.lock
 .gradle/7.4/executionHistory/executionHistory.bin
 src/main/webapp/META-INF/context.xml
+*.lock
+*.bin
+*.class
+*.bin
