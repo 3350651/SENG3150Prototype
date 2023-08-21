@@ -58,11 +58,11 @@ boolean lockedIn = (boolean) session.getAttribute("lockedIn");
                </form>
             </div>
         <%}%>
-        <form name="completeQuestionnaire" action="ManageGroup" method="GET">
-             <button class="groupButton" type="submit" name="manageGroup" value="true">Complete Questionnaire</button>
+        <form name="completeQuestionnaire" action="ManageGroup" method="POST">
+             <button class="groupButton" type="submit" name="completeGroupQuestionnaire" value="completeGroupQuestionnaire">Complete Questionnaire</button>
         </form>
-        <form name="modifyTags" action="ManageGroup" method="GET">
-                     <button class="groupButton" type="submit" name="manageGroup" value="true">Modify Tags</button>
+        <form name="modifyTags" action="ManageGroup" method="POST">
+                     <button class="groupButton" type="submit" name="modifyGroupTags" value="modifyGroupTags">Modify Tags</button>
                 </form>
         </div>
 

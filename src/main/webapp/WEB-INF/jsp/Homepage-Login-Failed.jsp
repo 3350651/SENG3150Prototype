@@ -1,11 +1,13 @@
 <%@ page import="startUp.UserBean" %>
-  <%@ page import="java.time.format.DateTimeFormatter" %>
-    <%@ page import="java.util.LinkedList" %>
-      <%@ page import="java.util.Iterator" %>
-        <%@ page import="startUp.FlightBean" %>
-          <%@ page import="startUp.DestinationBean" %>
-          <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-            <% UserBean user=(UserBean) session.getAttribute("userBean"); LinkedList<FlightPathBean> bookmarkedFlights = new
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.util.LinkedList" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="startUp.FlightBean" %>
+<%@ page import="startUp.DestinationBean" %>
+<%@ page import="startUp.FlightPathBean" %>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+            <% UserBean user=(UserBean) session.getAttribute("userBean");
+            LinkedList<FlightPathBean> bookmarkedFlights = new
               LinkedList<>();
                 if (user != null && user.getBookmarkedFlights() != null) {
                 bookmarkedFlights = user.getBookmarkedFlights();
