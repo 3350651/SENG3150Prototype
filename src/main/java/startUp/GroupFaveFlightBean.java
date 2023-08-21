@@ -121,6 +121,8 @@ public class GroupFaveFlightBean implements Serializable {
             while (result.next()) {
                 isFavourited = true;
             }
+            statement.close();
+            connection.close();
         }
         catch(SQLException e){
             System.err.println(e.getMessage());
@@ -219,7 +221,8 @@ public class GroupFaveFlightBean implements Serializable {
 
                 faveFlight = new GroupFaveFlightBean(id, code, name, time, chatID, rank, group);
             }
-
+            statement.close();
+            connection.close();
         }
         catch(SQLException e){
             System.err.println(e.getMessage());
