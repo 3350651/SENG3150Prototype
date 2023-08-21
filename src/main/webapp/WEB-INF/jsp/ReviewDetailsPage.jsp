@@ -36,7 +36,7 @@
             <h3>Payment Details:</h3>
             <form method="POST" action="createBooking">
                 <input type="hidden" name="payment" value="true">
-                <h3>Total Cost: <%= priceString %></h3>
+                <h3>Total Cost: $<%= priceString %></h3>
                 <label for="cardNumber">Card Number:</label>
                 <input type="text" id="cardNumber" />
                 <label for="expiry">Expiry Date:</label>

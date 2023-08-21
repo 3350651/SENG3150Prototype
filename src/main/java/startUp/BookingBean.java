@@ -135,9 +135,9 @@ public class BookingBean implements Serializable {
     // TODO: Add ability to add with return flight if not null.
     public void addBooking() {
         try {
-            String query = "INSERT INTO dbo.BOOKINGS (BookingId, BookingUserId, DepartureAirlineCode, DepartureFlightNumber, DepartureTime, Progress)\n"
+            String query = "INSERT INTO dbo.BOOKINGS (BookingId, BookingUserId, DepartureAirlineCode, DepartureFlightNumber, DepartureTime, TotalAmount, Progress)\n"
                     +
-                    "VALUES(?,?,?,?,?,?);";
+                    "VALUES(?,?,?,?,?,?,?);";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, this.bookingId);
@@ -145,7 +145,8 @@ public class BookingBean implements Serializable {
             statement.setString(3, this.departureFlight.getAirline());
             statement.setString(4, this.departureFlight.getFlightName());
             statement.setString(5, this.departureFlight.getFlightTime().toString());
-            statement.setBoolean(6, true);
+            statement.setString(6, String.valueOf(this.totalAmount));
+            statement.setBoolean(7, true);
             statement.execute();
             statement.close();
             connection.close();

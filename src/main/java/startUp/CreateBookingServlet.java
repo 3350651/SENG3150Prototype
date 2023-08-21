@@ -109,9 +109,7 @@ public class CreateBookingServlet extends HttpServlet {
                     }
                 }
             }
-            System.out.println(bookings.get(0).getDepartureFlight().getFlightName());
-            System.out.println(bookings.get(0).getDepartureFlight().getDeparture());
-            System.out.println(bookings.get(0).getDepartureFlight().getDeparture().getDestinationCode());
+
             session.setAttribute("isAvail", avail);
             session.setAttribute("bookingsList", bookings);
             session.setAttribute("price", price);
@@ -177,12 +175,9 @@ public class CreateBookingServlet extends HttpServlet {
                             price = price + 100;
                         }
 
-                        System.out.println("PRICE = " + price);
-
                         String returnTicketClass = req.getParameter("ticketClassReturn" + i);
                         String returnTicketType = req.getParameter("ticketTypeReturn" + i);
 
-                        System.out.println("Flight " + k + " = " + bookings.get(k).getDepartureFlight().getFlightName());
                         TicketBean departureTicket = new TicketBean(bookings.get(k).getBookingId(), passengerBean.getPassengerId(),
                                 bookings.get(k).getDepartureFlight().getFlightName(),
                                 bookings.get(k).getDepartureFlight().getAirline(),
@@ -248,7 +243,7 @@ public class CreateBookingServlet extends HttpServlet {
                     {
                         price = price + 100;
                     }
-                    
+
                     String returnTicketClass = req.getParameter("ticketClassReturn" + i);
                     String returnTicketType = req.getParameter("ticketTypeReturn" + i);
 
@@ -285,8 +280,13 @@ public class CreateBookingServlet extends HttpServlet {
         //if coming from the review details page
         else if(req.getParameter("payment") != null){
 
-            BookingBean booking = (BookingBean) session.getAttribute("booking");
-            booking.finalise();
+            //since we dont handle pay, it just finalises each booking
+            ArrayList<BookingBean> bookings = (ArrayList<BookingBean>) session.getAttribute("bookingsList");
+
+            for (int i = 0; i < bookings.size(); i++)
+            {
+                bookings.get(i).finalise();
+            }
 
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
             requestDispatcher.forward(req, resp);
