@@ -397,50 +397,50 @@ public class SearchBean implements Serializable {
         return new FlightPathBean(flights);
     }
 
-    // Method by Lachlan, written for importing saved flightpathbeans
-    public void arrangeFlights(Queue<FlightBean> flightsToImport) {
-        LinkedList<FlightPathBean> flightPaths = new LinkedList<>();
-        Queue<FlightBean> flightList = new LinkedList<>();
-        FlightBean flight = null;
-
-        do {
-
-            //add all to queue
-            while(!flightList.isEmpty()){
-                flightList.add(flightsToImport.poll());
-            }
-
-            //if queue empty return list of flight paths
-            if (flightList.isEmpty()) {
-                break;
-            }
-            //go to next in queue
-            flight = flightList.poll();
+//    // Method by Lachlan, written for importing saved flightpathbeans
+//    public void arrangeFlights(Queue<FlightBean> flightsToImport) {
+//        LinkedList<FlightPathBean> flightPaths = new LinkedList<>();
+//        Queue<FlightBean> flightList = new LinkedList<>();
+//        FlightBean flight = null;
 //
-//            if (getFlightPathFrom(flight).getFlightPath().size() > 6) {
+//        do {
+//
+//            //add all to queue
+//            while(!flightList.isEmpty()){
+//                flightList.add(flightsToImport.poll());
+//            }
+//
+//            //if queue empty return list of flight paths
+//            if (flightList.isEmpty()) {
 //                break;
 //            }
-
-            //check if destination
-            while (Objects.equals(flight.getDestination().getDestinationCode(), destination)) {
-                //if destination, backtrack through previous flights to make complete flight path
-                //add to list of complete flight paths
-                flightPaths.add(getFlightPathFrom(flight));
-                //if 10 flights in list return
-                if (flightPaths.size() >= 10) {
-                    results = flightPaths;
-                }
-                if (flightList.isEmpty()) {
-                    results = flightPaths;
-                }
-                flight = flightList.poll();
-
-            }
-            departure = flight.getDestination().getDestinationCode();
-            departureDate = flight.getFlightArrivalTime();
-        } while (flightPaths.size() < 10 && !flightList.isEmpty());
-        results = flightPaths;
-    }
+//            //go to next in queue
+//            flight = flightList.poll();
+////
+////            if (getFlightPathFrom(flight).getFlightPath().size() > 6) {
+////                break;
+////            }
+//
+//            //check if destination
+//            while (Objects.equals(flight.getDestination().getDestinationCode(), destination)) {
+//                //if destination, backtrack through previous flights to make complete flight path
+//                //add to list of complete flight paths
+//                flightPaths.add(getFlightPathFrom(flight));
+//                //if 10 flights in list return
+//                if (flightPaths.size() >= 10) {
+//                    results = flightPaths;
+//                }
+//                if (flightList.isEmpty()) {
+//                    results = flightPaths;
+//                }
+//                flight = flightList.poll();
+//
+//            }
+//            departure = flight.getDestination().getDestinationCode();
+//            departureDate = flight.getFlightArrivalTime();
+//        } while (flightPaths.size() < 10 && !flightList.isEmpty());
+//        results = flightPaths;
+//    }
 
 //this all may be useful for later when we start implementing properly...
 

@@ -489,9 +489,35 @@ public class UserBean implements Serializable {
 		Queue<BookmarkedFlightBean> flightsToSort = new LinkedList<>();
 		HashMap<Integer, Float> hm = new HashMap<>();
 		try {
-			String query = "SELECT F.AirlineCode, F.FlightNumber, F.DepartureCode, F.DestinationCode, " +
+			String getFlightPathFlights = "SELECT fpf.flightPathID, fpf.AirlineCode, fpf.DepartureTime, " +
+					"fpf.FlightNumber, fpf.Leg, fp.flightPathID, bf.userID, bf.flightPathID, fp.minimumPrice " +
+					"FROM FLIGHTPATHFLIGHT fpf " +
+					"JOIN FLIGHTPATH fp ON fpf.flightPathID = fp.flightPathID " +
+					"JOIN BOOKMARKEDFLIGHT bf ON bf.flightPathID = fp.flightPathID " +
+					"WHERE bf.userID = ? " +
+					"ORDER BY bf.flightPathID, fpf.DepartureTime DESC;";
+
+			Connection connection = ConfigBean.getConnection();
+			PreparedStatement statement = connection.prepareStatement(getFlightPathFlights);
+			statement.setString(1, userID);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				String airlineCodeToAdd = result.getString("AirlineCode");
+				String flightNumberToAdd = result.getString("FlightNumber");
+				Timestamp departureTimeToAdd = result.getTimestamp("DepartureTime");
+				int flightPathID = Integer.parseInt(result.getString("flightPathID"));
+				float minimumCost = result.getFloat("minimumPrice");
+				hm.put(flightPathID, minimumCost);
+				int leg = result.getInt("Leg");
+				FlightBean flightToAdd = new FlightBean(airlineCodeToAdd, flightNumberToAdd, departureTimeToAdd, leg);
+				BookmarkedFlightBean bfb = new BookmarkedFlightBean(flightToAdd, flightPathID);
+				flightsToSort.add(bfb);
+			}
+
+			/*String query = "SELECT F.AirlineCode, F.FlightNumber, F.DepartureCode, F.DestinationCode, " +
 					"F.DepartureTime, F.ArrivalTime, F.PlaneCode, A.AirlineName, " +
-					"0 AS leg, F.DepartureTime AS originalDepartureTime, fp.minimumPrice, fpf.* " +
+					"0 AS leg, F.DepartureTime AS originalDepartureTime, fp.minimumPrice, " +
+					"bf.flightPathID, fpf.DepartureTime, fpf.flightPathID, fpf. FlightNumber " +
 					"FROM Flights F " +
 					"JOIN FLIGHTPATHFLIGHT fpf ON F.AirlineCode = fpf.AirlineCode " +
 					"AND F.FlightNumber = fpf.FlightNumber " +
@@ -499,7 +525,7 @@ public class UserBean implements Serializable {
 					"JOIN FLIGHTPATH fp ON fpf.flightPathID = fp.flightPathID " +
 					"JOIN BOOKMARKEDFLIGHT bf ON bf.flightPathID = fp.flightPathID " +
 					"LEFT JOIN Airlines A ON A.AirlineCode = F.AirlineCode " +
-					"WHERE StopOverCode IS NULL AND bf.userID = ? " +
+					"WHERE StopOverCode IS NULL AND bf.userID = ? AND leg = fpf.Leg " +
 					"UNION " +
 					"SELECT " +
 					"F.AirlineCode, " +
@@ -512,7 +538,8 @@ public class UserBean implements Serializable {
 					"A.AirlineName, " +
 					"1 AS leg, " +
 					"F.DepartureTime AS originalDepartureTime, " +
-					"fp.minimumPrice, fpf.* " +
+					"fp.minimumPrice, " +
+					"bf.flightPathID, fpf.DepartureTime, fpf.flightPathID, fpf.FlightNumber " +
 					"FROM Flights F " +
 					"JOIN FLIGHTPATHFLIGHT fpf ON F.AirlineCode = fpf.AirlineCode " +
 					"AND F.FlightNumber = fpf.FlightNumber " +
@@ -520,7 +547,7 @@ public class UserBean implements Serializable {
 					"JOIN FLIGHTPATH fp ON fpf.flightPathID = fp.flightPathID " +
 					"JOIN BOOKMARKEDFLIGHT bf ON bf.flightPathID = fp.flightPathID " +
 					"LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
-					"WHERE StopOverCode IS NOT NULL AND bf.userID = ? " +
+					"WHERE StopOverCode IS NOT NULL AND bf.userID = ? AND leg = fpf.Leg " +
 					"UNION " +
 					"SELECT " +
 					"F.AirlineCode, " +
@@ -533,7 +560,7 @@ public class UserBean implements Serializable {
 					"A.AirlineName, " +
 					"2 AS leg, " +
 					"F.DepartureTime AS originalDepartureTime, " +
-					"fp.minimumPrice, fpf.* " +
+					"fp.minimumPrice, bf.flightPathID, fpf.DepartureTime, fpf.flightPathID, fpf. FlightNumber " +
 					"FROM Flights F " +
 					"JOIN FLIGHTPATHFLIGHT fpf ON F.AirlineCode = fpf.AirlineCode " +
 					"AND F.FlightNumber = fpf.FlightNumber " +
@@ -541,8 +568,8 @@ public class UserBean implements Serializable {
 					"JOIN FLIGHTPATH fp ON fpf.flightPathID = fp.flightPathID " +
 					"JOIN BOOKMARKEDFLIGHT bf ON bf.flightPathID = fp.flightPathID " +
 					"LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
-					"WHERE StopOverCode IS NOT NULL AND bf.userID = ? " +
-					"ORDER BY bf.flightPathID, fpf.DepartureTime DESC;";
+					"WHERE StopOverCode IS NOT NULL AND bf.userID = ? AND leg = fpf.Leg " +
+					"ORDER BY bf.flightPathID, F.DepartureTime DESC;";
 
 			Connection connection = ConfigBean.getConnection();
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -552,31 +579,34 @@ public class UserBean implements Serializable {
 			ResultSet result = statement.executeQuery();
 
 			while (result.next()) {
-				String aCode = result.getString(1);
-				String flightCode = result.getString(2);
-				String departureCode = result.getString(3);
-				String destinationCode = result.getString(4);
-				Timestamp departTime = result.getTimestamp(5);
-				Timestamp arrivalTime = result.getTimestamp(6);
-				String plane = result.getString(7);
-				String airlineName = result.getString(8);
-				int leg = result.getInt(9);
-				Timestamp originalDepartTime = result.getTimestamp(10);
-				float minimumCost = result.getFloat(11);
-				int flightPathID = Integer.parseInt(result.getString("flightPathID"));
-				hm.put(flightPathID, minimumCost);
-				DestinationBean rDeparture = new DestinationBean(departureCode);
-				DestinationBean rDestination = new DestinationBean(destinationCode);
-				FlightBean previous = null;
-				FlightBean temp = new FlightBean(aCode, airlineName, departTime, arrivalTime, flightCode, plane, rDeparture,
-						rDestination, previous, leg, originalDepartTime);
-				temp.getAvailabilities(1); //TODO: find a better way to do this?
-				temp.setMinCost(minimumCost);
-				BookmarkedFlightBean bookmarkedTemp = new BookmarkedFlightBean(temp, flightPathID);
+				int legToStore = result.getInt("Leg");
+				if (result.getInt(9) == legToStore){
+					String aCode = result.getString(1);
+					String flightCode = result.getString(2);
+					String departureCode = result.getString(3);
+					String destinationCode = result.getString(4);
+					Timestamp departTime = result.getTimestamp(5);
+					Timestamp arrivalTime = result.getTimestamp(6);
+					String plane = result.getString(7);
+					String airlineName = result.getString(8);
+					int leg = result.getInt(9);
+					Timestamp originalDepartTime = result.getTimestamp(10);
+					float minimumCost = result.getFloat(11);
+					int flightPathID = Integer.parseInt(result.getString("flightPathID"));
+					hm.put(flightPathID, minimumCost);
+					DestinationBean rDeparture = new DestinationBean(departureCode);
+					DestinationBean rDestination = new DestinationBean(destinationCode);
+					FlightBean previous = null;
+					FlightBean temp = new FlightBean(aCode, airlineName, departTime, arrivalTime, flightCode, plane, rDeparture,
+							rDestination, previous, leg, originalDepartTime);
+					temp.getAvailabilities(1); //TODO: find a better way to do this?
+					temp.setMinCost(minimumCost);
+					BookmarkedFlightBean bookmarkedTemp = new BookmarkedFlightBean(temp, flightPathID);
 
-				flightsToSort.add(bookmarkedTemp);
+					flightsToSort.add(bookmarkedTemp);
+				}
+
 			}
-
 			//TODO: get rid of this is successfully recode
 //			while (result.next()) {
 //				String airlineCodeToAdd = result.getString("AirlineCode");
@@ -591,7 +621,7 @@ public class UserBean implements Serializable {
 //				BookmarkedFlightBean bfb = new BookmarkedFlightBean(flightToAdd, flightPathID);
 //				flightsToSort.add(bfb);
 //			}
-
+*/
 			result.close();
 			statement.close();
 			connection.close();
@@ -607,18 +637,35 @@ public class UserBean implements Serializable {
 			int currentFlightPathID = flightsToSort.peek().getId();
 
 			if (currentFlightPathID != tempFlightPathID) {
-				Stack<FlightBean> flights = new Stack<FlightBean>();
+				LinkedList<FlightBean> flights = new LinkedList<FlightBean>();
+				Queue<FlightBean> flightsThatAreInFlightList = new LinkedList<>();
 				while (!flightsToSort.isEmpty() && flightsToSort.peek().getId() == currentFlightPathID) {
+					flightsThatAreInFlightList.add(flightsToSort.peek().getFlight());
 					FlightBean flightToAddToPath = flightsToSort.poll().getFlight();
+					if(flightsThatAreInFlightList.size() > 1){
+						flightToAddToPath.setPreviousFlight(flightsThatAreInFlightList.poll());
+					}
 					flights.add(flightToAddToPath);
 				}
-				FlightPathBean fpb = new FlightPathBean(flights);
+				FlightPathBean fpb = getFlightPathFrom(flights.peekLast());
+				//FlightPathBean fpb = new FlightPathBean(flights);
 				float minimumPrice = hm.get(currentFlightPathID);
+
 				fpb.setMinPrice(minimumPrice);
 				this.addBookmarkedFlight(fpb);
 				tempFlightPathID = currentFlightPathID; // update tempFlightPathID
 			}
 		}
+	}
+
+	public FlightPathBean getFlightPathFrom(FlightBean destinationFlight) {
+		FlightBean temp = destinationFlight;
+		Stack<FlightBean> flightStack = new Stack<>();
+		while (temp != null) {
+			flightStack.add(temp);
+			temp = temp.getPreviousFlight();
+		}
+		return new FlightPathBean(flightStack);
 	}
 
 	public void loadFavouritedDestinations(String userID) {

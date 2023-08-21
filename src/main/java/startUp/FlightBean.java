@@ -84,6 +84,18 @@ public class FlightBean implements Serializable {
         this.departure = infoToImport.getDeparture();
     }
 
+    public FlightBean(String airline, String flightName, Timestamp flightTime, int leg) {
+        FlightBean infoToImport = getFlightDetails(airline, flightName, flightTime, leg);
+        this.airline = infoToImport.getAirline();
+        this.flightName = infoToImport.getFlightName();
+        this.flightDepartureTime = infoToImport.getFlightTime();
+        this.airlineName = infoToImport.getAirlineName();
+        this.planeType = infoToImport.getPlaneType();
+        this.destination = infoToImport.getDestination();
+        this.departure = infoToImport.getDeparture();
+        this.seatAvailability = new LinkedList<>();
+    }
+
     // getters and setters
     public String getAirline() {
         return airline;
@@ -197,6 +209,93 @@ public class FlightBean implements Serializable {
 
     public void setLeg(int leg) {
         this.leg = leg;
+    }
+
+    public static FlightBean getFlightDetails(String airlineCode, String flightName, Timestamp flightDepartureTime, int leg){
+        FlightBean flight = null;
+        String query = "";
+        try {
+            if(leg == 0){
+                query = "SELECT F.AirlineCode, F.FlightNumber, F.DepartureCode, F.DestinationCode, " +
+                        "F.DepartureTime, F.ArrivalTime, F.PlaneCode, A.AirlineName, " +
+                        "0 AS leg, F.DepartureTime AS originalDepartureTime, fp.minimumPrice, " +
+                        "bf.flightPathID, fpf.DepartureTime, fpf.flightPathID, fpf. FlightNumber " +
+                        "FROM Flights F " +
+                        "JOIN FLIGHTPATHFLIGHT fpf ON F.AirlineCode = fpf.AirlineCode " +
+                        "AND F.FlightNumber = fpf.FlightNumber " +
+                        "AND F.DepartureTime = fpf.DepartureTime " +
+                        "JOIN FLIGHTPATH fp ON fpf.flightPathID = fp.flightPathID " +
+                        "JOIN BOOKMARKEDFLIGHT bf ON bf.flightPathID = fp.flightPathID " +
+                        "LEFT JOIN Airlines A ON A.AirlineCode = F.AirlineCode " +
+                        "WHERE StopOverCode IS NULL " +
+                        "AND F.AirlineCode = ? AND F.FlightNumber = ? AND originalDepartureTime = ?;";
+            } else if(leg == 1){
+                query = "SELECT " +
+                        "F.AirlineCode, " +
+                        "F.FlightNumber, " +
+                        "F.DepartureCode, " +
+                        "F.StopOverCode AS DestinationCode, " +
+                        "F.DepartureTime, " +
+                        "F.ArrivalTimeStopOver AS ArrivalTime, " +
+                        "F.PlaneCode, " +
+                        "A.AirlineName, " +
+                        "1 AS leg, " +
+                        "F.DepartureTime AS originalDepartureTime " +
+                        "FROM Flights F " +
+                        "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                        "WHERE StopOverCode IS NOT NULL  " +
+                        "AND F.AirlineCode = ? AND F.FlightNumber = ? AND originalDepartureTime = ?;";
+            } else if(leg == 2){
+                query = "SELECT " +
+                        "F.AirlineCode, " +
+                        "F.FlightNumber, " +
+                        "F.StopOverCode AS DepartureCode, " +
+                        "F.DestinationCode, " +
+                        "F.DepartureTimeStopOver AS DepartureTime, " +
+                        "F.ArrivalTime, " +
+                        "F.PlaneCode, " +
+                        "A.AirlineName, " +
+                        "2 AS leg, " +
+                        "F.DepartureTime AS originalDepartureTime " +
+                        "FROM Flights F " +
+                        "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                        "WHERE StopOverCode IS NOT NULL  " +
+                        "AND F.AirlineCode = ? AND F.FlightNumber = ? AND DepartureTime = ?;";
+            }
+
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, airlineCode);
+            statement.setString(2, flightName);
+            statement.setTimestamp(3, flightDepartureTime);
+//            statement.setInt(4, leg);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String aCode = result.getString("AirlineCode");
+                String flightCode = result.getString("FlightNumber");
+                String plane = result.getString("PlaneCode");
+                Timestamp departTime = result.getTimestamp("originalDepartureTime");
+                String departureCode = result.getString("DepartureCode");
+                String destinationCode = result.getString("DestinationCode");
+                String airlineName = result.getString("AirlineName");
+                Timestamp originalDepartureTime = result.getTimestamp("originalDepartureTime");
+
+                DestinationBean rDeparture = new DestinationBean(departureCode);
+                DestinationBean rDestination = new DestinationBean(destinationCode);
+
+                flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture, rDestination);
+                flight.setOriginalFlightDepartureTime(originalDepartureTime);
+                flight.getAvailabilities(1);
+            }
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(Arrays.toString(e.getStackTrace()));
+        }
+        return flight;
     }
 
     // get flight
