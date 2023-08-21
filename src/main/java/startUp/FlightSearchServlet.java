@@ -190,8 +190,8 @@ public class FlightSearchServlet extends HttpServlet {
             search.searchFlights(10, 5);
             session.setAttribute("searchResults", search);
             //session.setAttribute("flightResults", search);
-            session.setAttribute("numAdultsForReturn", adults); //save values on session for return search
-            session.setAttribute("numChildrenForReturn", children); //save values on session for return search
+            session.setAttribute("numAdults", adults); //save values on session for return search
+            session.setAttribute("numChildren", children); //save values on session for return search
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/simpleSearchResults.jsp");
             requestDispatcher.forward(request, response);
@@ -276,8 +276,8 @@ public class FlightSearchServlet extends HttpServlet {
             time += " 00:00:00";
             Timestamp departureTime = Timestamp.valueOf(time);
 
-            int adults = (Integer) session.getAttribute("numAdultsForReturn");
-            int children = (Integer)  session.getAttribute("numChildrenForReturn");
+            int adults = (Integer) session.getAttribute("numAdults");
+            int children = (Integer)  session.getAttribute("numChildren");
             if (adults < 0 || children < 0 || (adults == 0 && children == 0)) {
                 throw new IOException("Invalid input: Invalid combination of adult and children passengers.");
             }

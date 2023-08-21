@@ -1,3 +1,6 @@
+<% float price = (float) session.getAttribute("price"); %>
+<% String priceString = String.valueOf(price); %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,6 +9,7 @@
     <meta charset="UTF-8">
     <title>Booking Details</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <script src="${pageContext.request.contextPath}/scripts/script.js"></script>
 </head>
 
 <body>
@@ -31,16 +35,11 @@
         <br />
         <fieldset class="filled">
             <h3>Payment Details:</h3>
-            <form method="POST" action="createBooking">
+            <form name="paymentForm" action="createBooking" onsubmit="return validateCardForm()" method="POST">
                 <input type="hidden" name="payment" value="true">
-                <label for="cardNumber">Card Number:</label>
-                <input type="text" id="cardNumber" />
-                <label for="expiry">Expiry Date:</label>
-                <input type="text" id="expiry" />
-                <br />
-                <label for="security">Security Number:</label>
-                <input type="text" id="security" />
-                <br />
+                Card Number: <input type="text" name="cardNumber" required="true">
+                Expiry Date (MM/YY): <input type="text" name="expiry" required="true">
+                Security Number: <input type="text" name="security" required="true">
                 <button type="submit" class="button">Submit</button>
             </form>
         </fieldset>
