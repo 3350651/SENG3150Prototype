@@ -102,6 +102,109 @@ function validateCardForm(){
 
 }
 
+function toggleVisibility(id, event) {
+    event.preventDefault();
+    closeTicketSelection(id);
+
+    var x = document.getElementById(id);
+     if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+
+function test() {
+    alert("test");
+}
+
+function toggleVisibility2(id, type, button, event) {
+    event.preventDefault();
+    var headerID = id + 'classDiv';
+    var header = document.getElementById(headerID);
+    var btns = header.getElementsByClassName("classButton");
+    for (var i = 0; i < btns.length; i++) {
+        var current = document.getElementsByClassName("classButtonActive");
+        if (btns[i].classList.contains("classButtonActive")) {
+            btns[i].className = btns[i].className.replace(" classButtonActive", "");
+        }
+    }
+    button.className += " classButtonActive";
+
+    closeTicketSelection(id);
+
+    var newID = id + '' + type;
+    var x = document.getElementById(newID);
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+
+function closeTicketSelection(id) {
+    varEco = id + 'ECO';
+    varEcoDiv = document.getElementById(varEco)
+    varEcoDiv.style.display = "none";
+
+    varPme = id + 'PME';
+    varPmeDiv = document.getElementById(varPme)
+    varPmeDiv.style.display = "none";
+
+    varBus = id + 'BUS';
+    varBusDiv = document.getElementById(varBus)
+    varBusDiv.style.display = "none";
+
+    varFir = id + 'FIR';
+    varFirDiv = document.getElementById(varFir)
+    varFirDiv.style.display = "none";
+}
+
+function selectPrice(passenger, isReturn, id, price, classCode, ticketType, event) {
+    event.preventDefault();
+
+    var spanID = 'priceFor-' +isReturn + '-' + id;
+    var spanElem = document.getElementById(spanID);
+    spanElem.innerHTML = 'SELECTED PRICE: ' + price;
+
+    var inputPrice = passenger + '-' + isReturn + '-price-' + id;
+    document.forms['passengerDetails'][inputPrice].value = price;
+
+    var total = 0;
+
+    var className = passenger + 'falsetotal';
+    var prices = document.getElementsByClassName(className);
+
+    for (var i = 0; i < prices.length; i++) {
+        if(!isNaN(parseFloat(prices[i].value))) {
+            total = total + parseFloat(prices[i].value);
+        }
+    }
+
+    var className = passenger + 'truetotal';
+    var prices = document.getElementsByClassName(className);
+    for (var i = 0; i < prices.length; i++) {
+        if(!isNaN(parseFloat(prices[i].value))) {
+            total = total + parseFloat(prices[i].value);
+        }
+    }
+
+    var grandTotal = passenger + 'total';
+    var totalSpan = document.getElementById(grandTotal);
+    totalSpan.innerHTML = total;
+
+
+    var inputClassCode = passenger + '-' + isReturn + '-class-' + id;
+    document.forms['passengerDetails'][inputClassCode].value = classCode;
+
+    var inputTicketType = passenger + '-' + isReturn + '-type-' + id;
+    document.forms['passengerDetails'][inputTicketType].value = ticketType;
+
+    document.forms['passengerDetails'][grandTotal].value = total;
+
+    toggleVisibility(id, event);
+}
+
 function validateRandomDestForm(){
     if(document.forms["randomDestinationForm"]["departureLocation"].value === ""){
         alert("Please select a departure destination.");

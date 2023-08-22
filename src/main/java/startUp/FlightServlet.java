@@ -62,8 +62,10 @@ public class FlightServlet extends HttpServlet {
 
             flights.get(flightIndex).setSelectedPrice(selectedPrice);
             System.out.println("updated");
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
-            requestDispatcher.forward(req, resp);
+
+            resp.sendRedirect("createBooking");
+//            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/PassengerDetailsPage.jsp");
+//            requestDispatcher.forward(req, resp);
         }
     }
 }

@@ -16,64 +16,9 @@
 
     <head>
         <meta charset="UTF-8">
-        <title>startUp.FlightDetailsPage</title>
+        <title>Flight Details</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-        <script>
-            function toggleVisibility(id) {
-                closeTicketSelection(id);
-
-                var x = document.getElementById(id);
-                 if (x.style.display === "none") {
-                    x.style.display = "block";
-                } else {
-                    x.style.display = "none";
-                }
-            }
-
-
-
-
-            function toggleVisibility2(id, type, button) {
-                var headerID = id + 'classDiv';
-                var header = document.getElementById(headerID);
-                var btns = header.getElementsByClassName("classButton");
-                for (var i = 0; i < btns.length; i++) {
-                    var current = document.getElementsByClassName("classButtonActive");
-                    if (btns[i].classList.contains("classButtonActive")) {
-                        btns[i].className = btns[i].className.replace(" classButtonActive", "");
-                    }
-                }
-                button.className += " classButtonActive";
-
-                closeTicketSelection(id);
-
-                var newID = id + '' + type;
-                var x = document.getElementById(newID);
-                if (x.style.display === "none") {
-                    x.style.display = "block";
-                } else {
-                    x.style.display = "none";
-                }
-            }
-
-            function closeTicketSelection(id) {
-                varEco = id + 'ECO';
-                varEcoDiv = document.getElementById(varEco)
-                varEcoDiv.style.display = "none";
-
-                varPme = id + 'PME';
-                varPmeDiv = document.getElementById(varPme)
-                varPmeDiv.style.display = "none";
-
-                varBus = id + 'BUS';
-                varBusDiv = document.getElementById(varBus)
-                varBusDiv.style.display = "none";
-
-                varFir = id + 'FIR';
-                varFirDiv = document.getElementById(varFir)
-                varFirDiv.style.display = "none";
-            }
-        </script>
+        <script src="${pageContext.request.contextPath}/scripts/script.js"></script>
     </head>
 
     <body>
@@ -500,10 +445,8 @@
                     <br />
                     <form action="createBooking" method="POST">
                         <input type="hidden" name="details" value="true">
-                        <label for="numPassengers">Passengers: </label>
-                        <input type="number" name="numPassengers" id="numPassengers">
                         <div class="recurringBookingInput">
-                            <label for="check">Recurring Booking: </label>
+                            <label for="recurCheck">Recurring Booking: </label>
                             <input id="recurCheck" name="recurCheck" type="checkbox">
                             <div class="recurringWeeklyOrBiWeekly" name="recurringWeeklyOrBiWeekly"
                                 id="recurringWeeklyOrBiWeekly">
@@ -522,6 +465,8 @@
                             Continue One Way
                         </button>
                         <br />
+                    </form>
+                </fieldset>
             <% } %>
             <% if (viewReturnFlightSearchResults) { %>
                 <div class="centeringtext"> <h1>Search Results</h1> </div>
@@ -929,6 +874,40 @@
                     </tr>
                     </table>
                 <% } %>
+            <fieldset class="background">
+                <form action="flightSearch" method="POST">
+                    <label for="returnDate">Return Date:</label>
+                    <input type="date" id="returnDate" name="returnDate" value="<%= flightPath.getLastFlight().getTomorrow() %>" min="<%= flightPath.getLastFlight().getTomorrow() %>">
+                    <input type="hidden" name="departureLocation" value="<%= flightPath.getLastFlight().getDestination().getDestinationCode() %>">
+                    <input type="hidden" name="arrivalLocation" value="<%= flightPath.getInitialFlight().getDeparture().getDestinationCode() %>">
+                    <br />
+                    <button name="searchResults" type="submit" value="simpleReturnSearchResults" class="search">Search</button>
+                </form>
+                <br />
+                <form action="createBooking" method="POST">
+                    <input type="hidden" name="details" value="true">
+                    <div class="recurringBookingInput">
+                        <label for="check">Recurring Booking: </label>
+                        <input id="recurCheck" name="recurCheck" type="checkbox">
+                        <div class="recurringWeeklyOrBiWeekly" name="recurringWeeklyOrBiWeekly"
+                             id="recurringWeeklyOrBiWeekly">
+                            <label>
+                                <input type="radio" name="frequency" value="weekly">
+                                Weekly
+                            </label>
+                            <label>
+                                <input type="radio" name="frequency" value="biweekly">
+                                Biweekly
+                            </label>
+                        </div>
+                    </div>
+
+                    <button class="button" type="submit" name="hasReturn" value="hasReturn">
+                        Continue Booking
+                    </button>
+                    <br />
+                </form>
+            </fieldset>
             <% } %>
 
 
@@ -963,8 +942,8 @@
                                                     }%>
                                                 <%}%>
                         -->
-                    </form>
-                </fieldset>
+
+
                 <%}%>
         </main>
     </body>

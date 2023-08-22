@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class PassengerBean implements Serializable {
@@ -22,8 +23,8 @@ public class PassengerBean implements Serializable {
     private String phoneNumber;
     private Timestamp dateOfBirth;
     private String bookingId;
-    private TicketBean departureTicket;
-    private TicketBean returnTicket;
+    private LinkedList<TicketBean> departureTickets;
+    private LinkedList<TicketBean> returnTickets;
 
     //constructor
     public PassengerBean(String lastName, String givenNames, String email, String phoneNumber, Timestamp dateOfBirth, String bookingId){
@@ -96,20 +97,20 @@ public class PassengerBean implements Serializable {
         this.bookingId = bookingId;
     }
 
-    public TicketBean getDepartureTicket() {
-        return departureTicket;
+    public LinkedList<TicketBean> getDepartureTickets() {
+        return departureTickets;
     }
 
-    public void setDepartureTicket(TicketBean departureTicket) {
-        this.departureTicket = departureTicket;
+    public void setDepartureTickets(LinkedList<TicketBean> departureTickets) {
+        this.departureTickets = departureTickets;
     }
 
-    public TicketBean getReturnTicket() {
-        return returnTicket;
+    public LinkedList<TicketBean> getReturnTickets() {
+        return returnTickets;
     }
 
-    public void setReturnTicket(TicketBean returnTicket) {
-        this.returnTicket = returnTicket;
+    public void setReturnTickets(LinkedList<TicketBean> returnTickets) {
+        this.returnTickets = returnTickets;
     }
 
     //create passenger in database

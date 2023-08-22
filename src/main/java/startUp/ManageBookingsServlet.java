@@ -28,8 +28,8 @@ public class ManageBookingsServlet extends HttpServlet {
 
         
         if (user != null) {
-            LinkedList<BookingBean> bookings = BookingBean.getUserBookings(user.getUserID());   //get all user bookings
-            session.setAttribute("userBookings", bookings);
+            //LinkedList<BookingBean> bookings = BookingBean.getUserBookings(user.getUserID());   //get all user bookings
+            //session.setAttribute("userBookings", bookings);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/ViewBookingsPage.jsp");
             requestDispatcher.forward(req, resp);
         } else {
