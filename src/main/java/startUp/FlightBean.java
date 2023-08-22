@@ -328,6 +328,7 @@ public class FlightBean implements Serializable {
     // TODO: get min cost
 
     public void getAvailabilities(int passengers) {
+        System.out.println("airline " + this.airline + "flightname " + this.flightName  + "departtime " + this.originalFlightDepartureTime + "leg" + this.leg + "pass " + passengers);
         seatAvailability = AvailabilityBean.getAvailability(this.airline, this.flightName, this.originalFlightDepartureTime, this.leg, passengers);
     }
 

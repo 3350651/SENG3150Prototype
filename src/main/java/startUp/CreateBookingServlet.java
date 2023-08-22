@@ -198,9 +198,8 @@ public class CreateBookingServlet extends HttpServlet {
                         passengerBean.setReturnTicket(returnTicket);
                         passengerBeans.add(passengerBean);
                         bookings.get(k).setPassengers(passengerBeans);
-                        int test = 1;
-                        System.out.println("Ticket " + test + "made");
-                        test = test + 1;
+                        bookings.get(k).setTotalAmount(price);
+
                     }
                 }
             } else {
@@ -266,6 +265,7 @@ public class CreateBookingServlet extends HttpServlet {
                     passengerBean.setReturnTicket(returnTicket);
                     passengerBeans.add(passengerBean);
                     bookings.get(0).setPassengers(passengerBeans);
+                    bookings.get(0).setTotalAmount(price);
                 }
             }
 
