@@ -276,9 +276,8 @@ public class FlightSearchServlet extends HttpServlet {
             time += " 00:00:00";
             Timestamp departureTime = Timestamp.valueOf(time);
 
-            int adults = (Integer) session.getAttribute("numAdults");
-            int children = (Integer)  session.getAttribute("numChildren");
-            if (adults < 0 || children < 0 || (adults == 0 && children == 0)) {
+            int numReturnPassengers = Integer.parseInt(request.getParameter("numReturnPassengers"));
+            if (numReturnPassengers < 0 || numReturnPassengers < 0 || (numReturnPassengers == 0 && numReturnPassengers == 0)) {
                 throw new IOException("Invalid input: Invalid combination of adult and children passengers.");
             }
             if (destination == null) {
@@ -294,14 +293,13 @@ public class FlightSearchServlet extends HttpServlet {
             System.out.println(departure);
             System.out.println(destination);
             System.out.println("FlightSearchServlet.simpleReturnSearchResults.departureTime " + departureTime);
-            System.out.println("adults: " + adults);
-            System.out.println("children: " + children);
 
-            SearchBean search = new SearchBean(departureTime, destination, departure, null, true, 0, adults, children);
+            SearchBean search = new SearchBean(departureTime, destination, departure, null, true, 0, numReturnPassengers, 0);
             search.searchFlights(10, 5);
 
             LinkedList<FlightPathBean> searchResults = search.getResults();
 
+            session.setAttribute("numReturnPassengers", numReturnPassengers);
             session.setAttribute("returnFlightResults", search);
             session.setAttribute("viewReturnFlightSearchResults", Boolean.TRUE);
             session.setAttribute("viewReturnFlightDetails", Boolean.FALSE);

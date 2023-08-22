@@ -180,7 +180,9 @@
                 <fieldset class="background">
                     <form action="flightSearch" method="POST">
                         <label for="returnDate">Return Date:</label>
-                        <input type="date" id="returnDate" name="returnDate" value="<%= flightPath.getLastFlight().getTomorrow() %>" min="<%= flightPath.getLastFlight().getTomorrow() %>">
+                        <input type="date" id="returnDate" name="returnDate" value="<%= flightPath.getLastFlight().getTomorrow() %>" min="<%= flightPath.getLastFlight().getTomorrow() %>"><br /><br />
+                        <label for="numReturnPassengers"># Passengers</label><br>
+                        <input type="number" id="numReturnPassengers" size="2" name="numReturnPassengers" value="1">
                         <input type="hidden" name="departureLocation" value="<%= flightPath.getLastFlight().getDestination().getDestinationCode() %>">
                         <input type="hidden" name="arrivalLocation" value="<%= flightPath.getInitialFlight().getDeparture().getDestinationCode() %>">
                         <br />
@@ -362,15 +364,8 @@
                     </tr>
                     </table>
                 <% } %>
+            <br />
             <fieldset class="background">
-                <form action="flightSearch" method="POST">
-                    <label for="returnDate">Return Date:</label>
-                    <input type="date" id="returnDate" name="returnDate" value="<%= flightPath.getLastFlight().getTomorrow() %>" min="<%= flightPath.getLastFlight().getTomorrow() %>">
-                    <input type="hidden" name="departureLocation" value="<%= flightPath.getLastFlight().getDestination().getDestinationCode() %>">
-                    <input type="hidden" name="arrivalLocation" value="<%= flightPath.getInitialFlight().getDeparture().getDestinationCode() %>">
-                    <br />
-                    <button name="searchResults" type="submit" value="simpleReturnSearchResults" class="search">Search</button>
-                </form>
                 <br />
                 <form action="createBooking" method="POST">
                     <input type="hidden" name="details" value="true">

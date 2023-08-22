@@ -55,6 +55,7 @@ public class CreateBookingServlet extends HttpServlet {
 
             //checking for availibilities
             int passengers = (Integer) session.getAttribute("numAdults") + (Integer) session.getAttribute("numChildren");
+            int returnPassengers = (Integer) session.getAttribute("numReturnPassengers");
             session.setAttribute("passengers", passengers);
 
             session.setAttribute("isAvail", true);
@@ -76,6 +77,7 @@ public class CreateBookingServlet extends HttpServlet {
             PassengerBean passengerBean = null;
             LinkedList<PassengerBean> passengerBeans = new LinkedList<>();
             int numPassengers = (Integer)  session.getAttribute("passengers");
+            int numReturnPassengers = (Integer)  session.getAttribute("numReturnPassengers");
 
             LinkedList<FlightBean> flightList = booking.getDepartureFlights();
             String isReturn = "false";
@@ -89,7 +91,7 @@ public class CreateBookingServlet extends HttpServlet {
                     String ticketClass = req.getParameter(passengerIndex + "-" + isReturn + "-class-" + flightIndex);
                     String ticketType = req.getParameter(passengerIndex + "-" + isReturn + "-type-" + flightIndex);
                     String price = req.getParameter(passengerIndex + "-" + isReturn + "-price-" + flightIndex);
-                    String total = req.getParameter(passengerIndex + "total");
+                    String total = req.getParameter(isReturn + "total");
 
                     passengerBean = new PassengerBean(lastName, givenNames, email, mobile, dateOfBirth, booking.getBookingId());
 //                    passengerBean.addPassenger();
@@ -114,7 +116,7 @@ public class CreateBookingServlet extends HttpServlet {
                 LinkedList<FlightBean> returnFlightList = booking.getReturnFlights();
                 isReturn = "true";
                 for (int flightIndex = 0 ; flightIndex < returnFlightList.size() ; flightIndex++) {
-                    for (int passengerIndex = 1; passengerIndex <= numPassengers; passengerIndex++ ) {
+                    for (int passengerIndex = 1; passengerIndex <= numReturnPassengers; passengerIndex++ ) {
                         String lastName = req.getParameter("lName" + passengerIndex);
                         String givenNames = req.getParameter("title" + passengerIndex) + " " + req.getParameter("fName" + passengerIndex);
                         String email = req.getParameter("email" + passengerIndex);
@@ -123,7 +125,7 @@ public class CreateBookingServlet extends HttpServlet {
                         String ticketClass = req.getParameter(passengerIndex + "-" + isReturn + "-class-" + flightIndex);
                         String ticketType = req.getParameter(passengerIndex + "-" + isReturn + "-type-" + flightIndex);
                         String price = req.getParameter(passengerIndex + "-" + isReturn + "-price-" + flightIndex);
-                        String total = req.getParameter(passengerIndex + "total");
+                        String reTurnTotal = req.getParameter(isReturn + "total");
 
                         passengerBean = new PassengerBean(lastName, givenNames, email, mobile, dateOfBirth, booking.getBookingId());
 //                        passengerBean.addPassenger();
@@ -133,7 +135,7 @@ public class CreateBookingServlet extends HttpServlet {
                         System.out.println("ticketClass: " + ticketClass);
                         System.out.println("ticketType: " + ticketType);
                         System.out.println("price: " + price);
-                        System.out.println("total: " + total);
+                        System.out.println("reTurnTotal: " + reTurnTotal);
 
 
                         TicketBean returnTicket = new TicketBean(booking.getBookingId(), passengerBean.getPassengerId(),

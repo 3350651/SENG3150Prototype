@@ -168,8 +168,9 @@ function selectPrice(passenger, isReturn, id, price, classCode, ticketType, even
     document.forms['passengerDetails'][inputPrice].value = price;
 
     var total = 0;
+    var returnTotal = 0;
 
-    var className = passenger + 'falsetotal';
+    var className = 'falsetotal';
     var prices = document.getElementsByClassName(className);
 
     for (var i = 0; i < prices.length; i++) {
@@ -178,18 +179,21 @@ function selectPrice(passenger, isReturn, id, price, classCode, ticketType, even
         }
     }
 
-    var className = passenger + 'truetotal';
-    var prices = document.getElementsByClassName(className);
+    var classNameReturn = 'truetotal';
+    var prices = document.getElementsByClassName(classNameReturn);
     for (var i = 0; i < prices.length; i++) {
         if(!isNaN(parseFloat(prices[i].value))) {
-            total = total + parseFloat(prices[i].value);
+            returnTotal = returnTotal + parseFloat(prices[i].value);
         }
     }
 
-    var grandTotal = passenger + 'total';
+    var grandTotal = 'falsetotal';
     var totalSpan = document.getElementById(grandTotal);
     totalSpan.innerHTML = total;
 
+    var grandReturnTotal = 'truetotal';
+    var returnTotalSpan = document.getElementById(grandReturnTotal);
+    returnTotalSpan.innerHTML = returnTotal;
 
     var inputClassCode = passenger + '-' + isReturn + '-class-' + id;
     document.forms['passengerDetails'][inputClassCode].value = classCode;
@@ -198,6 +202,7 @@ function selectPrice(passenger, isReturn, id, price, classCode, ticketType, even
     document.forms['passengerDetails'][inputTicketType].value = ticketType;
 
     document.forms['passengerDetails'][grandTotal].value = total;
+    document.forms['passengerDetails'][grandReturnTotal].value = returnTotal;
 
     var newID = passenger + '-' + isReturn + '-' + id;
     toggleVisibility(newID, event);
