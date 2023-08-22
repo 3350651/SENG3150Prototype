@@ -55,8 +55,8 @@
 
             <h3>Passenger <%=i%></h3>
             <h3>Personal Details</h3>
-            <label for=<%="title" +i%>>Title: </label>
-            <select name=<%="title" +i%> id=<%="title"+i%> required="true">
+            <label for='<%="title" +i%>false'>Title: </label>
+            <select name='<%="title" +i%>false' id='<%="title" +i%>false' required="true">
                 <option value="">Please Select---</option>
                 <option value="Mr">Mr</option>
                 <option value="Mrs">Mrs</option>
@@ -64,24 +64,24 @@
                 <option value="">Prefer not to say</option>
             </select>
 
-            <label for=<%="fName" +i%>>Given Name(s): </label>
-            <input type="text" name=<%="fName" +i%> id=<%="fName"+i%> />
+            <label for='<%="fName" +i%>false'>Given Name(s): </label>
+            <input type="text" name='<%="fName" +i%>false' id='<%="fName" +i%>false' />
 
 
-            <label for=<%="lName" +i%>>Family Name: </label>
-            <input type="text" name=<%="lName" +i%> id=<%="lName"+i%> required="true"/>
+            <label for='<%="lName" +i%>false'>Family Name: </label>
+            <input type="text" name='<%="lName" +i%>false' id='<%="lName" +i%>false' required="true"/>
             <br />
 
-            <label for=<%="email" +i%>>Email: </label>
-            <input type="email" name=<%="email"+i%> id=<%="email"+i%> required="true"/>
+            <label for='<%="email" +i%>false'>Email: </label>
+            <input type="email" name='<%="email" +i%>false' id='<%="email" +i%>false' required="true"/>
             <br />
 
-            <label for=<%="mobile" +i%>>Mobile Number: </label>
-            <input type="text" name=<%="mobile" +i%> id=<%="mobile"+i%> required="true"/>
+            <label for='<%="mobile" +i%>false'>Mobile Number: </label>
+            <input type="text" name='<%="mobile" +i%>false' id='<%="mobile" +i%>false' required="true"/>
             <br />
 
-            <label for=<%="dob" +i%>>Date of Birth: </label>
-            <input type="date" name=<%="dob" +i%> id=<%="dob"+i%> />
+            <label for='<%="dob" +i%>false'>Date of Birth: </label>
+            <input type="date" name='<%="dob" +i%>false' id='<%="dob" +i%>false' />
             <br />
 
             <h3>Ticket Details</h3>
@@ -358,34 +358,34 @@
         <fieldset class="filled">
                 <h3>Passenger <%=i%></h3>
                 <h3>Personal Details</h3>
-                <label for=<%="title" +i%>>Title: </label>
-                <select name=<%="title" +i%> id=<%="title"+i%> required="true">
-                    <option value="">Please Select---</option>
-                    <option value="Mr">Mr</option>
-                    <option value="Mrs">Mrs</option>
-                    <option value="Ms">Ms</option>
-                    <option value="">Prefer not to say</option>
-                </select>
+            <label for='<%="title" +i%>true'>Title: </label>
+            <select name='<%="title" +i%>true' id='<%="title" +i%>true' required="true">
+                <option value="">Please Select---</option>
+                <option value="Mr">Mr</option>
+                <option value="Mrs">Mrs</option>
+                <option value="Ms">Ms</option>
+                <option value="">Prefer not to say</option>
+            </select>
 
-                <label for=<%="fName" +i%>>Given Name(s): </label>
-                <input type="text" name=<%="fName" +i%> id=<%="fName"+i%> />
+            <label for='<%="fName" +i%>true'>Given Name(s): </label>
+            <input type="text" name='<%="fName" +i%>true' id='<%="fName" +i%>true' />
 
 
-                <label for=<%="lName" +i%>>Family Name: </label>
-                <input type="text" name=<%="lName" +i%> id=<%="lName"+i%> required="true"/>
-                <br />
+            <label for='<%="lName" +i%>true'>Family Name: </label>
+            <input type="text" name='<%="lName" +i%>true' id='<%="lName" +i%>true' required="true"/>
+            <br />
 
-                <label for=<%="email" +i%>>Email: </label>
-                <input type="email" name=<%="email"+i%> id=<%="email"+i%> required="true"/>
-                <br />
+            <label for='<%="email" +i%>true'>Email: </label>
+            <input type="email" name='<%="email" +i%>true' id='<%="email" +i%>true' required="true"/>
+            <br />
 
-                <label for=<%="mobile" +i%>>Mobile Number: </label>
-                <input type="text" name=<%="mobile" +i%> id=<%="mobile"+i%> required="true"/>
-                <br />
+            <label for='<%="mobile" +i%>true'>Mobile Number: </label>
+            <input type="text" name='<%="mobile" +i%>true' id='<%="mobile" +i%>true' required="true"/>
+            <br />
 
-                <label for=<%="dob" +i%>>Date of Birth: </label>
-                <input type="date" name=<%="dob" +i%> id=<%="dob"+i%> />
-                <br />
+            <label for='<%="dob" +i%>true'>Date of Birth: </label>
+            <input type="date" name='<%="dob" +i%>true' id='<%="dob" +i%>true' />
+            <br />
                 <h3>Return Ticket Details</h3>
                     <% int k = 0; for (FlightBean flight : returnFlightList ) { %>
                 <!--TICKET SELECTION-->

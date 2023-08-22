@@ -83,11 +83,11 @@ public class CreateBookingServlet extends HttpServlet {
             String isReturn = "false";
             for (int flightIndex = 0 ; flightIndex < flightList.size() ; flightIndex++) {
                 for (int passengerIndex = 1; passengerIndex <= numPassengers; passengerIndex++ ) {
-                    String lastName = req.getParameter("lName" + passengerIndex);
-                    String givenNames = req.getParameter("title" + passengerIndex) + " " + req.getParameter("fName" + passengerIndex);
-                    String email = req.getParameter("email" + passengerIndex);
-                    String mobile = req.getParameter("mobile" + passengerIndex);
-                    Timestamp dateOfBirth = Timestamp.valueOf(req.getParameter("dob" + passengerIndex) + " 00:00:00");
+                    String lastName = req.getParameter("lName" + passengerIndex + isReturn);
+                    String givenNames = req.getParameter("title" + passengerIndex + isReturn) + " " + req.getParameter("fName" + passengerIndex + isReturn);
+                    String email = req.getParameter("email" + passengerIndex + isReturn);
+                    String mobile = req.getParameter("mobile" + passengerIndex + isReturn);
+                    Timestamp dateOfBirth = Timestamp.valueOf(req.getParameter("dob" + passengerIndex + isReturn) + " 00:00:00");
                     String ticketClass = req.getParameter(passengerIndex + "-" + isReturn + "-class-" + flightIndex);
                     String ticketType = req.getParameter(passengerIndex + "-" + isReturn + "-type-" + flightIndex);
                     String price = req.getParameter(passengerIndex + "-" + isReturn + "-price-" + flightIndex);
@@ -117,11 +117,11 @@ public class CreateBookingServlet extends HttpServlet {
                 isReturn = "true";
                 for (int flightIndex = 0 ; flightIndex < returnFlightList.size() ; flightIndex++) {
                     for (int passengerIndex = 1; passengerIndex <= numReturnPassengers; passengerIndex++ ) {
-                        String lastName = req.getParameter("lName" + passengerIndex);
-                        String givenNames = req.getParameter("title" + passengerIndex) + " " + req.getParameter("fName" + passengerIndex);
-                        String email = req.getParameter("email" + passengerIndex);
-                        String mobile = req.getParameter("mobile" + passengerIndex);
-                        Timestamp dateOfBirth = Timestamp.valueOf(req.getParameter("dob" + passengerIndex) + " 00:00:00");
+                        String lastName = req.getParameter("lName" + passengerIndex + isReturn);
+                        String givenNames = req.getParameter("title" + passengerIndex + isReturn) + " " + req.getParameter("fName" + passengerIndex + isReturn);
+                        String email = req.getParameter("email" + passengerIndex + isReturn);
+                        String mobile = req.getParameter("mobile" + passengerIndex + isReturn);
+                        Timestamp dateOfBirth = Timestamp.valueOf(req.getParameter("dob" + passengerIndex + isReturn) + " 00:00:00");
                         String ticketClass = req.getParameter(passengerIndex + "-" + isReturn + "-class-" + flightIndex);
                         String ticketType = req.getParameter(passengerIndex + "-" + isReturn + "-type-" + flightIndex);
                         String price = req.getParameter(passengerIndex + "-" + isReturn + "-price-" + flightIndex);
