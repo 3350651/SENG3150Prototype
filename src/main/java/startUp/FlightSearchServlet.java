@@ -301,7 +301,6 @@ public class FlightSearchServlet extends HttpServlet {
             search.searchFlights(10, 5);
 
             LinkedList<FlightPathBean> searchResults = search.getResults();
-            System.out.println(searchResults.size());
 
             session.setAttribute("returnFlightResults", search);
             session.setAttribute("viewReturnFlightSearchResults", Boolean.TRUE);

@@ -171,7 +171,6 @@ public class SearchBean implements Serializable {
         }
 
         do {
-            System.out.println(i++);
             //get all flights leaving within 24 hours of departure
             //add previous flight to each
             //add all to queue

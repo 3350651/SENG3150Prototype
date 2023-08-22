@@ -105,7 +105,6 @@ function validateCardForm(){
 function toggleVisibility(id, event) {
     event.preventDefault();
     closeTicketSelection(id);
-
     var x = document.getElementById(id);
      if (x.style.display === "none") {
         x.style.display = "block";
@@ -115,7 +114,6 @@ function toggleVisibility(id, event) {
 }
 
 function test() {
-    alert("test");
 }
 
 function toggleVisibility2(id, type, button, event) {
@@ -132,7 +130,6 @@ function toggleVisibility2(id, type, button, event) {
     button.className += " classButtonActive";
 
     closeTicketSelection(id);
-
     var newID = id + '' + type;
     var x = document.getElementById(newID);
     if (x.style.display === "none") {
@@ -163,7 +160,7 @@ function closeTicketSelection(id) {
 function selectPrice(passenger, isReturn, id, price, classCode, ticketType, event) {
     event.preventDefault();
 
-    var spanID = 'priceFor-' +isReturn + '-' + id;
+    var spanID = 'priceFor-' + passenger + '-' + isReturn + '-' + id;
     var spanElem = document.getElementById(spanID);
     spanElem.innerHTML = 'SELECTED PRICE: ' + price;
 
@@ -202,7 +199,8 @@ function selectPrice(passenger, isReturn, id, price, classCode, ticketType, even
 
     document.forms['passengerDetails'][grandTotal].value = total;
 
-    toggleVisibility(id, event);
+    var newID = passenger + '-' + isReturn + '-' + id;
+    toggleVisibility(newID, event);
 }
 
 function validateRandomDestForm(){

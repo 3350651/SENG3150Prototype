@@ -91,19 +91,19 @@ public class BookingBean implements Serializable {
         this.bookingUserId = bookingUserId;
     }
 
-    public LinkedList<FlightBean> getDepartureFlight() {
+    public LinkedList<FlightBean> getDepartureFlights() {
         return departureFlights;
     }
 
-    public void setDepartureFlight(LinkedList<FlightBean> departureFlight) {
+    public void setDepartureFlights(LinkedList<FlightBean> departureFlight) {
         this.departureFlights = departureFlight;
     }
 
-    public LinkedList<FlightBean> getReturnFlight() {
+    public LinkedList<FlightBean> getReturnFlights() {
         return returnFlights;
     }
 
-    public void setReturnFlight(LinkedList<FlightBean> returnFlight) {
+    public void setReturnFlights(LinkedList<FlightBean> returnFlight) {
         this.returnFlights = returnFlight;
     }
 

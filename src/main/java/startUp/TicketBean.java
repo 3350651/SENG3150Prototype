@@ -26,6 +26,8 @@ public class TicketBean implements Serializable {
     private String ticketType;
     private String ticketTypeName;
 
+    private String price;
+
 
     public TicketBean(String bookingId, String passengerId, String flightId, String airlineId, Timestamp flightTime, String ticketClass, String ticketType){
         this.bookingId = bookingId;
@@ -160,6 +162,16 @@ public class TicketBean implements Serializable {
     public void setTicketTypeName(String ticketTypeName) {
         this.ticketTypeName = ticketTypeName;
     }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+
 
     //create ticket in database
     public void addTicket(){
