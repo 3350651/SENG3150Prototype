@@ -12,7 +12,7 @@
 <% boolean avail = true;%>
 <% int passengers = (int) session.getAttribute("passengers"); %>
 <% int returnPassengers = (int) session.getAttribute("numReturnPassengers"); %>
-<% ArrayList<BookingBean> bookings = (ArrayList<BookingBean>) session.getAttribute("bookings"); %>
+<% LinkedList<BookingBean> bookings = (LinkedList<BookingBean>) session.getAttribute("bookings"); %>
 
 <!DOCTYPE html>
 <html lang="en">
