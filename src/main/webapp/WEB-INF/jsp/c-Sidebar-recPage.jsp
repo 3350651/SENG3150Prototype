@@ -28,6 +28,11 @@
     <button type="submit" class="button" name="gotoSimple"
             value="gotoSimple">Simple Search</button>
   </form>
+  <% if (user != null) { %>
+  <form name="bookingButton" action="manageBookings" method="GET">
+    <button type="submit" class="button" name="home" value="manageBookings">Manage Bookings</button>
+  </form>
+  <% } %>
   <%-- Bookmarked Flights --%>
   <% if (bookmarkedFlights.size() != 0) { %>
   <form name="goToBookmarkedFlight" action="ViewFlight" method="POST">

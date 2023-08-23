@@ -64,20 +64,6 @@ public class CreateBookingServlet extends HttpServlet {
 
 
             flightPath.addFlightPath();
-            /*if (req.getParameter("hasReturn") != null && req.getParameter("hasReturn").equals("hasReturn")) {
-                LinkedList<FlightBean> returnFlightList = (LinkedList<FlightBean>) session.getAttribute("returnFlightList");
-
-                for (FlightBean returnFlight : returnFlightList) {
-                    BookingBean a = new BookingBean(user.getUserID(), returnFlight, null);;
-                    System.out.println("booking b");
-                    a.addBooking();
-                    returnBookings.add(a);
-                }
-
-                hasReturn = true;
-                session.setAttribute("hasReturn", hasReturn);
-                int returnPassengers = (Integer) session.getAttribute("numReturnPassengers");
-            }*/
 
             //checking for availibilities
             int passengers = (Integer) session.getAttribute("numAdults") + (Integer) session.getAttribute("numChildren");
@@ -125,105 +111,12 @@ public class CreateBookingServlet extends HttpServlet {
             LinkedList<FlightBean> flightList = (LinkedList<FlightBean>) session.getAttribute("flightList");
             String isReturn = "false";
 
-            /*if (hasReturn)
-            {
-                FlightPathBean returnflightPath = (FlightPathBean) session.getAttribute("returnFlight");
-
-                for (int i = 0; i < numPassengers; i++)
-                {
-                    String lastName = req.getParameter("lNamefalse" + i);
-                    String givenNames = req.getParameter("titlefalse" + i) + " " + req.getParameter("fNamefalse" + i);
-                    String email = req.getParameter("emailfalse" + i);
-                    String mobile = req.getParameter("mobilefalse" + i);
-                    Timestamp dateOfBirth = Timestamp.valueOf(req.getParameter("dobfalse" + i) + " 00:00:00");
-
-                    passengerBean = new PassengerBean(lastName, givenNames, email, mobile, dateOfBirth, bookings.getFirst().getBookingId());
-                    passengerBean.addPassenger();
-
-                    System.out.println("bookingnsize=" + bookings.size());
-                    System.out.println("flightpathsize = " + bookings.get(0).getDepartureFlightPath().getFlightPath().size());
-
-                    TicketBean ticket = new TicketBean(bookings.getFirst().getBookingId(), passengerBean.getPassengerId(), bookings.getFirst().getDepartureFlightPath().getInitialFlight().getFlightName(),
-                            bookings.getFirst().getDepartureFlightPath().getInitialFlight().getAirline(), bookings.getFirst().getDepartureFlightPath().getInitialFlight().getFlightTime(),
-                        classCodes.getFirst(), classTypes.getFirst());
-                    ticket.addTicket();
-
-                    tickets.add(ticket);
-                }
-
-                for (int i = 0; i < numReturnPassengers; i++)
-                {
-                    String lastName = req.getParameter("lNametrue" + i);
-                    String givenNames = req.getParameter("titletrue" + i) + " " + req.getParameter("fNametrue" + i);
-                    String email = req.getParameter("emailtrue" + i);
-                    String mobile = req.getParameter("mobiletrue" + i);
-                    Timestamp dateOfBirth = Timestamp.valueOf(req.getParameter("dobtrue" + i) + " 00:00:00");
-
-                    passengerBean = new PassengerBean(lastName, givenNames, email, mobile, dateOfBirth, bookings.getFirst().getBookingId());
-                    passengerBean.addPassenger();
-
-                    TicketBean ticket = new TicketBean(bookings.getLast().getBookingId(), passengerBean.getPassengerId(), bookings.getLast().getReturnFlightPath().getInitialFlight().getFlightName(),
-                            bookings.getLast().getDepartureFlightPath().getInitialFlight().getAirline(), bookings.getLast().getReturnFlightPath().getInitialFlight().getFlightTime(),
-                            classCodes.getLast(), classTypes.getLast());
-                    ticket.addTicket();
-
-                    tickets.add(ticket);
-                }
-            }
-            else
-            {
-
-                for (int i = 1; i <= numPassengers; i++)
-                {
-                    String lastName = req.getParameter("lNamefalse" + i);
-                    String givenNames = req.getParameter("titlefalse" + i) + " " + req.getParameter("fNamefalse" + i);
-                    String email = req.getParameter("emailfalse" + i);
-                    String mobile = req.getParameter("mobilefalse" + i);
-                    System.out.println(req.getParameter("lNamefalse" + i));
-                    System.out.println(req.getParameter("dobfalse" + i) + " 00:00:00");
-                    Timestamp dateOfBirth = Timestamp.valueOf(req.getParameter("dobfalse" + i) + " 00:00:00");
-
-
-                    passengerBean = new PassengerBean(lastName, givenNames, email, mobile, dateOfBirth, bookings.getFirst().getBookingId());
-                    passengerBean.addPassenger();
-
-                    TicketBean ticket = new TicketBean(bookings.getFirst().getBookingId(), passengerBean.getPassengerId(), bookings.getFirst().getDepartureFlightPath().getLastFlight().getFlightName(),
-                            bookings.getFirst().getDepartureFlightPath().getLastFlight().getAirline(), bookings.getFirst().getDepartureFlightPath().getLastFlight().getFlightTime(),
-                            classCodes.getFirst(), classTypes.getFirst());
-                    ticket.addTicket();
-
-                    tickets.add(ticket);
-                }
-            }*/
-
             BookingBean booking = bookings.get(0);
 
             for (int flightIndex = 0 ; flightIndex < flightList.size() ; flightIndex++)
             {
 
                 FlightBean flight = flightList.get(flightIndex);
-
-                // find appropriate booking for this flight
-
-               //int bookingIndex = 0;
-
-               /*for (int i = 0; i < bookings.size(); i++)
-               {
-
-                   Timestamp flightStamp = flightList.get(flightIndex).getFlightTime();
-                   Timestamp bookingTime = bookings.get(i).getDepartureFlightPath().getInitialFlight().getFlightTime();
-
-                   if (bookingTime.equals(flightStamp))
-                   {
-                       System.out.println("BOOKING Success");
-                       booking = bookings.get(i);
-                       bookingIndex = i;
-                       break;
-                   }
-                   else{
-                       System.out.println("BOOKING FAILURE ");
-                   }
-               }*/
 
                 LinkedList<TicketBean> tickets = new LinkedList<>();
 
@@ -268,6 +161,7 @@ public class CreateBookingServlet extends HttpServlet {
                     passengerBeans.add(passengerBean);
                 }
                 booking.setPassengers(passengerBeans);
+                bookings.get(0).updatePrice(bookings.get(0).getBookingId(), price);
                 bookings.add(0, booking);
             }
 
@@ -324,6 +218,7 @@ public class CreateBookingServlet extends HttpServlet {
                         returnPassengerBeans.add(returnPassenger);
                     }
                     booking.setReturnPassengers(returnPassengerBeans);
+                    bookings.get(0).updatePrice(bookings.get(0).getBookingId(), price);
                     bookings.add(0,booking);
                 }
             }

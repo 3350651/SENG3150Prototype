@@ -88,6 +88,8 @@ public class FlightBean implements Serializable {
         this.departure = infoToImport.getDeparture();
     }
 
+
+
     // getters and setters
     public String getAirline() {
         return airline;

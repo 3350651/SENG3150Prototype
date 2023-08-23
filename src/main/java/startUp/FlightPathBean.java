@@ -2,9 +2,7 @@ package startUp;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -29,7 +27,7 @@ public class FlightPathBean {
         minPrice = 0;
         for (FlightBean flight : flights) {
             destinations.add(flight.getDeparture().getDestinationCode());
-            minPrice += flight.getMinCost();
+            //minPrice += flight.getMinCost();
         }
         minPrice = BigDecimal.valueOf(minPrice).setScale(2, RoundingMode.HALF_UP).floatValue();
         id = ThreadLocalRandom.current().nextInt(00000000, 99999999);
@@ -138,6 +136,40 @@ public class FlightPathBean {
                 System.err.println(e.getStackTrace());
             }
         }
+    }
+
+    public Stack<FlightBean> grabFlightPath(String flightpathid)
+    {
+        Stack<FlightBean> flights =  new Stack<>();
+
+        try {
+            String query = "SELECT * FROM FLIGHTPATHFLIGHT WHERE flightPathID = ?";
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, flightpathid);
+            ResultSet results =  statement.executeQuery();
+
+
+            while (results.next())
+            {
+                String pathID = results.getString(1);
+                String AirlineCode = results.getString(2);
+                String FlightNumber = results.getString(3);
+                Timestamp time = Timestamp.valueOf(results.getString(4));
+                String leg = results.getString(5);
+
+                FlightBean a = new FlightBean(AirlineCode,  FlightNumber, time);
+                flights.add(a);
+            }
+            statement.close();
+            connection.close();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+
+        return flights;
     }
 
     public FlightBean getInitialFlight() {
