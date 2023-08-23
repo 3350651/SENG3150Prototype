@@ -60,7 +60,6 @@ public class CreateBookingServlet extends HttpServlet {
             }
 //            booking.setTotalAmount(a.getDepartureFlight().getMinCost());
 
-
             //checking for availibilities
             int passengers = (Integer) session.getAttribute("numAdults") + (Integer) session.getAttribute("numChildren");
             int returnPassengers = (Integer) session.getAttribute("numReturnPassengers");
@@ -73,9 +72,6 @@ public class CreateBookingServlet extends HttpServlet {
             requestDispatcher.forward(req, resp);
 
         }
-
-
-
 
         // if coming from the passenger options page
         else if (req.getParameter("options") != null) {
@@ -157,7 +153,9 @@ public class CreateBookingServlet extends HttpServlet {
                     BookingBean returnBooking = null;
                     // find appropriate booking for this flight
                     for (BookingBean bookingBean : returnBookings) {
-                        if (bookingBean.getDepartureFlight().getFlightTime() == returnFlight.getFlightTime()) {
+                        System.out.println(bookingBean.getReturnFlight().getFlightTime());
+                        System.out.println(returnFlight.getFlightTime());
+                        if (bookingBean.getReturnFlight().getFlightTime() == returnFlight.getFlightTime()) {
                             returnBooking = bookingBean;
                         }
                     }

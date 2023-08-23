@@ -99,11 +99,11 @@ public class BookingBean implements Serializable {
         this.departureFlight = departureFlight;
     }
 
-    public FlightBean getReturnFlights() {
+    public FlightBean getReturnFlight() {
         return returnFlight;
     }
 
-    public void setReturnFlights(FlightBean returnFlight) {
+    public void setReturnFlight(FlightBean returnFlight) {
         this.returnFlight = returnFlight;
     }
 

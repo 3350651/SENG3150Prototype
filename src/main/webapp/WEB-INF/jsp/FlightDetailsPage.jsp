@@ -121,7 +121,7 @@
                                                 <p>Ticket type:</p>
                                             </div>
                                             <div class="flightDetailsColumn2">
-                                                <p><%= flight.getClassCodeOfAvailability(flight.getSelectedPrice()) %></p>
+                                                <p><%= flight.getClassNameOfAvailability(flight.getSelectedPrice()) %></p>
                                                 <p><%= flight.getTicketTypeNameOfAvailability(flight.getSelectedPrice()) %></p>
                                             </div>
                                         </div>
@@ -566,7 +566,7 @@
                                                 <p>Ticket type:</p>
                                             </div>
                                             <div class="flightDetailsColumn2">
-                                                <p><%= flight.getClassCodeOfAvailability(flight.getSelectedPrice()) %></p>
+                                                <p><%= flight.getClassNameOfAvailability(flight.getSelectedPrice()) %></p>
                                                 <p><%= flight.getTicketTypeNameOfAvailability(flight.getSelectedPrice()) %></p>
                                             </div>
                                         </div>
