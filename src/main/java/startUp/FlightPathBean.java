@@ -2,6 +2,9 @@ package startUp;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -89,6 +92,52 @@ public class FlightPathBean {
                 allDestinations += "\'" + temp + "\'" + ", ";
         }
         return allDestinations;
+    }
+
+    public void addFlightPath()
+    {
+        try {
+            String query = "INSERT INTO dbo.FLIGHTPATH (flightPathID, minimumPrice)\n"
+                    +
+                    "VALUES(?,?);";
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, String.valueOf(this.id));
+            statement.setString(2, String.valueOf(this.minPrice));
+            statement.execute();
+            statement.close();
+            connection.close();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+
+        FlightPathBean entry = new FlightPathBean((Stack<FlightBean>) this.flightPath.clone());
+
+        while (!entry.getFlightPath().isEmpty())
+        {
+            FlightBean flight = entry.getFlightPath().pop();
+            try {
+                String query = "INSERT INTO dbo.FLIGHTPATHFLIGHT (flightPathID, AirlineCode, FlightNumber, DepartureTime, Leg)\n"
+                        +
+                        "VALUES(?,?,?,?,?);";
+                Connection connection = ConfigBean.getConnection();
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, String.valueOf(this.id));
+                statement.setString(2, flight.getAirline());
+                statement.setString(3, flight.getFlightName());
+                statement.setString(4, String.valueOf(flight.getOriginalFlightDepartureTime()));
+                statement.setString(5, String.valueOf(flight.getLeg()));
+                statement.execute();
+                statement.close();
+                connection.close();
+
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+                System.err.println(e.getStackTrace());
+            }
+        }
     }
 
     public FlightBean getInitialFlight() {

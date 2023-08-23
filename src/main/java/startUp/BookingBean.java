@@ -21,6 +21,9 @@ public class BookingBean implements Serializable {
     private String bookingUserId;
     private FlightBean departureFlight;
     private FlightBean returnFlight;
+
+    private FlightPathBean departureFlightPath;
+    private FlightPathBean returnFlightPath;
     private LinkedList<TicketBean> tickets;
     private LinkedList<PassengerBean> passengers;
     private float totalAmount;
@@ -28,7 +31,7 @@ public class BookingBean implements Serializable {
 
     // constructors
 
-    public BookingBean(String bookingId, String bookingUserId, FlightBean departureFlight, FlightBean returnFlight,
+    /*public BookingBean(String bookingId, String bookingUserId, FlightBean departureFlight, FlightBean returnFlight,
     LinkedList<TicketBean> tickets, LinkedList<PassengerBean> passengers, float totalAmount, boolean progress){
         this.bookingId = bookingId;
         this.bookingUserId = bookingUserId;
@@ -38,6 +41,39 @@ public class BookingBean implements Serializable {
         this.passengers = passengers;
         this.totalAmount = totalAmount;
         this.progress = progress;
+    }*/
+
+    public BookingBean(String bookingId, String bookingUserId, FlightPathBean flightD, FlightPathBean flightR,
+    LinkedList<TicketBean> tickets, LinkedList<PassengerBean> passengers, float totalAmount, boolean progress){
+        this.bookingId = bookingId;
+        this.bookingUserId = bookingUserId;
+        this.departureFlightPath = flightD;
+        this.returnFlightPath = flightR;
+        this.tickets = tickets;
+        this.passengers = passengers;
+        this.totalAmount = totalAmount;
+        this.progress = progress;
+    }
+
+    public BookingBean(String newBookingUserId, FlightPathBean departFlight, FlightPathBean rflight) {
+        Random random = new Random();
+        bookingId = String.format("%08d", random.nextInt(100000000));
+        bookingUserId = newBookingUserId;
+        departureFlightPath = departFlight;
+        returnFlightPath = rflight;
+        tickets = null;
+        passengers = null;
+    }
+
+    public BookingBean(String newBookingUserId, FlightPathBean flightd, FlightPathBean flightR, float newTotalAmount) {
+        Random random = new Random();
+        bookingId = String.format("%08d", random.nextInt(100000000));
+        bookingUserId = newBookingUserId;
+        departureFlightPath =  flightd;
+        returnFlightPath = flightR;
+        totalAmount = newTotalAmount;
+        tickets = null;
+        passengers = null;
     }
 
     public BookingBean(String newBookingUserId, FlightBean newDepartureFlight, float newTotalAmount) {
@@ -74,6 +110,23 @@ public class BookingBean implements Serializable {
     }
 
     // getters and setters
+
+
+    public void setDepartureFlightPath(FlightPathBean departureFlightPath) {
+        this.departureFlightPath = departureFlightPath;
+    }
+
+    public FlightPathBean getDepartureFlightPath() {
+        return departureFlightPath;
+    }
+
+    public void setReturnFlightPath(FlightPathBean returnFlightPath) {
+        this.returnFlightPath = returnFlightPath;
+    }
+
+    public FlightPathBean getReturnFlightPath() {
+        return returnFlightPath;
+    }
 
     public String getBookingId() {
         return bookingId;
@@ -133,30 +186,58 @@ public class BookingBean implements Serializable {
 
     // add booking to database
     // TODO: Add ability to add with return flight if not null.
-//    public void addBooking() {
-//        try {
-//            String query = "INSERT INTO dbo.BOOKINGS (BookingId, BookingUserId, DepartureAirlineCode, DepartureFlightNumber, DepartureTime, TotalAmount, Progress)\n"
-//                    +
-//                    "VALUES(?,?,?,?,?,?,?);";
-//            Connection connection = ConfigBean.getConnection();
-//            PreparedStatement statement = connection.prepareStatement(query);
-//            statement.setString(1, this.bookingId);
-//            statement.setString(2, this.bookingUserId);
-//            statement.setString(3, this.departureFlight.getAirline());
-//            statement.setString(4, this.departureFlight.getFlightName());
-//            statement.setString(5, this.departureFlight.getFlightTime().toString());
-//            statement.setString(6, String.valueOf(this.totalAmount));
-//            statement.setBoolean(7, true);
-//            statement.execute();
-//            statement.close();
-//            connection.close();
-//
-//        } catch (SQLException e) {
-//            System.err.println(e.getMessage());
-//            System.err.println(e.getStackTrace());
-//        }
-//
-//    }
+    public void addBooking() {
+        if (returnFlightPath != null)
+        {
+            try {
+                String query = "INSERT INTO dbo.BOOKINGS (BookingId, BookingUserId, ReturnTime, TotalAmount, Progress, DepartureFlightPathId, ReturnFlightPathId)\n"
+                        +
+                        "VALUES(?,?,?,?,?,?,?);";
+                Connection connection = ConfigBean.getConnection();
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, this.bookingId);
+                statement.setString(2, this.bookingUserId);
+                statement.setString(3, String.valueOf(this.returnFlightPath.getLastFlight().getFlightTime()));
+                statement.setString(4, String.valueOf(this.totalAmount));
+                statement.setBoolean(5, true);
+                statement.setString(6, String.valueOf(this.departureFlightPath.getId()));
+                statement.setString(7, String.valueOf(this.returnFlightPath.getId()));
+                statement.execute();
+                statement.close();
+                connection.close();
+
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+                System.err.println(e.getStackTrace());
+            }
+        }
+        else
+        {
+            try {
+                String query = "INSERT INTO dbo.BOOKINGS (BookingId, BookingUserId, ReturnTime, TotalAmount, Progress, DepartureFlightPathId, ReturnFlightPathId)\n"
+                        +
+                        "VALUES(?,?,?,?,?,?,?);";
+                Connection connection = ConfigBean.getConnection();
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, this.bookingId);
+                statement.setString(2, this.bookingUserId);
+                statement.setString(3, null);
+                statement.setString(4, String.valueOf(this.totalAmount));
+                statement.setBoolean(5, true);
+                statement.setString(6, String.valueOf(this.departureFlightPath.getId()));
+                statement.setString(7, null);
+                statement.execute();
+                statement.close();
+                connection.close();
+
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+                System.err.println(e.getStackTrace());
+            }
+        }
+
+
+    }
 
     //change progress bit of booking to false
     public void finalise() {

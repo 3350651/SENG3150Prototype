@@ -29,45 +29,71 @@ public class CreateBookingServlet extends HttpServlet {
 
         //If request coming from details page
         if (req.getParameter("details") != null) {
+
+
             UserBean user = (UserBean) session.getAttribute("userBean");
 
             if (req.getParameter("oneWay") != null) {
                 if (session.getAttribute("returnFlightList") != null) {
                     session.removeAttribute("returnFlightList");
+                    session.removeAttribute("returnFlight");
                 }
             }
 
             //get the flight from the session and update availabilities
             //FlightBean flight = (FlightBean) session.getAttribute("flight");
-            FlightPathBean flightPath = (FlightPathBean) session.getAttribute("flight");
             LinkedList<FlightBean> flightList = (LinkedList<FlightBean>) session.getAttribute("flightList");
 
             LinkedList<BookingBean> bookings = new LinkedList<BookingBean>();
-            LinkedList<BookingBean> returnBookings = new LinkedList<BookingBean>();
+            FlightPathBean flightPath = (FlightPathBean) session.getAttribute("flight");
+            System.out.println("initial fligthsize = " +  flightPath.getFlightPath().size());
 
-            for(FlightBean flight : flightList) {
-                BookingBean a = new BookingBean(user.getUserID(), flight, null);
-                bookings.add(a);
+            BookingBean a = new BookingBean(user.getUserID(), flightPath, null);
+            System.out.println("a booking path size" + a.getDepartureFlightPath().getFlightPath().size());
+
+
+            boolean hasReturn = false;
+
+            if (req.getParameter("hasReturn") != null && req.getParameter("hasReturn").equals("hasReturn"))
+            {
+                FlightPathBean returnFlightPath = (FlightPathBean) session.getAttribute("returnFlight");
+                a.setReturnFlightPath(returnFlightPath);
+                hasReturn = true;
             }
+            bookings.add(a);
+            a.addBooking();
+            System.out.println("Bookings size = " + bookings.size());
+            System.out.println("post add booking size = " + bookings.getFirst().getDepartureFlightPath().getFlightPath().size());
 
-            if (req.getParameter("hasReturn") != null && req.getParameter("hasReturn").equals("hasReturn")) {
+            flightPath.addFlightPath();
+            /*if (req.getParameter("hasReturn") != null && req.getParameter("hasReturn").equals("hasReturn")) {
                 LinkedList<FlightBean> returnFlightList = (LinkedList<FlightBean>) session.getAttribute("returnFlightList");
 
                 for (FlightBean returnFlight : returnFlightList) {
-                    BookingBean a = new BookingBean(user.getUserID(), null, returnFlight);
+                    BookingBean a = new BookingBean(user.getUserID(), returnFlight, null);;
+                    System.out.println("booking b");
+                    a.addBooking();
                     returnBookings.add(a);
                 }
-            }
-//            booking.setTotalAmount(a.getDepartureFlight().getMinCost());
+
+                hasReturn = true;
+                session.setAttribute("hasReturn", hasReturn);
+                int returnPassengers = (Integer) session.getAttribute("numReturnPassengers");
+            }*/
 
             //checking for availibilities
             int passengers = (Integer) session.getAttribute("numAdults") + (Integer) session.getAttribute("numChildren");
-            int returnPassengers = (Integer) session.getAttribute("numReturnPassengers");
             session.setAttribute("passengers", passengers);
 
             session.setAttribute("isAvail", true);
             session.setAttribute("bookings", bookings);
-            session.setAttribute("returnBookings", returnBookings);
+
+            if (!hasReturn)
+            {
+                session.setAttribute("numReturnPassengers", 0);
+            }
+
+            session.setAttribute("hasReturn", hasReturn);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/PassengerDetailsPage.jsp");
             requestDispatcher.forward(req, resp);
 
@@ -76,33 +102,125 @@ public class CreateBookingServlet extends HttpServlet {
         // if coming from the passenger options page
         else if (req.getParameter("options") != null) {
 
+            float price = 0;
+            FlightPathBean flightPath = (FlightPathBean) session.getAttribute("flight");
+
             // get bookings created between flight details and passenger details page
             LinkedList<BookingBean> bookings = (LinkedList<BookingBean>) session.getAttribute("bookings");
             LinkedList<BookingBean> returnBookings = (LinkedList<BookingBean>) session.getAttribute("returnBookings");
+            boolean hasReturn = (boolean) session.getAttribute("hasReturn");
+
+            System.out.println("bookingnsize=" + bookings.size());
+            System.out.println("flightpathsize = " + bookings.get(0).getDepartureFlightPath().getFlightPath().size());
+
 
             // get number of departing passengers and prepare to create PassengerBeans
             int numPassengers = (Integer)  session.getAttribute("passengers");
             PassengerBean passengerBean = null;
             LinkedList<PassengerBean> passengerBeans = new LinkedList<>();
-
-            // get number of return passengers and prepare to create PassengerBeans
-            int numReturnPassengers = (Integer)  session.getAttribute("numReturnPassengers");
-            PassengerBean returnPassenger = null;
-            LinkedList<PassengerBean> returnPassengerBeans = new LinkedList<>();
+            LinkedList<TicketBean> tickets = new LinkedList<>();
 
             // CREATE TICKET PER FLIGHT PER PASSENGER
             LinkedList<FlightBean> flightList = (LinkedList<FlightBean>) session.getAttribute("flightList");
             String isReturn = "false";
-            for (int flightIndex = 0 ; flightIndex < flightList.size() ; flightIndex++) {
+
+            if (hasReturn)
+            {
+                FlightPathBean returnflightPath = (FlightPathBean) session.getAttribute("returnFlight");
+
+                for (int i = 0; i < numPassengers; i++)
+                {
+                    String lastName = req.getParameter("lNamefalse" + i);
+                    String givenNames = req.getParameter("titlefalse" + i) + " " + req.getParameter("fNamefalse" + i);
+                    String email = req.getParameter("emailfalse" + i);
+                    String mobile = req.getParameter("mobilefalse" + i);
+                    Timestamp dateOfBirth = Timestamp.valueOf(req.getParameter("dobfalse" + i) + " 00:00:00");
+
+                    passengerBean = new PassengerBean(lastName, givenNames, email, mobile, dateOfBirth, bookings.getFirst().getBookingId());
+                    passengerBean.addPassenger();
+
+                    System.out.println("bookingnsize=" + bookings.size());
+                    System.out.println("flightpathsize = " + bookings.get(0).getDepartureFlightPath().getFlightPath().size());
+
+                    TicketBean ticket = new TicketBean(bookings.getFirst().getBookingId(), passengerBean.getPassengerId(), bookings.getFirst().getDepartureFlightPath().getInitialFlight().getFlightName(),
+                            bookings.getFirst().getDepartureFlightPath().getInitialFlight().getAirline(), bookings.getFirst().getDepartureFlightPath().getInitialFlight().getFlightTime(),
+                        classCodes.getFirst(), classTypes.getFirst());
+                    ticket.addTicket();
+
+                    tickets.add(ticket);
+                }
+
+                for (int i = 0; i < numPassengers; i++)
+                {
+                    String lastName = req.getParameter("lNametrue" + i);
+                    String givenNames = req.getParameter("titletrue" + i) + " " + req.getParameter("fNametrue" + i);
+                    String email = req.getParameter("emailtrue" + i);
+                    String mobile = req.getParameter("mobiletrue" + i);
+                    Timestamp dateOfBirth = Timestamp.valueOf(req.getParameter("dobtrue" + i) + " 00:00:00");
+
+                    passengerBean = new PassengerBean(lastName, givenNames, email, mobile, dateOfBirth, bookings.getFirst().getBookingId());
+                    passengerBean.addPassenger();
+
+                    TicketBean ticket = new TicketBean(bookings.getLast().getBookingId(), passengerBean.getPassengerId(), bookings.getLast().getReturnFlightPath().getInitialFlight().getFlightName(),
+                            bookings.getLast().getDepartureFlightPath().getInitialFlight().getAirline(), bookings.getLast().getReturnFlightPath().getInitialFlight().getFlightTime(),
+                            classCodes.getLast(), classTypes.getLast());
+                    ticket.addTicket();
+
+                    tickets.add(ticket);
+                }
+            }
+            else
+            {
+
+                for (int i = 1; i <= numPassengers; i++)
+                {
+                    String lastName = req.getParameter("lNamefalse" + i);
+                    String givenNames = req.getParameter("titlefalse" + i) + " " + req.getParameter("fNamefalse" + i);
+                    String email = req.getParameter("emailfalse" + i);
+                    String mobile = req.getParameter("mobilefalse" + i);
+                    System.out.println(req.getParameter("lNamefalse" + i));
+                    System.out.println(req.getParameter("dobfalse" + i) + " 00:00:00");
+                    Timestamp dateOfBirth = Timestamp.valueOf(req.getParameter("dobfalse" + i) + " 00:00:00");
+
+
+                    passengerBean = new PassengerBean(lastName, givenNames, email, mobile, dateOfBirth, bookings.getFirst().getBookingId());
+                    passengerBean.addPassenger();
+
+                    TicketBean ticket = new TicketBean(bookings.getFirst().getBookingId(), passengerBean.getPassengerId(), bookings.getFirst().getDepartureFlightPath().getLastFlight().getFlightName(),
+                            bookings.getFirst().getDepartureFlightPath().getLastFlight().getAirline(), bookings.getFirst().getDepartureFlightPath().getLastFlight().getFlightTime(),
+                            classCodes.getFirst(), classTypes.getFirst());
+                    ticket.addTicket();
+
+                    tickets.add(ticket);
+                }
+            }
+
+            /*for (int flightIndex = 0 ; flightIndex < flightList.size() ; flightIndex++) {
+
                 FlightBean flight = flightList.get(flightIndex);
 
                 // find appropriate booking for this flight
                 BookingBean booking = null;
-                for (BookingBean bookingBean : bookings) {
-                    if (bookingBean.getDepartureFlight().getFlightTime() == flight.getFlightTime()) {
-                        booking = bookingBean;
-                    }
-                }
+
+               int bookingIndex = 0;
+
+               for (int i = 0; i < bookings.size(); i++)
+               {
+
+                   Timestamp flightStamp = flightList.get(flightIndex).getFlightTime();
+                   Timestamp bookingTime = bookings.get(i).getDepartureFlight().getFlightTime();
+
+                   if (bookingTime.equals(flightStamp))
+                   {
+                       System.out.println("BOOKING Success");
+                       booking = bookings.get(i);
+                       bookingIndex = i;
+                       break;
+                   }
+                   else{
+                       System.out.println("BOOKING FAILURE ");
+                   }
+               }
 
                 // iterate though every "DEPARTING" passenger data and create passengerbeans and ticketbeans each
                 for (int passengerIndex = 1; passengerIndex <= numPassengers; passengerIndex++ ) {
@@ -121,7 +239,7 @@ public class CreateBookingServlet extends HttpServlet {
 
                     // create passengerbean for passenger
                     passengerBean = new PassengerBean(lastName, givenNames, email, mobile, dateOfBirth, booking.getBookingId());
-//                    passengerBean.addPassenger(); // add to database
+
 
                     // just debugging here
                     System.out.println("Passenger: " + givenNames);
@@ -134,16 +252,23 @@ public class CreateBookingServlet extends HttpServlet {
                     TicketBean departureTicket = new TicketBean(booking.getBookingId(), passengerBean.getPassengerId(),
                             flightList.get(flightIndex).getFlightName(),
                             flightList.get(flightIndex).getAirline(),
-                            flightList.get(flightIndex).getFlightTime(), ticketClassName, ticketTypeName); // class names or class code?
-//                    departureTicket.addTicket();    //add ticket to database
+                            flightList.get(flightIndex).getFlightTime(), ticketClassCode, ticketTypeCode); // class names or class code?
+                    departureTicket.addTicket();    //add ticket to database
+                    LinkedList<TicketBean> tickets = new LinkedList<>();
+                    tickets.add(departureTicket);
+                    passengerBean.setDepartureTickets(tickets);
+                    passengerBean.addPassenger();
 
+                    price = price + selectedPrice;
                     passengerBeans.add(passengerBean);
                 }
                 booking.setPassengers(passengerBeans);
+                bookings.add(bookingIndex, booking);
             }
 
+            System.out.println("returnnbookingsize = "  + returnBookings.size());
             // deal with return flight bookings
-            if (returnBookings != null) {
+            if (returnBookings.size() > 0) {
                 // CREATE TICKET PER FLIGHT PER PASSENGER
                 LinkedList<FlightBean> returnFlightList = (LinkedList<FlightBean>) session.getAttribute("returnFlightList");
                 isReturn = "true";
@@ -155,7 +280,7 @@ public class CreateBookingServlet extends HttpServlet {
                     for (BookingBean bookingBean : returnBookings) {
                         System.out.println(bookingBean.getReturnFlight().getFlightTime());
                         System.out.println(returnFlight.getFlightTime());
-                        if (bookingBean.getReturnFlight().getFlightTime() == returnFlight.getFlightTime()) {
+                        if (bookingBean.getDepartureFlight().getFlightTime() == returnFlight.getFlightTime()) {
                             returnBooking = bookingBean;
                         }
                     }
@@ -177,7 +302,6 @@ public class CreateBookingServlet extends HttpServlet {
 
                         // create passengerbean for passenger
                         returnPassenger = new PassengerBean(lastName, givenNames, email, mobile, dateOfBirth, returnBooking.getBookingId());
-//                        passengerBean.addPassenger();
 
                         // just debugging here
                         System.out.println("Passenger: " + givenNames);
@@ -190,172 +314,26 @@ public class CreateBookingServlet extends HttpServlet {
                         TicketBean returnTicket = new TicketBean(returnBooking.getBookingId(), passengerBean.getPassengerId(),
                                 returnFlight.getFlightName(),
                                 returnFlight.getAirline(),
-                                returnFlight.getFlightTime(), ticketClassName, ticketTypeName); // class name or class code?
-//                        returnTicket.addTicket();    //add ticket to database
+                                returnFlight.getFlightTime(), ticketClassCode, ticketTypeCode); // class name or class code?
+                       returnTicket.addTicket();    //add ticket to database
 
+                        LinkedList<TicketBean> tickets = new LinkedList<>();
+                        tickets.add(returnTicket);
+                        passengerBean.setDepartureTickets(tickets);
+                        passengerBean.addPassenger();
+
+                        price = price + selectedPrice;
                         returnPassengerBeans.add(returnPassenger);
                     }
                     returnBooking.setPassengers(returnPassengerBeans);
                 }
-            }
-
-//            System.out.println("req"+ req.getParameter("price" + flight1.get(0).getFlightTime().toString()));
-//            System.out.println("reqTotal"+ req.getParameter("1total"));
-//            System.out.println("reqPrice"+ req.getParameter("1-false-price-" + flight1.get(0).getFlightTime().toString()));
-//            System.out.println("reqclass"+ req.getParameter("1-false-class-" + flight1.get(0).getFlightTime().toString()));
-//            System.out.println("reqticket"+ req.getParameter("1-false-type-" + flight1.get(0).getFlightTime().toString()));
-
-
-//            int passengers = Integer.parseInt(req.getParameter("passengers"));
-//            PassengerBean passengerBean = null;
-//            LinkedList<PassengerBean> passengerBeans = new LinkedList<>();
-//
-//
-//            // creating all passengers related to the booking
-//            //if there are multiple flights, make multiple tickets
-//            if (bookings.size() > 1) {
-//                for (int k = 0; k < bookings.size(); k++) {
-//                    passengerBeans = new LinkedList<>();
-//                    for (int i = 1; i <= passengers; i++) {
-//                        String lastName = req.getParameter("lName" + i);
-//                        String givenNames = req.getParameter("title" + i) + " " + req.getParameter("fName" + i);
-//                        String email = req.getParameter("email" + i);
-//                        String mobile = req.getParameter("mobile" + i);
-//                        Timestamp dateOfBirth = Timestamp.valueOf(req.getParameter("dob" + i) + " 00:00:00");
-//
-//                        passengerBean = new PassengerBean(lastName, givenNames, email, mobile, dateOfBirth, bookings.get(k).getBookingId());
-//                        passengerBean.addPassenger(); // add to database
-//
-//                        // getting ticket information for departure and return flight
-//                        String ticketClass = req.getParameter("ticketClass" + i);
-//
-//                        if  (req.getParameter("ticketClass" + i).equals("FIR"))
-//                        {
-//                            price = price + 1000;
-//                        }
-//                        else if (req.getParameter("ticketClass" + i).equals("BUS"))
-//                        {
-//                            price = price + 800;
-//                        }
-//                        else if (req.getParameter("ticketClass" + i).equals("PME"))
-//                        {
-//                            price = price + 600;
-//                        }
-//                        else if (req.getParameter("ticketClass" + i).equals("ECO"))
-//                        {
-//                            price = price + 500;
-//                        }
-//
-//                        String ticketType = req.getParameter("ticketType" + i);
-//
-//                        if (req.getParameter("ticketType" + i).equals("D"))
-//                        {
-//                            price = price + 50;
-//                        }
-//                        else if (req.getParameter("ticketType" + i).equals("G"))
-//                        {
-//                            price = price + 100;
-//                        }
-//
-//                        String returnTicketClass = req.getParameter("ticketClassReturn" + i);
-//                        String returnTicketType = req.getParameter("ticketTypeReturn" + i);
-//
-//                        TicketBean departureTicket = new TicketBean(bookings.get(k).getBookingId(), passengerBean.getPassengerId(),
-//                                bookings.get(k).getDepartureFlight().getFlightName(),
-//                                bookings.get(k).getDepartureFlight().getAirline(),
-//                                bookings.get(k).getDepartureFlight().getFlightTime(), ticketClass, ticketType);
-//                        departureTicket.addTicket();    //add ticket to database
-//
-//                        TicketBean returnTicket = null;
-//
-//                        //if there is a return flight to add a ticket for
-//                        if (returnTicketClass != null) {
-//                            returnTicket = new TicketBean(bookings.get(k).getBookingId(), passengerBean.getPassengerId(),
-//                                    bookings.get(k).getReturnFlight().getFlightName(),
-//                                    bookings.get(k).getReturnFlight().getAirline(), bookings.get(k).getReturnFlight().getFlightTime(),
-//                                    returnTicketClass, returnTicketType);
-//                            returnTicket.addTicket();       //add ticket to database
-//                        }
-////                        passengerBean.setDepartureTicket(departureTicket);
-////                        passengerBean.setReturnTicket(returnTicket);
-//                        passengerBeans.add(passengerBean);
-//                        bookings.get(k).setPassengers(passengerBeans);
-//                        int test = 1;
-//                        System.out.println("Ticket " + test + "made");
-//                        test = test + 1;
-//                    }
-//                }
-//            } else {
-//                for (int i = 1; i <= passengers; i++) {
-//                    String lastName = req.getParameter("lName" + i);
-//                    String givenNames = req.getParameter("title" + i) + " " + req.getParameter("fName" + i);
-//                    String email = req.getParameter("email" + i);
-//                    String mobile = req.getParameter("mobile" + i);
-//                    Timestamp dateOfBirth = Timestamp.valueOf(req.getParameter("dob" + i) + " 00:00:00");
-//
-//                    passengerBean = new PassengerBean(lastName, givenNames, email, mobile, dateOfBirth, bookings.get(0).getBookingId());
-//                    passengerBean.addPassenger();
-//
-//                    // getting ticket information for departure and return flight
-//                    String ticketClass = req.getParameter("ticketClass" + i);
-//
-//                    if  (req.getParameter("ticketClass" + i).equals("FIR"))
-//                    {
-//                        price = price + 1000;
-//                    }
-//                    else if (req.getParameter("ticketClass" + i).equals("BUS"))
-//                    {
-//                        price = price + 800;
-//                    }
-//                    else if (req.getParameter("ticketClass" + i).equals("PME"))
-//                    {
-//                        price = price + 600;
-//                    }
-//                    else if (req.getParameter("ticketClass" + i).equals("ECO"))
-//                    {
-//                        price = price + 500;
-//                    }
-//                    String ticketType = req.getParameter("ticketType" + i);
-//
-//                    if (req.getParameter("ticketType" + i).equals("D"))
-//                    {
-//                        price = price + 50;
-//                    }
-//                    else if (req.getParameter("ticketType" + i).equals("G"))
-//                    {
-//                        price = price + 100;
-//                    }
-//
-//                    String returnTicketClass = req.getParameter("ticketClassReturn" + i);
-//                    String returnTicketType = req.getParameter("ticketTypeReturn" + i);
-//
-//                    TicketBean departureTicket = new TicketBean(bookings.get(0).getBookingId(), passengerBean.getPassengerId(),
-//                            bookings.get(0).getDepartureFlight().getFlightName(),
-//                            bookings.get(0).getDepartureFlight().getAirline(),
-//                            bookings.get(0).getDepartureFlight().getFlightTime(), ticketClass, ticketType);
-//                    departureTicket.addTicket();    //add ticket to database
-//
-//                    TicketBean returnTicket = null;
-//                    //if there is a return flight to add a ticket for
-//                    if (returnTicketClass != null) {
-//                        returnTicket = new TicketBean(bookings.get(0).getBookingId(), passengerBean.getPassengerId(),
-//                                bookings.get(0).getReturnFlight().getFlightName(),
-//                                bookings.get(0).getReturnFlight().getAirline(), bookings.get(0).getReturnFlight().getFlightTime(),
-//                                returnTicketClass, returnTicketType);
-//                        returnTicket.addTicket();       //add ticket to database
-//                    }
-////                    passengerBean.setDepartureTicket(departureTicket);
-////                    passengerBean.setReturnTicket(returnTicket);
-//                    passengerBeans.add(passengerBean);
-//                    bookings.get(0).setPassengers(passengerBeans);
-//                }
-//            }
+            }*/
 
             //set details to display on next page
             //booking.setPassengers(passengerBeans);
 
             // session.setAttribute("bookings", bookings); // already set between flight and passenger details page
-            session.setAttribute("price", "5000");
+            session.setAttribute("price", price);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/ReviewDetailsPage.jsp");
             requestDispatcher.forward(req, resp);
 

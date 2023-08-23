@@ -3,9 +3,11 @@
 <%@ page import="startUp.PassengerBean" %>
 <%@ page import="startUp.TicketBean" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.LinkedList" %>
 <% //BookingBean booking= (BookingBean) session.getAttribute("booking"); %>
 <% ArrayList<BookingBean> bookingsList = (ArrayList<BookingBean>) session.getAttribute("bookingsList"); %>
-<% LinkedList<BookingBean> bookings = LinkedList<BookingBean> session.getAttribute("bookings") %>
+<% LinkedList<BookingBean> bookings = (LinkedList<BookingBean>) session.getAttribute("bookings"); %>
+<% LinkedList<BookingBean> returnBookings = (LinkedList<BookingBean>) session.getAttribute("returnBookings"); %>
 
     <% for (int i = 0; i < bookings.size(); i++){ %>
 
@@ -22,7 +24,7 @@
 
                 <br />
                 <strong>Departure Time:</strong>
-                <%=bookinbookingsgsList.get(i).getDepartureFlight().getFlightTime()%>
+                <%=bookings.get(i).getDepartureFlight().getFlightTime()%>
 
                 <br />
                 <strong>Flight Name:</strong>
@@ -64,32 +66,32 @@
         <h2>Passenger Details:</h2>
 
         <%//for(PassengerBean passenger : bookings.get(i).getPassengers()){%>
-        <% for (int k = 0; k < bookings.get(i).getPassengers().size(); k++) { %>
-        <% PassengerBean passenger = bookings.get(i).getPassengers().get(k); %>
+        <% LinkedList<PassengerBean> passengerList = bookings.get(i).getPassengers(); System.out.println("passenger size = " + passengerList.size()); %>
+        <% for (int k = 0; k < passengerList.size(); k++) { %>
         <fieldset class="foreground">
             <p class="reviewDetails">
                 <strong>Name: </strong>
-                <%=passenger.getGivenNames() + " " + passenger.getLastName()%><br />
+                <%=passengerList.get(k).getGivenNames() + " " + passengerList.get(k).getLastName()%><br />
                 <strong>Email: </strong>
-                <%=passenger.getEmail()%><br />
+                <%=passengerList.get(k).getEmail()%><br />
                 <strong>Mobile Number: </strong>
-                <%=passenger.getPhoneNumber()%><br />
+                <%=passengerList.get(k).getPhoneNumber()%><br />
                 <strong>Date Of Birth: </strong>
-                <%=passenger.getDateOfBirth()%>
+                <%=passengerList.get(k).getDateOfBirth()%>
             </p>
             <fieldset class="foreground">
                 <h2>Departure Ticket</h2>
                 <p>
-                    <strong>Class: </strong><%=passenger.getDepartureTicket().getTicketClassName()%><br/>
-                    <strong>Type: </strong><%=passenger.getDepartureTicket().getTicketTypeName()%>
+                    <strong>Class: </strong><%=passengerList.get(k).getDepartureTickets().get(i).getTicketClassName()%><br/>
+                    <strong>Type: </strong><%=passengerList.get(k).getDepartureTickets().get(i).getTicketTypeName()%>
                 </p>
             </fieldset>
-            <%if(passenger.getReturnTicket() != null){%>
+            <%if(passengerList.get(k).getReturnTickets() != null){%>
             <fieldset class="foreground">
                 <h2>Return Ticket</h2>
                 <p>
-                    <strong>Class: </strong><%=passenger.getReturnTicket().getTicketClassName()%><br/>
-                    <strong>Type: </strong><%=passenger.getReturnTicket().getTicketTypeName()%>
+                    <strong>Class: </strong><%=passengerList.get(k).getReturnTickets().get(i).getTicketClassName()%><br/>
+                    <strong>Type: </strong><%=passengerList.get(k).getReturnTickets().get(i).getTicketTypeName()%>
                 </p>
             </fieldset>
             <%}%>

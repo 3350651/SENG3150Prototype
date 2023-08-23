@@ -50,6 +50,7 @@ public class FlightServlet extends HttpServlet {
         else if (req.getParameter("updatePrice") != null) {
             String isReturnResults = req.getParameter("isReturnResults");
             LinkedList<FlightBean> flights;
+
             if (isReturnResults.equals("false")) {
                 flights = (LinkedList<FlightBean>) session.getAttribute("flightList");
             }
