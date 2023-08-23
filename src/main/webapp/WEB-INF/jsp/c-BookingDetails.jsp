@@ -17,22 +17,22 @@
             <h3>Departure Flight Details</h3>
 
             <p class="reviewDetails">
-            <h3><%=bookings.get(i).getDepartureFlight().getDeparture().getDestinationName()%> <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
-            <%=bookings.get(i).getDepartureFlight().getDestination().getDestinationName()%></h3>
+            <h3><%=bookings.get(i).getDepartureFlightPath().getInitialFlight().getDestination().getDestinationName()%> <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
+            <%=bookings.get(i).getDepartureFlightPath().getLastFlight().getDestination().getDestinationName()%></h3>
                 <strong>Airline: </strong>
-                <%=bookings.get(i).getDepartureFlight().getAirlineName()%>
+                <%=bookings.get(i).getDepartureFlightPath().getInitialFlight().getAirlineName()%>
 
                 <br />
                 <strong>Departure Time:</strong>
-                <%=bookings.get(i).getDepartureFlight().getFlightTime()%>
+                <%=bookings.get(i).getDepartureFlightPath().getInitialFlight().getFlightTime()%>
 
                 <br />
                 <strong>Flight Name:</strong>
-                <%=bookings.get(i).getDepartureFlight().getFlightName()%>
+                <%=bookings.get(i).getDepartureFlightPath().getInitialFlight().getFlightName()%>
 
                 <br />
                 <strong>Plane Model:</strong>
-                <%=bookings.get(i).getDepartureFlight().getPlaneType()%>
+                <%=bookings.get(i).getDepartureFlightPath().getInitialFlight().getPlaneType()%>
             </p>
         </fieldset>
         <%if(bookings.get(i).getReturnFlight() !=null){%>
@@ -41,15 +41,15 @@
 
             <p class="reviewDetails">
                 <strong>Airline: </strong>
-                <%=bookings.get(i).getReturnFlight().getAirlineName()%>
+                <%=bookings.get(i).getReturnFlightPath().getInitialFlight().getAirlineName()%>
 
                 <br />
                 <strong>Departure Time:</strong>
-                <%=bookings.get(i).getReturnFlight().getFlightTime()%>
+                <%=bookings.get(i).getReturnFlightPath().getInitialFlight().getFlightTime()%>
 
                 <br />
                 <strong>Flight Name:</strong>
-                <%=bookings.get(i).getReturnFlight().getFlightName()%>
+                <%=bookings.get(i).getReturnFlightPath().getInitialFlight().getFlightName()%>
 
                 <br />
                 <strong>Plane Model:</strong>
@@ -66,7 +66,7 @@
         <h2>Passenger Details:</h2>
 
         <%//for(PassengerBean passenger : bookings.get(i).getPassengers()){%>
-        <% LinkedList<PassengerBean> passengerList = bookings.get(i).getPassengers(); System.out.println("passenger size = " + passengerList.size()); %>
+        <% LinkedList<PassengerBean> passengerList = bookings.get(i).getPassengers();%>
         <% for (int k = 0; k < passengerList.size(); k++) { %>
         <fieldset class="foreground">
             <p class="reviewDetails">
@@ -82,16 +82,16 @@
             <fieldset class="foreground">
                 <h2>Departure Ticket</h2>
                 <p>
-                    <strong>Class: </strong><%=passengerList.get(k).getDepartureTickets().get(i).getTicketClassName()%><br/>
-                    <strong>Type: </strong><%=passengerList.get(k).getDepartureTickets().get(i).getTicketTypeName()%>
+                    <strong>Class: </strong><%=passengerList.get(k).getDepartureTickets().get(0).getTicketClassName()%><br/>
+                    <strong>Type: </strong><%=passengerList.get(k).getDepartureTickets().get(0).getTicketTypeName()%>
                 </p>
             </fieldset>
             <%if(passengerList.get(k).getReturnTickets() != null){%>
             <fieldset class="foreground">
                 <h2>Return Ticket</h2>
                 <p>
-                    <strong>Class: </strong><%=passengerList.get(k).getReturnTickets().get(i).getTicketClassName()%><br/>
-                    <strong>Type: </strong><%=passengerList.get(k).getReturnTickets().get(i).getTicketTypeName()%>
+                    <strong>Class: </strong><%=passengerList.get(k).getReturnTickets().get(0).getTicketClassName()%><br/>
+                    <strong>Type: </strong><%=passengerList.get(k).getReturnTickets().get(0).getTicketTypeName()%>
                 </p>
             </fieldset>
             <%}%>

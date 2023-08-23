@@ -26,6 +26,7 @@ public class BookingBean implements Serializable {
     private FlightPathBean returnFlightPath;
     private LinkedList<TicketBean> tickets;
     private LinkedList<PassengerBean> passengers;
+    private LinkedList<PassengerBean> returnPassengers;
     private float totalAmount;
     private boolean progress;
 
@@ -111,7 +112,15 @@ public class BookingBean implements Serializable {
 
     // getters and setters
 
+    public void setReturnPassengers(LinkedList<PassengerBean> a)
+    {
+        returnPassengers = a;
+    }
 
+    public LinkedList<PassengerBean> getReturnPassengers()
+    {
+        return returnPassengers;
+    }
     public void setDepartureFlightPath(FlightPathBean departureFlightPath) {
         this.departureFlightPath = departureFlightPath;
     }

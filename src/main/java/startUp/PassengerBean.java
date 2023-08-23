@@ -35,7 +35,7 @@ public class PassengerBean implements Serializable {
         this.dateOfBirth = dateOfBirth;
         this.bookingId = bookingId;
         Random random = new Random();
-        this.passengerId = String.format("%08d", random.nextInt(100000000));
+        this.passengerId = String.format("%08d", random.nextInt(10000000));
     }
 
 
