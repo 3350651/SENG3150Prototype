@@ -3,15 +3,17 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="startUp.GroupFaveFlightBean" %>
+<%@ page import="startUp.FlightPathBean" %>
 <%
 UserBean user = (UserBean) session.getAttribute("userBean");
 GroupBean group = (GroupBean) session.getAttribute("group");
 LinkedList<GroupFaveFlightBean> faveFlights = (LinkedList<GroupFaveFlightBean>) session.getAttribute("faveFlights");
-LinkedList<String> destinations = (LinkedList<String>) session.getAttribute("destinations");
+Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
 int size = 0;
 if(faveFlights != null && !faveFlights.isEmpty()){
     size = faveFlights.size();
 }
+boolean lockedIn = (boolean) session.getAttribute("lockedIn");
 %>
 
 
@@ -41,26 +43,80 @@ if(faveFlights != null && !faveFlights.isEmpty()){
         <div class="manageGroupContent">
             <%
             if(size > 0){
-                for(int i = 0; i < size; i++){
-                    GroupFaveFlightBean faveFlight = faveFlights.removeFirst();
-                    String dest = destinations.removeFirst();
+                for (GroupFaveFlightBean faveFlight : faveFlights){
                 %>
-                    <%= faveFlight.getFlightName() %>:<br>
-                    To <%= dest %><br>
-                    <form method="POST" action="GroupHomepage">
-                        <button class="groupButton" type="submit" name="viewFaveFlight" value="viewFaveFlight">View Flight</button><br><br>
-                        <input type="hidden" id="airlineCode" name="airlineCode" value="<%= faveFlight.getAirlineCode() %>">
-                        <input type="hidden" id="flightName" name="flightName" value="<%= faveFlight.getFlightName() %>">
-                        <input type="hidden" id="flightTime" name="flightTime" value="<%= faveFlight.getFlightTime() %>">
-                        <input type="hidden" id="getFlight" name="getFlight" value="true">
-                    </form>
-                <% faveFlights.addLast(faveFlight);
-                   destinations.addLast(dest);
-                }
+            <div class="favouriteFlight">
+                    <% if(isAdmin) { %>
+                        <div class="flightInformation">
+                            <div class="infoRow1">
+                                <div class="DepartureLocationResult"><%=faveFlight.getFlightPath().getInitialFlight().getDeparture().getDestinationName() %> &nbsp;</div>
+                                <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" id="groupFavouriteList">
+                                <div class="DestinationLocationResult">&nbsp;<%=faveFlight.getFlightPath().getLastFlight().getDestination().getDestinationName() %> &nbsp; </div>
+                            </div>
+                            <div class="infoRow2">
+                                <% if(faveFlight.getFlightPath().getFlightPath().size() == 2){ %>
+                                <div class="QuantityOfStops">  (1 stopover) </div>
+                                <%}%>
+                                <% if(faveFlight.getFlightPath().getFlightPath().size() > 2){ %>
+                                <div class="QuantityOfStops">  (<%=faveFlight.getFlightPath().getFlightPath().size()-1 %> stopovers) </div>
+                                <%}%>
+                                <div class="FaveFlightScore">  (<%=faveFlight.getScore() %> Score) </div>
+                            </div>
+                        </div>
+                        <form method="POST" action="GroupHomepage">
+                            <input type="hidden" name="flightIndex" value="<%= faveFlights.indexOf(faveFlight) %>">
+                            <div class="groupFaveFlightButtons">
+                                <button class="groupFavButton"  type="submit" name="quickVote" value="2">Lock-in</button>
+                                <button class="groupFavButton"  type="submit" name="quickVote" value="1">Upvote</button>
+                                <button class="groupFavButton"  type="submit" name="quickVote" value="-1">Downvote</button>
+                                <button class="groupFavButton" type="submit" name="quickVote" value="-2">Blacklist</button>
+                            </div>
+                            <div class="viewFlightDetailsButton">
+                                <button type="submit" class="viewGroupFaveFlight" name="viewFaveFlight" value="viewFaveFlight">View Group Favourite Flight</button><br>
+                                <button type="submit" class="viewGroupFaveFlight" name="viewFlight" value="viewFlight">View Flight Details</button>
+                            </div>
+
+                        <% if(!lockedIn) { %>
+                            <button class="removeFavouritedFlight" type="submit" name="removeFlight" value="removeFlight">Remove Flight</button> <br> <br>
+                            <input type="hidden" id="faveFlightID" name="faveFlightID" value="<%= faveFlight.getGroupFaveFlightID()%>">
+                        </form>
+                        <%} else{%>
+                        </form> <% } %>
+                    <% } else { %>
+
+            <div class="flightInformation">
+                <div class="infoRow1">
+                    <div class="DepartureLocationResult"><%=faveFlight.getFlightPath().getInitialFlight().getDeparture().getDestinationName() %> &nbsp;</div>
+                    <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" id="groupFavouriteList">
+                    <div class="DestinationLocationResult">&nbsp;<%=faveFlight.getFlightPath().getLastFlight().getDestination().getDestinationName() %> &nbsp; </div>
+                </div>
+                <div class="infoRow2">
+                    <% if(faveFlight.getFlightPath().getFlightPath().size() == 2){ %>
+                    <div class="QuantityOfStops">  (1 stopover) </div>
+                    <%}%>
+                    <% if(faveFlight.getFlightPath().getFlightPath().size() > 2){ %>
+                    <div class="QuantityOfStops">  (<%=faveFlight.getFlightPath().getFlightPath().size()-1 %> stopovers) </div>
+                    <%}%>
+                    <div class="FaveFlightScore">  (<%=faveFlight.getScore() %> Score) </div>
+                </div>
+            </div>
+            <form method="POST" action="GroupHomepage">
+                <div class="groupFaveFlightButtons">
+                    <input type="hidden" name="flightIndex" value="<%= faveFlights.indexOf(faveFlight) %>">
+                    <button class="groupFavButton"  type="submit" name="quickVote" value="2">Lock-in</button>
+                    <button class="groupFavButton"  type="submit" name="quickVote" value="1">Upvote</button>
+                    <button class="groupFavButton"  type="submit" name="quickVote" value="-1">Downvote</button>
+                    <button class="groupFavButton" type="submit" name="quickVote" value="-2">Blacklist</button>
+                </div>
+                <div class="viewFlightDetailsButton">
+                    <button class="viewGroupFaveFlight" type="submit" name="viewFaveFlight" value="viewFaveFlight">View Group Favourite Flight</button><br>
+                    <button type="submit" class="viewGroupFaveFlight" name="viewFlight" value="viewFlight">View Flight Details</button> <br>
+                </div>
+            </form>
+                <% }%> </div> <% }
             } else { %>
-                <p>There are currently no favourited flights for the group!</p>
-            <%}
-            %>
+              <p>There are currently no favourited flights for the group!</p>
+            <%}%>
         </div>
 
     </main>

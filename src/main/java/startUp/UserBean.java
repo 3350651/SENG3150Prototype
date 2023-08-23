@@ -513,20 +513,21 @@ public class UserBean implements Serializable {
 	}
 
 	public void loadBookmarkedFlights(String userID) {
-		Queue<BookmarkedFlightBean> flightsToSort = null;
+		Queue<BookmarkedFlightBean> flightsToSort = new LinkedList<>();
 		HashMap<Integer, Float> hm = new HashMap<>();
 		try {
-			String query = "SELECT fpf.*, fp.minimumPrice " +
+			String getFlightPathFlights = "SELECT fpf.flightPathID, fpf.AirlineCode, fpf.DepartureTime, " +
+					"fpf.FlightNumber, fpf.Leg, fp.flightPathID, bf.userID, bf.flightPathID, fp.minimumPrice " +
 					"FROM FLIGHTPATHFLIGHT fpf " +
 					"JOIN FLIGHTPATH fp ON fpf.flightPathID = fp.flightPathID " +
 					"JOIN BOOKMARKEDFLIGHT bf ON bf.flightPathID = fp.flightPathID " +
 					"WHERE bf.userID = ? " +
-					"ORDER BY bf.flightPathID, fpf.DepartureTime DESC; ";
+					"ORDER BY bf.flightPathID, fpf.DepartureTime DESC;";
+
 			Connection connection = ConfigBean.getConnection();
-			PreparedStatement statement = connection.prepareStatement(query);
+			PreparedStatement statement = connection.prepareStatement(getFlightPathFlights);
 			statement.setString(1, userID);
 			ResultSet result = statement.executeQuery();
-			flightsToSort = new LinkedList<>();
 			while (result.next()) {
 				String airlineCodeToAdd = result.getString("AirlineCode");
 				String flightNumberToAdd = result.getString("FlightNumber");
@@ -535,12 +536,11 @@ public class UserBean implements Serializable {
 				float minimumCost = result.getFloat("minimumPrice");
 				hm.put(flightPathID, minimumCost);
 				int leg = result.getInt("Leg");
-				FlightBean flightToAdd = new FlightBean(airlineCodeToAdd, flightNumberToAdd, departureTimeToAdd);
-				flightToAdd.setLeg(leg);
+				FlightBean flightToAdd = new FlightBean(airlineCodeToAdd, flightNumberToAdd, departureTimeToAdd, leg);
+				flightToAdd.loadDestinationBeans();
 				BookmarkedFlightBean bfb = new BookmarkedFlightBean(flightToAdd, flightPathID);
 				flightsToSort.add(bfb);
 			}
-
 			result.close();
 			statement.close();
 			connection.close();
@@ -556,16 +556,20 @@ public class UserBean implements Serializable {
 			int currentFlightPathID = flightsToSort.peek().getId();
 
 			if (currentFlightPathID != tempFlightPathID) {
-				FlightPathBean fpb = new FlightPathBean();
 				Stack<FlightBean> flights = new Stack<FlightBean>();
-				float minimumPrice = hm.get(currentFlightPathID);
-				fpb.setMinPrice(minimumPrice);
-
+				Queue<FlightBean> flightsThatAreInFlightList = new LinkedList<>();
 				while (!flightsToSort.isEmpty() && flightsToSort.peek().getId() == currentFlightPathID) {
+					flightsThatAreInFlightList.add(flightsToSort.peek().getFlight());
 					FlightBean flightToAddToPath = flightsToSort.poll().getFlight();
+					if(flightsThatAreInFlightList.size() > 1){
+						flightToAddToPath.setPreviousFlight(flightsThatAreInFlightList.poll());
+					}
 					flights.add(flightToAddToPath);
 				}
-				fpb.setFlightPath(flights);
+				FlightPathBean fpb = new FlightPathBean(flights);
+				float minimumPrice = hm.get(currentFlightPathID);
+				fpb.setId(currentFlightPathID);
+				fpb.setMinPrice(minimumPrice);
 				this.addBookmarkedFlight(fpb);
 				tempFlightPathID = currentFlightPathID; // update tempFlightPathID
 			}
@@ -1267,4 +1271,5 @@ public class UserBean implements Serializable {
 
 		return tagSet;
 	}
+
 }

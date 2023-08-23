@@ -24,11 +24,10 @@ String message = (String) session.getAttribute("message");
         <div id="continueFormContainer">
         <div>
             <%= message %>
-        <div>
+        </div>
             <form method="POST" action="GroupHomepage">
                 <button class="groupButton" type="submit" name="addFlightContinue" value="continue">Continue</button>
             </form>
-        </div>
         </div>
         </main>
     </body>

@@ -33,11 +33,13 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
                 if(!groups.isEmpty()){
                     int size = groups.size();
                     String name = "";
+                    String id = "";
                     for(int i = 0; i < size; i++){
                         GroupBean group = groups.pop();
-                        name = group.getGroupName(); %>
+                        name = group.getGroupName();
+                        id = group.getGroupID(); %>
                         <label for="groupFaveFlight"><%= name %></label>
-                        <input type="checkbox" id="groupFaveFlight" name="groupName" value="<%= name %>">
+                        <input type="checkbox" id="groupFaveFlight" name="groupID" value="<%= id %>">
 
                         <%
                         groups.addLast(group);
