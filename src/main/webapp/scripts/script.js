@@ -102,8 +102,7 @@ function validateCardForm(){
 
 }
 
-function toggleVisibility(id, event) {
-    event.preventDefault();
+function toggleVisibility(id) {
     closeTicketSelection(id);
     var x = document.getElementById(id);
      if (x.style.display === "none") {
@@ -113,10 +112,7 @@ function toggleVisibility(id, event) {
     }
 }
 
-function test() {
-}
-
-function toggleVisibility2(id, type, button, event) {
+function toggleVisibility2(id, type, button) {
     event.preventDefault();
     var headerID = id + 'classDiv';
     var header = document.getElementById(headerID);
@@ -157,56 +153,56 @@ function closeTicketSelection(id) {
     varFirDiv.style.display = "none";
 }
 
-function selectPrice(passenger, isReturn, id, price, classCode, ticketType, event) {
-    event.preventDefault();
-
-    var spanID = 'priceFor-' + passenger + '-' + isReturn + '-' + id;
-    var spanElem = document.getElementById(spanID);
-    spanElem.innerHTML = 'SELECTED PRICE: ' + price;
-
-    var inputPrice = passenger + '-' + isReturn + '-price-' + id;
-    document.forms['passengerDetails'][inputPrice].value = price;
-
-    var total = 0;
-    var returnTotal = 0;
-
-    var className = 'falsetotal';
-    var prices = document.getElementsByClassName(className);
-
-    for (var i = 0; i < prices.length; i++) {
-        if(!isNaN(parseFloat(prices[i].value))) {
-            total = total + parseFloat(prices[i].value);
-        }
-    }
-
-    var classNameReturn = 'truetotal';
-    var prices = document.getElementsByClassName(classNameReturn);
-    for (var i = 0; i < prices.length; i++) {
-        if(!isNaN(parseFloat(prices[i].value))) {
-            returnTotal = returnTotal + parseFloat(prices[i].value);
-        }
-    }
-
-    var grandTotal = 'falsetotal';
-    var totalSpan = document.getElementById(grandTotal);
-    totalSpan.innerHTML = total;
-
-    var grandReturnTotal = 'truetotal';
-    var returnTotalSpan = document.getElementById(grandReturnTotal);
-    returnTotalSpan.innerHTML = returnTotal;
-
-    var inputClassCode = passenger + '-' + isReturn + '-class-' + id;
-    document.forms['passengerDetails'][inputClassCode].value = classCode;
-
-    var inputTicketType = passenger + '-' + isReturn + '-type-' + id;
-    document.forms['passengerDetails'][inputTicketType].value = ticketType;
-
-    document.forms['passengerDetails'][grandTotal].value = total;
-    document.forms['passengerDetails'][grandReturnTotal].value = returnTotal;
-
-    var newID = passenger + '-' + isReturn + '-' + id;
-    toggleVisibility(newID, event);
-}
+//function selectPrice(passenger, isReturn, id, price, classCode, ticketType, event) {
+//    event.preventDefault();
+//
+//    var spanID = 'priceFor-' + passenger + '-' + isReturn + '-' + id;
+//    var spanElem = document.getElementById(spanID);
+//    spanElem.innerHTML = 'SELECTED PRICE: ' + price;
+//
+//    var inputPrice = passenger + '-' + isReturn + '-price-' + id;
+//    document.forms['passengerDetails'][inputPrice].value = price;
+//
+//    var total = 0;
+//    var returnTotal = 0;
+//
+//    var className = 'falsetotal';
+//    var prices = document.getElementsByClassName(className);
+//
+//    for (var i = 0; i < prices.length; i++) {
+//        if(!isNaN(parseFloat(prices[i].value))) {
+//            total = total + parseFloat(prices[i].value);
+//        }
+//    }
+//
+//    var classNameReturn = 'truetotal';
+//    var prices = document.getElementsByClassName(classNameReturn);
+//    for (var i = 0; i < prices.length; i++) {
+//        if(!isNaN(parseFloat(prices[i].value))) {
+//            returnTotal = returnTotal + parseFloat(prices[i].value);
+//        }
+//    }
+//
+//    var grandTotal = 'falsetotal';
+//    var totalSpan = document.getElementById(grandTotal);
+//    totalSpan.innerHTML = total;
+//
+//    var grandReturnTotal = 'truetotal';
+//    var returnTotalSpan = document.getElementById(grandReturnTotal);
+//    returnTotalSpan.innerHTML = returnTotal;
+//
+//    var inputClassCode = passenger + '-' + isReturn + '-class-' + id;
+//    document.forms['passengerDetails'][inputClassCode].value = classCode;
+//
+//    var inputTicketType = passenger + '-' + isReturn + '-type-' + id;
+//    document.forms['passengerDetails'][inputTicketType].value = ticketType;
+//
+//    document.forms['passengerDetails'][grandTotal].value = total;
+//    document.forms['passengerDetails'][grandReturnTotal].value = returnTotal;
+//
+//    var newID = passenger + '-' + isReturn + '-' + id;
+//    toggleVisibility(newID, event);
+//}
 
 function validateRandomDestForm(){
     if(document.forms["randomDestinationForm"]["departureLocation"].value === ""){

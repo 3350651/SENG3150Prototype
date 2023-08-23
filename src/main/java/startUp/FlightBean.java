@@ -336,7 +336,16 @@ public class FlightBean implements Serializable {
         return -1;
     }
 
-    public String getTicketTypeOfAvailability(float price) {
+    public String getTicketTypeCodeOfAvailability(float price) {
+        for (AvailabilityBean availability : seatAvailability) {
+            if (availability.getPrice() == price) {
+                return availability.getTicketCode();
+            }
+        }
+        return "";
+    }
+
+    public String getTicketTypeNameOfAvailability(float price) {
         for (AvailabilityBean availability : seatAvailability) {
             if (availability.getPrice() == price) {
                 return availability.getTicketTypeName();
@@ -346,6 +355,15 @@ public class FlightBean implements Serializable {
     }
 
     public String getClassCodeOfAvailability(float price) {
+        for (AvailabilityBean availability : seatAvailability) {
+            if (availability.getPrice() == price) {
+                return availability.getClassCode();
+            }
+        }
+        return "";
+    }
+
+    public String getClassNameOfAvailability(float price) {
         for (AvailabilityBean availability : seatAvailability) {
             if (availability.getPrice() == price) {
                 return availability.getClassName();

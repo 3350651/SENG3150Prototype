@@ -19,8 +19,8 @@ public class BookingBean implements Serializable {
 
     private String bookingId;
     private String bookingUserId;
-    private LinkedList<FlightBean> departureFlights;
-    private LinkedList<FlightBean> returnFlights;
+    private FlightBean departureFlight;
+    private FlightBean returnFlight;
     private LinkedList<TicketBean> tickets;
     private LinkedList<PassengerBean> passengers;
     private float totalAmount;
@@ -28,47 +28,47 @@ public class BookingBean implements Serializable {
 
     // constructors
 
-    public BookingBean(String bookingId, String bookingUserId, LinkedList<FlightBean> departureFlights, LinkedList<FlightBean> returnFlights,
+    public BookingBean(String bookingId, String bookingUserId, FlightBean departureFlight, FlightBean returnFlight,
     LinkedList<TicketBean> tickets, LinkedList<PassengerBean> passengers, float totalAmount, boolean progress){
         this.bookingId = bookingId;
         this.bookingUserId = bookingUserId;
-        this.departureFlights = departureFlights;
-        this.returnFlights = returnFlights;
+        this.departureFlight = departureFlight;
+        this.returnFlight = returnFlight;
         this.tickets = tickets;
         this.passengers = passengers;
         this.totalAmount = totalAmount;
         this.progress = progress;
     }
 
-    public BookingBean(String newBookingUserId, LinkedList<FlightBean> newDepartureFlight, float newTotalAmount) {
+    public BookingBean(String newBookingUserId, FlightBean newDepartureFlight, float newTotalAmount) {
         Random random = new Random();
         bookingId = String.format("%08d", random.nextInt(100000000));
         bookingUserId = newBookingUserId;
-        departureFlights = newDepartureFlight;
+        departureFlight = newDepartureFlight;
         totalAmount = newTotalAmount;
-        returnFlights = null;
+        returnFlight = null;
         tickets = null;
         passengers = null;
     }
 
-    public BookingBean(String newBookingUserId, LinkedList<FlightBean> newDepartureFlight, LinkedList<FlightBean> newReturnFlight,
+    public BookingBean(String newBookingUserId, FlightBean newDepartureFlight, FlightBean newReturnFlight,
             float newTotalAmount) {
         Random random = new Random();
         bookingId = String.format("%08d", random.nextInt(100000000));
         bookingUserId = newBookingUserId;
-        departureFlights = newDepartureFlight;
+        departureFlight = newDepartureFlight;
         totalAmount = newTotalAmount;
-        returnFlights = newReturnFlight;
+        returnFlight = newReturnFlight;
         tickets = null;
         passengers = null;
     }
 
-    public BookingBean(String newBookingUserId, LinkedList<FlightBean> newDepartureFlight, LinkedList<FlightBean> newReturnFlight) {
+    public BookingBean(String newBookingUserId, FlightBean newDepartureFlight, FlightBean newReturnFlight) {
         Random random = new Random();
         bookingId = String.format("%08d", random.nextInt(100000000));
         bookingUserId = newBookingUserId;
-        departureFlights = newDepartureFlight;
-        returnFlights = newReturnFlight;
+        departureFlight = newDepartureFlight;
+        returnFlight = newReturnFlight;
         tickets = null;
         passengers = null;
     }
@@ -91,20 +91,20 @@ public class BookingBean implements Serializable {
         this.bookingUserId = bookingUserId;
     }
 
-    public LinkedList<FlightBean> getDepartureFlights() {
-        return departureFlights;
+    public FlightBean getDepartureFlight() {
+        return departureFlight;
     }
 
-    public void setDepartureFlights(LinkedList<FlightBean> departureFlight) {
-        this.departureFlights = departureFlight;
+    public void setDepartureFlight(FlightBean departureFlight) {
+        this.departureFlight = departureFlight;
     }
 
-    public LinkedList<FlightBean> getReturnFlights() {
-        return returnFlights;
+    public FlightBean getReturnFlights() {
+        return returnFlight;
     }
 
-    public void setReturnFlights(LinkedList<FlightBean> returnFlight) {
-        this.returnFlights = returnFlight;
+    public void setReturnFlights(FlightBean returnFlight) {
+        this.returnFlight = returnFlight;
     }
 
     public LinkedList<TicketBean> getTickets() {

@@ -972,6 +972,12 @@ p.summaryOfSearch{
    box-sizing: border-box;
  }
 
+.flightDetailsColumnCenter {
+    border-color: black;
+    width: 70%;
+    margin: auto;
+}
+
  .ticketSelection {
    display: none;
  }
