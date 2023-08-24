@@ -27,12 +27,7 @@ boolean lockedIn = (boolean) session.getAttribute("lockedIn");
 <body>
     <main>
         <header>
-           <form name="backtoGroupHomepage" action="GroupHomepage" method="GET">
-                   <button class="groupButton" type="submit" name="groupHomepage" value="true">Return to Group Homepage</button>
-           </form>
-
             <div class="titleContainer">
-            <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png" alt="FlightPub Logo" class="groupLogo" >
                 <h1>Group Favourite List</h1>
             </div>
             <div class="groupName">
@@ -65,12 +60,6 @@ boolean lockedIn = (boolean) session.getAttribute("lockedIn");
                         </div>
                         <form method="POST" action="GroupHomepage">
                             <input type="hidden" name="flightIndex" value="<%= faveFlights.indexOf(faveFlight) %>">
-                            <div class="groupFaveFlightButtons">
-                                <button class="groupFavButton"  type="submit" name="quickVote" value="2">Lock-in</button>
-                                <button class="groupFavButton"  type="submit" name="quickVote" value="1">Upvote</button>
-                                <button class="groupFavButton"  type="submit" name="quickVote" value="-1">Downvote</button>
-                                <button class="groupFavButton" type="submit" name="quickVote" value="-2">Blacklist</button>
-                            </div>
                             <div class="viewFlightDetailsButton">
                                 <button type="submit" class="viewGroupFaveFlight" name="viewFaveFlight" value="viewFaveFlight">View Group Favourite Flight</button><br>
                                 <button type="submit" class="viewGroupFaveFlight" name="viewFlight" value="viewFlight">View Flight Details</button>
@@ -101,13 +90,9 @@ boolean lockedIn = (boolean) session.getAttribute("lockedIn");
                 </div>
             </div>
             <form method="POST" action="GroupHomepage">
-                <div class="groupFaveFlightButtons">
-                    <input type="hidden" name="flightIndex" value="<%= faveFlights.indexOf(faveFlight) %>">
-                    <button class="groupFavButton"  type="submit" name="quickVote" value="2">Lock-in</button>
-                    <button class="groupFavButton"  type="submit" name="quickVote" value="1">Upvote</button>
-                    <button class="groupFavButton"  type="submit" name="quickVote" value="-1">Downvote</button>
-                    <button class="groupFavButton" type="submit" name="quickVote" value="-2">Blacklist</button>
-                </div>
+
+                <input type="hidden" name="flightIndex" value="<%= faveFlights.indexOf(faveFlight) %>">
+
                 <div class="viewFlightDetailsButton">
                     <button class="viewGroupFaveFlight" type="submit" name="viewFaveFlight" value="viewFaveFlight">View Group Favourite Flight</button><br>
                     <button type="submit" class="viewGroupFaveFlight" name="viewFlight" value="viewFlight">View Flight Details</button> <br>

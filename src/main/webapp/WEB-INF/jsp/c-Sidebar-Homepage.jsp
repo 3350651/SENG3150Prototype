@@ -77,6 +77,7 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
                                 <%= name %>
                             </button>
                             <input type="hidden" id="groupID" name="groupID" value="<%= id %>">
+                            <input type="hidden" id="faveList" name="getGroupFaveList" value="true">
                         </form>
                     </div>
                     <%
