@@ -52,7 +52,7 @@
     <br><br>
     <jsp:include page='c-recSearchBar.jsp'></jsp:include>
     <br><br>
-     <div>
+     <div class="initialRec">
         <h1>Destinations For You</h1>
         <jsp:include page="c-destinationSearchResults.jsp"></jsp:include>
      </div>
