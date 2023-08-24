@@ -335,6 +335,7 @@ public class BookingBean implements Serializable {
                     tickets.add(new TicketBean(ticketBookingId, ticketPassengerId, ticketFlightNumber, ticketAirlineCode, ticketDepartureTime, ticketClass, ticketType));
                 }
 
+                System.out.println("BookingBean");
                 bookings.add(new BookingBean(bookingId, bookingUserId, departure, returnFl, tickets, passengers, totalAmount, progress ));
                 System.out.println("passennger size " + passengers.size());
                 System.out.println("ticketsize " + tickets.size());
@@ -351,6 +352,7 @@ public class BookingBean implements Serializable {
 
     public void updatePrice(String bookingId, float price)
     {
+        this.totalAmount = price;
         try {
             String query = "UPDATE BOOKINGS SET TotalAmount = ? WHERE BookingId = ?";
             Connection connection = ConfigBean.getConnection();

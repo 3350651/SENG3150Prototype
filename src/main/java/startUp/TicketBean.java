@@ -28,6 +28,10 @@ public class TicketBean implements Serializable {
 
     private String price;
 
+    private String departure;
+
+    private String arrival;
+
 
     public TicketBean(String bookingId, String passengerId, String flightId, String airlineId, Timestamp flightTime, String ticketClass, String ticketType){
         this.bookingId = bookingId;
@@ -196,6 +200,22 @@ public class TicketBean implements Serializable {
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
         }
+    }
+
+    public String getDeparture() {
+        return departure;
+    }
+
+    public void setDeparture(String departure) {
+        this.departure = departure;
+    }
+
+    public String getArrival() {
+        return arrival;
+    }
+
+    public void setArrival(String arrival) {
+        this.arrival = arrival;
     }
 
     //remove ticket

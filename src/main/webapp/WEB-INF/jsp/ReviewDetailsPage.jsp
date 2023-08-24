@@ -1,5 +1,7 @@
 <% float price = (float) session.getAttribute("price"); %>
 <% String priceString = String.valueOf(price); %>
+<%@ page import="java.util.LinkedList" %>
+<%@ page import="startUp.BookingBean" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,6 +36,7 @@
         <jsp:include page="c-BookingDetails.jsp"></jsp:include>
         <br />
         <fieldset class="filled">
+            <h3>GRAND TOTAL: $<%= ((LinkedList<BookingBean>) session.getAttribute("bookings")).get(0).getTotalAmount() %></h3>
             <h3>Payment Details:</h3>
             <form name="paymentForm" action="createBooking" onsubmit="return validateCardForm()" method="POST">
                 <input type="hidden" name="payment" value="true">
