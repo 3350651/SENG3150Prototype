@@ -28,6 +28,11 @@ else if(isFlights != null){
 <jsp:include page='c-AccountAccess.jsp'></jsp:include>
 <br><br>
 <body>
+<form style="float: left; margin-left: 300px;" name="SearchSelect" action="flightSearch" method="GET">
+    <button type="submit" class="button" name="home"
+        value="recommendSearch">Back</button>
+</form>
+<br><br>
 <div class="centeringtext">
     <h1>Recommendation Search Results</h1>
     <% if(destinations) { %>
