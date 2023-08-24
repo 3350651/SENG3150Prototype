@@ -8,6 +8,8 @@ UserBean user = (UserBean) session.getAttribute("userBean");
 GroupBean group = (GroupBean) session.getAttribute("group");
 PoolBean pool = (PoolBean) session.getAttribute("pool");
 boolean hasDeposited = (boolean) session.getAttribute("hasDeposited");
+boolean lockedIn = (boolean) session.getAttribute("lockedIn");
+boolean poolFinished = (boolean) session.getAttribute("poolFinished");
 %>
 
 
@@ -34,6 +36,11 @@ boolean hasDeposited = (boolean) session.getAttribute("hasDeposited");
             </div>
         </header>
 
+        <% if(poolFinished) { %>
+            <div class="moneyPool">
+               <p>The Money Pool has been complete!</p>
+            </div>
+        <%} else if(lockedIn) { %>
         <div class="moneyPool">
             <div>
                 <p style="font-size: 20px;"><br style="line-height: 0px;">Total Amount of Pool:<br style="line-height: 0px;"><b> <%= pool.getTotalAmount()  %></b></p>
@@ -54,6 +61,11 @@ boolean hasDeposited = (boolean) session.getAttribute("hasDeposited");
              </div>
          <%}%>
          </div>
+         <%} else { %>
+             <div class="moneyPool">
+                <p>A flight needs to be Locked-In before the Money Pool can be used.</p>
+             </div>
+         <% } %>
     </main>
 </body>
 <script type="text/javascript" src="script.js"></script>

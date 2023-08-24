@@ -32,7 +32,6 @@ public class MemberFlightVoteBean {
         this.score = vote;
 
         addMemberFlightVoteToDB();
-
     }
 
     public void addMemberFlightVoteToDB(){
@@ -88,7 +87,7 @@ public class MemberFlightVoteBean {
 
     public static double getFaveFlightScore(String groupID, String groupFaveFlightID){
         double score = 0;
-        String query = "SELECT COUNT(score) FROM MEMBERFLIGHTVOTE WHERE [groupID] = ? AND " +
+        String query = "SELECT SUM(score) FROM MEMBERFLIGHTVOTE WHERE [groupID] = ? AND " +
                 " [groupFaveFlightID] = ?";
         try{
             Connection connection = ConfigBean.getConnection();
@@ -112,5 +111,72 @@ public class MemberFlightVoteBean {
         return score;
     }
 
+    public static void updateMemberScore(String groupID, String groupFaveFlightID, String userID, double vote){
+        String query = "UPDATE MEMBERFLIGHTVOTE SET [score] = ? WHERE [groupID] = ? AND [groupFaveFlightID] = ? AND [userID] = ?";
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setDouble(1, vote);
+            statement.setString(2, groupID);
+            statement.setString(3, groupFaveFlightID);
+            statement.setString(4, userID);
+
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+    }
+
+    //Check if the member has already voted for that flight.
+    public static boolean hasVoted(String groupFaveFlightID, String groupID, String userID){
+        boolean hasVoted = false;
+        String query =" SELECT * FROM MEMBERFLIGHTVOTE WHERE [groupID] = ? AND groupFaveFlightID = ? AND userID = ?";
+
+        try{
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, groupID);
+            statement.setString(2, groupFaveFlightID);
+            statement.setString(3, userID);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                hasVoted = true;
+            }
+
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+
+        return hasVoted;
+    }
+
+    public static void deleteMemberFlightVotes(String groupID, String groupFaveFlightID){
+        String query = "DELETE MEMBERFLIGHTVOTE WHERE [groupID] = ? AND [groupFaveFlightID] = ?";
+        try {
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, groupID);
+            statement.setString(2, groupFaveFlightID);
+
+            statement.executeUpdate();
+            statement.close();
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+    }
 
 }

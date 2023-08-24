@@ -76,6 +76,8 @@ public class UserGroupsBean implements Serializable {
                     isAdmin = true;
                 }
             }
+            statement.close();
+            connection.close();
         }
         catch(SQLException e){
             System.err.println(e.getMessage());
@@ -98,6 +100,8 @@ public class UserGroupsBean implements Serializable {
             while (result.next()) {
                 userIDs.add(result.getString(1));
             }
+            statement.close();
+            connection.close();
         }
         catch(SQLException e){
             System.err.println(e.getMessage());
@@ -171,6 +175,8 @@ public class UserGroupsBean implements Serializable {
             while (result.next()) {
                 inGroup = true;
             }
+            statement.close();
+            connection.close();
         }
         catch(SQLException e){
             System.err.println(e.getMessage());
@@ -193,6 +199,8 @@ public class UserGroupsBean implements Serializable {
             while (result.next()) {
                 members = result.getInt(1);
             }
+            statement.close();
+            connection.close();
         }
         catch(SQLException e){
             System.err.println(e.getMessage());

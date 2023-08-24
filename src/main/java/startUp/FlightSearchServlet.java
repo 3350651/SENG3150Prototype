@@ -21,7 +21,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.Stack;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -33,11 +32,28 @@ public class FlightSearchServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         if (request.getParameter("home").equalsIgnoreCase("recommendSearch")) {
-
-            SearchBean search = new SearchBean(null, null, null, null, false, 0, 0, 0);
-
-            //session.setAttribute("flightResults", search);
-            session.setAttribute("searchResults", search);
+            UserBean user = (UserBean) session.getAttribute("userBean");
+            if (user != null && user.getTagSet().size() > 0) {
+                Object[] temp = user.getTagSet().toArray();
+                String[] tags = Arrays.copyOf(temp, temp.length, String[].class);
+                int i = tags.length;
+                LinkedList<DestinationBean> results = new LinkedList<>();
+                while (results.size() < 3) {
+                    results = DestinationBean.getInitialRecommendations(tags, i);
+                    i--;
+                }
+                session.setAttribute("matchingDestinations", results);
+            } else {
+                Object[] temp = TagBean.getAllTags().toArray();
+                String[] tags = Arrays.copyOf(temp, temp.length, String[].class);
+                int i = tags.length;
+                LinkedList<DestinationBean> results = new LinkedList<>();
+                while (results.size() < 3) {
+                    results = DestinationBean.getInitialRecommendations(tags, i);
+                    i--;
+                }
+                session.setAttribute("matchingDestinations", results);
+            }
             request.setAttribute("goToRecommend", true);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-RecommendedSearch.jsp");
             requestDispatcher.forward(request, response);
@@ -189,10 +205,6 @@ public class FlightSearchServlet extends HttpServlet {
             SearchBean search = new SearchBean(departureTime, destination, departure, null, true, flexibleDays, adults, children);
             search.searchFlights(10, 5);
             session.setAttribute("searchResults", search);
-            //session.setAttribute("flightResults", search);
-            session.setAttribute("numAdults", adults); //save values on session for return search
-            session.setAttribute("numChildren", children); //save values on session for return search
-
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/simpleSearchResults.jsp");
             requestDispatcher.forward(request, response);
         }
@@ -219,45 +231,10 @@ public class FlightSearchServlet extends HttpServlet {
             } else {
                 flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResults");
             }
-            System.out.println("isReturnResults = " + request.getParameter("isReturnResults"));
-            if (request.getParameter("isReturnResults").equalsIgnoreCase("true")) {
-                System.out.println("FlightSearchServlet.viewFlight.Return");
-                flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResultList");
-                LinkedList<FlightPathBean> returnFlights = (LinkedList<FlightPathBean>) session.getAttribute("returnFlightResultList");
 
-                FlightPathBean returnFlight = returnFlights.get(Integer.parseInt(request.getParameter("returnFlightIndex")));
-
-                // Invert the flightBean stack and store in linked list. Easier to call with a FOR loop on a jsp page
-                LinkedList<FlightBean> returnFlightList = new LinkedList<FlightBean>();
-                Stack<FlightBean> returnFlightStack = returnFlight.getFlightPath();
-                for ( int i = 1 ; i <= returnFlightStack.size(); i++) {
-                    returnFlightList.addLast(returnFlightStack.get(returnFlightStack.size() - i));
-                }
-
-                session.setAttribute("returnFlight", returnFlight);
-                session.setAttribute("returnFlightList", returnFlightList);
-                session.setAttribute("viewReturnFlightSearchResults", Boolean.FALSE);
-                session.setAttribute("viewReturnFlightDetails", Boolean.TRUE);
-
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
-                requestDispatcher.forward(request, response);
-            }
-
-            flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResultList");
             FlightPathBean flight = flights.get(Integer.parseInt(request.getParameter("flightIndex")));
 
-            // Invert the flightBean stack and store in linked list. Easier to call with a FOR loop on a jsp page
-            LinkedList<FlightBean> flightList = new LinkedList<FlightBean>();
-            Stack<FlightBean> flightStack = flight.getFlightPath();
-            for ( int i = 1 ; i <= flightStack.size(); i++) {
-                flightList.addLast(flightStack.get(flightStack.size() - i));
-            }
-
-            System.out.println("FlightSearchServlet.viewFlight");
             session.setAttribute("flight", flight);
-            session.setAttribute("flightList", flightList);
-            session.setAttribute("viewReturnFlightSearchResults", Boolean.FALSE);
-            session.setAttribute("viewReturnFlightDetails", Boolean.FALSE);
             /* TODO: No longer valid
             String flightDetails = flight.getAirline() + "," + flight.getFlightName() + ","
                     + flight.getFlightTime();
@@ -266,48 +243,7 @@ public class FlightSearchServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(request, response);
         }
-        else if (request.getParameter("searchResults") != null
-                && request.getParameter("searchResults").equalsIgnoreCase("simpleReturnSearchResults")) {
-
-            System.out.println("FlightSearchServlet.simpleReturnSearchResults");
-            String departure = request.getParameter("departureLocation");
-            String destination = request.getParameter("arrivalLocation");
-            String time = request.getParameter("returnDate");
-            time += " 00:00:00";
-            Timestamp departureTime = Timestamp.valueOf(time);
-
-            int numReturnPassengers = Integer.parseInt(request.getParameter("numReturnPassengers"));
-            if (numReturnPassengers < 0 || numReturnPassengers < 0 || (numReturnPassengers == 0 && numReturnPassengers == 0)) {
-                throw new IOException("Invalid input: Invalid combination of adult and children passengers.");
-            }
-            if (destination == null) {
-                throw new IOException("Invalid input: Select a destination.");
-            }
-            if (departure == null) {
-                throw new IOException("Invalid input: Select a departure location.");
-            }
-            if (departure.equals(destination)) {
-                throw new IOException("Invalid input: Cannot leave from and arrive at the same destination.");
-            }
-
-            System.out.println(departure);
-            System.out.println(destination);
-            System.out.println("FlightSearchServlet.simpleReturnSearchResults.departureTime " + departureTime);
-
-            SearchBean search = new SearchBean(departureTime, destination, departure, null, true, 0, numReturnPassengers, 0);
-            search.searchFlights(10, 5);
-
-            LinkedList<FlightPathBean> searchResults = search.getResults();
-
-            session.setAttribute("numReturnPassengers", numReturnPassengers);
-            session.setAttribute("returnFlightResults", search);
-            session.setAttribute("viewReturnFlightSearchResults", Boolean.TRUE);
-            session.setAttribute("viewReturnFlightDetails", Boolean.FALSE);
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
-            requestDispatcher.forward(request, response);
-        }
         else if(request.getParameter("saveParam") != null){
-            user = (UserBean) session.getAttribute("userBean");
             String userID = user.getUserID();
             String departure = request.getParameter("departureLocation");
             String destination = request.getParameter("arrivalLocation");

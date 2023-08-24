@@ -51,6 +51,11 @@
     <jsp:include page='c-AccountAccess.jsp'></jsp:include>
     <br><br>
     <jsp:include page='c-recSearchBar.jsp'></jsp:include>
+    <br><br>
+     <div class="initialRec">
+        <h1>Destinations For You</h1>
+        <jsp:include page="c-destinationSearchResults.jsp"></jsp:include>
+     </div>
 </div>
 </body>
 <script type="text/javascript"

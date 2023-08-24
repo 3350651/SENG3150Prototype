@@ -27,8 +27,8 @@ public class FlightPathBean {
             destinations.add(flight.getDeparture().getDestinationCode());
             //minPrice += flight.getMinCost();
         }
+        id = ThreadLocalRandom.current().nextInt(10000000, 99999999);
         minPrice = BigDecimal.valueOf(minPrice).setScale(2, RoundingMode.HALF_UP).floatValue();
-        id = ThreadLocalRandom.current().nextInt(00000000, 99999999);
     }
 
     public FlightPathBean(Stack<FlightBean> flights, boolean check) {

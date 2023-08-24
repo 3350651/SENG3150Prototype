@@ -14,12 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.LinkedList;
 
 import static startUp.ChatBean.deleteChat;
 import static startUp.GroupBean.*;
-import static startUp.GroupFaveFlightBean.deleteGroupFaveFlights;
-import static startUp.GroupFaveFlightBean.getGroupFaveFlights;
+import static startUp.GroupFaveFlightBean.*;
+import static startUp.MemberFlightVoteBean.deleteMemberFlightVotes;
 import static startUp.MessageBean.deleteMessages;
 import static startUp.PoolBean.deletePool;
 import static startUp.PoolDepositBean.hasMadeDeposit;
@@ -37,6 +38,20 @@ public class ManageGroupServlet extends HttpServlet {
         GroupBean group = (GroupBean) session.getAttribute("group");
         boolean depositMade = poolDeposits(group.getPoolID());
         session.setAttribute("depositMade", depositMade);
+
+        LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(group.getGroupID());
+        int size = faveFlights.size();
+        boolean lockedIn = false;
+        if(faveFlights.size() != 0) {
+            for (int i = 0; i < size; i++) {
+                GroupFaveFlightBean temp = faveFlights.removeFirst();
+                if (lockedIn(group.getGroupID(), temp.getScore())) {
+                    lockedIn = true;
+                }
+            }
+        }
+        //Determine whether a flight has been locked in by all members.
+        session.setAttribute("lockedIn", lockedIn);
 
         // send the user to an unauthorised page if they try to access the homepage without being logged in.
 
@@ -145,25 +160,31 @@ public class ManageGroupServlet extends HttpServlet {
         if(request.getParameter("confirmDeleteGroup") != null){
             boolean delete = Boolean.parseBoolean(request.getParameter("confirmDeleteGroup"));
 
-            //Group cannot currently be deleted.
+            //Delete the group and related db objects.
             if(delete){
-//                deleteUserGroups(groupID);
-//
-//                LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(groupID);
-//                int size = faveFlights.size();
-//                //Delete the favourite flights.
-//                deleteGroupFaveFlights(groupID);
-//
-//                for(int i = 0; i < size; i++){
-//                    GroupFaveFlightBean flight = faveFlights.removeFirst();
-//                    //Delete all chats and associated messages/comments.
-//                    deleteChat(flight.getChatID());
-//                    deleteMessages(flight.getChatID());
-//                }
-//
-//                deleteGroup(groupID);
-//                //For full implementation: delete the MemberFlightVote rows for the given group (votes made by users).
-//                deletePool(group.getPoolID());
+                //Kill userGroupBeans
+                deleteUserGroups(group.getGroupID());
+
+                //Kill faveFlights
+                LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(group.getGroupID());
+                int size = faveFlights.size();
+
+                for(int i = 0; i < size; i++){
+                    GroupFaveFlightBean temp = faveFlights.removeFirst();
+                    deleteMessages(temp.getChatID());
+                    deleteMemberFlightVotes(group.getGroupID(), temp.getGroupFaveFlightID());
+                    deleteGroupFaveFlight(group.getGroupID(), temp.getGroupFaveFlightID());
+                    deleteChat(temp.getChatID());
+                }
+
+                deleteGroup(group.getGroupID());
+                deletePool(group.getPoolID());
+
+                /*
+                TagBean
+                Calander Bean
+                 */
+
                 session.setAttribute("message", "Success! The group was deleted.");
                 session.setAttribute("goHome", true);
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepageMessage.jsp");
@@ -183,6 +204,72 @@ public class ManageGroupServlet extends HttpServlet {
         //goes to homepage in cases where user is not added to group
         else if(request.getParameter("continue") != null){
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        if(request.getParameter("modifyGroupTags") != null){
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ModifyGroupTags.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+        if(request.getParameter("addTags") != null){
+            String[] tagValues = request.getParameterValues("tagsToAdd[]");
+            for (String tagValue : tagValues) {
+                try {
+                    GroupBean.addToTagSet(groupID, tagValue);
+                    group.addTag(tagValue);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            session.setAttribute("group", group);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        if(request.getParameter("removeTags") != null){
+            String[] tagValues = request.getParameterValues("tagsToRemove[]");
+            for (String tagValue : tagValues) {
+                GroupBean.removeFromTagSet(groupID, tagValue);
+                group.removeTag(tagValue);
+            }
+            session.setAttribute("group", group);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        if (request.getParameter("submitQuestionnaire") != null) {
+            String[] travelGoals = request.getParameterValues("travelGoals[]");
+            String[] locations = request.getParameterValues("locations[]");
+            String[] valueAdds = request.getParameterValues("valueAdds[]");
+            for (String tagValue : travelGoals) {
+                try {
+                    GroupBean.addToTagSet(groupID, tagValue);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                group.addTag(tagValue);
+            }
+            for (String tagValue : locations) {
+                try {
+                    GroupBean.addToTagSet(groupID, tagValue);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                group.addTag(tagValue);
+            }
+            for (String tagValue : valueAdds) {
+                try {
+                    GroupBean.addToTagSet(groupID, tagValue);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                group.addTag(tagValue);
+            }
+            session.setAttribute("group", group);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/ManageGroup.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        if(request.getParameter("completeGroupQuestionnaire") != null){
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupQuestionnaire.jsp");
             requestDispatcher.forward(request, response);
         }
 

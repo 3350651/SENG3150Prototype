@@ -30,7 +30,6 @@ public class SearchBean implements Serializable {
     int childPassengers;
     LinkedList<FlightPathBean> results;
     int searchID;
-    //TODO: may need more for completed recommendation search
 
     //constructors
     public SearchBean(Timestamp newDepartureDate, String newDestination, String newDeparture, LinkedList<TagBean> newTags, boolean newSimple, int newflexible, int newAdults, int newChildren) {
@@ -158,7 +157,6 @@ public class SearchBean implements Serializable {
         FlightBean flight = null;
         Timestamp start = this.departureDate;
         Timestamp end = Timestamp.from(this.departureDate.toInstant().plus(24, ChronoUnit.HOURS));
-        int i = 0;
 
         if (!isFlightsTo(destination, departureDate, (this.adultPassengers + this.childPassengers))) {
             results = flightPaths;

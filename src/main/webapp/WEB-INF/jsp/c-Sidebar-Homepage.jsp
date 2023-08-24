@@ -69,16 +69,18 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
     <%
             if(groups != null && (!groups.isEmpty())){
                 int size = groups.size();
+                String id = "";
                 String name = "";
                 for(int i = 0; i < size; i++){
                     GroupBean group = groups.pop();
+                    id = group.getGroupID();
                     name = group.getGroupName(); %>
                     <div>
                         <form method="GET" action="GroupHomepage">
                             <button class="button" name="goGroup" value="goGroup">
                                 <%= name %>
                             </button>
-                            <input type="hidden" id="groupName" name="groupName" value="<%= name %>">
+                            <input type="hidden" id="groupID" name="groupID" value="<%= id %>">
                         </form>
                     </div>
                     <%

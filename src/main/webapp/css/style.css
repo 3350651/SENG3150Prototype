@@ -540,7 +540,7 @@ div.simpleSearch{
     border-color: black;
     padding: 30px;
     border-radius: 10px;
-    margin-left: 200px;
+    margin: auto;
     margin-top: 100px;
 }
 
@@ -691,7 +691,7 @@ div.travelHistoryRecommendation{
 div.simpleSearchSupports{
     padding-top: 20px;
     display: flex;
-    margin-left: 155px;
+    margin: auto;
 }
 
 h2.travelHistoryRecommendationHeading{
@@ -747,6 +747,11 @@ div#sidebar.DepartureLocationResult {
 
 img#sidebar.smallPlaneLogo {
     width: 1.5em;
+    height: auto;
+}
+
+img#groupFavouriteList.smallPlaneLogo{
+    width: 1em;
     height: auto;
 }
 
@@ -1216,4 +1221,20 @@ button.tagSearch{
      transition-duration: 0.25s;
      height: 50px;
      width: 50px;
+}
+.initialRec {
+  margin: auto;
+}
+div.recSearchContainer{
+  padding: 30px;
+  border-radius: 10px;
+  margin: auto;
+}
+div.recSearch{
+  border-style: solid;
+  border-color: black;
+  padding: 30px;
+  border-radius: 10px;
+  margin: auto;
+  margin-top: 10px;
 }

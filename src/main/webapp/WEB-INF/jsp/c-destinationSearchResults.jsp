@@ -29,8 +29,9 @@ else {
         if(matchingDestinations != null && matchingDestinations.size() > 0) {
           %>
           <fieldset>
+            <%if(selectedTags != null){%>
             <div><h2>Destinations Matching (<%= selectedTags %>)</h2></div>
-          <%
+            <%}
         for (DestinationBean destination : matchingDestinations ) {
 
         %>
