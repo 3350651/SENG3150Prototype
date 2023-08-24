@@ -30,7 +30,6 @@ public class SearchBean implements Serializable {
     int childPassengers;
     LinkedList<FlightPathBean> results;
     int searchID;
-    //TODO: may need more for completed recommendation search
 
     //constructors
     public SearchBean(Timestamp newDepartureDate, String newDestination, String newDeparture, LinkedList<TagBean> newTags, boolean newSimple, int newflexible, int newAdults, int newChildren) {
