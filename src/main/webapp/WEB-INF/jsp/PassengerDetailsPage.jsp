@@ -14,7 +14,7 @@
 <% boolean avail = true;%>
 <% int passengers = (int) session.getAttribute("passengers"); %>
 <% boolean hasReturn = (boolean) session.getAttribute("hasReturn"); %>
-<% int returnPassengers = (int) session.getAttribute("numReturnPassengers");  %>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -96,52 +96,7 @@
             <br />
         <% } // end for loop on passengers%>
 
-        <% if (hasReturn) {%>
-            <div class="flightDetailsColumnCenter">
-                <h1><%= returnFlightList.get(0).getDeparture().getDestinationName() %> - <%= returnFlightList.get(returnFlightList.size() - 1).getDestination().getDestinationName() %></h1>
-            </div>
 
-            <%for(int i=1; i<=returnPassengers; i++){ %>
-            <fieldset class="filled">
-                    <h3>Passenger <%=i%></h3>
-                    <h3>Personal Details</h3>
-                <label for='<%="titletrue" +i%>'>Title: </label>
-                <select name='<%="titletrue" +i%>' id='<%="titletrue" +i%>' required="true">
-                    <option value="">Please Select---</option>
-                    <option value="Mr">Mr</option>
-                    <option value="Mrs">Mrs</option>
-                    <option value="Ms">Ms</option>
-                    <option value="">Prefer not to say</option>
-                </select>
-
-                <label for='<%="fNametrue" +i%>'>Given Name(s): </label>
-                <input type="text" name='<%="fNametrue" +i%>' id='<%="fNametrue" +i%>' />
-
-
-                <label for='<%="lNametrue" +i%>'>Family Name: </label>
-                <input type="text" name='<%="lNametrue" +i%>' id='<%="lNametrue" +i%>' required="true"/>
-                <br />
-                <br />
-
-                <label for='<%="emailtrue" +i%>'>Email: </label>
-                <input type="email" name='<%="emailtrue" +i%>' id='<%="emailtrue" +i%>' required="true"/>
-                <br />
-                <br />
-
-                <label for='<%="mobiletrue" +i%>'>Mobile Number: </label>
-                <input type="text" name='<%="mobiletrue" +i%>' id='<%="mobiletrue" +i%>' required="true"/>
-                <br />
-                <br />
-
-                <label for='<%="dobtrue" +i%>'>Date of Birth: </label>
-                <input type="date" name='<%="dobtrue" +i%>' id='<%="dobtrue" +i%>' />
-                <br />
-                <br />
-
-            </fieldset>
-            <br />
-            <% } //end for loop return passengers %>
-        <% } //end if return exists %>
         <br />
         <button class="button" name="options" id="options" type="submit">Submit</button>
     </form>

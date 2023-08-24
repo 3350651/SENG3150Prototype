@@ -10,6 +10,7 @@
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
 <% boolean viewReturnFlightSearchResults = (Boolean) session.getAttribute("viewReturnFlightSearchResults"); %>
 <% boolean viewReturnFlightDetails = (Boolean) session.getAttribute("viewReturnFlightDetails"); %>
+<% int numAdults = (Integer) session.getAttribute("numAdults"); int numChildren = (Integer) session.getAttribute("numChildren"); %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -437,8 +438,7 @@
                     <form action="flightSearch" method="POST">
                         <label for="returnDate">Return Date:</label>
                         <input type="date" id="returnDate" name="returnDate" value="<%= flightPath.getLastFlight().getTomorrow() %>" min="<%= flightPath.getLastFlight().getTomorrow() %>"><br /><br />
-                        <label for="numReturnPassengers"># Passengers</label><br>
-                        <input type="number" id="numReturnPassengers" size="2" name="numReturnPassengers" value="1">
+                        <input type="hidden" id="numReturnPassengers" name="numReturnPassengers" value="<%= numAdults + numChildren %>">
                         <input type="hidden" name="departureLocation" value="<%= flightPath.getLastFlight().getDestination().getDestinationCode() %>">
                         <input type="hidden" name="arrivalLocation" value="<%= flightPath.getInitialFlight().getDeparture().getDestinationCode() %>">
                         <br />

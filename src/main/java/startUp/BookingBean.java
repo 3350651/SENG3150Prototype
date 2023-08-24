@@ -22,7 +22,8 @@ public class BookingBean implements Serializable {
     private String bookingUserId;
     private FlightBean departureFlight;
     private FlightBean returnFlight;
-
+    private int departureFlightPathID;
+    private int returnFlightPathID;
     private FlightPathBean departureFlightPath;
     private FlightPathBean returnFlightPath;
     private LinkedList<TicketBean> tickets;
@@ -294,15 +295,11 @@ public class BookingBean implements Serializable {
 
                 //getDepartureFlight
                 FlightPathBean forgetting = new FlightPathBean();
-                Stack<FlightBean> stack = forgetting.getFlightPathFromDatabase(departureFlightPathID);
-
-                FlightPathBean departureFlightPath = new FlightPathBean(stack);
-
+                FlightPathBean departure = forgetting.getFlightPath(departureFlightPathID);
 
                 //getReturnFlight
                 FlightPathBean forgetting2 = new FlightPathBean();
-                Stack<FlightBean> stack2 = forgetting2.getFlightPathFromDatabase(returnFlightPathID);
-                FlightPathBean returnFlightPath = new FlightPathBean(stack2);
+                FlightPathBean returnFl = forgetting2.getFlightPath(returnFlightPathID);
 
                 //get passengers from this booking
                 query = "SELECT * FROM PASSENGERS WHERE BookingId = ?";
@@ -338,7 +335,7 @@ public class BookingBean implements Serializable {
                     tickets.add(new TicketBean(ticketBookingId, ticketPassengerId, ticketFlightNumber, ticketAirlineCode, ticketDepartureTime, ticketClass, ticketType));
                 }
 
-                bookings.add(new BookingBean(bookingId, bookingUserId, departureFlightPath, returnFlightPath, tickets, passengers, totalAmount, progress ));
+                bookings.add(new BookingBean(bookingId, bookingUserId, departure, returnFl, tickets, passengers, totalAmount, progress ));
                 System.out.println("passennger size " + passengers.size());
                 System.out.println("ticketsize " + tickets.size());
 

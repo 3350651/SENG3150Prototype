@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-public class DestinationBean {
+public class  DestinationBean {
 
     private String destinationCode;
     private String destinationName;

@@ -66,7 +66,9 @@
         <h2>Passenger Details:</h2>
 
         <%//for(PassengerBean passenger : bookings.get(i).getPassengers()){%>
+
         <% LinkedList<PassengerBean> passengerList = bookings.get(i).getPassengers();%>
+        <%System.out.println("passsize = " + passengerList.size()); %>
         <% for (int k = 0; k < passengerList.size(); k++) { %>
         <fieldset class="foreground">
             <p class="reviewDetails">
