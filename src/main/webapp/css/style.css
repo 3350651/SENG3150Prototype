@@ -378,7 +378,7 @@ div.loginDisplay{
   .flightDetailsColumn2 {
     float: left;
     width: 40%;
-    padding: 10px;
+    padding: 0px 10px;
     box-sizing: border-box;
     margin: 0;
     border: 0;
@@ -387,7 +387,7 @@ div.loginDisplay{
     .flightDetailsColumn4 {
       float: left;
       width: 25%;
-      padding: 10px;
+      padding: 0px 10px;
       box-sizing: border-box;
       margin: 0;
       border: 0;
@@ -414,6 +414,7 @@ div.loginDisplay{
     .flightDetailsColumn6 p {
       padding: 5px 10px;
       box-sizing: border-box;
+      padding: 0px 10px;
       margin: 10px;
       border: 0;
     }
@@ -421,14 +422,22 @@ div.loginDisplay{
     .flightDetailsColumnLeft {
       float: left;
       width: 20%;
-      padding: 10px;
+      padding: 0px 5px;
       box-sizing: border-box;
+    }
+
+    .flightDetailsColumnLeft p{
+        line-height: 1.5;
+    }
+
+    .flightDetailsColumnLeft p *{
+        padding: 10px 0px;
     }
 
     .flightDetailsColumnRight {
           float: right;
           width: 60%;
-          padding: 10px;
+          padding: 0px 10px;
           box-sizing: border-box;
     }
 
@@ -518,6 +527,10 @@ div.loginDisplay{
      background-color: #cccccc;
      color: white;
    }
+
+    .flightDetailsRow {
+        padding-left: 30px;
+    }
 
   .flightDetailsRow:after {
     content: "";

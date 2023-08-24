@@ -59,80 +59,109 @@
                     </td>
                     <td class="filledSection">
                         <div class="mainFlightDetailCell">
-                            <h3>Flight Details:</h3>
+                            <h3>Flight Details: </h3>
                             <div class="flightDetailsRow">
-                                <div class="flightDetailsColumn2">
                                     <p>
                                         <strong>
-                                        <%=flight.getDeparture().getDestinationName().toUpperCase()%>
-                                         &#8212;
-                                        <%=flight.getDestination().getDestinationName().toUpperCase()%>
+                                            <%=flight.getDeparture().getDestinationName().toUpperCase()%>
+                                            &#8212;
+                                            <%=flight.getDestination().getDestinationName().toUpperCase()%>
                                         </strong>
                                     </p>
-                                    <p>
+                            </div>
+                        <div class="flightDetailsRow">
+                            <div class="flightDetailsColumnLeft" style="width:auto;">
+                                <p>
+                                    <strong>Departure Airport: </strong>
+                                    <br />
+                                    <strong>Departure Date: </strong>
+                                    <br />
+                                    <strong>Departure Time: </strong>
+                                </p>
+                            </div>
+                            <div class="flightDetailsColumnLeft" style="width:18%;">
+                                <p>
+                                    <span><%=flight.getDeparture().getDestinationName()%></span>
+                                    <br />
+                                    <span>
                                         <%=flight.getFlightTime().toLocalDateTime().getDayOfMonth()%>
                                         <%=flight.getMonthName(flight.getFlightTime())%>
                                         <%=flight.getFlightTime().toLocalDateTime().getYear()%>
-                                        <br />
-                                        <%=flight.getCivilianTime(flight.getFlightTime())%>
-                                        <br />
-                                    </p>
-
-                                    <p>
-                                        <%=flight.getFlightArrivalTime().toLocalDateTime().getDayOfMonth()%>
-                                        <%=flight.getMonthName(flight.getFlightArrivalTime())%>
-                                        <%=flight.getFlightArrivalTime().toLocalDateTime().getYear()%>
-                                        <br />
-                                        <%=flight.getCivilianTime(flight.getFlightArrivalTime())%>
-                                        <br />
-                                    </p>
-                                </div>
-                                <div class="flightDetailsColumn2">
-                                    <p>
-                                        <%=flight.getFlightName()%>
-                                    </p>
-                                    <p>
-                                        <strong>DEPARTURE</strong>
-                                        <br />
-                                        <%=flight.getDeparture().getDestinationName()%>
-                                    </p>
-                                    <p>
-                                        <strong>ARRIVAL</strong>
-                                        <br />
-                                        <%=flight.getDestination().getDestinationName()%>
-                                    </p>
-                                </div>
+                                    </span>
+                                    <br />
+                                    <span><%=flight.getCivilianTime(flight.getFlightTime())%></span>
+                                    <br />
+                                </p>
                             </div>
+                            <div class="flightDetailsColumnLeft" style="width:auto;">
+                                <p>
+                                    <strong>Arrival Airport: </strong>
+                                    <br />
+                                    <strong>Arrival Date: </strong>
+                                    <br />
+                                    <strong>Arrival Time: </strong>
+                                </p>
+                            </div>
+                            <div class="flightDetailsColumnLeft" style="width:auto;">
+                                <p>
+                                    <span><%=flight.getDestination().getDestinationName()%></span>
+                                    <br />
+                                    <span>
+                                                <%=flight.getFlightArrivalTime().toLocalDateTime().getDayOfMonth()%>
+                                                <%=flight.getMonthName(flight.getFlightArrivalTime())%>
+                                                <%=flight.getFlightArrivalTime().toLocalDateTime().getYear()%>
+                                            </span>
+                                    <br />
+                                    <span><%=flight.getCivilianTime(flight.getFlightArrivalTime())%></span>
+                                </p>
+                            </div>
+                        </div>
                             <div class="flightDetailsRow">
-                                <div class="flightDetailsColumnLeft">
-                                    <p>Flight operated by: </p>
-                                    <p>Plane model: </p>
-                                </div>
-                                <div class="flightDetailsColumnLeft">
-                                    <p><%=flight.getAirlineName()%></p>
-                                    <p><%=flight.getPlaneType()%></p>
-                                </div>
-                                <div class="flightDetailsColumnRight">
+                                <div class="flightDetailsColumnLeft" style="width: auto;">
+                                    <p>
+                                        <span>Flight operated by: </span>
+                                        <br />
+                                        <span>Flight number: </span>
+                                        <br/>
+                                        <span>Plane model: </span>
+                                    </p>
                                     <% if (flight.getSelectedPrice() == -1) { %>
-                                        <p>Minimum price: <%=flight.getMinCost()%></p>
+                                        <p>Minimum price:</p>
                                     <% }
                                     else { %>
-                                        <p>SELECTED PRICE: <strong>$<%=flight.getSelectedPrice()%></strong></p>
-                                        <div class="flightDetailsRow">
-                                            <div class="flightDetailsColumn4">
-                                                <p>Class: </p>
-                                                <p>Ticket type:</p>
-                                            </div>
-                                            <div class="flightDetailsColumn2">
-                                                <p><%= flight.getClassNameOfAvailability(flight.getSelectedPrice()) %></p>
-                                                <p><%= flight.getTicketTypeNameOfAvailability(flight.getSelectedPrice()) %></p>
-                                            </div>
-                                        </div>
+                                    <p>
+                                        <span><strong>SELECTED PRICE:</strong></span>
+                                        <br />
+                                        <span>Class: </span>
+                                        <br />
+                                        <span>Ticket type:</span>
+                                    </p>
+                                    <% } %>
+                                </div>
+                                <div class="flightDetailsColumnLeft">
+                                    <p>
+                                        <span><%=flight.getAirlineName()%></span>
+                                        <br />
+                                        <span><%=flight.getFlightName()%></span>
+                                        <br />
+                                        <span><%=flight.getPlaneType()%></span>
+                                    </p>
+                                    <% if (flight.getSelectedPrice() == -1) { %>
+                                        <p>$<%=flight.getMinCost()%></p>
+                                    <% }
+                                    else { %>
+                                    <p>
+                                        <span><strong>$<%=flight.getSelectedPrice()%></strong></span>
+                                        <br />
+                                        <span><%= flight.getClassNameOfAvailability(flight.getSelectedPrice()) %></span>
+                                        <br />
+                                        <span><%= flight.getTicketTypeNameOfAvailability(flight.getSelectedPrice()) %></span>
+                                    </p>
                                     <% } %>
                                 </div>
                             </div>
                             <div class="flightDetailsRow">
-                                <div class="flightDetailsColumnRight">
+                                <div class="flightDetailsColumnLeft">
                                     <button class="button" onclick="toggleVisibility('<%= flight.getFlightTime() %>')">Select Ticket</button>
                                 </div>
                             </div>
@@ -388,6 +417,7 @@
                             </div>
                             <!--END TICKET SELECTION-->
                         </div>
+                        <br />
                     </td>
                 </tr>
                 <% i++; %>
@@ -504,79 +534,107 @@
                         </td>
                         <td class="filledSection">
                             <div class="mainFlightDetailCell">
-                                <h3>Flight Details:</h3>
+                                <h3>Flight Details: </h3>
                                 <div class="flightDetailsRow">
-                                    <div class="flightDetailsColumn2">
+                                    <p>
+                                        <strong>
+                                            <%=flight.getDeparture().getDestinationName().toUpperCase()%>
+                                            &#8212;
+                                            <%=flight.getDestination().getDestinationName().toUpperCase()%>
+                                        </strong>
+                                    </p>
+                                </div>
+                                <div class="flightDetailsRow">
+                                    <div class="flightDetailsColumnLeft" style="width:auto;">
                                         <p>
-                                            <strong>
-                                                <%=flight.getDeparture().getDestinationName().toUpperCase()%>
-                                                &#8212;
-                                                <%=flight.getDestination().getDestinationName().toUpperCase()%>
-                                            </strong>
+                                            <strong>Departure Airport: </strong>
+                                            <br />
+                                            <strong>Departure Date: </strong>
+                                            <br />
+                                            <strong>Departure Time: </strong>
                                         </p>
+                                    </div>
+                                    <div class="flightDetailsColumnLeft" style="width:18%;">
                                         <p>
-                                            <%=flight.getFlightTime().toLocalDateTime().getDayOfMonth()%>
-                                            <%=flight.getMonthName(flight.getFlightTime())%>
-                                            <%=flight.getFlightTime().toLocalDateTime().getYear()%>
+                                            <span><%=flight.getDeparture().getDestinationName()%></span>
                                             <br />
-                                            <%=flight.getCivilianTime(flight.getFlightTime())%>
+                                            <span>
+                                        <%=flight.getFlightTime().toLocalDateTime().getDayOfMonth()%>
+                                        <%=flight.getMonthName(flight.getFlightTime())%>
+                                        <%=flight.getFlightTime().toLocalDateTime().getYear()%>
+                                    </span>
                                             <br />
-                                        </p>
-
-                                        <p>
-                                            <%=flight.getFlightArrivalTime().toLocalDateTime().getDayOfMonth()%>
-                                            <%=flight.getMonthName(flight.getFlightArrivalTime())%>
-                                            <%=flight.getFlightArrivalTime().toLocalDateTime().getYear()%>
-                                            <br />
-                                            <%=flight.getCivilianTime(flight.getFlightArrivalTime())%>
+                                            <span><%=flight.getCivilianTime(flight.getFlightTime())%></span>
                                             <br />
                                         </p>
                                     </div>
-                                    <div class="flightDetailsColumn2">
+                                    <div class="flightDetailsColumnLeft" style="width:auto;">
                                         <p>
-                                            <%=flight.getFlightName()%>
-                                        </p>
-                                        <p>
-                                            <strong>DEPARTURE</strong>
+                                            <strong>Arrival Airport: </strong>
                                             <br />
-                                            <%=flight.getDeparture().getDestinationName()%>
-                                        </p>
-                                        <p>
-                                            <strong>ARRIVAL</strong>
+                                            <strong>Arrival Date: </strong>
                                             <br />
-                                            <%=flight.getDestination().getDestinationName()%>
+                                            <strong>Arrival Time: </strong>
+                                        </p>
+                                    </div>
+                                    <div class="flightDetailsColumnLeft" style="width:auto;">
+                                        <p>
+                                            <span><%=flight.getDestination().getDestinationName()%></span>
+                                            <br />
+                                            <span>
+                                                <%=flight.getFlightArrivalTime().toLocalDateTime().getDayOfMonth()%>
+                                                <%=flight.getMonthName(flight.getFlightArrivalTime())%>
+                                                <%=flight.getFlightArrivalTime().toLocalDateTime().getYear()%>
+                                            </span>
+                                            <br />
+                                            <span><%=flight.getCivilianTime(flight.getFlightArrivalTime())%></span>
                                         </p>
                                     </div>
                                 </div>
                                 <div class="flightDetailsRow">
-                                    <div class="flightDetailsColumnLeft">
-                                        <p>Flight operated by: </p>
-                                        <p>Plane model: </p>
-                                    </div>
-                                    <div class="flightDetailsColumnLeft">
-                                        <p><%=flight.getAirlineName()%></p>
-                                        <p><%=flight.getPlaneType()%></p>
-                                    </div>
-                                    <div class="flightDetailsColumnRight">
+                                    <div class="flightDetailsColumnLeft" style="width: auto;">
+                                        <p>
+                                            <span>Flight operated by: </span>
+                                            <br />
+                                            <span>Flight number: </span>
+                                            <br/>
+                                            <span>Plane model: </span>
+                                        </p>
                                         <% if (flight.getSelectedPrice() == -1) { %>
-                                        <p>Minimum price: <%=flight.getMinCost()%></p>
+                                        <p>Minimum price:</p>
                                         <% }
                                         else { %>
-                                        <p>SELECTED PRICE: <strong>$<%=flight.getSelectedPrice()%></strong></p>
-                                        <div class="flightDetailsRow">
-                                            <div class="flightDetailsColumn4">
-                                                <p>Class: </p>
-                                                <p>Ticket type:</p>
-                                            </div>
-                                            <div class="flightDetailsColumn2">
-                                                <p><%= flight.getClassNameOfAvailability(flight.getSelectedPrice()) %></p>
-                                                <p><%= flight.getTicketTypeNameOfAvailability(flight.getSelectedPrice()) %></p>
-                                            </div>
-                                        </div>
+                                        <p>
+                                            <span><strong>SELECTED PRICE:</strong></span>
+                                            <br />
+                                            <span>Class: </span>
+                                            <br />
+                                            <span>Ticket type:</span>
+                                        </p>
+                                        <% } %>
+                                    </div>
+                                    <div class="flightDetailsColumnLeft">
+                                        <p>
+                                            <span><%=flight.getAirlineName()%></span>
+                                            <br />
+                                            <span><%=flight.getFlightName()%></span>
+                                            <br />
+                                            <span><%=flight.getPlaneType()%></span>
+                                        </p>
+                                        <% if (flight.getSelectedPrice() == -1) { %>
+                                        <p>$<%=flight.getMinCost()%></p>
+                                        <% }
+                                        else { %>
+                                        <p>
+                                            <span><strong>$<%=flight.getSelectedPrice()%></strong></span>
+                                            <br />
+                                            <span><%= flight.getClassNameOfAvailability(flight.getSelectedPrice()) %></span>
+                                            <br />
+                                            <span><%= flight.getTicketTypeNameOfAvailability(flight.getSelectedPrice()) %></span>
+                                        </p>
                                         <% } %>
                                     </div>
                                 </div>
-
                                 <div class="flightDetailsRow">
                                     <div class="flightDetailsColumnLeft">
                                         <button class="button" onclick="toggleVisibility('<%= flight.getFlightTime() %>')">Select Ticket</button>
@@ -833,8 +891,8 @@
                                     <!--END TICKET TYPE SELECTION -->
                                 </div>
                                 <!--END TICKET SELECTION-->
-
                             </div>
+                            <br />
                         </td>
                     </tr>
                     <% j++; %>

@@ -13,7 +13,7 @@ int size = 0;
 if(faveFlights != null && !faveFlights.isEmpty()){
     size = faveFlights.size();
 }
-boolean lockedIn = false;
+boolean lockedIn = (boolean) session.getAttribute("lockedIn");
 %>
 
 

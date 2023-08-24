@@ -401,7 +401,12 @@ public class FlightBean implements Serializable {
         }
         else suffix = "pm";
 
-        return hour % 12 + ":" + (minute == 0 ? zeroMinute : minute)  + " " + suffix;
+        int civHour = hour % 12;
+        civHour = (civHour == 0 ? 12 : civHour);
+        String strHour = (civHour < 10 ? "0" + civHour : String.valueOf(civHour));
+        String strMinute = (minute < 10 ? "0" + minute : String.valueOf(minute));
+
+        return strHour + ":" + strMinute + " " + suffix;
     }
 
     // This will be used as the first value of the return date input field, which is tomorrow's date of the arrival to the final destination
