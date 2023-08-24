@@ -50,6 +50,7 @@ public class Homepage extends HttpServlet {
 						session.setAttribute("group", group);
 						Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
 						session.setAttribute("isAdmin", isAdmin);
+						session.setAttribute("destinationCodes", new DestinationOptionsBean());
 
 						requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
 						requestDispatcher.forward(request, response);
