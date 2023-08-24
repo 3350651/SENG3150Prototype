@@ -63,7 +63,7 @@
                             </div>
                         </form>
                         <form name="addToAGroupList" class="groupFavouritesForm" action="GroupHomepage" method="POST">
-                        <input type="hidden" name="flightIndex" value="<%= searchResults.indexOf(flightPath) %>">
+                        <input type="hidden" name="flightIndex" value="<%= flightResults.indexOf(flightPath) %>">
                         <div class="addToGroupFavouriteList">
                             <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="addToAGroupList" value="addToAGroupList">
                         </div>

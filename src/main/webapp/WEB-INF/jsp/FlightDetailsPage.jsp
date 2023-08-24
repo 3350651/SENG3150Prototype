@@ -9,7 +9,9 @@
 <% LinkedList<FlightBean> flightList = (LinkedList<FlightBean>) session.getAttribute("flightList"); %>
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
 <% boolean viewReturnFlightSearchResults = (Boolean) session.getAttribute("viewReturnFlightSearchResults"); %>
+    <% viewReturnFlightSearchResults = (session.getAttribute("viewReturnFlightSearchResults") == null ? false : viewReturnFlightSearchResults); %>
 <% boolean viewReturnFlightDetails = (Boolean) session.getAttribute("viewReturnFlightDetails"); %>
+    <% viewReturnFlightDetails = (session.getAttribute("viewReturnFlightDetails") == null ? false : viewReturnFlightDetails); %>
 <% int numAdults = (Integer) session.getAttribute("numAdults"); int numChildren = (Integer) session.getAttribute("numChildren"); %>
 
 <!DOCTYPE html>
@@ -424,9 +426,10 @@
                     <tr>
                         <td class="filledSection" colspan="2" style="text-align: center;">
                             <div class="floatGroupFavButton">
-                                <form name="addToGroupFaveList" action="GroupHomepage" method="GET">
-                                    <button class="button" type="submit" class="addToGroupFaveList" name="addToGroupFaveList"
-                                        id="addToGroupFaveList" value="addToGroupFaveList">Add To Group Favourite List</button>
+                                <form name="addSelectedFlight" class="groupFavouritesForm" action="GroupHomepage" method="POST">
+                                    <input type="hidden" name="isReturnResults" value='false'>
+                                    <button class="button" type="submit" class="addToGroupFaveList" name="addSelectedFlight"
+                                            id="addToGroupFaveList" value="addSelectedFlight">Add To Group Favourite List</button>
                                 </form>
                             </div>
                         </td>
@@ -870,9 +873,10 @@
                     <tr>
                         <td class="filledSection" colspan="2" style="text-align: center;">
                             <div class="floatGroupFavButton">
-                                <form name="addToGroupFaveList" action="GroupHomepage" method="GET">
-                                    <button class="button" type="submit" class="addToGroupFaveList" name="addToGroupFaveList"
-                                            id="addToGroupFaveList" value="addToGroupFaveList">Add To Group Favourite List</button>
+                                <form name="addToAGroupList" class="groupFavouritesForm" action="GroupHomepage" method="POST">
+                                    <input type="hidden" name="isReturnResults" value='true'>
+                                    <button class="button" type="submit" class="addToGroupFaveList" name="addSelectedFlight"
+                                            id="addToGroupFaveList" value="addSelectedFlight">Add To Group Favourite List</button>
                                 </form>
                             </div>
                         </td>
