@@ -294,14 +294,14 @@ public class BookingBean implements Serializable {
 
                 //getDepartureFlight
                 FlightPathBean forgetting = new FlightPathBean();
-                Stack<FlightBean> stack = forgetting.grabFlightPath(departureFlightPathID);
+                Stack<FlightBean> stack = forgetting.getFlightPathFromDatabase(departureFlightPathID);
 
                 FlightPathBean departureFlightPath = new FlightPathBean(stack);
 
 
                 //getReturnFlight
                 FlightPathBean forgetting2 = new FlightPathBean();
-                Stack<FlightBean> stack2 = forgetting2.grabFlightPath(returnFlightPathID);
+                Stack<FlightBean> stack2 = forgetting2.getFlightPathFromDatabase(returnFlightPathID);
                 FlightPathBean returnFlightPath = new FlightPathBean(stack2);
 
                 //get passengers from this booking

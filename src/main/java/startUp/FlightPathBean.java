@@ -92,7 +92,7 @@ public class FlightPathBean {
         return allDestinations;
     }
 
-    public void addFlightPath()
+    public void addFlightPathToDatabase()
     {
         try {
             String query = "INSERT INTO dbo.FLIGHTPATH (flightPathID, minimumPrice)\n"
@@ -138,7 +138,7 @@ public class FlightPathBean {
         }
     }
 
-    public Stack<FlightBean> grabFlightPath(String flightpathid)
+    public Stack<FlightBean> getFlightPathFromDatabase(String flightpathid)
     {
         Stack<FlightBean> flights =  new Stack<>();
 

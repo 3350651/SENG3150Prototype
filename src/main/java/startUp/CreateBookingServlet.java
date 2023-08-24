@@ -56,14 +56,14 @@ public class CreateBookingServlet extends HttpServlet {
             {
                 FlightPathBean returnFlightPath = (FlightPathBean) session.getAttribute("returnFlight");
                 a.setReturnFlightPath(returnFlightPath);
-                returnFlightPath.addFlightPath();
+                returnFlightPath.addFlightPathToDatabase();
                 hasReturn = true;
             }
             bookings.add(a);
             a.addBooking();
 
 
-            flightPath.addFlightPath();
+            flightPath.addFlightPathToDatabase();
 
             //checking for availibilities
             int passengers = (Integer) session.getAttribute("numAdults") + (Integer) session.getAttribute("numChildren");
