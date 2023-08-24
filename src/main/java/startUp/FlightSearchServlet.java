@@ -32,10 +32,28 @@ public class FlightSearchServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         if (request.getParameter("home").equalsIgnoreCase("recommendSearch")) {
-
-            SearchBean search = new SearchBean(null, null, null, null, false, 0, 0, 0);
-
-            session.setAttribute("searchResults", search);
+            UserBean user = (UserBean) session.getAttribute("userBean");
+            if (user != null && user.getTagSet().size() > 0) {
+                Object[] temp = user.getTagSet().toArray();
+                String[] tags = Arrays.copyOf(temp, temp.length, String[].class);
+                int i = tags.length;
+                LinkedList<DestinationBean> results = new LinkedList<>();
+                while (results.size() < 3) {
+                    results = DestinationBean.getInitialRecommendations(tags, i);
+                    i--;
+                }
+                session.setAttribute("matchingDestinations", results);
+            } else {
+                Object[] temp = TagBean.getAllTags().toArray();
+                String[] tags = Arrays.copyOf(temp, temp.length, String[].class);
+                int i = tags.length;
+                LinkedList<DestinationBean> results = new LinkedList<>();
+                while (results.size() < 3) {
+                    results = DestinationBean.getInitialRecommendations(tags, i);
+                    i--;
+                }
+                session.setAttribute("matchingDestinations", results);
+            }
             request.setAttribute("goToRecommend", true);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-RecommendedSearch.jsp");
             requestDispatcher.forward(request, response);
@@ -137,7 +155,6 @@ public class FlightSearchServlet extends HttpServlet {
                 LinkedList<UserTagSearchBean> results = new LinkedList<>();
                 for (String tag : tags) {
                     LinkedList<DestinationBean> matchingDestinations = DestinationBean.getNDestinationsWith(new String[]{tag}, 1, 3);
-
                     results.add(new UserTagSearchBean(tag, matchingDestinations));
                 }
                 session.setAttribute("userTags", results);

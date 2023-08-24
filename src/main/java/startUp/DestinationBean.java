@@ -163,6 +163,38 @@ public class DestinationBean {
         return destinations;
     }
 
+    public static LinkedList<DestinationBean> getInitialRecommendations(String[] tags, int numMatching) {
+        LinkedList<DestinationBean> destinations = new LinkedList<>();
+        try {
+            String query = "SELECT d.DestinationCode, d.Airport, c.countryName FROM Destinations d \n" +
+                    "LEFT JOIN Country c ON c.countryCode3 = d.CountryCode3\n" +
+                    "WHERE  (SELECT COUNT(t.tagName) \n" +
+                    "FROM DESTINATIONTAGS dt \n" +
+                    "LEFT JOIN TAGS t ON t.tagID = dt.tagID\n" +
+                    "WHERE dt.DestinationCode = d.DestinationCode \n" +
+                    "AND t.tagName IN (" + getTagNames(tags) + ")) >=?";
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setInt(1, numMatching);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String code = result.getString(1);
+                String name = result.getString(2);
+                String country = result.getString(3);
+                destinations.add(new DestinationBean(code, name, country));
+            }
+            statement.close();
+            connection.close();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return destinations;
+    }
+
     public static LinkedList<DestinationBean> getNDestinationsWith(String[] tags, int numMatching, int numReturn) {
         LinkedList<DestinationBean> destinations = new LinkedList<>();
         try {
