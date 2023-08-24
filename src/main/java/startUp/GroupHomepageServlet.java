@@ -82,12 +82,10 @@ public class GroupHomepageServlet extends HttpServlet {
         LinkedList<FlightPathBean> flightPath = null;
         if (session.getAttribute("flightResultList") != null) {
             flightPath = (LinkedList<FlightPathBean>) session.getAttribute("flightResultList");
-            System.out.println(flightPath);
         }
 
         if(request.getParameter("addToAGroupList.x") != null){
             //Add to Group Fave List from Add Page.
-            System.out.println("GGroupHomepageServlet-default");
             FlightPathBean fpb = flightPath.get(Integer.parseInt(request.getParameter("flightIndex")));
             session.setAttribute("flightToAddToGroupFaveFlight", fpb);
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToGroupFaveList.jsp");
@@ -99,10 +97,8 @@ public class GroupHomepageServlet extends HttpServlet {
             if (request.getParameter("isReturnResults") != null) {
                 // check if it meant to look at departing flightpath or return flightpath
                 if (request.getParameter("isReturnResults").equals("false")) {
-                    System.out.println("GroupHomepageServlet-details");
                     flightPathBean = (FlightPathBean) session.getAttribute("flight");
                 } else if (request.getParameter("isReturnResults").equals("true")) { // if called on return flight path
-                    System.out.println("GroupHomepageServlet-details-return");
                     flightPathBean = (FlightPathBean) session.getAttribute("returnFlight");
                 }
             }

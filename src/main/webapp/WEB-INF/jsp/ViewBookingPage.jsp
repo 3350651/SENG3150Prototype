@@ -52,7 +52,6 @@
                                     <%=booking.getDepartureFlightPath().getInitialFlight().getPlaneType()%>
                                     </p>
                                 </fieldset>
-                                <% System.out.println("bookingsize= " + booking.getReturnFlightPath().getFlightPath().size()); %>
                                 <%if(!booking.getReturnFlightPath().getFlightPath().isEmpty()){%>
                                 <fieldset class="foreground">
                                     <h3>Return Flight Details</h3>
@@ -84,7 +83,6 @@
                                 <h2>Passenger Details:</h2>
 
                                 <% LinkedList<PassengerBean> passengerList = booking.getPassengers();%>
-                                <% System.out.println(booking.getPassengers().size()); %>
                                 <% for (int k = 0; k < passengerList.size(); k++) { %>
                                 <fieldset class="foreground">
                                     <p class="reviewDetails">

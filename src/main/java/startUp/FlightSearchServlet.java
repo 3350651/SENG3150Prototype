@@ -219,9 +219,7 @@ public class FlightSearchServlet extends HttpServlet {
             } else {
                 flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResults");
             }
-            System.out.println("isReturnResults = " + request.getParameter("isReturnResults"));
             if (request.getParameter("isReturnResults").equalsIgnoreCase("true")) {
-                System.out.println("FlightSearchServlet.viewFlight.Return");
                 flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResultList");
                 LinkedList<FlightPathBean> returnFlights = (LinkedList<FlightPathBean>) session.getAttribute("returnFlightResultList");
 
@@ -253,7 +251,6 @@ public class FlightSearchServlet extends HttpServlet {
                 flightList.addLast(flightStack.get(flightStack.size() - i));
             }
 
-            System.out.println("FlightSearchServlet.viewFlight");
             session.setAttribute("flight", flight);
             session.setAttribute("flightList", flightList);
             session.setAttribute("viewReturnFlightSearchResults", Boolean.FALSE);
@@ -269,7 +266,6 @@ public class FlightSearchServlet extends HttpServlet {
         else if (request.getParameter("searchResults") != null
                 && request.getParameter("searchResults").equalsIgnoreCase("simpleReturnSearchResults")) {
 
-            System.out.println("FlightSearchServlet.simpleReturnSearchResults");
             String departure = request.getParameter("departureLocation");
             String destination = request.getParameter("arrivalLocation");
             String time = request.getParameter("returnDate");

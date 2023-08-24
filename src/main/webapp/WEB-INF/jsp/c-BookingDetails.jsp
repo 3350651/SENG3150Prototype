@@ -10,7 +10,6 @@
 <% LinkedList<BookingBean> returnBookings = (LinkedList<BookingBean>) session.getAttribute("returnBookings"); %>
 
 <% for (int i = 0; i < bookings.size(); i++){ %>
-<h1><%= bookings.get(0).getTotalAmount() %></h1>
     <fieldset class="background">
         <h2>Flight Details:</h2>
         <fieldset class="foreground">
@@ -81,7 +80,6 @@
 
         <% LinkedList<PassengerBean> passengerList = bookings.get(i).getPassengers();%>
         <% LinkedList<PassengerBean> returnPassengerList = bookings.get(i).getReturnPassengers();%>
-        <%System.out.println("passsize = " + passengerList.size()); %>
         <% for (int k = 0; k < passengerList.size(); k++) { %>
         <fieldset class="foreground">
             <p class="reviewDetails">

@@ -29,13 +29,11 @@ public class CreateBookingServlet extends HttpServlet {
 
         //If request coming from details page
         if (req.getParameter("details") != null) {
-            System.out.println("CreateBookingServlet-details");
 
             UserBean user = (UserBean) session.getAttribute("userBean");
 
             if (req.getParameter("oneWay") != null) {
                 if (session.getAttribute("returnFlightList") != null) {
-                    System.out.println("one way");
                     session.removeAttribute("returnFlightList");
                     session.removeAttribute("returnFlight");
                 }
@@ -55,13 +53,11 @@ public class CreateBookingServlet extends HttpServlet {
 
             if (req.getParameter("hasReturn") != null && req.getParameter("hasReturn").equals("hasReturn"))
             {
-                System.out.println("CreateBookingServlet-hasReturn");
                 FlightPathBean returnFlightPath = (FlightPathBean) session.getAttribute("returnFlight");
                 a.setReturnFlightPath(returnFlightPath);
                 returnFlightPath.addFlightPathToDatabase();
                 hasReturn = true;
             }
-            System.out.println("CreateBookingServlet-hasReturn?");
             bookings.add(a);
             a.addBooking();
 
@@ -83,7 +79,6 @@ public class CreateBookingServlet extends HttpServlet {
 
         // if coming from the passenger options page
         else if (req.getParameter("options") != null) {
-            System.out.println("CreateBookingServlet-options");
 
             float price = 0;
             FlightPathBean flightPath = (FlightPathBean) session.getAttribute("flight");
@@ -141,13 +136,11 @@ public class CreateBookingServlet extends HttpServlet {
                     price = price + selectedPrice;
                 }
 
-                System.out.println("DEPTICKET " + tickets.size());
                 passengerBean.setDepartureTickets(tickets);
                 passengerBeans.add(passengerBean);
             }
             booking.setPassengers(passengerBeans);
             bookings.get(0).updatePrice(bookings.get(0).getBookingId(), price);
-            System.out.println("CreateBookingServlet-hasReturn151");
             //bookings.add(0, booking);
 
             LinkedList<TicketBean> tickets = new LinkedList<>();
@@ -197,7 +190,6 @@ public class CreateBookingServlet extends HttpServlet {
                 }
                 booking.setReturnPassengers(returnPassengerBeans);
                 bookings.get(0).updatePrice(bookings.get(0).getBookingId(), price);
-                System.out.println("CreateBookingServlet-hasReturn200");
                 //bookings.add(0,booking);
 
             }
@@ -216,7 +208,6 @@ public class CreateBookingServlet extends HttpServlet {
 
         //if coming from the review details page
         else if(req.getParameter("payment") != null){
-            System.out.println("CreateBookingServlet-pay");
 
             //since we dont handle pay, it just finalises each booking
             LinkedList<BookingBean> bookings = (LinkedList<BookingBean>) session.getAttribute("bookings");

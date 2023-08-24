@@ -21,7 +21,6 @@ public class FlightServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("FlightServlet");
 
         HttpSession session = req.getSession();
 
@@ -62,7 +61,6 @@ public class FlightServlet extends HttpServlet {
             float selectedPrice = Float.parseFloat(req.getParameter("selectedPrice"));
 
             flights.get(flightIndex).setSelectedPrice(selectedPrice);
-            System.out.println("updated");
 
 //            resp.sendRedirect("createBooking");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
