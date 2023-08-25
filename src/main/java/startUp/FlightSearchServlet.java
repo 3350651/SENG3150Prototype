@@ -286,10 +286,6 @@ public class FlightSearchServlet extends HttpServlet {
                 throw new IOException("Invalid input: Cannot leave from and arrive at the same destination.");
             }
 
-            System.out.println(departure);
-            System.out.println(destination);
-            System.out.println("FlightSearchServlet.simpleReturnSearchResults.departureTime " + departureTime);
-
             SearchBean search = new SearchBean(departureTime, destination, departure, null, true, 0, numReturnPassengers, 0);
             search.searchFlights(10, 5);
 

@@ -928,17 +928,6 @@
                 </table>
                 <% }else{ %>
 
-                    <tr>
-                        <td class="filledSection" colspan="2" style="text-align: center;">
-                            <div class="floatGroupFavButton">
-                                <form name="addToAGroupList" class="groupFavouritesForm" action="GroupHomepage" method="POST">
-                                    <input type="hidden" name="isReturnResults" value='true'>
-                                    <button class="button" type="submit" class="addToGroupFaveList" name="addSelectedFlight"
-                                            id="addToGroupFaveList" value="addSelectedFlight">Add To Group Favourite List</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
                     </table>
                 <% } %>
             <br />
