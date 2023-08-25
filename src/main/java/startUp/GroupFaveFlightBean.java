@@ -109,10 +109,6 @@ public class GroupFaveFlightBean implements Serializable{
         return this.chatID;
     }
 
-    public void setGroupFaveFlightID(String groupFaveFlightID) {
-        this.groupFaveFlightID = groupFaveFlightID;
-    }
-
     public FlightPathBean getFlightPath() {
         return flightPath;
     }
@@ -121,32 +117,9 @@ public class GroupFaveFlightBean implements Serializable{
         this.flightPath = flightPath;
     }
 
-    public void setChatID(String chatID) {
-        this.chatID = chatID;
-    }
 
     public void setGroupID(String groupID) {
         this.groupID = groupID;
-    }
-
-    public static void deleteGroupFaveFlights(String groupID){
-
-        String query = "DELETE FROM GROUPFAVEFLIGHT WHERE [groupID] = ?";
-        try {
-            Connection connection = ConfigBean.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
-
-            statement.setString(1, groupID);
-
-            statement.executeUpdate();
-            statement.close();
-            connection.close();
-        }
-        catch(SQLException e) {
-            System.err.println(e.getMessage());
-            System.err.println(e.getStackTrace());
-        }
-
     }
 
     public static void deleteGroupFaveFlight(String groupID, String groupFaveFlightID){
