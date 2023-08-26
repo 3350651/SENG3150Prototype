@@ -222,18 +222,20 @@ public class FlightBean implements Serializable {
         String query = "";
         try {
             if(leg == 0){
-                query = "SELECT F.AirlineCode, F.FlightNumber, F.DepartureCode, F.DestinationCode, " +
-                        "F.DepartureTime, F.ArrivalTime, F.PlaneCode, A.AirlineName, " +
-                        "0 AS leg, F.DepartureTime AS originalDepartureTime, fp.minimumPrice, " +
-                        "bf.flightPathID, fpf.DepartureTime, fpf.flightPathID, fpf. FlightNumber " +
+                query = "SELECT " +
+                        "F.AirlineCode, " +
+                        "F.FlightNumber, " +
+                        "F.DepartureCode, " +
+                        "F.DestinationCode, " +
+                        "F.DepartureTime, " +
+                        "F.ArrivalTime, " +
+                        "F.PlaneCode, " +
+                        "A.AirlineName, " +
+                        "0 AS leg, " +
+                        "F.DepartureTime AS originalDepartureTime " +
                         "FROM Flights F " +
-                        "JOIN FLIGHTPATHFLIGHT fpf ON F.AirlineCode = fpf.AirlineCode " +
-                        "AND F.FlightNumber = fpf.FlightNumber " +
-                        "AND F.DepartureTime = fpf.DepartureTime " +
-                        "JOIN FLIGHTPATH fp ON fpf.flightPathID = fp.flightPathID " +
-                        "JOIN BOOKMARKEDFLIGHT bf ON bf.flightPathID = fp.flightPathID " +
-                        "LEFT JOIN Airlines A ON A.AirlineCode = F.AirlineCode " +
-                        "WHERE StopOverCode IS NULL " +
+                        "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                        "WHERE StopOverCode IS NULL  " +
                         "AND F.AirlineCode = ? AND F.FlightNumber = ? AND F.DepartureTime = ?;";
             } else if(leg == 1){
                 query = "SELECT " +

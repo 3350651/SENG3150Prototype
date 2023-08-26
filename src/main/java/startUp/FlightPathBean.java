@@ -2,8 +2,9 @@ package startUp;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.*;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class FlightPathBean {
@@ -25,12 +26,11 @@ public class FlightPathBean {
         minPrice = 0;
         for (FlightBean flight : flights) {
             destinations.add(flight.getDeparture().getDestinationCode());
-            //minPrice += flight.getMinCost();
+            minPrice += flight.getMinCost();
         }
         id = ThreadLocalRandom.current().nextInt(10000000, 99999999);
         minPrice = BigDecimal.valueOf(minPrice).setScale(2, RoundingMode.HALF_UP).floatValue();
     }
-
     public FlightPathBean(Stack<FlightBean> flights, boolean check) {
         flightPath = flights;
         destinations = new LinkedList<>();
