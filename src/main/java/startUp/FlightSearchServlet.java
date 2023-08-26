@@ -255,6 +255,7 @@ public class FlightSearchServlet extends HttpServlet {
             session.setAttribute("flightList", flightList);
             session.setAttribute("viewReturnFlightSearchResults", Boolean.FALSE);
             session.setAttribute("viewReturnFlightDetails", Boolean.FALSE);
+            session.setAttribute("flightIndex", request.getParameter("flightIndex"));
             /* TODO: No longer valid
             String flightDetails = flight.getAirline() + "," + flight.getFlightName() + ","
                     + flight.getFlightTime();

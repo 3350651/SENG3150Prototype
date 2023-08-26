@@ -405,18 +405,14 @@ go
 
 CREATE TABLE BOOKINGS
 (
-  BookingId CHAR(8) NOT NULL PRIMARY KEY,
-  BookingUserId CHAR(8) NOT NULL FOREIGN KEY REFERENCES USERS(userID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-  DepartureAirlineCode CHAR(2) NOT NULL FOREIGN KEY REFERENCES Airlines(AirlineCode)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-  DepartureFlightNumber VARCHAR(6) NOT NULL,
-  DepartureTime DATETIME NOT NULL,
-  ReturnAirlineCode CHAR(2) NULL,
-  ReturnFlightNumber VARCHAR(6) NULL,
-  ReturnTime DATETIME NULL,
-  TotalAmount DECIMAL(10,2) NULL,
-  Progress BIT NOT NULL
+    BookingId CHAR(8) NOT NULL PRIMARY KEY,
+    BookingUserId CHAR(8) NOT NULL FOREIGN KEY REFERENCES USERS(userID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    ReturnTime DATETIME NULL,
+    TotalAmount DECIMAL(10,2) NULL,
+    Progress BIT NOT NULL,
+    DepartureFlightPathId CHAR(8) NOT NULL,
+    ReturnFlightPathId CHAR(8) NULL,
 )
 go
 

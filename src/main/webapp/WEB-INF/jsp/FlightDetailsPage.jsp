@@ -426,7 +426,7 @@
                     <td class="filledSection">
                         <p><strong>Tags:</strong>
 
-                            <%LinkedList<String> tags = flightPath.getLastFlight().getDestination().getTags();
+                            <%LinkedList<String> tags = flightPath.getLastFlight().getDestination().getTagsFromDatabase();
                             if(tags != null){
                                 for(String tag: tags){
                                     if(tag != tags.getLast()){ %>
@@ -441,8 +441,6 @@
                     </td>
                     <td class="filledSection">
                         <p>
-                            <%= flightPath.getLastFlight().getDestination().getDestinationDescription()%>
-                            <br />
                             <strong>Reputation Score: </strong>
                             <%= flightPath.getLastFlight().getDestination().getReputationScore()%>
                         </p>
@@ -901,7 +899,7 @@
                         <td class="filledSection">
                             <p><strong>Tags:</strong>
 
-                                <%LinkedList<String> returnTags = returnFlightPath.getLastFlight().getDestination().getTags();
+                                <%LinkedList<String> returnTags = returnFlightPath.getLastFlight().getDestination().getTagsFromDatabase();
                                     if(tags != null){
                                         for(String tag: tags){
                                             if(tag != tags.getLast()){ %>
@@ -916,8 +914,6 @@
                         </td>
                         <td class="filledSection">
                             <p>
-                                <%= flightPath.getLastFlight().getDestination().getDestinationDescription()%>
-                                <br />
                                 <strong>Reputation Score: </strong>
                                 <%= flightPath.getLastFlight().getDestination().getReputationScore()%>
                             </p>

@@ -33,6 +33,7 @@ public class FlightServlet extends HttpServlet {
 
             // retrieve flight
             FlightPathBean flight = flights.get(index);
+            System.out.println(flight.getLastFlight().getDestination().getTags());
 
             session.setAttribute("flight", flight);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");

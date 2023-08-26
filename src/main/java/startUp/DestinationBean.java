@@ -72,6 +72,7 @@ public class  DestinationBean {
             System.err.println(e.getMessage());
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
+
     }
 
     public DestinationBean(String code, String name) {
@@ -260,4 +261,58 @@ public class  DestinationBean {
     }
     // TODO: increment/decrement reputation score
 
+    public LinkedList<String> getTagsFromDatabase()
+    {
+        LinkedList<String> tagIds = new LinkedList<>();
+
+        try {
+            String query = "SELECT * FROM DESTINATIONTAGS WHERE DestinationCode = ?";
+
+            Connection connection = ConfigBean.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, this.destinationCode);
+            ResultSet results = statement.executeQuery();
+
+            while (results.next())
+            {
+                String destagId = results.getString(1);
+                String desCode = results.getString(2);
+                String tagId = results.getString(3);
+
+                tagIds.add(tagId);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        LinkedList<String> tagNames = new LinkedList<>();
+
+        for (int i = 0; i < tagIds.size(); i++)
+        {
+            try
+            {
+                String query = "SELECT * FROM TAGS WHERE tagID = ?";
+
+                Connection connection = ConfigBean.getConnection();
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, tagIds.get(i));
+                ResultSet results = statement.executeQuery();
+
+                while (results.next())
+                {
+                    String tagID = results.getString(1);
+                    String tagName = results.getString(2);
+                    String tagDesc = results.getString(3);
+
+                    tagNames.add(tagName);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        this.tags = tagNames;
+        return tagNames;
+
+    }
 }
