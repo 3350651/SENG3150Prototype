@@ -432,8 +432,8 @@ public class FlightBean implements Serializable {
         LocalDateTime tomorrow = arrival.plus(1, ChronoUnit.DAYS);
 
         String year = String.valueOf(tomorrow.getYear());
-        String month = tomorrow.getMonthValue() > 10 ? String.valueOf(tomorrow.getMonthValue()) : "0" + tomorrow.getMonthValue();
-        String day = tomorrow.getDayOfMonth() > 10 ? String.valueOf(tomorrow.getDayOfMonth()) : "0" + tomorrow.getDayOfMonth();
+        String month = tomorrow.getMonthValue() >= 10 ? String.valueOf(tomorrow.getMonthValue()) : "0" + tomorrow.getMonthValue();
+        String day = tomorrow.getDayOfMonth() >= 10 ? String.valueOf(tomorrow.getDayOfMonth()) : "0" + tomorrow.getDayOfMonth();
 
         return year + "-" + month + "-" + day;
     }

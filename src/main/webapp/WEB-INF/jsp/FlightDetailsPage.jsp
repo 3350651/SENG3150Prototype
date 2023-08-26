@@ -453,7 +453,7 @@
 
                     <tr>
                         <td class="filledSection" colspan="2" style="text-align: center;">
-                            <div class="floatGroupFavButton">
+                            <div class="groupFavButton">
                                 <form name="addSelectedFlight" class="groupFavouritesForm" action="GroupHomepage" method="POST">
                                     <input type="hidden" name="isReturnResults" value='false'>
                                     <button class="button" type="submit" class="addToGroupFaveList" name="addSelectedFlight"
