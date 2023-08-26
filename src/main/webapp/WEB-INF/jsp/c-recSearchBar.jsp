@@ -20,7 +20,7 @@ LinkedList<String> tagSet = TagBean.getAllTags();
   <div class="recSearch">
     <form method="POST" action="flightSearch" class="recSearchForm" name="tagSearch" >
       <h2>Find a Destination</h2>
-          <div><label for="searchType">Tags</label>
+          <div><%--@declare id="searchtype"--%><label for="searchType">Tags</label>
               <select class="selectTags" name="tags" multiple="multiple">
                   <%
                   for(String tag : tagSet) { %>
@@ -58,7 +58,6 @@ LinkedList<String> tagSet = TagBean.getAllTags();
                               <%}%>
                       </select>
                   </div>
-                  <div style="clea
           <div style="clear:both;">&nbsp;</div>
 
           <div class="departureDate"><label for="departureDate">Date</label><br>

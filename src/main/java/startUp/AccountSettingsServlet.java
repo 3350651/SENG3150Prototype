@@ -48,7 +48,7 @@ public class AccountSettingsServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("userBean");
-		LinkedList<FlightPathBean> flightPath = (LinkedList<FlightPathBean>) session.getAttribute("flightResults");
+		LinkedList<FlightPathBean> flightPath = (LinkedList<FlightPathBean>) session.getAttribute("flightResultList");
 
 		if (request.getParameter("submitQuestionnaire") != null) {
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
@@ -220,6 +220,26 @@ public class AccountSettingsServlet extends HttpServlet {
 		}
 		if(request.getParameter("goToQuestionnaire") != null){
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Questionnaire.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("bookmark.x") != null){
+			String id = request.getParameter("userID"); // do this for all others as hidden form input
+			int index = Integer.parseInt(request.getParameter("flightIndex"));
+			FlightPathBean fpb = flightPath.get(index);
+			UserBean.addToBookmarkedFlights(id, fpb);
+			user.addBookmarkedFlight(fpb);
+			session.setAttribute("userBean", user);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		if(request.getParameter("favourite.x") != null){
+			String id = request.getParameter("userID"); // do this for all others as hidden form input
+			String destinationCode = request.getParameter("destinationCode");
+			UserBean.addToFavouritedDestinations(id, destinationCode);
+			DestinationBean d = new DestinationBean(destinationCode);
+			user.addFavouritedDestination(d);
+			session.setAttribute("userBean", user);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-SimpleSearch.jsp");
 			requestDispatcher.forward(request, response);
 		}
 	}

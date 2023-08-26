@@ -10,6 +10,7 @@
 <%@ page import="startUp.DestinationBean" %>
 <%
 LinkedList<FlightPathBean> bookmarkedFlights = new LinkedList<>();
+LinkedList<DestinationBean> favouritedDestionations = new LinkedList<>();
 if (user != null && user.getBookmarkedFlights() != null) {
   bookmarkedFlights = user.getBookmarkedFlights();
   favouritedDestionations = user.getFavouritedDestinations();
