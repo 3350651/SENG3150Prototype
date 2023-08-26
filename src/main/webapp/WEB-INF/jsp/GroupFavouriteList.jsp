@@ -62,7 +62,6 @@ boolean lockedIn = (boolean) session.getAttribute("lockedIn");
                             <input type="hidden" name="flightIndex" value="<%= faveFlights.indexOf(faveFlight) %>">
                             <div class="viewFlightDetailsButton">
                                 <button type="submit" class="viewGroupFaveFlight" name="viewFaveFlight" value="viewFaveFlight">View Group Favourite Flight</button><br>
-                                <button type="submit" class="viewGroupFaveFlight" name="viewFlight" value="viewFlight">View Flight Details</button>
                             </div>
 
                         <% if(!lockedIn) { %>
