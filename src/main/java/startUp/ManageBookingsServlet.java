@@ -26,23 +26,28 @@ public class ManageBookingsServlet extends HttpServlet {
         HttpSession session = req.getSession();
         UserBean user = (UserBean) session.getAttribute("userBean");
 
-        
-        if (user != null) {
-            LinkedList<BookingBean> bookings = BookingBean.getUserBookings(user.getUserID());   //get all user bookings
-            session.setAttribute("userBookings", bookings);
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/ViewBookingsPage.jsp");
-            requestDispatcher.forward(req, resp);
-        } else {
-            // not logged in
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/Homepage-Index.jsp");
-            requestDispatcher.forward(req, resp);
-        }
+        LinkedList<BookingBean> bookings = BookingBean.getUserBookings(user.getUserID());   //get all user bookings
+
+        session.setAttribute("userBookings", bookings);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/ViewBookingsPage.jsp");
+        requestDispatcher.forward(req, resp);
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // view booking page
-        
+        HttpSession session = req.getSession();
 
+        LinkedList<BookingBean> bookings = (LinkedList<BookingBean>) session.getAttribute("userBookings");
+        System.out.println(req.getParameter("bookingButton"));
+
+        int index = Integer.valueOf(req.getParameter("bookingButton"));
+        BookingBean booking = bookings.get(index);
+
+
+        session.setAttribute("currentBooking", booking);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/ViewBookingPage.jsp");
+        requestDispatcher.forward(req, resp);
     }
 }

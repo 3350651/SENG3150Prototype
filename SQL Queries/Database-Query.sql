@@ -42,7 +42,7 @@ go
 DROP TABLE IF EXISTS BOOKMARKEDFLIGHT;
 go
 DROP TABLE IF EXISTS FLIGHTPATHFLIGHT
-GO
+    GO
 DROP TABLE IF EXISTS MEMBERFLIGHTVOTE;
 go
 DROP TABLE IF EXISTS GROUPFAVEFLIGHT;
@@ -98,35 +98,35 @@ go
 
 CREATE TABLE USERS
 (
-	userID			  CHAR(8),
-	first_name			VARCHAR(20),
-	last_name			VARCHAR(20),
-	email				VARCHAR(30),
-	userPassword		VARCHAR(100),
-	phoneNo    			VARCHAR(15),
-	roles         		VARCHAR(20),
-	address				VARCHAR(50),
-	defaultSearch		VARCHAR(10),
-	defaultCurrency		VARCHAR(5),
-	defaultTimeZone		VARCHAR(5),
-	themePreference		VARCHAR(10),
-	questionnaireCompleted	VARCHAR(8),
-	dateOfBirth			DATE,
+    userID			  CHAR(8),
+    first_name			VARCHAR(20),
+    last_name			VARCHAR(20),
+    email				VARCHAR(30),
+    userPassword		VARCHAR(100),
+    phoneNo    			VARCHAR(15),
+    roles         		VARCHAR(20),
+    address				VARCHAR(50),
+    defaultSearch		VARCHAR(10),
+    defaultCurrency		VARCHAR(5),
+    defaultTimeZone		VARCHAR(5),
+    themePreference		VARCHAR(10),
+    questionnaireCompleted	VARCHAR(8),
+    dateOfBirth			DATE,
 
-	PRIMARY KEY (userID),
+    PRIMARY KEY (userID),
 )
 go
 
 CREATE TABLE Country
 (
-  countryCode2 CHAR(2) NOT NULL,
-  countryCode3 CHAR(3) NOT NULL,
-  countryName VARCHAR(80) NOT NULL DEFAULT '',
-  alternateName1 VARCHAR(80) NOT NULL DEFAULT '',
-  alternateName2 VARCHAR(80) NOT NULL DEFAULT '',
-  motherCountryCode3 CHAR(3) NOT NULL DEFAULT '',
-  motherCountryComment VARCHAR(80) NOT NULL DEFAULT '',
-  PRIMARY KEY (countryCode3)
+    countryCode2 CHAR(2) NOT NULL,
+    countryCode3 CHAR(3) NOT NULL,
+    countryName VARCHAR(80) NOT NULL DEFAULT '',
+    alternateName1 VARCHAR(80) NOT NULL DEFAULT '',
+    alternateName2 VARCHAR(80) NOT NULL DEFAULT '',
+    motherCountryCode3 CHAR(3) NOT NULL DEFAULT '',
+    motherCountryComment VARCHAR(80) NOT NULL DEFAULT '',
+    PRIMARY KEY (countryCode3)
 )
 go
 
@@ -260,10 +260,10 @@ go
 
 CREATE TABLE MESSAGE
 (
-	messageID CHAR(8) PRIMARY KEY,
-	chatID CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-	message VARCHAR(MAX),
+    messageID CHAR(8) PRIMARY KEY,
+    chatID CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    message VARCHAR(MAX),
 	messageTime VARCHAR(20),
 	userID CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
   ON UPDATE CASCADE ON DELETE CASCADE,
@@ -280,12 +280,12 @@ go
 
 CREATE TABLE POOLDEPOSIT
 (
-	poolDepositID CHAR(8) PRIMARY KEY,
-	poolID CHAR(8) FOREIGN KEY REFERENCES POOL(poolID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-	userID CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-	amount FLOAT,
+    poolDepositID CHAR(8) PRIMARY KEY,
+    poolID CHAR(8) FOREIGN KEY REFERENCES POOL(poolID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    userID CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    amount FLOAT,
 )
 go
 
@@ -449,17 +449,28 @@ CREATE TABLE TICKETS
 )
 go
 
+ CREATE TABLE CALENDAR
+(
+	calendarID 	CHAR(8) PRIMARY KEY,
+	startDate DATETIME,
+	endDate DATETIME,
+	userID 	CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
+  ON UPDATE CASCADE ON DELETE CASCADE,
+	groupID CHAR(8) FOREIGN KEY REFERENCES GROUPS(groupID)
+  ON UPDATE CASCADE ON DELETE CASCADE
+)
+go
 
 CREATE TABLE USERSAVEDSEARCHES
 (
-	SearchID CHAR(8) NOT NULL PRIMARY KEY,
-	DepartureTime DATETIME,
-	DepartureLocation VARCHAR(20),
-	Destination VARCHAR(20),
-	FlexibleDays VARCHAR(3),
-	AdultPassengers VARCHAR(3),
-	ChildPassengers VARCHAR(3),
-	userID CHAR(8) NOT NULL FOREIGN KEY REFERENCES USERS,
+    SearchID CHAR(8) NOT NULL PRIMARY KEY,
+    DepartureTime DATETIME,
+    DepartureLocation VARCHAR(20),
+    Destination VARCHAR(20),
+    FlexibleDays VARCHAR(3),
+    AdultPassengers VARCHAR(3),
+    ChildPassengers VARCHAR(3),
+    userID CHAR(8) NOT NULL FOREIGN KEY REFERENCES USERS,
 )
 go
 
@@ -479,6 +490,7 @@ INSERT INTO TAGS VALUES('11111114', 'Relaxing', 'Resorts, calm, quiet')
 INSERT INTO TAGS VALUES('11111115', 'Experiencing New Cultures', 'Multicultural or a cultural city hub')
 INSERT INTO TAGS VALUES('11111116', 'Tourist', 'Frequent tourist type locations - e.g. New York, Paris, Rome, Tokyo etc.')
 INSERT INTO TAGS VALUES('11111117', 'Remote', 'Locations rarely holidayed in or with small populations - e.g. Alice Springs, Nova Scotia, Ohio')
+INSERT INTO TAGS VALUES('11111118', 'Snowy', 'Locations known for often being heavily covered in snow, e.g. Ontario, Nepal, etc.')
 INSERT INTO TAGS VALUES('11111119', 'City', 'Locations know for skyscrapers, being a population center, a wide variety of things to do')
 INSERT INTO TAGS VALUES('11111120', 'Popular', 'Popular travel destination - e.g. Sydney, Los Angeles, Greece etc.')
 INSERT INTO TAGS VALUES('00000000', 'Cold', 'Cold climate.')

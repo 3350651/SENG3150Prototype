@@ -80,14 +80,30 @@ public class GroupHomepageServlet extends HttpServlet {
         GroupBean group = (GroupBean) session.getAttribute("group");
         UserBean user = (UserBean) session.getAttribute("userBean");
         LinkedList<FlightPathBean> flightPath = null;
-        if (session.getAttribute("flightResults") != null){
-            flightPath = (LinkedList<FlightPathBean>) session.getAttribute("flightResults");
-
+        if (session.getAttribute("flightResultList") != null) {
+            flightPath = (LinkedList<FlightPathBean>) session.getAttribute("flightResultList");
         }
+
         if(request.getParameter("addToAGroupList.x") != null){
             //Add to Group Fave List from Add Page.
             FlightPathBean fpb = flightPath.get(Integer.parseInt(request.getParameter("flightIndex")));
             session.setAttribute("flightToAddToGroupFaveFlight", fpb);
+            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToGroupFaveList.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        if(request.getParameter("addSelectedFlight") != null){
+            FlightPathBean flightPathBean = null;
+
+            if (request.getParameter("isReturnResults") != null) {
+                // check if it meant to look at departing flightpath or return flightpath
+                if (request.getParameter("isReturnResults").equals("false")) {
+                    flightPathBean = (FlightPathBean) session.getAttribute("flight");
+                } else if (request.getParameter("isReturnResults").equals("true")) { // if called on return flight path
+                    flightPathBean = (FlightPathBean) session.getAttribute("returnFlight");
+                }
+            }
+
+            session.setAttribute("flightToAddToGroupFaveFlight", flightPathBean);
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToGroupFaveList.jsp");
             requestDispatcher.forward(request, response);
         }
@@ -112,7 +128,6 @@ public class GroupHomepageServlet extends HttpServlet {
                 requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToGroupFaveListMessage.jsp");
                 requestDispatcher.forward(request, response);
             }
-
         }
         else if(request.getParameter("doNotAddFaveFlight") != null){
             //go back to the flights details page.

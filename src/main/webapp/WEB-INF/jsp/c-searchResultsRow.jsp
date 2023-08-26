@@ -5,13 +5,28 @@
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="startUp.UserBean" %>
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
+<% String isReturnResults = (String) request.getParameter("isReturnResults"); %>
 
 <div class="gridParent" id="simple">
-    <% SearchBean search = (SearchBean) session.getAttribute("searchResults"); 
-    LinkedList<FlightPathBean> searchResults = search.getResults();
-    session.setAttribute("flightResults", searchResults);
-    if(searchResults.size() !=0 ){
-     int i = 0; for (FlightPathBean flightPath : searchResults ) { %>
+    <% SearchBean search;
+        if (isReturnResults.equalsIgnoreCase("false")) {
+            search = (SearchBean) session.getAttribute("searchResults");
+        }
+        else {
+            search = (SearchBean) session.getAttribute("returnFlightResults");
+        }
+        //SearchBean search = isReturnResults.equalsIgnoreCase("false") ? (SearchBean) session.getAttribute("flightResults") : (SearchBean) session.getAttribute("returnFlightResults");
+        LinkedList<FlightPathBean> flightResults = search.getResults();
+
+        if (isReturnResults.equalsIgnoreCase("false")) {
+            session.setAttribute("flightResultList", flightResults);
+        }
+        else {
+            session.setAttribute("returnFlightResultList", flightResults);
+        }
+
+    if(flightResults.size() !=0 ){
+    int i = 0; for (FlightPathBean flightPath : flightResults ) { %>
         <div class="recResults">
             <div class="FlightSearchResult">
                 <div class="simpleFlightCardColumn1">
@@ -38,7 +53,7 @@
                     <%-- <div class="bookmarkFavouriteAddToGroup"> --%>
                         <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
                         <input type="hidden" name="userID" value="<%= user.getUserID() %>">
-                        <input type="hidden" name="flightIndex" value="<%= searchResults.indexOf(flightPath) %>">
+                        <input type="hidden" name="flightIndex" value="<%= flightResults.indexOf(flightPath) %>">
 
                             <div class="bookmarkFlight">
                                 <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/bookmark.png" alt="Bookmark Flight Logo" name="bookmark" value="bookmark">
@@ -48,14 +63,15 @@
                             </div>
                         </form>
                         <form name="addToAGroupList" class="groupFavouritesForm" action="GroupHomepage" method="POST">
-                        <input type="hidden" name="flightIndex" value="<%= searchResults.indexOf(flightPath) %>">
+                        <input type="hidden" name="flightIndex" value="<%= flightResults.indexOf(flightPath) %>">
                         <div class="addToGroupFavouriteList">
                             <input type="image" class="btn-image" src="${pageContext.request.contextPath}/images/addToGroupList.png" alt="Add To Group Favourite List Logo" name="addToAGroupList" value="addToAGroupList">
                         </div>
                         </form>
                         <% } %>
                         <form method="POST" action="flightSearch">
-                        <input type="hidden" name="flightIndex" value="<%= searchResults.indexOf(flightPath) %>">
+                        <input type="hidden" name='<%= (isReturnResults.equals("false") ? "flightIndex" : "returnFlightIndex" )%>' value="<%= flightResults.indexOf(flightPath) %>">\
+                        <input type="hidden" name="isReturnResults" value="<%= isReturnResults %>">
                         <div class="viewFlightDetailsButton">
                             <button type="submit" class="viewFlightDetailsButton" name="viewFlight" value="viewFlight">View Details</button>
                         </div>
@@ -69,7 +85,7 @@
             </div>
         </div>
     <% i++; }
-    } else{%>
+    } else {%>
         <div>Sorry, there were no flights found for this search. Please try again.</div>
     <%}%>
 </div>

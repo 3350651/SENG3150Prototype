@@ -21,37 +21,36 @@ bookmarkedFlights = user.getBookmarkedFlights();
             <select id="departureLocation" name="departureLocation">
                 <option value="">Select Option</option>
                 <%for(DestinationBean destination: destinationOps.getDestinations()){%>
-                    <option value=<%=destination.getDestinationCode()%>><%=destination.getDestinationName()%>
-                    </option>
-                <%}%>
+                <option value=<%=destination.getDestinationCode()%>
+                    <% if (destination.getDestinationName().equals("Sydney"))  { %> selected <% } %>
+                    ><%=destination.getDestinationName()%>
+
+                </option>
+                    <%}%>
             </select>
         </div>
         <div class="arrivalLocation"><label for="arrivalLocation">Going To</label><br>
             <select id="arrivalLocation" name="arrivalLocation">
                 <option value="">Select Option</option>
-                <%for(DestinationBean destination: destinationOps.getDestinations()){
-                    if(destinationOps.getSelected() != null && destination.getDestinationCode().equalsIgnoreCase(destinationOps.getSelected())){%>
-                        <option value=<%=destination.getDestinationCode()%> selected="selected"><%=destination.getDestinationName()%>
-                        </option>
-                        <%}
-                        else{%>
-                    
-                    <option value=<%=destination.getDestinationCode()%>><%=destination.getDestinationName()%>
-                    </option>
-                    <%}
-                }%>
+                <%for(DestinationBean destination: destinationOps.getDestinations()){%>
+                <option value=<%=destination.getDestinationCode()%>
+                    <% if (destination.getDestinationName().equals("Melbourne"))  { %> selected <% } %>
+                    ><%=destination.getDestinationName()%>
+
+                </option>
+                    <%}%>
             </select>
         </div>
         <div style="clear:both;">&nbsp;</div>
         <div class="departureDate"><label for="departureDate">Date</label><br>
-            <input type="date" id="departureDate" name="departureDate" min="2014-09-22" max="2016-01-07">
+            <input type="date" id="departureDate" name="departureDate" value="2015-08-11">
         </div>
         <div class="flexibleDateDiv" id="flexibleDateDiv">
                 <label for="flexibleDays">Days flexible</label><br>
                 <input type="number" min="0" max="30" step="1" id="flexibleDays" name="flexibleDays" value="0">
         </div>
         <div class="numberOfAdults"><label for="numberOfAdults"># Adults</label><br>
-            <input type="number" id="numberOfAdults" size="2" name="numberOfAdults" value="0">
+            <input type="number" id="numberOfAdults" size="2" name="numberOfAdults" value="1">
         </div>
         <div class="numberOfChildren"><label for="numberOfChildren"># Children</label><br>
             <input type="number" id="numberOfChildren" size="2" name="numberOfChildren" value="0">
@@ -69,4 +68,4 @@ bookmarkedFlights = user.getBookmarkedFlights();
             </div>
         </div>
     </form>
-    </div>
+</div>

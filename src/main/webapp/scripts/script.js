@@ -51,6 +51,159 @@ function validateSearchForm(){
         return true;
 }
 
+function validateCardForm(){
+
+    let x = document.forms["paymentForm"]["cardNumber"].value;
+    let a = document.forms["paymentForm"]["expiry"].value;
+    let b = document.forms["paymentForm"]["security"].value;
+
+    if (x.length > 16 || x.length < 16)
+    {
+        alert("Credit Card number must be 16 characters long.")
+        return false;
+    }
+
+    if (a.length > 5 || a.length < 5)
+    {
+        alert("Expiry date must be 5 characters long (including '/').")
+        return false;
+    }
+
+    if (!a.includes('/'))
+    {
+        alert("Expiry date entered in the incorrect format.")
+        return false;
+    }
+
+    if (b.length > 3 || b.length < 3)
+    {
+        alert("Security number must be 3 characters long.")
+        return false;
+    }
+
+    //if (x.value.match(/^[a-zA-Z]/))
+    //{
+      //  alert("Expiry date cannot contain letters.");
+        //return false;
+    //}
+
+    //if (a.value.match(/^[a-zA-Z]/))
+    //{
+      //  alert("Expiry date cannot contain letters.");
+       // return false;
+    //}
+
+
+    //if (b.value.match(/^[a-zA-Z]/))
+    //{
+      //  alert("Expiry date cannot contain letters.");
+        //return false;
+    //}
+
+}
+
+function toggleVisibility(id) {
+    closeTicketSelection(id);
+    var x = document.getElementById(id);
+     if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+
+function toggleVisibility2(id, type, button) {
+    event.preventDefault();
+    var headerID = id + 'classDiv';
+    var header = document.getElementById(headerID);
+    var btns = header.getElementsByClassName("classButton");
+    for (var i = 0; i < btns.length; i++) {
+        var current = document.getElementsByClassName("classButtonActive");
+        if (btns[i].classList.contains("classButtonActive")) {
+            btns[i].className = btns[i].className.replace(" classButtonActive", "");
+        }
+    }
+    button.className += " classButtonActive";
+
+    closeTicketSelection(id);
+    var newID = id + '' + type;
+    var x = document.getElementById(newID);
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+
+function closeTicketSelection(id) {
+    varEco = id + 'ECO';
+    varEcoDiv = document.getElementById(varEco)
+    varEcoDiv.style.display = "none";
+
+    varPme = id + 'PME';
+    varPmeDiv = document.getElementById(varPme)
+    varPmeDiv.style.display = "none";
+
+    varBus = id + 'BUS';
+    varBusDiv = document.getElementById(varBus)
+    varBusDiv.style.display = "none";
+
+    varFir = id + 'FIR';
+    varFirDiv = document.getElementById(varFir)
+    varFirDiv.style.display = "none";
+}
+
+//function selectPrice(passenger, isReturn, id, price, classCode, ticketType, event) {
+//    event.preventDefault();
+//
+//    var spanID = 'priceFor-' + passenger + '-' + isReturn + '-' + id;
+//    var spanElem = document.getElementById(spanID);
+//    spanElem.innerHTML = 'SELECTED PRICE: ' + price;
+//
+//    var inputPrice = passenger + '-' + isReturn + '-price-' + id;
+//    document.forms['passengerDetails'][inputPrice].value = price;
+//
+//    var total = 0;
+//    var returnTotal = 0;
+//
+//    var className = 'falsetotal';
+//    var prices = document.getElementsByClassName(className);
+//
+//    for (var i = 0; i < prices.length; i++) {
+//        if(!isNaN(parseFloat(prices[i].value))) {
+//            total = total + parseFloat(prices[i].value);
+//        }
+//    }
+//
+//    var classNameReturn = 'truetotal';
+//    var prices = document.getElementsByClassName(classNameReturn);
+//    for (var i = 0; i < prices.length; i++) {
+//        if(!isNaN(parseFloat(prices[i].value))) {
+//            returnTotal = returnTotal + parseFloat(prices[i].value);
+//        }
+//    }
+//
+//    var grandTotal = 'falsetotal';
+//    var totalSpan = document.getElementById(grandTotal);
+//    totalSpan.innerHTML = total;
+//
+//    var grandReturnTotal = 'truetotal';
+//    var returnTotalSpan = document.getElementById(grandReturnTotal);
+//    returnTotalSpan.innerHTML = returnTotal;
+//
+//    var inputClassCode = passenger + '-' + isReturn + '-class-' + id;
+//    document.forms['passengerDetails'][inputClassCode].value = classCode;
+//
+//    var inputTicketType = passenger + '-' + isReturn + '-type-' + id;
+//    document.forms['passengerDetails'][inputTicketType].value = ticketType;
+//
+//    document.forms['passengerDetails'][grandTotal].value = total;
+//    document.forms['passengerDetails'][grandReturnTotal].value = returnTotal;
+//
+//    var newID = passenger + '-' + isReturn + '-' + id;
+//    toggleVisibility(newID, event);
+//}
+
 function validateRandomDestForm(){
     if(document.forms["randomDestinationForm"]["departureLocation"].value === ""){
         alert("Please select a departure destination.");
