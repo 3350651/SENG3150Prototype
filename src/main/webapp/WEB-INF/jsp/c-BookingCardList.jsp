@@ -4,6 +4,9 @@
         <%@ page import="startUp.PassengerBean" %>
             <%@ page import="startUp.TicketBean" %>
                 <% LinkedList<BookingBean> bookings = (LinkedList<BookingBean>) session.getAttribute("userBookings"); %>
+<% if (bookings.isEmpty()) { %>
+<h3>No bookings avaliable to view. Please make a booking to view it here.</h3>
+<% } else { %>
                         <ul>
                             <form action="manageBookings" method="POST">
                                 <%for(int i = 0; i < bookings.size(); i++){%>
@@ -12,9 +15,9 @@
                                             <table>
                                                 <tr>
                                                     <td>
-                                                        <%=bookings.get(i).getDepartureFlightPath().getInitialFlight().getDeparture().getDestinationName()
+                                                        <%=bookings.get(i).getDepartureFlightPath().getLastFlight().getDeparture().getDestinationName()
                                                             + " To " +
-                                                            bookings.get(i).getDepartureFlightPath().getLastFlight().getDeparture().getDestinationName()%>
+                                                                bookings.get(i).getDepartureFlightPath().getInitialFlight().getDestination().getDestinationName()%>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -36,3 +39,4 @@
                                     <%}%>
                             </form>
                         </ul>
+<%  } %>

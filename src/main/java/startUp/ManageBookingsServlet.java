@@ -40,7 +40,6 @@ public class ManageBookingsServlet extends HttpServlet {
         HttpSession session = req.getSession();
 
         LinkedList<BookingBean> bookings = (LinkedList<BookingBean>) session.getAttribute("userBookings");
-        System.out.println(req.getParameter("bookingButton"));
 
         int index = Integer.valueOf(req.getParameter("bookingButton"));
         BookingBean booking = bookings.get(index);

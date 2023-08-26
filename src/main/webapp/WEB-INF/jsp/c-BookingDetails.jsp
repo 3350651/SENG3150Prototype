@@ -24,7 +24,7 @@
                 <br />
             <strong>Departure Date:</strong>
             <%=bookings.get(i).getDepartureFlightPath().getInitialFlight().getFlightTime().toLocalDateTime().getDayOfMonth()%>
-            <%=bookings.get(i).getDepartureFlightPath().getInitialFlight().getMonthName(bookings.get(i).getReturnFlightPath().getInitialFlight().getFlightTime())%>
+            <%=bookings.get(i).getDepartureFlightPath().getInitialFlight().getMonthName(bookings.get(i).getDepartureFlightPath().getInitialFlight().getFlightTime())%>
             <%=bookings.get(i).getDepartureFlightPath().getInitialFlight().getFlightTime().toLocalDateTime().getYear()%>
             <br />
             <strong>Departure Time:</strong>
@@ -104,8 +104,8 @@
                 </p>
             </fieldset>
             <% } // end for loop on departure tickets %>
-            <%if(returnPassengerList.get(k).getReturnTickets() != null){%>
-                <% for (TicketBean returnTicket : returnPassengerList.get(k).getReturnTickets()) { %>
+            <%if(passengerList.get(k).getReturnTickets() != null){%>
+            <% for (TicketBean returnTicket : passengerList.get(k).getReturnTickets()) { %>
                     <fieldset class="foreground">
                         <h2>Return Ticket</h2>
                         <p>

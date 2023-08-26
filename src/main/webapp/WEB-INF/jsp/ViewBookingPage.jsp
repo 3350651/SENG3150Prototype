@@ -23,8 +23,9 @@
                                 <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
                                     alt="FlightPub Logo" class="centreLogo">
                                 <h1>
-                                    <%=booking.getDepartureFlightPath().getInitialFlight().getDeparture().getDestinationName() + " To " +
-                                            booking.getDepartureFlightPath().getLastFlight().getDeparture().getDestinationName()%>
+                                    <%=booking.getDepartureFlightPath().getLastFlight().getDeparture().getDestinationName()
+                                            + " To " +
+                                            booking.getDepartureFlightPath().getInitialFlight().getDestination().getDestinationName()%>
                                 </h1>
                             </header>
 
@@ -34,44 +35,43 @@
                                     <h3>Departure Flight Details</h3>
 
                                     <p class="reviewDetails">
-                                    <h3><%=booking.getDepartureFlightPath().getInitialFlight().getDeparture().getDestinationName()%> <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
-                                        <%=booking.getDepartureFlightPath().getLastFlight().getDeparture().getDestinationName()%></h3>
+                                    <h3><%=booking.getDepartureFlightPath().getLastFlight().getDeparture().getDestinationName()%> <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
+                                        <%=booking.getDepartureFlightPath().getInitialFlight().getDestination().getDestinationName()%></h3>
                                     <strong>Airline: </strong>
-                                    <%=booking.getDepartureFlightPath().getInitialFlight().getAirlineName()%>
-
+                                    <%=booking.getDepartureFlightPath().getLastFlight().getAirlineName()%>
                                     <br />
                                     <strong>Departure Time:</strong>
-                                    <%=booking.getDepartureFlightPath().getInitialFlight().getFlightTime()%>
+                                    <%=booking.getDepartureFlightPath().getLastFlight().getFlightTime()%>
 
                                     <br />
                                     <strong>Flight Name:</strong>
-                                    <%=booking.getDepartureFlightPath().getInitialFlight().getFlightName()%>
+                                    <%=booking.getDepartureFlightPath().getLastFlight().getFlightName()%>
 
                                     <br />
                                     <strong>Plane Model:</strong>
-                                    <%=booking.getDepartureFlightPath().getInitialFlight().getPlaneType()%>
+                                    <%=booking.getDepartureFlightPath().getLastFlight().getPlaneType()%>
                                     </p>
                                 </fieldset>
                                 <%if(!booking.getReturnFlightPath().getFlightPath().isEmpty()){%>
                                 <fieldset class="foreground">
                                     <h3>Return Flight Details</h3>
-                                    <h3><%=booking.getReturnFlightPath().getInitialFlight().getDestination().getDestinationName()%> <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
-                                        <%=booking.getReturnFlightPath().getLastFlight().getDeparture().getDestinationName()%></h3>
+                                    <h3><%=booking.getReturnFlightPath().getLastFlight().getDeparture().getDestinationName()%> <img src="${pageContext.request.contextPath}/images/planeLogo.png" alt="Plane Logo" class="smallPlaneLogo" >
+                                        <%=booking.getReturnFlightPath().getInitialFlight().getDestination().getDestinationName()%></h3>
                                     <p class="reviewDetails">
                                         <strong>Airline: </strong>
-                                        <%=booking.getReturnFlightPath().getInitialFlight().getAirlineName()%>
+                                        <%=booking.getReturnFlightPath().getLastFlight().getAirlineName()%>
 
                                         <br />
                                         <strong>Departure Time:</strong>
-                                        <%=booking.getReturnFlightPath().getInitialFlight().getFlightTime()%>
+                                        <%=booking.getReturnFlightPath().getLastFlight().getFlightTime()%>
 
                                         <br />
                                         <strong>Flight Name:</strong>
-                                        <%=booking.getReturnFlightPath().getInitialFlight().getFlightName()%>
+                                        <%=booking.getReturnFlightPath().getLastFlight().getFlightName()%>
 
                                         <br />
                                         <strong>Plane Model:</strong>
-                                        <%=booking.getReturnFlightPath().getInitialFlight().getAirlineName()%>
+                                        <%=booking.getReturnFlightPath().getLastFlight().getAirlineName()%>
                                     </p>
                                 </fieldset>
                                 <%}%>
