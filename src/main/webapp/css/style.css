@@ -788,7 +788,7 @@ div.QuantityOfStops{
 }
 
 div.floatGroupFavButton{
-    padding: 10px 0px 20px 0px;
+
 }
 
 .destinationImage {
@@ -1215,7 +1215,7 @@ div.savedSearch{
 }
 
 form.flightSearchResultButtons, form.groupFavouritesForm{
-    float: center;
+    float: left;
 }
 
 div.containerSaveSearchAndSearch{
