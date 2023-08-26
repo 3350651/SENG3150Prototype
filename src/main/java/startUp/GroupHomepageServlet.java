@@ -210,6 +210,7 @@ public class GroupHomepageServlet extends HttpServlet {
 
             Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
             session.setAttribute("isAdmin", isAdmin);
+            session.setAttribute("faveFlights", faveFlights);
 
             if(faveFlights.size() != 0) {
 
