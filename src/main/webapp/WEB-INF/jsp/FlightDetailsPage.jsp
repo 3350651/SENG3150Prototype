@@ -28,7 +28,9 @@
     <body>
         <main>
             <header>
-                <button class="button" type="button" name="back" onclick="history.back()">Back</button>
+                <form method="POST" action="createBooking" class="back" name="back">
+                    <button name="back" type="submit" value="back" class="search">Back</button>
+                </form>
 
                 <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
                     alt="FlightPub Logo" class="centreLogo">

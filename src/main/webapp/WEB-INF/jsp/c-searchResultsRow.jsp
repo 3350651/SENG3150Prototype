@@ -9,23 +9,30 @@
 
 <div class="gridParent" id="simple">
     <% SearchBean search;
-        if (isReturnResults.equalsIgnoreCase("false")) {
-            search = (SearchBean) session.getAttribute("searchResults");
-        }
-        else {
-            search = (SearchBean) session.getAttribute("returnFlightResults");
-        }
-        //SearchBean search = isReturnResults.equalsIgnoreCase("false") ? (SearchBean) session.getAttribute("flightResults") : (SearchBean) session.getAttribute("returnFlightResults");
-        LinkedList<FlightPathBean> flightResults = search.getResults();
+            if (isReturnResults.equalsIgnoreCase("false")) {
+                if (session.getAttribute("searchResults") != null && session.getAttribute("back") != null)
+                {
+                    search = (SearchBean) session.getAttribute("searchResults");
+                }
+                else {
+                    search = (SearchBean) session.getAttribute("searchResults");
+                }
+            }
+            else {
+                search = (SearchBean) session.getAttribute("returnFlightResults");
+            }
+            //SearchBean search = isReturnResults.equalsIgnoreCase("false") ? (SearchBean) session.getAttribute("flightResults") : (SearchBean) session.getAttribute("returnFlightResults");
+            LinkedList<FlightPathBean> flightResults = search.getResults();
 
-        if (isReturnResults.equalsIgnoreCase("false")) {
-            session.setAttribute("flightResultList", flightResults);
-        }
-        else {
-            session.setAttribute("returnFlightResultList", flightResults);
-        }
+            if (isReturnResults.equalsIgnoreCase("false")) {
+                session.setAttribute("flightResultList", flightResults);
+            }
+            else {
+                session.setAttribute("returnFlightResultList", flightResults);
+            }
+    %>
 
-    if(flightResults.size() !=0 ){
+   <% if(flightResults.size() !=0 ){
     int i = 0; for (FlightPathBean flightPath : flightResults ) { %>
         <div class="recResults">
             <div class="FlightSearchResult">

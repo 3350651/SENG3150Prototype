@@ -208,6 +208,8 @@ public class FlightSearchServlet extends HttpServlet {
             //session.setAttribute("flightResults", search);
             session.setAttribute("numAdults", adults); //save values on session for return search
             session.setAttribute("numChildren", children); //save values on session for return search
+            session.setAttribute("depTime", time);
+
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/simpleSearchResults.jsp");
             requestDispatcher.forward(request, response);

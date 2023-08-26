@@ -5,7 +5,7 @@
             <%@ page import="startUp.TicketBean" %>
                 <% LinkedList<BookingBean> bookings = (LinkedList<BookingBean>) session.getAttribute("userBookings"); %>
 <% if (bookings.isEmpty()) { %>
-<h3>No bookings avaliable to view. Please make a booking to view it here.</h3>
+<div style="text-align: center;"><h3>No bookings avaliable to view. Please make a booking to view it here.</h3></div>
 <% } else { %>
                         <ul>
                             <form action="manageBookings" method="POST">
