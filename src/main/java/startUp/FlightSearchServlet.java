@@ -33,11 +33,28 @@ public class FlightSearchServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         if (request.getParameter("home").equalsIgnoreCase("recommendSearch")) {
-
-            SearchBean search = new SearchBean(null, null, null, null, false, 0, 0, 0);
-
-            //session.setAttribute("flightResults", search);
-            session.setAttribute("searchResults", search);
+            UserBean user = (UserBean) session.getAttribute("userBean");
+            if (user != null && user.getTagSet().size() > 0) {
+                Object[] temp = user.getTagSet().toArray();
+                String[] tags = Arrays.copyOf(temp, temp.length, String[].class);
+                int i = tags.length;
+                LinkedList<DestinationBean> results = new LinkedList<>();
+                while (results.size() < 3) {
+                    results = DestinationBean.getInitialRecommendations(tags, i);
+                    i--;
+                }
+                session.setAttribute("matchingDestinations", results);
+            } else {
+                Object[] temp = TagBean.getAllTags().toArray();
+                String[] tags = Arrays.copyOf(temp, temp.length, String[].class);
+                int i = tags.length;
+                LinkedList<DestinationBean> results = new LinkedList<>();
+                while (results.size() < 3) {
+                    results = DestinationBean.getInitialRecommendations(tags, i);
+                    i--;
+                }
+                session.setAttribute("matchingDestinations", results);
+            }
             request.setAttribute("goToRecommend", true);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/Homepage-RecommendedSearch.jsp");
             requestDispatcher.forward(request, response);

@@ -66,6 +66,7 @@
           <%= name %>
         </button>
         <input type="hidden" id="groupName" name="groupName" value="<%= name %>">
+        <input type="hidden" id="faveList" name="getGroupFaveList" value="true">
       </form>
     </div>
     <%

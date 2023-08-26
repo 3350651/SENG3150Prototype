@@ -221,19 +221,21 @@ public class FlightBean implements Serializable {
         FlightBean flight = null;
         String query = "";
         try {
-            if(leg == 0){
-                query = "SELECT F.AirlineCode, F.FlightNumber, F.DepartureCode, F.DestinationCode, " +
-                        "F.DepartureTime, F.ArrivalTime, F.PlaneCode, A.AirlineName, " +
-                        "0 AS leg, F.DepartureTime AS originalDepartureTime, fp.minimumPrice, " +
-                        "bf.flightPathID, fpf.DepartureTime, fpf.flightPathID, fpf. FlightNumber " +
+            if(leg == 0) {
+                query = "SELECT " +
+                        "F.AirlineCode, " +
+                        "F.FlightNumber, " +
+                        "F.DepartureCode, " +
+                        "F.DestinationCode, " +
+                        "F.DepartureTime, " +
+                        "F.ArrivalTime, " +
+                        "F.PlaneCode, " +
+                        "A.AirlineName, " +
+                        "0 AS leg, " +
+                        "F.DepartureTime AS originalDepartureTime " +
                         "FROM Flights F " +
-                        "JOIN FLIGHTPATHFLIGHT fpf ON F.AirlineCode = fpf.AirlineCode " +
-                        "AND F.FlightNumber = fpf.FlightNumber " +
-                        "AND F.DepartureTime = fpf.DepartureTime " +
-                        "JOIN FLIGHTPATH fp ON fpf.flightPathID = fp.flightPathID " +
-                        "JOIN BOOKMARKEDFLIGHT bf ON bf.flightPathID = fp.flightPathID " +
-                        "LEFT JOIN Airlines A ON A.AirlineCode = F.AirlineCode " +
-                        "WHERE StopOverCode IS NULL " +
+                        "LEFT JOIN Dbo.Airlines a ON A.AirlineCode = F.AirlineCode " +
+                        "WHERE StopOverCode IS NULL  " +
                         "AND F.AirlineCode = ? AND F.FlightNumber = ? AND F.DepartureTime = ?;";
             } else if(leg == 1){
                 query = "SELECT " +
@@ -303,9 +305,13 @@ public class FlightBean implements Serializable {
         return flight;
     }
 
-    public float getSelectedPrice() { return selectedPrice; }
+    public float getSelectedPrice() {
+        return selectedPrice;
+    }
 
-    public  void setSelectedPrice(float selectedPrice) { this.selectedPrice = selectedPrice; }
+    public void setSelectedPrice(float selectedPrice) {
+        this.selectedPrice = selectedPrice;
+    }
 
     // get flight
     public static FlightBean getFlight(String airlineCode, String flightName, Timestamp flightDepartureTime) {
@@ -360,29 +366,41 @@ public class FlightBean implements Serializable {
         String month = "";
 
         switch (monthValue) {
-            case 1 : month = "January";
+            case 1:
+                month = "January";
                 break;
-            case 2 : month = "February";
+            case 2:
+                month = "February";
                 break;
-            case 3 : month = "March";
+            case 3:
+                month = "March";
                 break;
-            case 4 : month = "April";
+            case 4:
+                month = "April";
                 break;
-            case 5 : month = "May";
+            case 5:
+                month = "May";
                 break;
-            case 6 : month = "June";
+            case 6:
+                month = "June";
                 break;
-            case 7 : month = "July";
+            case 7:
+                month = "July";
                 break;
-            case 8 : month = "August";
+            case 8:
+                month = "August";
                 break;
-            case 9 : month = "September";
+            case 9:
+                month = "September";
                 break;
-            case 10 : month = "October";
+            case 10:
+                month = "October";
                 break;
-            case 11 : month = "November";
+            case 11:
+                month = "November";
                 break;
-            case 12 : month = "December";
+            case 12:
+                month = "December";
                 break;
         }
 
@@ -398,8 +416,7 @@ public class FlightBean implements Serializable {
 
         if (hour < 12) {
             suffix = "am";
-        }
-        else suffix = "pm";
+        } else suffix = "pm";
 
         int civHour = hour % 12;
         civHour = (civHour == 0 ? 12 : civHour);
@@ -428,9 +445,10 @@ public class FlightBean implements Serializable {
     }
 
     public void loadDestinationBeans() {
-        this.destination = new DestinationBean(destination.getDestinationCode());
-        this.departure = new DestinationBean(departure.getDestinationCode());
+        this.destination = new DestinationBean(destination.getDestinationCode(), true);
+        this.departure = new DestinationBean(departure.getDestinationCode(), true);
     }
+
     public float getPriceOfAvailability(String classCode, String typeCode) {
         for (AvailabilityBean availability : seatAvailability) {
             if (availability.getClassCode().equals(classCode) && availability.getTicketCode().equals(typeCode)) {
