@@ -109,10 +109,6 @@ public class GroupFaveFlightBean implements Serializable{
         return this.chatID;
     }
 
-    public void setGroupFaveFlightID(String groupFaveFlightID) {
-        this.groupFaveFlightID = groupFaveFlightID;
-    }
-
     public FlightPathBean getFlightPath() {
         return flightPath;
     }
@@ -121,32 +117,9 @@ public class GroupFaveFlightBean implements Serializable{
         this.flightPath = flightPath;
     }
 
-    public void setChatID(String chatID) {
-        this.chatID = chatID;
-    }
 
     public void setGroupID(String groupID) {
         this.groupID = groupID;
-    }
-
-    public static void deleteGroupFaveFlights(String groupID){
-
-        String query = "DELETE FROM GROUPFAVEFLIGHT WHERE [groupID] = ?";
-        try {
-            Connection connection = ConfigBean.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
-
-            statement.setString(1, groupID);
-
-            statement.executeUpdate();
-            statement.close();
-            connection.close();
-        }
-        catch(SQLException e) {
-            System.err.println(e.getMessage());
-            System.err.println(e.getStackTrace());
-        }
-
     }
 
     public static void deleteGroupFaveFlight(String groupID, String groupFaveFlightID){
@@ -328,25 +301,6 @@ public class GroupFaveFlightBean implements Serializable{
         return this.score;
     }
 
-    //Sort the fave flights.
-    public static LinkedList<GroupFaveFlightBean> getSortedList(LinkedList<GroupFaveFlightBean> unsortedFlights, String groupID){
-        LinkedList<GroupFaveFlightBean> sortedFlights = new LinkedList<>();
-        int size = unsortedFlights.size();
-
-        //Get the score for each flight, in order to rank them.
-        for(int i = 0; i < size; i++){
-            GroupFaveFlightBean flight = unsortedFlights.removeFirst();
-            double flightScore = getFaveFlightScore(flight.getGroupID(), flight.getGroupFaveFlightID());
-            int members = getNumberOfMembers(groupID);
-            flight.setScore(flightScore/members);
-            sortedFlights.addLast(flight);
-        }
-
-        //Sort the flights based on their score, will give the ranking from largest score.
-        sortedFlights.sort(new FlightComparator());
-
-        return sortedFlights;
-    }
 
     //Determine if the flight has been lockedIn
     public static boolean lockedIn(String groupID, double score){
@@ -371,14 +325,13 @@ public class GroupFaveFlightBean implements Serializable{
 
             while (result.next()) {
                 String id = result.getString(1);
-                String code = result.getString(2);
-                String name = result.getString(3);
-                Timestamp time = result.getTimestamp(4);
-                String chatID = result.getString(5);
-                double rank = result.getFloat(6);
-                String group = result.getString(7);
+                double rank = result.getFloat(2);
+                String flightPathID = result.getString(3);
+                String chatID = result.getString(4);
+                String group = result.getString(5);
 
-                lockedInFlight = new GroupFaveFlightBean();
+
+                lockedInFlight = new GroupFaveFlightBean(id, FlightPathBean.getFlightPath(flightPathID), chatID, rank, group);
             }
             statement.close();
             connection.close();

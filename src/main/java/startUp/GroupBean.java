@@ -33,7 +33,7 @@ public class GroupBean implements Serializable {
         this.groupID = String.format("%08d", random.nextInt(100000000));
         this.groupName = groupName;
         PoolBean pool = new PoolBean();
-        //TEMPORARY VALUES BEFORE FULL IMPLEMENTATION.
+        //TEMPORARY VALUES BEFORE BOOKING IS LINKED.
         this.poolID = pool.getPoolID();
         pool.setTotalAmount(250);
         pool.setAmountRemaining(250);
@@ -285,19 +285,6 @@ public class GroupBean implements Serializable {
         }
         return false;
 
-    }
-
-    //Methods that are not currently used -- will be needed in full implementation.
-    public String isQuestionnaireCompleted() {
-        return questionnaireCompleted;
-    }
-
-    public void setQuestionnaireCompleted(String questionnaireCompleted) {
-        this.questionnaireCompleted = questionnaireCompleted;
-    }
-
-    public String getQuestionnaireCompleted() {
-        return questionnaireCompleted;
     }
 
     public LinkedList<String> getTagSet() {

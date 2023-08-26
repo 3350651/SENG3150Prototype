@@ -47,7 +47,6 @@ boolean isAdmin = (boolean) session.getAttribute("isAdmin");
 
             <table>
                 <tr>
-                    <!-- TODO: figure out how to get images from the destination -->
                     <td class="filledSection"><img
                             src="${pageContext.request.contextPath}/images/brisbaneCity.jpg"
                             alt="Destination Image" width="250px" height="auto"
@@ -124,7 +123,6 @@ boolean isAdmin = (boolean) session.getAttribute("isAdmin");
                             <button class="groupButton" type="submit" name="vote" value="2">Lock-in</button>
                             <button class="groupButton" type="submit" name="vote" value="1">Upvote</button>
                             <button class="groupButton" type="submit" name="vote" value="-2">Blacklist</button>
-                            <input type="hidden" name="viewFaveFlight" value="viewFaveFlight">
                         </form>
                     <% }
                     %>

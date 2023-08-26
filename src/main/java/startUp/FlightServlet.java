@@ -35,9 +35,6 @@ public class FlightServlet extends HttpServlet {
             FlightPathBean flight = flights.get(index);
 
             session.setAttribute("flight", flight);
-//            String flightDetails = flight.getAirline() + "," + flight.getFlightName() + ","
-//                    + flight.getFlightTime();
-//            session.setAttribute("flightDetails", flightDetails);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(req, resp);
         } else if (req.getParameter("returnSearch") != null) {
@@ -48,7 +45,24 @@ public class FlightServlet extends HttpServlet {
             req.setAttribute("returnFlights", returnFlights);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(req, resp);
-        }
+        } else if (req.getParameter("updatePrice") != null) {
+            String isReturnResults = req.getParameter("isReturnResults");
+            LinkedList<FlightBean> flights;
 
+            if (isReturnResults.equals("false")) {
+                flights = (LinkedList<FlightBean>) session.getAttribute("flightList");
+            } else {
+                flights = (LinkedList<FlightBean>) session.getAttribute("returnFlightList");
+            }
+
+            int flightIndex = Integer.parseInt(req.getParameter("flightIndex"));
+            float selectedPrice = Float.parseFloat(req.getParameter("selectedPrice"));
+
+            flights.get(flightIndex).setSelectedPrice(selectedPrice);
+
+//            resp.sendRedirect("createBooking");
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
+            requestDispatcher.forward(req, resp);
+        }
     }
 }

@@ -98,22 +98,22 @@ go
 
 CREATE TABLE USERS
 (
-	userID			  CHAR(8),
-	first_name			VARCHAR(20),
-	last_name			VARCHAR(20),
-	email				VARCHAR(30),
-	userPassword		VARCHAR(100),
-	phoneNo    			VARCHAR(15),
-	roles         		VARCHAR(20),
-	address				VARCHAR(50),
-	defaultSearch		VARCHAR(10),
-	defaultCurrency		VARCHAR(5),
-	defaultTimeZone		VARCHAR(5),
-	themePreference		VARCHAR(10),
-	questionnaireCompleted	VARCHAR(8),
-	dateOfBirth			DATE,
+    userID			  CHAR(8),
+    first_name			VARCHAR(20),
+    last_name			VARCHAR(20),
+    email				VARCHAR(30),
+    userPassword		VARCHAR(100),
+    phoneNo    			VARCHAR(15),
+    roles         		VARCHAR(20),
+    address				VARCHAR(50),
+    defaultSearch		VARCHAR(10),
+    defaultCurrency		VARCHAR(5),
+    defaultTimeZone		VARCHAR(5),
+    themePreference		VARCHAR(10),
+    questionnaireCompleted	VARCHAR(8),
+    dateOfBirth			DATE,
 
-	PRIMARY KEY (userID),
+    PRIMARY KEY (userID),
 )
 go
 
@@ -260,10 +260,10 @@ go
 
 CREATE TABLE MESSAGE
 (
-	messageID CHAR(8) PRIMARY KEY,
-	chatID CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-	message VARCHAR(MAX),
+    messageID CHAR(8) PRIMARY KEY,
+    chatID CHAR(8) FOREIGN KEY REFERENCES CHAT(chatID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    message VARCHAR(MAX),
 	messageTime VARCHAR(20),
 	userID CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
   ON UPDATE CASCADE ON DELETE CASCADE,
@@ -280,12 +280,12 @@ go
 
 CREATE TABLE POOLDEPOSIT
 (
-	poolDepositID CHAR(8) PRIMARY KEY,
-	poolID CHAR(8) FOREIGN KEY REFERENCES POOL(poolID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-	userID CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
-  ON UPDATE CASCADE ON DELETE CASCADE,
-	amount FLOAT,
+    poolDepositID CHAR(8) PRIMARY KEY,
+    poolID CHAR(8) FOREIGN KEY REFERENCES POOL(poolID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    userID CHAR(8) FOREIGN KEY REFERENCES USERS(userID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    amount FLOAT,
 )
 go
 
@@ -452,14 +452,14 @@ go
 
 CREATE TABLE USERSAVEDSEARCHES
 (
-	SearchID CHAR(8) NOT NULL PRIMARY KEY,
-	DepartureTime DATETIME,
-	DepartureLocation VARCHAR(20),
-	Destination VARCHAR(20),
-	FlexibleDays VARCHAR(3),
-	AdultPassengers VARCHAR(3),
-	ChildPassengers VARCHAR(3),
-	userID CHAR(8) NOT NULL FOREIGN KEY REFERENCES USERS,
+    SearchID CHAR(8) NOT NULL PRIMARY KEY,
+    DepartureTime DATETIME,
+    DepartureLocation VARCHAR(20),
+    Destination VARCHAR(20),
+    FlexibleDays VARCHAR(3),
+    AdultPassengers VARCHAR(3),
+    ChildPassengers VARCHAR(3),
+    userID CHAR(8) NOT NULL FOREIGN KEY REFERENCES USERS,
 )
 go
 

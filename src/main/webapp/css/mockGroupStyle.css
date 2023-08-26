@@ -388,6 +388,15 @@ ul{
 
     .manageGroupContent {
        display: block;
+       text-align:center;
+       /* top | right | bottom | left */
+       margin: 5px auto;
+       width: 40%;
+       border: 3px;
+       padding: 10px;
+       background-color: #7CB9E8;
+       border-width: thin;
+       border-radius: 8px;
     }
 
     #addMemberFormContainer {
