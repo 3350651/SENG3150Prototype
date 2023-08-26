@@ -125,7 +125,6 @@ public class FlightPathBean {
 
         while (!entry.getFlightPath().isEmpty())
         {
-            Stack<FlightBean> temp = new Stack<>();
 
             FlightBean flight = entry.getFlightPath().pop();
 

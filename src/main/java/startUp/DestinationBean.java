@@ -281,6 +281,9 @@ public class  DestinationBean {
 
                 tagIds.add(tagId);
             }
+
+            statement.close();
+            connection.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -306,6 +309,9 @@ public class  DestinationBean {
 
                     tagNames.add(tagName);
                 }
+
+                statement.close();
+                connection.close();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

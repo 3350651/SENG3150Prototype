@@ -8,6 +8,7 @@
 <% FlightPathBean flightPath = (FlightPathBean) session.getAttribute("flight"); %>
 <% LinkedList<FlightBean> flightList = (LinkedList<FlightBean>) session.getAttribute("flightList"); %>
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
+<% LinkedList<String> destinationTags = (LinkedList<String>) session.getAttribute("destinationTags"); %>
 <% boolean viewReturnFlightSearchResults = (Boolean) session.getAttribute("viewReturnFlightSearchResults"); %>
     <% viewReturnFlightSearchResults = (session.getAttribute("viewReturnFlightSearchResults") == null ? false : viewReturnFlightSearchResults); %>
 <% boolean viewReturnFlightDetails = (Boolean) session.getAttribute("viewReturnFlightDetails"); %>
@@ -426,10 +427,10 @@
                     <td class="filledSection">
                         <p><strong>Tags:</strong>
 
-                            <%LinkedList<String> tags = flightPath.getLastFlight().getDestination().getTagsFromDatabase();
-                            if(tags != null){
-                                for(String tag: tags){
-                                    if(tag != tags.getLast()){ %>
+                            <%//LinkedList<String> tags = flightPath.getLastFlight().getDestination().getTagsFromDatabase();
+                            if(destinationTags != null){
+                                for(String tag: destinationTags){
+                                    if(tag != destinationTags.getLast()){ %>
                                         <%=tag +", "%>
                                     <% }
                                     else { %>
@@ -511,6 +512,7 @@
                 if (viewReturnFlightDetails) {
                 FlightPathBean returnFlightPath = (FlightPathBean) session.getAttribute("returnFlight");
                 LinkedList<FlightBean> returnFlightList = (LinkedList<FlightBean>) session.getAttribute("returnFlightList");
+                LinkedList<String> returnTags = (LinkedList<String>) session.getAttribute("returnTags");
             %>
                 <h1 style="margin-top: 50px;">
                     <%= returnFlightPath.getInitialFlight().getDeparture().getDestinationName() %>
@@ -899,10 +901,10 @@
                         <td class="filledSection">
                             <p><strong>Tags:</strong>
 
-                                <%LinkedList<String> returnTags = returnFlightPath.getLastFlight().getDestination().getTagsFromDatabase();
-                                    if(tags != null){
-                                        for(String tag: tags){
-                                            if(tag != tags.getLast()){ %>
+                                <%//LinkedList<String> returnTags = returnFlightPath.getLastFlight().getDestination().getTags();
+                                    if(returnTags != null){
+                                        for(String tag: returnTags){
+                                            if(tag != returnTags.getLast()){ %>
                                             <%=tag +", "%>
                                             <% }
                                             else { %>

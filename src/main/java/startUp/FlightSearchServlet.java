@@ -232,6 +232,10 @@ public class FlightSearchServlet extends HttpServlet {
                     returnFlightList.addLast(returnFlightStack.get(returnFlightStack.size() - i));
                 }
 
+                LinkedList<String> returnTags = returnFlight.getLastFlight().getDestination().getTagsFromDatabase();
+                System.out.println(returnTags.getFirst());
+
+                session.setAttribute("returnTags", returnTags);
                 session.setAttribute("returnFlight", returnFlight);
                 session.setAttribute("returnFlightList", returnFlightList);
                 session.setAttribute("viewReturnFlightSearchResults", Boolean.FALSE);
@@ -239,6 +243,14 @@ public class FlightSearchServlet extends HttpServlet {
 
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
                 requestDispatcher.forward(request, response);
+
+                FlightPathBean flight = null;
+                if(request.getParameter("flightIndex") != null) {
+                    flight = flights.get(Integer.parseInt(request.getParameter("flightIndex")));
+                }
+                else {
+                    flight = flights.get((Integer) session.getAttribute("flightIndex"));
+                }
             }
 
             flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResultList");
@@ -251,6 +263,10 @@ public class FlightSearchServlet extends HttpServlet {
                 flightList.addLast(flightStack.get(flightStack.size() - i));
             }
 
+            LinkedList<String> destinationTags = flight.getLastFlight().getDestination().getTagsFromDatabase();
+            System.out.println(destinationTags.getFirst());
+
+            session.setAttribute("destinationTags", destinationTags);
             session.setAttribute("flight", flight);
             session.setAttribute("flightList", flightList);
             session.setAttribute("viewReturnFlightSearchResults", Boolean.FALSE);
