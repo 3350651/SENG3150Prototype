@@ -269,6 +269,7 @@ public class BookingBean implements Serializable {
     //get all bookings related to user
     public static LinkedList<BookingBean> getUserBookings(String userId){
         LinkedList<BookingBean> bookings = new LinkedList<>();
+
         try {
             String query = "SELECT * from dbo.BOOKINGS WHERE BookingUserId = ?";
             Connection connection = ConfigBean.getConnection();
@@ -307,6 +308,7 @@ public class BookingBean implements Serializable {
                 statement.setString(1, bookingId);
                 ResultSet passengerResults = statement.executeQuery();
                 LinkedList<PassengerBean> passengers = new LinkedList<>();
+
                 while(passengerResults.next()){
                     String passengerId = passengerResults.getString(1);
                     String lName = passengerResults.getString(2);
@@ -317,6 +319,7 @@ public class BookingBean implements Serializable {
                     String passengerBookingId = passengerResults.getString(7);
                     passengers.add(new PassengerBean(lName, fName, email, mobile, DOB, passengerBookingId));
                 }
+
                 //get tickets from this booking
                 query = "SELECT * FROM TICKETS WHERE BookingId = ?";
                 statement = connection.prepareStatement(query);
@@ -344,6 +347,7 @@ public class BookingBean implements Serializable {
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
         }
+
         return bookings;
     }
 

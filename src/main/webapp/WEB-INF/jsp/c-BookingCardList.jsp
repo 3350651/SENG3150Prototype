@@ -12,9 +12,9 @@
                                             <table>
                                                 <tr>
                                                     <td>
-                                                        <%=bookings.get(i).getDepartureFlightPath().getInitialFlight().getDeparture().getDestinationName()
+                                                        <%=bookings.get(i).getDepartureFlightPath().getLastFlight().getDeparture().getDestinationName()
                                                             + " To " +
-                                                            bookings.get(i).getDepartureFlightPath().getLastFlight().getDeparture().getDestinationName()%>
+                                                            bookings.get(i).getDepartureFlightPath().getInitialFlight().getDestination().getDestinationName()%>
                                                     </td>
                                                 </tr>
                                                 <tr>

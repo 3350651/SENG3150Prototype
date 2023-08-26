@@ -233,7 +233,6 @@ public class FlightSearchServlet extends HttpServlet {
                 }
 
                 LinkedList<String> returnTags = returnFlight.getLastFlight().getDestination().getTagsFromDatabase();
-                System.out.println(returnTags.getFirst());
 
                 session.setAttribute("returnTags", returnTags);
                 session.setAttribute("returnFlight", returnFlight);

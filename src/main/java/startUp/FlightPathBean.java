@@ -127,6 +127,7 @@ public class FlightPathBean {
         {
 
             FlightBean flight = entry.getFlightPath().pop();
+            System.out.println(flight.getLeg());
 
             try {
                 String query = "INSERT INTO dbo.FLIGHTPATHFLIGHT (flightPathID, AirlineCode, FlightNumber, DepartureTime, Leg)\n"
@@ -228,6 +229,7 @@ public class FlightPathBean {
             connection.close();
 
             flightPathBean = new FlightPathBean(stack, true);
+
         }
         catch(Exception e) {
             System.err.println(e.getMessage());
