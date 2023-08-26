@@ -48,13 +48,13 @@ public class GroupHomepageServlet extends HttpServlet {
         }
 
        if (request.getParameter("goGroup") != null) {
-            String groupID = request.getParameter("groupID");
-            GroupBean group = getGroup(groupID);
-            session.setAttribute("group", group);
-            Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
-            session.setAttribute("isAdmin", isAdmin);
-            boolean poolFinished = group.isPoolComplete(group.getPoolID());
-            session.setAttribute("poolFinished", poolFinished);
+           String groupID = request.getParameter("groupID");
+           GroupBean group = getGroup(groupID);
+           session.setAttribute("group", group);
+           Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
+           session.setAttribute("isAdmin", isAdmin);
+           boolean poolFinished = group.isPoolComplete(group.getPoolID());
+           session.setAttribute("poolFinished", poolFinished);
 
 
            //get all the Flights that are added to the group Fave list.
@@ -64,21 +64,20 @@ public class GroupHomepageServlet extends HttpServlet {
 
            boolean lockedIn = false;
 
-           if(faveFlights.size() != 0) {
+           if (faveFlights.size() != 0) {
 
                //Check whether any of the flights have been blacklisted, remove it.
-               for(int i = 0; i < size; i++){
+               for (int i = 0; i < size; i++) {
                    GroupFaveFlightBean temp = faveFlights.removeFirst();
 
-                   if(blacklisted(group.getGroupID(),temp.getScore())){
+                   if (blacklisted(group.getGroupID(), temp.getScore())) {
                        deleteGroupFaveFlight(group.getGroupID(), temp.getGroupFaveFlightID());
                    }
                    //Check whether there is a flight that has been locked in.
-                   else if(lockedIn(group.getGroupID(), temp.getScore())){
+                   else if (lockedIn(group.getGroupID(), temp.getScore())) {
                        lockedIn = true;
                        faveFlights.addLast(temp);
-                   }
-                   else {
+                   } else {
                        faveFlights.addLast(temp);
                    }
                }
@@ -88,7 +87,7 @@ public class GroupHomepageServlet extends HttpServlet {
 
                LinkedList<String> destinations = new LinkedList<>();
                //If a flight has been locked in. Then get it.
-               if(lockedIn){
+               if (lockedIn) {
                    GroupFaveFlightBean lockedInFlight = getLockedIn();
                    faveFlights.add(lockedInFlight);
                    destinations = lockedInFlight.getFlightPath().getDestinations();
@@ -96,14 +95,14 @@ public class GroupHomepageServlet extends HttpServlet {
                faveFlights.sort(Comparator.comparingDouble(GroupFaveFlightBean::getScore));
 
            }
-            session.setAttribute("lockedIn", lockedIn);
-            session.setAttribute("group", group);
-            session.setAttribute("faveFlights", faveFlights);
+           session.setAttribute("lockedIn", lockedIn);
+           session.setAttribute("group", group);
+           session.setAttribute("faveFlights", faveFlights);
 
-            requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
-            requestDispatcher.forward(request, response);
+           requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
+           requestDispatcher.forward(request, response);
 
-        }
+       }
         else if(request.getParameter("groupHomepage") != null) {
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/GroupHomepage.jsp");
             requestDispatcher.forward(request, response);
@@ -128,18 +127,18 @@ public class GroupHomepageServlet extends HttpServlet {
         LinkedList<FlightPathBean> flightPath = null;
         session.setAttribute("destinationCodes", new DestinationOptionsBean());
 
-        if (session.getAttribute("flightResultList") != null){
+        if (session.getAttribute("flightResultList") != null) {
             flightPath = (LinkedList<FlightPathBean>) session.getAttribute("flightResultList");
 
         }
-        if(request.getParameter("addToAGroupList.x") != null){
+        if (request.getParameter("addToAGroupList.x") != null) {
             //Add to Group Fave List from Add Page.
             FlightPathBean fpb = flightPath.get(Integer.parseInt(request.getParameter("flightIndex")));
             session.setAttribute("flightToAddToGroupFaveFlight", fpb);
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToGroupFaveList.jsp");
             requestDispatcher.forward(request, response);
         }
-        if(request.getParameter("addSelectedFlight") != null){
+        if (request.getParameter("addSelectedFlight") != null) {
             FlightPathBean flightPathBean = null;
 
             if (request.getParameter("isReturnResults") != null) {
@@ -155,7 +154,7 @@ public class GroupHomepageServlet extends HttpServlet {
             requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToGroupFaveList.jsp");
             requestDispatcher.forward(request, response);
         }
-        if(request.getParameter("addToGroupFaveList") != null){
+        if (request.getParameter("addToGroupFaveList") != null) {
 
             String groupID = request.getParameter("groupID");
             group = getGroup(groupID);
@@ -164,7 +163,7 @@ public class GroupHomepageServlet extends HttpServlet {
             boolean alreadyAdded = isInGroupFaveList(fpb.getId(), group.getGroupID());
 
             //if already in the group list
-            if(alreadyAdded){
+            if (alreadyAdded) {
                 session.setAttribute("message", "Looks like that flight is already in your groups Favourite List!");
                 requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AddToGroupFaveListMessage.jsp");
                 requestDispatcher.forward(request, response);
@@ -216,10 +215,9 @@ public class GroupHomepageServlet extends HttpServlet {
                 //Check whether any of the flights have been blacklisted, remove it.
                 for(int i = 0; i < size; i++){
                     GroupFaveFlightBean temp = faveFlights.removeFirst();
-                    if(blacklisted(group.getGroupID(),temp.getScore())){
+                    if (blacklisted(group.getGroupID(), temp.getScore())) {
                         deleteGroupFaveFlight(group.getGroupID(), temp.getGroupFaveFlightID());
-                    }
-                    else {
+                    } else {
                         faveFlights.addLast(temp);
                     }
                 }

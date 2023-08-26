@@ -27,7 +27,7 @@ public class PassengerBean implements Serializable {
     private LinkedList<TicketBean> returnTickets;
 
     //constructor
-    public PassengerBean(String lastName, String givenNames, String email, String phoneNumber, Timestamp dateOfBirth, String bookingId){
+    public PassengerBean(String lastName, String givenNames, String email, String phoneNumber, Timestamp dateOfBirth, String bookingId) {
         this.lastName = lastName;
         this.givenNames = givenNames;
         this.email = email;
@@ -114,10 +114,10 @@ public class PassengerBean implements Serializable {
     }
 
     //create passenger in database
-    public void addPassenger(){
-        try{
+    public void addPassenger() {
+        try {
             String query = "INSERT INTO dbo.PASSENGERS (PassengerId, LastName, GivenNames, Email, PhoneNumber, DateOfBirth, BookingId)\n" +
-                            "VALUES(?,?,?,?,?,?,?);";
+                    "VALUES(?,?,?,?,?,?,?);";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, this.passengerId);

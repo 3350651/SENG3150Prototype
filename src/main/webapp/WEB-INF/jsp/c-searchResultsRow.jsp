@@ -70,7 +70,7 @@
                         </form>
                         <% } %>
                         <form method="POST" action="flightSearch">
-                        <input type="hidden" name='<%= (isReturnResults.equals("false") ? "flightIndex" : "returnFlightIndex" )%>' value="<%= flightResults.indexOf(flightPath) %>">\
+                        <input type="hidden" name='<%= (isReturnResults.equals("false") ? "flightIndex" : "returnFlightIndex" )%>' value="<%= flightResults.indexOf(flightPath) %>">
                         <input type="hidden" name="isReturnResults" value="<%= isReturnResults %>">
                         <div class="viewFlightDetailsButton">
                             <button type="submit" class="viewFlightDetailsButton" name="viewFlight" value="viewFlight">View Details</button>

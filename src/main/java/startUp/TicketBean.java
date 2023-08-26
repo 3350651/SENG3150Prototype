@@ -33,7 +33,7 @@ public class TicketBean implements Serializable {
     private String arrival;
 
 
-    public TicketBean(String bookingId, String passengerId, String flightId, String airlineId, Timestamp flightTime, String ticketClass, String ticketType){
+    public TicketBean(String bookingId, String passengerId, String flightId, String airlineId, Timestamp flightTime, String ticketClass, String ticketType) {
         this.bookingId = bookingId;
         this.passengerId = passengerId;
         this.flightId = flightId;
@@ -176,12 +176,11 @@ public class TicketBean implements Serializable {
     }
 
 
-
     //create ticket in database
-    public void addTicket(){
-        try{
+    public void addTicket() {
+        try {
             String query = "INSERT INTO dbo.TICKETS (TicketId, BookingId, PassengerId, AirlineCode, FlightNumber, DepartureTime, TicketClass, TicketType)\n" +
-                            "VALUES(?,?,?,?,?,?,?,?);";
+                    "VALUES(?,?,?,?,?,?,?,?);";
             Connection connection = ConfigBean.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, this.ticketId);
@@ -196,7 +195,7 @@ public class TicketBean implements Serializable {
             statement.close();
             connection.close();
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
         }

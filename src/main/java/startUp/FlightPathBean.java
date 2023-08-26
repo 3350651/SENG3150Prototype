@@ -32,6 +32,7 @@ public class FlightPathBean {
         id = ThreadLocalRandom.current().nextInt(10000000, 99999999);
         minPrice = BigDecimal.valueOf(minPrice).setScale(2, RoundingMode.HALF_UP).floatValue();
     }
+
     public FlightPathBean(Stack<FlightBean> flights, boolean check) {
         flightPath = flights;
         destinations = new LinkedList<>();
@@ -103,8 +104,7 @@ public class FlightPathBean {
         return allDestinations;
     }
 
-    public void addFlightPathToDatabase()
-    {
+    public void addFlightPathToDatabase() {
         try {
             String query = "INSERT INTO dbo.FLIGHTPATH (flightPathID, minimumPrice)\n"
                     +
@@ -124,8 +124,7 @@ public class FlightPathBean {
 
         FlightPathBean entry = new FlightPathBean((Stack<FlightBean>) this.flightPath.clone());
 
-        while (!entry.getFlightPath().isEmpty())
-        {
+        while (!entry.getFlightPath().isEmpty()) {
             FlightBean flight = entry.getFlightPath().pop();
             try {
                 String query = "INSERT INTO dbo.FLIGHTPATHFLIGHT (flightPathID, AirlineCode, FlightNumber, DepartureTime, Leg)\n"
@@ -149,7 +148,7 @@ public class FlightPathBean {
         }
     }
 
-    public static FlightPathBean getFlightPath(String flightPathID){
+    public static FlightPathBean getFlightPath(String flightPathID) {
         FlightPathBean flightPathBean = null;
         String query = "\n" +
                 "SELECT F.AirlineCode,\n" +
@@ -180,7 +179,7 @@ public class FlightPathBean {
 
             Stack<FlightBean> stack = new Stack<>();
 
-            while(result.next()){
+            while (result.next()) {
                 String airlineCode = result.getString("AirlineCode");
                 String airlineName = result.getString("AirlineName");
                 Timestamp originalDepartureTime = result.getTimestamp("DepartureTime");
@@ -192,22 +191,22 @@ public class FlightPathBean {
                 String departCode = "";
                 Timestamp arrivalTime = null;
 
-                switch(leg) {
-                    case(0): {
+                switch (leg) {
+                    case (0): {
                         departureTime = result.getTimestamp("DepartureTime");
                         arrivalTime = result.getTimestamp("ArrivalTime");
                         departCode = result.getString("DepartureCode");
                         destCode = result.getString("DestinationCode");
                         break;
                     }
-                    case(1): {
+                    case (1): {
                         departureTime = result.getTimestamp("DepartureTime");
                         arrivalTime = result.getTimestamp("ArrivalTimeStopOver");
                         departCode = result.getString("DepartureCode");
                         destCode = result.getString("StopOverCode");
                         break;
                     }
-                    case(2): {
+                    case (2): {
                         departureTime = result.getTimestamp("ArrivalTimeStopOver");
                         arrivalTime = result.getTimestamp("ArrivalTime");
                         departCode = result.getString("StopOverCode");
@@ -227,8 +226,7 @@ public class FlightPathBean {
             connection.close();
 
             flightPathBean = new FlightPathBean(stack, true);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
         }

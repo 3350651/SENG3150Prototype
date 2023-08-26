@@ -45,15 +45,13 @@ public class FlightServlet extends HttpServlet {
             req.setAttribute("returnFlights", returnFlights);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
             requestDispatcher.forward(req, resp);
-        }
-        else if (req.getParameter("updatePrice") != null) {
+        } else if (req.getParameter("updatePrice") != null) {
             String isReturnResults = req.getParameter("isReturnResults");
             LinkedList<FlightBean> flights;
 
             if (isReturnResults.equals("false")) {
                 flights = (LinkedList<FlightBean>) session.getAttribute("flightList");
-            }
-            else {
+            } else {
                 flights = (LinkedList<FlightBean>) session.getAttribute("returnFlightList");
             }
 

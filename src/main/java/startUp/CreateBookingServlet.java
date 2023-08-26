@@ -51,8 +51,7 @@ public class CreateBookingServlet extends HttpServlet {
 
             boolean hasReturn = false;
 
-            if (req.getParameter("hasReturn") != null && req.getParameter("hasReturn").equals("hasReturn"))
-            {
+            if (req.getParameter("hasReturn") != null && req.getParameter("hasReturn").equals("hasReturn")) {
                 FlightPathBean returnFlightPath = (FlightPathBean) session.getAttribute("returnFlight");
                 a.setReturnFlightPath(returnFlightPath);
                 returnFlightPath.addFlightPathToDatabase();
@@ -89,7 +88,7 @@ public class CreateBookingServlet extends HttpServlet {
             boolean hasReturn = (boolean) session.getAttribute("hasReturn");
 
             // get number of departing passengers and prepare to create PassengerBeans
-            int numPassengers = (Integer)  session.getAttribute("passengers");
+            int numPassengers = (Integer) session.getAttribute("passengers");
             PassengerBean passengerBean = null;
             PassengerBean returnPassenger = null;
             LinkedList<PassengerBean> passengerBeans = new LinkedList<>();
@@ -102,7 +101,7 @@ public class CreateBookingServlet extends HttpServlet {
             BookingBean booking = bookings.get(0);
 
             // iterate though every "DEPARTING" passenger data and create passengerbeans and ticketbeans each
-            for (int passengerIndex = 1; passengerIndex <= numPassengers; passengerIndex++ ) {
+            for (int passengerIndex = 1; passengerIndex <= numPassengers; passengerIndex++) {
                 String lastName = req.getParameter("lNamefalse" + passengerIndex);
                 String givenNames = req.getParameter("titlefalse" + passengerIndex) + " " + req.getParameter("fNamefalse" + passengerIndex);
                 String email = req.getParameter("emailfalse" + passengerIndex);
@@ -115,8 +114,7 @@ public class CreateBookingServlet extends HttpServlet {
 
                 // create ticketbean for each flight
                 LinkedList<TicketBean> tickets = new LinkedList<>();
-                for (int flightIndex = 0 ; flightIndex < flightList.size() ; flightIndex++)
-                {
+                for (int flightIndex = 0; flightIndex < flightList.size(); flightIndex++) {
                     FlightBean flight = flightList.get(flightIndex);
 
                     // get relevant data about selected ticket from flight details page
@@ -151,7 +149,7 @@ public class CreateBookingServlet extends HttpServlet {
                 LinkedList<FlightBean> returnFlightList = (LinkedList<FlightBean>) session.getAttribute("returnFlightList");
 
                 // iterate though every "RETURNING" passenger data and create passengerbeans and ticketbeans each
-                for (int passengerIndex = 1; passengerIndex <= numPassengers; passengerIndex++ ) {
+                for (int passengerIndex = 1; passengerIndex <= numPassengers; passengerIndex++) {
                     String lastName = req.getParameter("lNamefalse" + passengerIndex);
                     String givenNames = req.getParameter("titlefalse" + passengerIndex) + " " + req.getParameter("fNamefalse" + passengerIndex);
                     String email = req.getParameter("emailfalse" + passengerIndex);
@@ -164,7 +162,7 @@ public class CreateBookingServlet extends HttpServlet {
 
                     // create ticketbean for each flight
                     tickets = new LinkedList<>();
-                    for (int returnFlightIndex = 0 ; returnFlightIndex < returnFlightList.size() ; returnFlightIndex++) {
+                    for (int returnFlightIndex = 0; returnFlightIndex < returnFlightList.size(); returnFlightIndex++) {
 
                         FlightBean returnFlight = returnFlightList.get(returnFlightIndex);
 
@@ -205,15 +203,13 @@ public class CreateBookingServlet extends HttpServlet {
         }
 
 
-
         //if coming from the review details page
-        else if(req.getParameter("payment") != null){
+        else if(req.getParameter("payment") != null) {
 
             //since we dont handle pay, it just finalises each booking
             LinkedList<BookingBean> bookings = (LinkedList<BookingBean>) session.getAttribute("bookings");
 
-            for (int i = 0; i < bookings.size(); i++)
-            {
+            for (int i = 0; i < bookings.size(); i++) {
                 bookings.get(i).finalise();
             }
 

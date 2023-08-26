@@ -35,7 +35,7 @@ public class BookingBean implements Serializable {
     // constructors
 
     public BookingBean(String bookingId, String bookingUserId, FlightBean departureFlight, FlightBean returnFlight,
-    LinkedList<TicketBean> tickets, LinkedList<PassengerBean> passengers, float totalAmount, boolean progress){
+                       LinkedList<TicketBean> tickets, LinkedList<PassengerBean> passengers, float totalAmount, boolean progress) {
         this.bookingId = bookingId;
         this.bookingUserId = bookingUserId;
         this.departureFlight = departureFlight;
@@ -47,7 +47,7 @@ public class BookingBean implements Serializable {
     }
 
     public BookingBean(String bookingId, String bookingUserId, FlightPathBean flightD, FlightPathBean flightR,
-    LinkedList<TicketBean> tickets, LinkedList<PassengerBean> passengers, float totalAmount, boolean progress){
+                       LinkedList<TicketBean> tickets, LinkedList<PassengerBean> passengers, float totalAmount, boolean progress) {
         this.bookingId = bookingId;
         this.bookingUserId = bookingUserId;
         this.departureFlightPath = flightD;
@@ -72,7 +72,7 @@ public class BookingBean implements Serializable {
         Random random = new Random();
         bookingId = String.format("%08d", random.nextInt(100000000));
         bookingUserId = newBookingUserId;
-        departureFlightPath =  flightd;
+        departureFlightPath = flightd;
         returnFlightPath = flightR;
         totalAmount = newTotalAmount;
         tickets = null;
@@ -114,15 +114,14 @@ public class BookingBean implements Serializable {
 
     // getters and setters
 
-    public void setReturnPassengers(LinkedList<PassengerBean> a)
-    {
+    public void setReturnPassengers(LinkedList<PassengerBean> a) {
         returnPassengers = a;
     }
 
-    public LinkedList<PassengerBean> getReturnPassengers()
-    {
+    public LinkedList<PassengerBean> getReturnPassengers() {
         return returnPassengers;
     }
+
     public void setDepartureFlightPath(FlightPathBean departureFlightPath) {
         this.departureFlightPath = departureFlightPath;
     }
@@ -198,8 +197,7 @@ public class BookingBean implements Serializable {
     // add booking to database
     // TODO: Add ability to add with return flight if not null.
     public void addBooking() {
-        if (returnFlightPath != null)
-        {
+        if (returnFlightPath != null) {
             try {
                 String query = "INSERT INTO dbo.BOOKINGS (BookingId, BookingUserId, ReturnTime, TotalAmount, Progress, DepartureFlightPathId, ReturnFlightPathId)\n"
                         +
@@ -221,9 +219,7 @@ public class BookingBean implements Serializable {
                 System.err.println(e.getMessage());
                 System.err.println(e.getStackTrace());
             }
-        }
-        else
-        {
+        } else {
             try {
                 String query = "INSERT INTO dbo.BOOKINGS (BookingId, BookingUserId, ReturnTime, TotalAmount, Progress, DepartureFlightPathId, ReturnFlightPathId)\n"
                         +
@@ -279,17 +275,16 @@ public class BookingBean implements Serializable {
 
             BookingBean booking = null;
 
-            while(results.next()){
+            while(results.next()) {
                 String bookingId = results.getString(1);
                 String bookingUserId = results.getString(2);
 
-                if (results.getString(3) != null)
-                {
+                if (results.getString(3) != null) {
                     Timestamp returnTime = Timestamp.valueOf(results.getString(3));
                 }
 
                 float totalAmount = Float.valueOf(results.getString(4));
-                boolean progress  = results.getBoolean(5);
+                boolean progress = results.getBoolean(5);
                 String departureFlightPathID = results.getString(6);
                 String returnFlightPathID = results.getString(7);
 
@@ -307,7 +302,7 @@ public class BookingBean implements Serializable {
                 statement.setString(1, bookingId);
                 ResultSet passengerResults = statement.executeQuery();
                 LinkedList<PassengerBean> passengers = new LinkedList<>();
-                while(passengerResults.next()){
+                while (passengerResults.next()) {
                     String passengerId = passengerResults.getString(1);
                     String lName = passengerResults.getString(2);
                     String fName = passengerResults.getString(3);
@@ -335,7 +330,7 @@ public class BookingBean implements Serializable {
                     tickets.add(new TicketBean(ticketBookingId, ticketPassengerId, ticketFlightNumber, ticketAirlineCode, ticketDepartureTime, ticketClass, ticketType));
                 }
 
-                bookings.add(new BookingBean(bookingId, bookingUserId, departure, returnFl, tickets, passengers, totalAmount, progress ));
+                bookings.add(new BookingBean(bookingId, bookingUserId, departure, returnFl, tickets, passengers, totalAmount, progress));
 
             }
             statement.close();
@@ -347,8 +342,7 @@ public class BookingBean implements Serializable {
         return bookings;
     }
 
-    public void updatePrice(String bookingId, float price)
-    {
+    public void updatePrice(String bookingId, float price) {
         this.totalAmount = price;
         try {
             String query = "UPDATE BOOKINGS SET TotalAmount = ? WHERE BookingId = ?";
