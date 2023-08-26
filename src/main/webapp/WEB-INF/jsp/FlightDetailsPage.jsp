@@ -441,8 +441,6 @@
                     </td>
                     <td class="filledSection">
                         <p>
-                            <%= flightPath.getLastFlight().getDestination().getDestinationDescription()%>
-                            <br />
                             <strong>Reputation Score: </strong>
                             <%= flightPath.getLastFlight().getDestination().getReputationScore()%>
                         </p>
@@ -916,8 +914,6 @@
                         </td>
                         <td class="filledSection">
                             <p>
-                                <%= flightPath.getLastFlight().getDestination().getDestinationDescription()%>
-                                <br />
                                 <strong>Reputation Score: </strong>
                                 <%= flightPath.getLastFlight().getDestination().getReputationScore()%>
                             </p>
