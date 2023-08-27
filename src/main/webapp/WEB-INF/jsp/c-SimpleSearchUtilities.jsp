@@ -19,8 +19,8 @@
 %>
 
 <div class="simpleSearchSupports">
+    <% if (user != null && savedSearches.size() > 0){ %>
     <div class="savedSearches">
-        <% if (user != null && savedSearches != null) { %>
             <h2 class="savedSearchesHeading">Saved Searches</h2> <%
             for (int i = 0; i < savedSearches.size(); i++) {
                 SearchBean savedSearch = savedSearches.get(i);
@@ -53,7 +53,8 @@
                     <%= savedSearch.getAdultPassengers() %> Adults, <%= savedSearch.getChildPassengers() %> Children
                 </button><br>
             </form>
-            <% }
-           } %>
+            <% } %>
+
     </div>
+<%} %>
 </div>
