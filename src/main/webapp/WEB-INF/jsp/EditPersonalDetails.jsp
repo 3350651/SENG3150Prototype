@@ -28,15 +28,14 @@
         <label for="address">Address: </label>
         <input type="text" id="address" name="address" value="<%=user.getAddress()%>"><br>
 
-        <label for="defaultCurrency">Default Currency: </label>
-        <input type="text" id="defaultCurrency" name="defaultCurrency" value="<%=user.getDefaultCurrency()%>"><br>
-
-        <label for="defaultTimezone">Default Timezone: </label>
-        <input type="text" id="defaultTimezone" name="defaultTimezone" value="<%=user.getDefaultTimeZone()%>"><br>
-
         <label for="dateOfBirth">Birth Date:</label>
         <input type="date" id="dateOfBirth" name="dateOfBirth" value="<%=user.getDateOfBirth()%>">
 
+        <input type="hidden" name="themePreference" value="Light">
+        <input type="hidden" name="defaultTimezone" value="AEST">
+        <input type="hidden" name="defaultCurrency" value="AUD">
+        <input type="hidden" name="role" value="User">
+        <input type="hidden" name="questionnaireCompleted" value="No">
         <input type="hidden" name="userID" value="<%=user.getUserID()%>">
         <button type="submit" name="editPersonalDetails" value="editPersonalDetails">Update Details</button>
     </form>

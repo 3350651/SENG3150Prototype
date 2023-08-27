@@ -20,10 +20,6 @@
         <form name="returnHome" action="Homepage" method="POST">
             <button type="submit" class="button" name="home" value="true">Return to Home</button>
         </form>
-        <%--        UI Preferences button         --%>
-        <form name="goToUIPreferences" action="AccountSettings" method="POST">
-            <button type="submit" class="button" name="goToUIPreferences" value="goToUIPreferences">Modify UI Preferences</button>
-        </form>
         <%--        Personal Details button         --%>
         <form name="goToPersonalDetails" action="AccountSettings" method="POST">
             <button type="submit" class="button" name="goToPersonalDetails" value="goToPersonalDetails">Modify Personal Details</button>

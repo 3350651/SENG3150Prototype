@@ -28,11 +28,6 @@
                 <label for="phoneNumber">Phone Number: </label>
                 <input type="text" id="phoneNumber" name="phoneNumber"><br>
 
-                <label for="role">Role: </label>
-                <select id="role" name="role">
-                    <option value="user">User</option>
-                </select><br>
-
                 <label for="address">Address: </label>
                 <input type="text" id="address" name="address"><br>
 
@@ -42,18 +37,10 @@
                     <option value="Recommend">Recommend</option>
                 </select><br>
 
-                <label for="defaultCurrency">Default Currency: </label>
-                <input type="text" id="defaultCurrency" name="defaultCurrency"><br>
-
-                <label for="defaultTimezone">Default Timezone: </label>
-                <input type="text" id="defaultTimezone" name="defaultTimezone"><br>
-
-                <label for="themePreference">Theme Preference: </label>
-                <select id="themePreference" name="themePreference">
-                    <option value="Light">Light Mode</option>
-                    <option value="Dark">Dark Mode</option>
-                </select><br>
-
+                <input type="hidden" name="themePreference" value="Light">
+                <input type="hidden" name="defaultTimezone" value="AEST">
+                <input type="hidden" name="defaultCurrency" value="AUD">
+                <input type="hidden" name="role" value="User">
                 <input type="hidden" name="questionnaireCompleted" value="No">
 
                 <label for="dateOfBirth">Birth Date:</label>

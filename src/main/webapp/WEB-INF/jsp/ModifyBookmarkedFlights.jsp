@@ -49,6 +49,7 @@ if (user != null && user.getBookmarkedFlights() != null) {
                             <form method="POST" action="flightSearch">
                             <!-- TODO: allow flightDetailsViewingFromHere -->
                                 <div class="viewFlightDetailsButton">
+                                    <input type="hidden" id="bookmarkedFlightToView" name="bookmarkedFlightToView" value="<%= i %>">
                                     <button type="submit" id="flightDetailsModifyBookmarked" class="button" name="viewFlight" value="viewFlight">View Details</button>
                                 </div>
                             </form>

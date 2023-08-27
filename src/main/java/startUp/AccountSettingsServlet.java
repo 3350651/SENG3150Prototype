@@ -52,9 +52,26 @@ public class AccountSettingsServlet extends HttpServlet {
 
 		if (request.getParameter("submitQuestionnaire") != null) {
 			String id = request.getParameter("userID"); // do this for all others as hidden form input
-			String[] travelGoals = request.getParameterValues("travelGoals[]");
-			String[] locations = request.getParameterValues("locations[]");
-			String[] valueAdds = request.getParameterValues("valueAdds[]");
+			String[] travelGoals, valueAdds, locations;
+			if (request.getParameterValues("travelGoals[]") != null) {
+				travelGoals = request.getParameterValues("travelGoals[]");
+			}
+			else{
+				travelGoals = new String[0];
+			}
+			if (request.getParameterValues("valueAdds[]") != null) {
+				valueAdds = request.getParameterValues("valueAdds[]");
+			}
+			else{
+				valueAdds = new String[0];
+			}
+			if (request.getParameterValues("locations[]") != null) {
+				locations = request.getParameterValues("locations[]");
+			}
+			else{
+				locations = new String[0];
+			}
+
 			for (String tagValue : travelGoals) {
 				UserBean.addToTagSet(id, tagValue);
 				user.addTag(tagValue);
@@ -68,7 +85,7 @@ public class AccountSettingsServlet extends HttpServlet {
 				user.addTag(tagValue);
 			}
 			session.setAttribute("userBean", user);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSetting-Index.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/AccountSettings-Index.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		if(request.getParameter("changePassword") != null){
