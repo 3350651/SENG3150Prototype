@@ -147,6 +147,7 @@
                                         <br />
                                         <span><%=flight.getPlaneType()%></span>
                                     </p>
+                                    <span id="priceFor<%= i %>" hidden><%= flight.getSelectedPrice() %></span>
                                     <% if (flight.getSelectedPrice() == -1) { %>
                                         <p>$<%=flight.getMinCost()%></p>
                                     <% }
@@ -475,7 +476,7 @@
                         <button name="searchResults" type="submit" value="simpleReturnSearchResults" class="search">Search</button>
                     </form>
                     <br />
-                    <form action="createBooking" method="POST">
+                    <form action="createBooking" method="POST" onsubmit='return validateTicketSelection(<%= flightList.size() %>)'>
                         <input type="hidden" name="details" value="true">
                         <div class="recurringBookingInput">
                             <label for="recurCheck">Recurring Booking: </label>
@@ -618,9 +619,10 @@
                                             <span><%=flight.getFlightName()%></span>
                                             <br />
                                             <span><%=flight.getPlaneType()%></span>
+                                            <span id="priceForReturn<%= j %>" hidden><%= flight.getSelectedPrice() %></span>
                                         </p>
                                         <% if (flight.getSelectedPrice() == -1) { %>
-                                        <p>$<%=flight.getMinCost()%></p>
+                                            <p>$<%=flight.getMinCost()%></p>
                                         <% }
                                         else { %>
                                         <p>
@@ -925,7 +927,8 @@
             <br />
             <fieldset class="background">
                 <br />
-                <form action="createBooking" method="POST">
+                <form action="createBooking" method="POST"
+                      onsubmit='return validateTicketSelection(<%= flightList.size() %>, <%= returnFlightList.size() %>)'>
                     <input type="hidden" name="details" value="true">
                     <div class="recurringBookingInput">
                         <label for="check">Recurring Booking: </label>

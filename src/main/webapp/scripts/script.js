@@ -228,3 +228,39 @@ function validateTagSearch(){
         return true;
     }
 }
+
+
+function validateTicketSelection(numLegs){
+    for (var i = 0; i < numLegs; i++) {
+        var spanID = 'priceFor' + i;
+        var spanElem = document.getElementById(spanID);
+        if (spanElem.innerText == "-1.0") {
+            alert("Please select tickets for all flights");
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function validateTicketSelection(numLegs, numReturnLegs){
+    for (var i = 0; i < numLegs; i++) {
+        var spanID = 'priceFor' + i;
+        var spanElem = document.getElementById(spanID);
+        if (spanElem.innerText == "-1.0") {
+            alert("Please select tickets for all flights");
+            return false;
+        }
+    }
+
+    for (var j = 0; j < numReturnLegs; j++) {
+        var spanID = 'priceForReturn' + j;
+        var spanElem = document.getElementById(spanID);
+        if (spanElem.innerText == "-1.0") {
+            alert("Please select tickets for all return flights");
+            return false;
+        }
+    }
+
+    return true;
+}
