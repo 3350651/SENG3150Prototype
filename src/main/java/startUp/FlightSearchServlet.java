@@ -287,14 +287,6 @@ public class FlightSearchServlet extends HttpServlet {
 
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
                 requestDispatcher.forward(request, response);
-
-                FlightPathBean flight = null;
-                if(request.getParameter("flightIndex") != null) {
-                    flight = flights.get(Integer.parseInt(request.getParameter("flightIndex")));
-                }
-                else {
-                    flight = flights.get((Integer) session.getAttribute("flightIndex"));
-                }
             }
             else{
                 if (request.getParameter("bookmarkedFlightToView") == null) {
