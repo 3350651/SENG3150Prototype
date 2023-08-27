@@ -9,10 +9,8 @@
 <% LinkedList<FlightBean> flightList = (LinkedList<FlightBean>) session.getAttribute("flightList"); %>
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
 <% LinkedList<String> destinationTags = (LinkedList<String>) session.getAttribute("destinationTags"); %>
-<% boolean viewReturnFlightSearchResults = (Boolean) session.getAttribute("viewReturnFlightSearchResults"); %>
-    <% viewReturnFlightSearchResults = (session.getAttribute("viewReturnFlightSearchResults") == null ? false : viewReturnFlightSearchResults); %>
-<% boolean viewReturnFlightDetails = (Boolean) session.getAttribute("viewReturnFlightDetails"); %>
-    <% viewReturnFlightDetails = (session.getAttribute("viewReturnFlightDetails") == null ? false : viewReturnFlightDetails); %>
+<% boolean viewReturnFlightSearchResults = session.getAttribute("viewReturnFlightSearchResults") != null ? (Boolean) session.getAttribute("viewReturnFlightSearchResults") : false; %>
+<% boolean viewReturnFlightDetails = session.getAttribute("viewReturnFlightDetails") != null ? (Boolean) session.getAttribute("viewReturnFlightDetails") : false; %>
 <% int numAdults = (Integer) session.getAttribute("numAdults"); int numChildren = (Integer) session.getAttribute("numChildren"); %>
 
 <!DOCTYPE html>
