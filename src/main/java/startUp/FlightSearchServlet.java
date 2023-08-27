@@ -156,7 +156,6 @@ public class FlightSearchServlet extends HttpServlet {
                 LinkedList<UserTagSearchBean> results = new LinkedList<>();
                 for (String tag : tags) {
                     LinkedList<DestinationBean> matchingDestinations = DestinationBean.getNDestinationsWith(new String[]{tag}, 1, 3);
-
                     results.add(new UserTagSearchBean(tag, matchingDestinations));
                 }
                 session.setAttribute("userTags", results);
@@ -209,6 +208,8 @@ public class FlightSearchServlet extends HttpServlet {
             //session.setAttribute("flightResults", search);
             session.setAttribute("numAdults", adults); //save values on session for return search
             session.setAttribute("numChildren", children); //save values on session for return search
+            session.setAttribute("depTime", time);
+
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/simpleSearchResults.jsp");
             requestDispatcher.forward(request, response);
@@ -272,7 +273,7 @@ public class FlightSearchServlet extends HttpServlet {
                 // Invert the flightBean stack and store in linked list. Easier to call with a FOR loop on a jsp page
                 LinkedList<FlightBean> returnFlightList = new LinkedList<FlightBean>();
                 Stack<FlightBean> returnFlightStack = returnFlight.getFlightPath();
-                for ( int i = 1 ; i <= returnFlightStack.size(); i++) {
+                for (int i = 1; i <= returnFlightStack.size(); i++) {
                     returnFlightList.addLast(returnFlightStack.get(returnFlightStack.size() - i));
                 }
 
@@ -296,14 +297,14 @@ public class FlightSearchServlet extends HttpServlet {
                 }
             }
             else{
-                if (request.getParameter("bookmarkedFlightToView") == null){
+                if (request.getParameter("bookmarkedFlightToView") == null) {
                     flights = (LinkedList<FlightPathBean>) session.getAttribute("flightResultList");
                     FlightPathBean flight = flights.get(Integer.parseInt(request.getParameter("flightIndex")));
 
                     // Invert the flightBean stack and store in linked list. Easier to call with a FOR loop on a jsp page
                     LinkedList<FlightBean> flightList = new LinkedList<FlightBean>();
                     Stack<FlightBean> flightStack = flight.getFlightPath();
-                    for ( int i = 1 ; i <= flightStack.size(); i++) {
+                    for (int i = 1; i <= flightStack.size(); i++) {
                         flightList.addLast(flightStack.get(flightStack.size() - i));
                     }
 
@@ -315,10 +316,7 @@ public class FlightSearchServlet extends HttpServlet {
                     session.setAttribute("viewReturnFlightSearchResults", Boolean.FALSE);
                     session.setAttribute("viewReturnFlightDetails", Boolean.FALSE);
                     session.setAttribute("flightIndex", request.getParameter("flightIndex"));
-            /* TODO: No longer valid
-            String flightDetails = flight.getAirline() + "," + flight.getFlightName() + ","
-                    + flight.getFlightTime();
-            session.setAttribute("flightDetails", flightDetails);*/
+
 
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/FlightDetailsPage.jsp");
                     requestDispatcher.forward(request, response);

@@ -9,10 +9,8 @@
 <% LinkedList<FlightBean> flightList = (LinkedList<FlightBean>) session.getAttribute("flightList"); %>
 <% UserBean user = (UserBean) session.getAttribute("userBean");%>
 <% LinkedList<String> destinationTags = (LinkedList<String>) session.getAttribute("destinationTags"); %>
-<% boolean viewReturnFlightSearchResults = (Boolean) session.getAttribute("viewReturnFlightSearchResults"); %>
-    <% viewReturnFlightSearchResults = (session.getAttribute("viewReturnFlightSearchResults") == null ? false : viewReturnFlightSearchResults); %>
-<% boolean viewReturnFlightDetails = (Boolean) session.getAttribute("viewReturnFlightDetails"); %>
-    <% viewReturnFlightDetails = (session.getAttribute("viewReturnFlightDetails") == null ? false : viewReturnFlightDetails); %>
+<% boolean viewReturnFlightSearchResults = session.getAttribute("viewReturnFlightSearchResults") != null ? (Boolean) session.getAttribute("viewReturnFlightSearchResults") : false; %>
+<% boolean viewReturnFlightDetails = session.getAttribute("viewReturnFlightDetails") != null ? (Boolean) session.getAttribute("viewReturnFlightDetails") : false; %>
 <% int numAdults = (Integer) session.getAttribute("numAdults"); int numChildren = (Integer) session.getAttribute("numChildren"); %>
 
 <!DOCTYPE html>
@@ -28,7 +26,9 @@
     <body>
         <main>
             <header>
-                <button class="button" type="button" name="back" onclick="history.back()">Back</button>
+                <form method="POST" action="createBooking" class="back" name="back">
+                    <button name="back" type="submit" value="back" class="search">Back</button>
+                </form>
 
                 <img src="${pageContext.request.contextPath}/images/fpLogoForSettingsPage.png"
                     alt="FlightPub Logo" class="centreLogo">
@@ -147,6 +147,7 @@
                                         <br />
                                         <span><%=flight.getPlaneType()%></span>
                                     </p>
+                                    <span id="priceFor<%= i %>" hidden><%= flight.getSelectedPrice() %></span>
                                     <% if (flight.getSelectedPrice() == -1) { %>
                                         <p>$<%=flight.getMinCost()%></p>
                                     <% }
@@ -427,10 +428,10 @@
                     <td class="filledSection">
                         <p><strong>Tags:</strong>
 
-                            <%//LinkedList<String> tags = flightPath.getLastFlight().getDestination().getTagsFromDatabase();
-                            if(destinationTags != null){
-                                for(String tag: destinationTags){
-                                    if(tag != destinationTags.getLast()){ %>
+                            <%
+                                if(destinationTags != null){
+                                    for(String tag: destinationTags){
+                                        if(tag != destinationTags.getLast()){ %>
                                         <%=tag +", "%>
                                     <% }
                                     else { %>
@@ -442,8 +443,6 @@
                     </td>
                     <td class="filledSection">
                         <p>
-                            <strong>Reputation Score: </strong>
-                            <%= flightPath.getLastFlight().getDestination().getReputationScore()%>
                         </p>
                     </td>
                 </tr>
@@ -477,7 +476,7 @@
                         <button name="searchResults" type="submit" value="simpleReturnSearchResults" class="search">Search</button>
                     </form>
                     <br />
-                    <form action="createBooking" method="POST">
+                    <form action="createBooking" method="POST" onsubmit='return validateTicketSelection(<%= flightList.size() %>)'>
                         <input type="hidden" name="details" value="true">
                         <div class="recurringBookingInput">
                             <label for="recurCheck">Recurring Booking: </label>
@@ -512,7 +511,7 @@
                 if (viewReturnFlightDetails) {
                 FlightPathBean returnFlightPath = (FlightPathBean) session.getAttribute("returnFlight");
                 LinkedList<FlightBean> returnFlightList = (LinkedList<FlightBean>) session.getAttribute("returnFlightList");
-                LinkedList<String> returnTags = (LinkedList<String>) session.getAttribute("returnTags");
+                    LinkedList<String> returnTags = (LinkedList<String>) session.getAttribute("returnTags");
             %>
                 <h1 style="margin-top: 50px;">
                     <%= returnFlightPath.getInitialFlight().getDeparture().getDestinationName() %>
@@ -620,9 +619,10 @@
                                             <span><%=flight.getFlightName()%></span>
                                             <br />
                                             <span><%=flight.getPlaneType()%></span>
+                                            <span id="priceForReturn<%= j %>" hidden><%= flight.getSelectedPrice() %></span>
                                         </p>
                                         <% if (flight.getSelectedPrice() == -1) { %>
-                                        <p>$<%=flight.getMinCost()%></p>
+                                            <p>$<%=flight.getMinCost()%></p>
                                         <% }
                                         else { %>
                                         <p>
@@ -901,7 +901,7 @@
                         <td class="filledSection">
                             <p><strong>Tags:</strong>
 
-                                <%//LinkedList<String> returnTags = returnFlightPath.getLastFlight().getDestination().getTags();
+                                <%
                                     if(returnTags != null){
                                         for(String tag: returnTags){
                                             if(tag != returnTags.getLast()){ %>
@@ -915,10 +915,6 @@
                             </p>
                         </td>
                         <td class="filledSection">
-                            <p>
-                                <strong>Reputation Score: </strong>
-                                <%= flightPath.getLastFlight().getDestination().getReputationScore()%>
-                            </p>
                         </td>
                     </tr>
 
@@ -931,7 +927,8 @@
             <br />
             <fieldset class="background">
                 <br />
-                <form action="createBooking" method="POST">
+                <form action="createBooking" method="POST"
+                      onsubmit='return validateTicketSelection(<%= flightList.size() %>, <%= returnFlightList.size() %>)'>
                     <input type="hidden" name="details" value="true">
                     <div class="recurringBookingInput">
                         <label for="check">Recurring Booking: </label>

@@ -264,8 +264,8 @@ public class DestinationBean {
         }
         return destination;
     }
-    // TODO: increment/decrement reputation score
 
+    // TODO: increment/decrement reputation score
     public LinkedList<String> getTagsFromDatabase()
     {
         LinkedList<String> tagIds = new LinkedList<>();
@@ -286,7 +286,6 @@ public class DestinationBean {
 
                 tagIds.add(tagId);
             }
-
             statement.close();
             connection.close();
         } catch (Exception e) {
@@ -314,7 +313,6 @@ public class DestinationBean {
 
                     tagNames.add(tagName);
                 }
-
                 statement.close();
                 connection.close();
             } catch (Exception e) {

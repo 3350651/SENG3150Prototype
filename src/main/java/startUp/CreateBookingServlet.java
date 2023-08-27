@@ -216,5 +216,15 @@ public class CreateBookingServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/Homepage-Index.jsp");
             requestDispatcher.forward(req, resp);
         }
+
+        if (req.getParameter("back") != null) {
+
+            UserBean user = (UserBean) session.getAttribute("userBean");
+            String back = "back";
+            session.setAttribute("back",back);
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/simpleSearchResults.jsp");
+            requestDispatcher.forward(req, resp);
+
+        }
     }
 }

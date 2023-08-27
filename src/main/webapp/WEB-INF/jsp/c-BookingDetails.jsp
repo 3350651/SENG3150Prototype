@@ -105,7 +105,7 @@
             </fieldset>
             <% } // end for loop on departure tickets %>
             <%if(passengerList.get(k).getReturnTickets() != null){%>
-                <% for (TicketBean returnTicket : passengerList.get(k).getReturnTickets()) { %>
+            <% for (TicketBean returnTicket : passengerList.get(k).getReturnTickets()) { %>
                     <fieldset class="foreground">
                         <h2>Return Ticket</h2>
                         <p>

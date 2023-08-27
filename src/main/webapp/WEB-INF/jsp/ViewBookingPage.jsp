@@ -39,7 +39,6 @@
                                         <%=booking.getDepartureFlightPath().getInitialFlight().getDestination().getDestinationName()%></h3>
                                     <strong>Airline: </strong>
                                     <%=booking.getDepartureFlightPath().getLastFlight().getAirlineName()%>
-
                                     <br />
                                     <strong>Departure Time:</strong>
                                     <%=booking.getDepartureFlightPath().getLastFlight().getFlightTime()%>
@@ -99,16 +98,16 @@
                                     <fieldset class="foreground">
                                         <h2>Departure Ticket</h2>
                                         <p>
-                                            <strong>Class: </strong><%=booking.getTickets().get(k).getTicketClass()%><br/>
-                                            <strong>Type: </strong><%=booking.getTickets().get(k).getTicketType()%>
+                                            <strong>Class: </strong><%=booking.getTickets().get(k).getTicketClassName()%><br/>
+                                            <strong>Type: </strong><%=booking.getTickets().get(k).getTicketTypeName()%>
                                         </p>
                                     </fieldset>
                                     <%if(passengerList.get(k).getReturnTickets() != null){%>
                                     <fieldset class="foreground">
                                         <h2>Return Ticket</h2>
                                         <p>
-                                            <strong>Class: </strong><%=booking.getTickets().get(k).getTicketClass()%><br/>
-                                            <strong>Type: </strong><%=booking.getTickets().get(k).getTicketType()%>
+                                            <strong>Class: </strong><%=booking.getTickets().get(k).getTicketClassName()%><br/>
+                                            <strong>Type: </strong><%=booking.getTickets().get(k).getTicketTypeName()%>
                                         </p>
                                     </fieldset>
                                     <%}%>
