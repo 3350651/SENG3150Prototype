@@ -425,7 +425,7 @@
                 <% i++; %>
             <% } %>
                 <tr>
-                    <td class="filledSection">
+                    <td class="filledSection" colspan="2">
                         <p><strong>Tags:</strong>
 
                             <%
@@ -439,10 +439,6 @@
                                     <%}%>
                                 <%}%>
                             <%}%>
-                        </p>
-                    </td>
-                    <td class="filledSection">
-                        <p>
                         </p>
                     </td>
                 </tr>
