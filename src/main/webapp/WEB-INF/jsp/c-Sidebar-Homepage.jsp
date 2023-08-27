@@ -57,6 +57,7 @@ LinkedList<GroupBean> groups = (LinkedList<GroupBean>) session.getAttribute("gro
         <div class="DestinationLocationResult" id="sidebar">&nbsp;<%=flightPath.getLastFlight().getDestination().getDestinationName()%> &nbsp; </div>
         </div>
         </button>
+        <input type="hidden" id="bookmarkedFlightToView" name="bookmarkedFlightToView" value="<%= j %>">
     <%
       j++;}}
     %>

@@ -94,6 +94,7 @@ public class FlightBean implements Serializable {
             this.airline = infoToImport.getAirline();
             this.flightName = infoToImport.getFlightName();
             this.flightDepartureTime = infoToImport.getFlightTime();
+            this.flightArrivalTime = infoToImport.getFlightArrivalTime();
             this.airlineName = infoToImport.getAirlineName();
             this.planeType = infoToImport.getPlaneType();
             this.destination = infoToImport.getDestination();
@@ -283,6 +284,7 @@ public class FlightBean implements Serializable {
                 String flightCode = result.getString("FlightNumber");
                 String plane = result.getString("PlaneCode");
                 Timestamp departTime = result.getTimestamp("DepartureTime");
+                Timestamp arrivalTime = result.getTimestamp("ArrivalTime");
                 String departureCode = result.getString("DepartureCode");
                 String destinationCode = result.getString("DestinationCode");
                 String airlineName = result.getString("AirlineName");
@@ -293,6 +295,7 @@ public class FlightBean implements Serializable {
 
                 flight = new FlightBean(aCode, airlineName, departTime, flightCode, plane, /* mCost, */ rDeparture, rDestination);
                 flight.setOriginalFlightDepartureTime(originalDepartureTime);
+                flight.setFlightArrivalTime(arrivalTime);
                 flight.getAvailabilities(1); // This assumes solo passenger until user clicks to view the flight details
             }
 
