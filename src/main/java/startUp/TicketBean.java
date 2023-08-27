@@ -30,6 +30,8 @@ public class TicketBean implements Serializable {
 
     private String departure;
 
+    private String depCode;
+
     private String arrival;
 
 
@@ -215,6 +217,14 @@ public class TicketBean implements Serializable {
 
     public void setArrival(String arrival) {
         this.arrival = arrival;
+    }
+
+    public String getDepCode() {
+        return depCode;
+    }
+
+    public void setDepCode(String depCode) {
+        this.depCode = depCode;
     }
 
     //remove ticket

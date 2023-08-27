@@ -128,8 +128,9 @@ public class CreateBookingServlet extends HttpServlet {
                             flightList.get(flightIndex).getFlightTime(), ticketClassCode, ticketTypeCode); // class names or class code?
                     departureTicket.setDeparture(flight.getDeparture().getDestinationName());
                     departureTicket.setArrival(flight.getDestination().getDestinationName());
-                    departureTicket.addTicket();    //add ticket to database
                     departureTicket.setPrice(String.valueOf(selectedPrice));
+                    departureTicket.setDepCode(flight.getDeparture().getDestinationCode());
+                    departureTicket.addTicket();    //add ticket to database
                     tickets.add(departureTicket);
                     price = price + selectedPrice;
                 }
@@ -178,6 +179,7 @@ public class CreateBookingServlet extends HttpServlet {
                         returnTicket.setDeparture(returnFlight.getDeparture().getDestinationName());
                         returnTicket.setArrival(returnFlight.getDestination().getDestinationName());
                         returnTicket.setPrice(String.valueOf(selectedPrice));
+                        returnTicket.setDepCode(returnFlight.getDeparture().getDestinationCode());
                         returnTicket.addTicket();    //add ticket to database
                         tickets.add(returnTicket);
 
