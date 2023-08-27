@@ -51,7 +51,7 @@
                 <div class="searchResultButtons">
                     <% if (user != null){ %>
                     <%-- <div class="bookmarkFavouriteAddToGroup"> --%>
-                        <form name="flightActions" class="flightSearchResultButtons" action="Search" method="POST">
+                        <form name="flightActions" class="flightSearchResultButtons" action="AccountSettings" method="POST">
                         <input type="hidden" name="userID" value="<%= user.getUserID() %>">
                         <input type="hidden" name="flightIndex" value="<%= flightResults.indexOf(flightPath) %>">
 

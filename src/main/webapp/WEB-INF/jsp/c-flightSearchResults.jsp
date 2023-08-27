@@ -67,7 +67,7 @@
                                         --%>
                                         <form name="flightActions"
                                             class="flightSearchResultButtons"
-                                            action="Search" method="POST">
+                                            action="AccountSettings" method="POST">
                                             <input type="hidden" name="userID"
                                                 value="<%= user.getUserID() %>">
                                             <input type="hidden" name="flightIndex"

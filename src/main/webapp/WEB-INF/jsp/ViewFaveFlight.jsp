@@ -56,7 +56,12 @@ boolean isAdmin = (boolean) session.getAttribute("isAdmin");
                         <div class="mainFlightDetailCell">
                             <h3>Flight Details:</h3>
                             <p class="flightDetails">
-
+                               Minimum price:
+                                <%= faveFlight.getFlightPath().getMinPrice() %>
+                                <br>
+                                Departure Date & Time:
+                                <%= faveFlight.getFlightPath().getInitialFlight().getFlightTime() %>
+                                <br>
                             </p>
                         </div>
                     </td>

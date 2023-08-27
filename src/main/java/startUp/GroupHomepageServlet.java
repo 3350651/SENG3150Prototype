@@ -209,6 +209,7 @@ public class GroupHomepageServlet extends HttpServlet {
 
             Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
             session.setAttribute("isAdmin", isAdmin);
+            session.setAttribute("faveFlights", faveFlights);
 
             if(faveFlights.size() != 0) {
 
@@ -237,7 +238,8 @@ public class GroupHomepageServlet extends HttpServlet {
             //get all the Flights that are added to the group Fave list.
             LinkedList<GroupFaveFlightBean> faveFlights = getGroupFaveFlights(group.getGroupID());
             int size = faveFlights.size();
-
+            faveFlights.sort(Comparator.comparingDouble(GroupFaveFlightBean::getScore));
+            session.setAttribute("faveFlights", faveFlights);
             Boolean isAdmin = isAdmin(user.getUserID(), group.getGroupID());
             session.setAttribute("isAdmin", isAdmin);
             boolean lockedIn = false;
@@ -267,9 +269,9 @@ public class GroupHomepageServlet extends HttpServlet {
                     GroupFaveFlightBean lockedInFlight = getLockedIn();
                     sortedFaveFlights.add(lockedInFlight);
                     destinations = lockedInFlight.getFlightPath().getDestinations();
+                    sortedFaveFlights.sort(Comparator.comparingDouble(GroupFaveFlightBean::getScore));
+                    session.setAttribute("faveFlights", sortedFaveFlights);
                 }
-                sortedFaveFlights.sort(Comparator.comparingDouble(GroupFaveFlightBean::getScore));
-                session.setAttribute("faveFlights", sortedFaveFlights);
             }
 
             session.setAttribute("group", group);
