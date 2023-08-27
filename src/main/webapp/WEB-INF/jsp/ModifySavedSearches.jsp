@@ -41,14 +41,19 @@ if (user != null && user.getSavedSearches() != null) {
             </button><br>
             </form>
 
-            <form method="POST" action="flightSearch">
+            <form method="POST" action="flightSearch" name="simpleSearchForm">
                 <input type="hidden" name="userID" value="<%= user.getUserID() %>">
                 <input type="hidden" name="departureLocation" value="<%= savedSearch.getDeparture() %>">
-                <input type="hidden" name="destination" value="<%= savedSearch.getDestination() %>">
-                <input type="hidden" name="departureDate" value="<%= savedSearch.getDepartureDate() %>">
-                <input type="hidden" name="departureLocation" value="<%= savedSearch.getDeparture() %>">
-                <input type="hidden" name="adultPassengers" value="<%= savedSearch.getAdultPassengers() %>">
-                <input type="hidden" name="childPassengers" value="<%= savedSearch.getChildPassengers() %>">
+                <input type="hidden" name="arrivalLocation" value="<%= savedSearch.getDestination() %>">
+                <input type="hidden" name="departureDate" value="<%= savedSearch.formatTimestampToDate(savedSearch.getDepartureDate()) %>">
+                <input type="hidden" name="numberOfAdults" value="<%= savedSearch.getAdultPassengers() %>">
+                <input type="hidden" name="numberOfChildren" value="<%= savedSearch.getChildPassengers() %>">
+                <input type="hidden" name="flexibleDays" value="<%= savedSearch.getFlexible() %>">
+                <% if(savedSearch.getFlexible() == 0){ %>
+                <input type="hidden" name="flexibleDate" value="<%= false %>">
+                <% } else { %>
+                <input type="hidden" name="flexibleDate" value="<%= true %>">
+                <% } %>
                 <button name="searchResults" type="submit" value="simpleSearchResults" class="button" id="flightDetailsModifyBookmarked">
                     Search
                 </button><br>

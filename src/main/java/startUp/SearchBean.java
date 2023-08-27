@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -487,6 +488,11 @@ public class SearchBean implements Serializable {
         return flights.size() > 0;
     }
 
+    public static String formatTimestampToDate(Timestamp timestamp) {
+        Date date = new Date(timestamp.getTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(date);
+    }
 
 //this all may be useful for later when we start implementing properly...
 
