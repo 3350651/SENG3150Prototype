@@ -262,113 +262,169 @@ public class BookingBean implements Serializable {
         }
 
         // decrease availability value on database
-        try {
-            for (PassengerBean passenger : passengers) {
-                System.out.println(passenger.getDepartureTickets().size());
-                for (TicketBean ticket : passenger.getDepartureTickets()) {
-                    String flightNumber = ticket.getFlightId();
-                    Timestamp depTime = ticket.getFlightTime();
-                    String depCode = ticket.getDepCode();
-                    System.out.println("Depart at: " + ticket.getDepCode());
+        if (returnPassengers != null) {
+            try {
+                for (PassengerBean passenger : passengers) {
+                    System.out.println(passenger.getDepartureTickets().size());
+                    for (TicketBean ticket : passenger.getDepartureTickets()) {
+                        String flightNumber = ticket.getFlightId();
+                        Timestamp depTime = ticket.getFlightTime();
+                        String depCode = ticket.getDepCode();
+                        System.out.println("Depart at: " + ticket.getDepCode());
 
-                    String query = "SELECT DepartureCode FROM Flights WHERE FlightNumber = ? AND DepartureTime = ?";
-                    Connection connection = ConfigBean.getConnection();
-                    PreparedStatement statement = connection.prepareStatement(query);
-                    statement.setString(1, flightNumber);
-                    statement.setTimestamp(2, depTime);
+                        String query = "SELECT DepartureCode FROM Flights WHERE FlightNumber = ? AND DepartureTime = ?";
+                        Connection connection = ConfigBean.getConnection();
+                        PreparedStatement statement = connection.prepareStatement(query);
+                        statement.setString(1, flightNumber);
+                        statement.setTimestamp(2, depTime);
 
-                    ResultSet result = statement.executeQuery();
+                        ResultSet result = statement.executeQuery();
 
-                    String query1 = "";
-                    String DB_DepCode = "";
-                    while (result.next()) {
-                        DB_DepCode = result.getString("DepartureCode");
+                        String query1 = "";
+                        String DB_DepCode = "";
+                        while (result.next()) {
+                            DB_DepCode = result.getString("DepartureCode");
+                        }
+
+                        statement.close();
+                        connection.close();
+
+                        if (depCode.equals(DB_DepCode)) {
+                            System.out.println("NumberAvailableSeatsLeg1");
+                            query1 = "UPDATE Availability \n" +
+                                    "SET NumberAvailableSeatsLeg1 = NumberAvailableSeatsLeg1 - 1 \n" +
+                                    "WHERE FlightNumber = ? AND DepartureTime = ? AND ClassCode = ? AND TicketCode = ?";
+                        } else {
+                            System.out.println("NumberAvailableSeatsLeg2");
+                            query1 = "UPDATE Availability \n" +
+                                    "SET NumberAvailableSeatsLeg2 = NumberAvailableSeatsLeg2 - 1 \n" +
+                                    "WHERE FlightNumber = ? AND DepartureTime = ? AND ClassCode = ? AND TicketCode = ?";
+                        }
+
+                        Connection connection1 = ConfigBean.getConnection();
+                        PreparedStatement statement1 = connection1.prepareStatement(query1);
+                        statement1.setString(1, flightNumber);
+                        statement1.setTimestamp(2, depTime);
+                        statement1.setString(3, ticket.getTicketClass());
+                        statement1.setString(4, ticket.getTicketType());
+                        boolean check = statement1.execute();
+                        System.out.println(check);
+
+                        statement1.close();
+                        connection1.close();
                     }
 
-                    statement.close();
-                    connection.close();
-
-                    if (depCode.equals(DB_DepCode)) {
-                        System.out.println("NumberAvailableSeatsLeg1");
-                        query1 = "UPDATE Availability \n" +
-                                "SET NumberAvailableSeatsLeg1 = NumberAvailableSeatsLeg1 - 1 \n" +
-                                "WHERE FlightNumber = ? AND DepartureTime = ? AND ClassCode = ? AND TicketCode = ?";
-                    }
-                    else {
-                        System.out.println("NumberAvailableSeatsLeg2");
-                        query1 = "UPDATE Availability \n" +
-                                "SET NumberAvailableSeatsLeg2 = NumberAvailableSeatsLeg2 - 1 \n" +
-                                "WHERE FlightNumber = ? AND DepartureTime = ? AND ClassCode = ? AND TicketCode = ?";
-                    }
-
-                    Connection connection1 = ConfigBean.getConnection();
-                    PreparedStatement statement1 = connection1.prepareStatement(query1);
-                    statement1.setString(1, flightNumber);
-                    statement1.setTimestamp(2, depTime);
-                    statement1.setString(3, ticket.getTicketClass());
-                    statement1.setString(4, ticket.getTicketType());
-                    boolean check = statement1.execute();
-                    System.out.println(check);
-
-                    statement1.close();
-                    connection1.close();
                 }
+                for (PassengerBean passenger : returnPassengers) {
+                    System.out.println(passenger.getReturnTickets().size());
+                    for (TicketBean ticket : passenger.getReturnTickets()) {
+                        String flightNumber = ticket.getFlightId();
+                        Timestamp depTime = ticket.getFlightTime();
+                        String depCode = ticket.getDepCode();
+                        System.out.println("Depart at: " + ticket.getDepCode());
 
-            }
-            for (PassengerBean passenger : returnPassengers) {
-                System.out.println(passenger.getReturnTickets().size());
-                for (TicketBean ticket : passenger.getReturnTickets()) {
-                    String flightNumber = ticket.getFlightId();
-                    Timestamp depTime = ticket.getFlightTime();
-                    String depCode = ticket.getDepCode();
-                    System.out.println("Depart at: " + ticket.getDepCode());
+                        String query = "SELECT DepartureCode FROM Flights WHERE FlightNumber = ? AND DepartureTime = ?";
+                        Connection connection = ConfigBean.getConnection();
+                        PreparedStatement statement = connection.prepareStatement(query);
+                        statement.setString(1, flightNumber);
+                        statement.setTimestamp(2, depTime);
 
-                    String query = "SELECT DepartureCode FROM Flights WHERE FlightNumber = ? AND DepartureTime = ?";
-                    Connection connection = ConfigBean.getConnection();
-                    PreparedStatement statement = connection.prepareStatement(query);
-                    statement.setString(1, flightNumber);
-                    statement.setTimestamp(2, depTime);
+                        ResultSet result = statement.executeQuery();
 
-                    ResultSet result = statement.executeQuery();
+                        String query1 = "";
+                        String DB_DepCode = "";
+                        while (result.next()) {
+                            DB_DepCode = result.getString("DepartureCode");
+                        }
 
-                    String query1 = "";
-                    String DB_DepCode = "";
-                    while (result.next()) {
-                        DB_DepCode = result.getString("DepartureCode");
+                        statement.close();
+                        connection.close();
+
+                        if (depCode.equals(DB_DepCode)) {
+                            System.out.println("NumberAvailableSeatsLeg1");
+                            query1 = "UPDATE Availability \n" +
+                                    "SET NumberAvailableSeatsLeg1 = NumberAvailableSeatsLeg1 - 1 \n" +
+                                    "WHERE FlightNumber = ? AND DepartureTime = ? AND ClassCode = ? AND TicketCode = ?";
+                        } else {
+                            System.out.println("NumberAvailableSeatsLeg2");
+                            query1 = "UPDATE Availability \n" +
+                                    "SET NumberAvailableSeatsLeg2 = NumberAvailableSeatsLeg2 - 1 \n" +
+                                    "WHERE FlightNumber = ? AND DepartureTime = ? AND ClassCode = ? AND TicketCode = ?";
+                        }
+
+                        Connection connection1 = ConfigBean.getConnection();
+                        PreparedStatement statement1 = connection1.prepareStatement(query1);
+                        statement1.setString(1, flightNumber);
+                        statement1.setTimestamp(2, depTime);
+                        statement1.setString(3, ticket.getTicketClass());
+                        statement1.setString(4, ticket.getTicketType());
+                        boolean check = statement1.execute();
+                        System.out.println(check);
+
+                        statement1.close();
+                        connection1.close();
                     }
-
-                    statement.close();
-                    connection.close();
-
-                    if (depCode.equals(DB_DepCode)) {
-                        System.out.println("NumberAvailableSeatsLeg1");
-                        query1 = "UPDATE Availability \n" +
-                                "SET NumberAvailableSeatsLeg1 = NumberAvailableSeatsLeg1 - 1 \n" +
-                                "WHERE FlightNumber = ? AND DepartureTime = ? AND ClassCode = ? AND TicketCode = ?";
-                    }
-                    else {
-                        System.out.println("NumberAvailableSeatsLeg2");
-                        query1 = "UPDATE Availability \n" +
-                                "SET NumberAvailableSeatsLeg2 = NumberAvailableSeatsLeg2 - 1 \n" +
-                                "WHERE FlightNumber = ? AND DepartureTime = ? AND ClassCode = ? AND TicketCode = ?";
-                    }
-
-                    Connection connection1 = ConfigBean.getConnection();
-                    PreparedStatement statement1 = connection1.prepareStatement(query1);
-                    statement1.setString(1, flightNumber);
-                    statement1.setTimestamp(2, depTime);
-                    statement1.setString(3, ticket.getTicketClass());
-                    statement1.setString(4, ticket.getTicketType());
-                    boolean check = statement1.execute();
-                    System.out.println(check);
-
-                    statement1.close();
-                    connection1.close();
                 }
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+                System.err.println(e.getStackTrace());
             }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            System.err.println(e.getStackTrace());
+        }else {
+            try {
+                for (PassengerBean passenger : passengers) {
+                    System.out.println(passenger.getDepartureTickets().size());
+                    for (TicketBean ticket : passenger.getDepartureTickets()) {
+                        String flightNumber = ticket.getFlightId();
+                        Timestamp depTime = ticket.getFlightTime();
+                        String depCode = ticket.getDepCode();
+                        System.out.println("Depart at: " + ticket.getDepCode());
+
+                        String query = "SELECT DepartureCode FROM Flights WHERE FlightNumber = ? AND DepartureTime = ?";
+                        Connection connection = ConfigBean.getConnection();
+                        PreparedStatement statement = connection.prepareStatement(query);
+                        statement.setString(1, flightNumber);
+                        statement.setTimestamp(2, depTime);
+
+                        ResultSet result = statement.executeQuery();
+
+                        String query1 = "";
+                        String DB_DepCode = "";
+                        while (result.next()) {
+                            DB_DepCode = result.getString("DepartureCode");
+                        }
+
+                        statement.close();
+                        connection.close();
+
+                        if (depCode.equals(DB_DepCode)) {
+                            System.out.println("NumberAvailableSeatsLeg1");
+                            query1 = "UPDATE Availability \n" +
+                                    "SET NumberAvailableSeatsLeg1 = NumberAvailableSeatsLeg1 - 1 \n" +
+                                    "WHERE FlightNumber = ? AND DepartureTime = ? AND ClassCode = ? AND TicketCode = ?";
+                        } else {
+                            System.out.println("NumberAvailableSeatsLeg2");
+                            query1 = "UPDATE Availability \n" +
+                                    "SET NumberAvailableSeatsLeg2 = NumberAvailableSeatsLeg2 - 1 \n" +
+                                    "WHERE FlightNumber = ? AND DepartureTime = ? AND ClassCode = ? AND TicketCode = ?";
+                        }
+
+                        Connection connection1 = ConfigBean.getConnection();
+                        PreparedStatement statement1 = connection1.prepareStatement(query1);
+                        statement1.setString(1, flightNumber);
+                        statement1.setTimestamp(2, depTime);
+                        statement1.setString(3, ticket.getTicketClass());
+                        statement1.setString(4, ticket.getTicketType());
+                        boolean check = statement1.execute();
+                        System.out.println(check);
+
+                        statement1.close();
+                        connection1.close();
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+                System.err.println(e.getStackTrace());
+            }
         }
     }
 
